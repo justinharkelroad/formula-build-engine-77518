@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import heroBackground from '@/assets/hero-background.png';
 
 const HeroSection = () => {
   const [letterIndex, setLetterIndex] = useState(0);
@@ -19,9 +18,9 @@ const HeroSection = () => {
     <section className="relative h-screen overflow-hidden">
       {/* Parallax Background */}
       <div
-        className="absolute inset-0 parallax"
+        className="absolute inset-0 parallax bg-[#1a1a1a]"
         style={{
-          backgroundImage: `url(${heroBackground})`,
+          backgroundImage: `url(/assets/hero-background.jpg)`,
         }}
       >
         <div className="absolute inset-0 bg-black/70" />
