@@ -20,10 +20,10 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 parallax bg-[#1a1a1a]"
         style={{
-          backgroundImage: `url(/assets/hero-background.jpg)`,
+          backgroundImage: `url(/assets/hero-background-new.jpg)`,
         }}
       >
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* Content */}
