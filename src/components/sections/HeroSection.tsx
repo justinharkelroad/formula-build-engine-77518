@@ -44,7 +44,7 @@ const HeroSection = () => {
         </h1>
         
         <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
-          COMING 2026
+          THE RETURN IN FALL OF 2026
         </p>
       </div>
 
