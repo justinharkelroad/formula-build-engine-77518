@@ -7,7 +7,7 @@ import UndefinedAbout from "@/components/sections/UndefinedAbout";
 import ServicesGrid from "@/components/sections/ServicesGrid";
 import FeatureSection from "@/components/sections/FeatureSection";
 import CTASection from "@/components/sections/CTASection";
-import TestimonialsCarousel from "@/components/sections/TestimonialsCarousel";
+import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 
 const Index = () => {
   const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 15–17";
@@ -21,7 +21,7 @@ const Index = () => {
       <UndefinedNavigation />
       
       <HeroSection />
-      <TestimonialsCarousel />
+      <VideoTestimonialsGrid />
       <UndefinedAbout />
       <ServicesGrid />
       
