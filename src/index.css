@@ -226,6 +226,16 @@ All colors MUST be HSL.
     animation: fadeInUp 1s ease-out;
   }
 
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Image hover effects */
   .image-hover {
     overflow: hidden;
