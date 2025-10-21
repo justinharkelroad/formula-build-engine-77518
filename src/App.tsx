@@ -11,7 +11,6 @@ import Index from "./pages/Index";
 import Partners from "./pages/Partners";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import MobileStickyCTA from "./components/MobileStickyCTA";
 import Pricing from "./pages/Pricing";
 import SpeakersPage from "./pages/SpeakersPage";
 import Agenda from "./pages/Agenda";
@@ -31,7 +30,6 @@ import DeferredScripts from "./components/DeferredScripts";
 import GA4Script from "./components/GA4Script";
 import AnalyticsListener from "./components/AnalyticsListener";
 import Footer from "./components/Footer";
-import StickyHeaderCTA from "./components/StickyHeaderCTA";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +44,6 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
           <AnalyticsListener />
-          <StickyHeaderCTA />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/agenda" element={<Agenda />} />
@@ -77,7 +74,6 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
            </Routes>
            <Footer />
-           <MobileStickyCTA />
             <DeferredScripts />
           </AuthProvider>
         </BrowserRouter>
