@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import f3Logo from '@/assets/f3-logo.png';
 
 const UndefinedNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +30,7 @@ const UndefinedNavigation = () => {
       <nav className="bg-white/10 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-8 border border-white/20">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img src="/lovable-uploads/f3-favicon.png" alt="F³" className="h-8 w-8" />
+          <img src={f3Logo} alt="Formula Forum" className="h-10 w-10 object-contain" />
         </div>
 
         {/* Navigation Links */}
@@ -51,7 +52,7 @@ const UndefinedNavigation = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => scrollToSection('contact')}
-            className="bg-[#9CFF2E] hover:bg-[#8FED1F] text-black px-6 py-2 rounded-full text-sm font-semibold transition cursor-hover"
+            className="bg-[#FF8C42] hover:bg-[#FF7A2E] text-white px-6 py-2 rounded-full text-sm font-semibold transition cursor-hover"
           >
             contact us
           </button>

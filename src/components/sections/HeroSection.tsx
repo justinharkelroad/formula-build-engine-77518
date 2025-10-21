@@ -27,8 +27,8 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-start justify-center container mx-auto px-8">
-        <h1 className="text-[8rem] md:text-[15rem] lg:text-[20rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
+      <div className="relative z-10 h-full flex flex-col items-start justify-center container mx-auto px-4 md:px-8">
+        <h1 className="text-[5rem] sm:text-[8rem] md:text-[12rem] lg:text-[15rem] xl:text-[20rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
           {text.split('').map((letter, index) => (
             <span
               key={index}
@@ -42,8 +42,8 @@ const HeroSection = () => {
           ))}
         </h1>
         
-        <p className="text-2xl md:text-3xl text-white/70 mt-8 max-w-2xl">
-          The insurance agency growth conference. Orlando, Oct 15–17, 2026.
+        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
+          COMING 2026
         </p>
       </div>
 
