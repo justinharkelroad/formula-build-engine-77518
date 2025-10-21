@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://f3florida.com/sitemap.xml

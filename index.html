@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/lovable-uploads/f3-favicon.png" type="image/png">
+    
+    <!-- Preload critical LCP image -->
+    <link rel="preload" as="image" href="/assets/hero-1200x630.jpg" imagesrcset="/assets/hero-1200x630.jpg 1200w" imagesizes="100vw" fetchpriority="high">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+    <!-- Facebook Pixel (script only in head) -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '669306169532672');
+      fbq('track', 'PageView');
+    </script>
+    
+    <!-- Preconnect to performance-critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://byoxxlouggcvbdizhgdp.supabase.co">
+    
+    <!-- Critical inline CSS for above-the-fold content -->
+    <style>
+      /* Inter font with font-display: swap */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyeMZs.woff2') format('woff2');
+      }
+      
+      /* Critical above-the-fold styles */
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        --primary: 193 55% 58%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 20 93% 54%;
+        --secondary-foreground: 0 0% 100%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+        --border: 214.3 31.8% 91.4%;
+        --radius: 0.5rem;
+      }
+      
+      * { box-sizing: border-box; }
+      
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        line-height: 1.5;
+      }
+      
+      .hero-container {
+        min-height: 100vh;
+        background: hsl(var(--background));
+      }
+      
+      .sticky-header-space {
+        height: 60px; /* Reserve space for sticky header to prevent CLS */
+      }
+      
+      .btn-cta {
+        background: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: opacity 0.2s;
+      }
+      
+      .btn-cta:hover {
+        opacity: 0.9;
+      }
+      
+      .btn-secondary {
+        background: hsl(var(--secondary));
+        color: hsl(var(--secondary-foreground));
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: opacity 0.2s;
+      }
+      
+      .btn-secondary:hover {
+        opacity: 0.9;
+      }
+    </style>
+    
+    <!-- Preload and defer non-critical CSS -->
+    <link rel="preload" as="style" href="/src/index.css" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
+    
+    <title>F³ Formula Forum 2025 — Insurance Agency Growth Event | Oct 15–17 | Orlando, FL</title>
+    <meta name="description" content="The first Formula Forum for insurance agency owners and sales leaders. Oct 15–17, 2025 • JW Marriott Orlando Bonnet Creek • Workshops, breakouts, real operator playbooks. Register now." />
+    <meta name="author" content="Lovable" />
+
+  </head>
+
+  <body>
+    <div class="sticky-header-space"></div>
+
+    <!-- Facebook Pixel (noscript fallback moved to body) -->
+    <noscript>
+      <img height="1" width="1" style="display:none"
+           src="https://www.facebook.com/tr?id=669306169532672&ev=PageView&noscript=1" />
+    </noscript>
+
+    <div id="root"></div>
+    <!-- Defer main application JavaScript -->
+    <script defer type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+/* Non-critical CSS loaded after critical inline styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* F³ Brand Colors */
+    --primary: 193 55% 58%; /* #52b7d3 - Main blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 20 93% 54%; /* #f7641d - Orange */
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 40 96% 57%; /* #faa228 - Gold */
+    --accent-foreground: 222.2 84% 4.9%;
+
+    --warning: 35 95% 55%; /* #f98523 - Warm orange */
+    --warning-foreground: 0 0% 100%;
+
+    --destructive: 8 91% 53%; /* #f52c13 - Red */
+    --destructive-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 193 55% 58%;
+
+    /* Custom F³ Design Tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(193 55% 58%), hsl(20 93% 54%));
+    --gradient-secondary: linear-gradient(135deg, hsl(40 96% 57%), hsl(35 95% 55%));
+    --shadow-brand: 0 10px 30px -10px hsl(193 55% 58% / 0.3);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-display: swap;
+  }
+}
+
+@layer utilities {
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+
+  .animate-marquee-slow {
+    animation: marquee 25s linear infinite;
+  }
+
+  /* Hero gradient + orb animations */
+  @keyframes hero-gradient-move {
+    0% {
+      background-position: 0% 0%, 100% 10%, 30% 100%;
+    }
+    100% {
+      background-position: 10% 10%, 90% 0%, 40% 90%;
+    }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.02); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  /* Layered, animated brand gradient background for hero sections */
+  .hero-bg {
+    background-image:
+      linear-gradient(120deg, hsl(var(--primary) / 0.22) 0%, hsl(var(--accent) / 0.12) 35%, transparent 60%),
+      radial-gradient(60% 60% at 8% 10%, hsl(var(--primary) / 0.55), transparent 60%),
+      radial-gradient(50% 50% at 92% 18%, hsl(var(--accent) / 0.42), transparent 60%),
+      radial-gradient(50% 50% at 30% 90%, hsl(var(--secondary) / 0.36), transparent 60%);
+    background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%;
+    background-repeat: no-repeat;
+    animation: hero-gradient-move 22s ease-in-out infinite alternate;
+  }
+
+  /* Soft glowing brand orbs for depth */
+  .hero-orb {
+    border-radius: 9999px;
+    filter: blur(60px);
+    opacity: 0.5;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .dark .hero-orb { opacity: 0.36; mix-blend-mode: screen; }
+
+  .hero-orb-primary {
+    background: radial-gradient(closest-side, hsl(var(--primary) / 0.75), transparent 65%);
+  }
+  .hero-orb-accent {
+    background: radial-gradient(closest-side, hsl(var(--accent) / 0.7), transparent 65%);
+  }
+  .hero-orb-secondary {
+    background: radial-gradient(closest-side, hsl(var(--secondary) / 0.7), transparent 65%);
+  }
+
+  .animate-float-slow { animation: float 10s ease-in-out infinite; }
+  .animate-float-slower { animation: float 14s ease-in-out infinite; }
+}
