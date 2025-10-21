@@ -198,10 +198,16 @@ All colors MUST be HSL.
 
   /* Parallax scrolling effects */
   .parallax {
-    background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+  
+  /* Only use fixed attachment on desktop where it's supported */
+  @media (min-width: 768px) {
+    .parallax {
+      background-attachment: fixed;
+    }
   }
 
   /* Scroll-triggered fade animations */
