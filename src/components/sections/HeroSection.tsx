@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import heroBackground from '@/assets/hero-background.png';
 
 const HeroSection = () => {
   const [letterIndex, setLetterIndex] = useState(0);
@@ -20,7 +21,7 @@ const HeroSection = () => {
       <div
         className="absolute inset-0 parallax"
         style={{
-          backgroundImage: 'url(/lovable-uploads/109ab2af-5591-4d6c-a9cd-d82bf264fdf8.png)',
+          backgroundImage: `url(${heroBackground})`,
         }}
       >
         <div className="absolute inset-0 bg-black/70" />
