@@ -1,41 +1,56 @@
-import HeroVideo from "@/components/HeroVideo";
-import CountdownTimer from "@/components/CountdownTimer";
+import { useEffect, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 const HeroSection = () => {
+  const [letterIndex, setLetterIndex] = useState(0);
+  const text = "formula";
+
+  useEffect(() => {
+    if (letterIndex < text.length) {
+      const timeout = setTimeout(() => {
+        setLetterIndex(letterIndex + 1);
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
+  }, [letterIndex, text.length]);
+
   return (
-    <section className="relative overflow-hidden">
-      {/* background moved to page wrapper */}
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="grid md:grid-cols-2 items-center gap-8 md:gap-12 py-14 md:py-24">
-          <header className="max-w-3xl text-left text-lg">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-              Insurance Agency Growth Conference in Orlando. Oct 15–17, 2025.
-            </h1>
+    <section className="relative h-screen overflow-hidden">
+      {/* Parallax Background */}
+      <div
+        className="absolute inset-0 parallax"
+        style={{
+          backgroundImage: 'url(/lovable-uploads/109ab2af-5591-4d6c-a9cd-d82bf264fdf8.png)',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70" />
+      </div>
 
-            <p className="text-xl md:text-2xl text-foreground/90 mb-6 leading-relaxed">
-              Build a 90-day growth blueprint in 48 hours.
-            </p>
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col items-start justify-center container mx-auto px-8">
+        <h1 className="text-[8rem] md:text-[15rem] lg:text-[20rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
+          {text.split('').map((letter, index) => (
+            <span
+              key={index}
+              className={`letter-animate ${index < letterIndex ? 'opacity-100' : 'opacity-0'}`}
+              style={{
+                animationDelay: `${index * 0.1}s`,
+              }}
+            >
+              {letter}
+            </span>
+          ))}
+        </h1>
+        
+        <p className="text-2xl md:text-3xl text-white/70 mt-8 max-w-2xl">
+          The insurance agency growth conference. Orlando, Oct 15–17, 2026.
+        </p>
+      </div>
 
-            <div className="mb-8">
-              <CountdownTimer 
-                autoReset={true}
-                className="text-left"
-              />
-            </div>
-
-            <ul className="list-disc pl-6 space-y-2 mb-8">
-              <li>Double your cross-sell rate</li>
-              <li>Lift retention with a 3-step renewal play</li>
-              <li>Hire, comp, and coach a 2-sales-per-day rep</li>
-            </ul>
-          </header>
-
-          <aside className="w-full">
-            <HeroVideo wistiaId="y8elofri75" title="Formula Forum overview video" />
-            <p className="text-2xl md:text-3xl text-foreground/90 mt-4">
-              Struggling to scale your agency team? This event shows you how.
-            </p>
-          </aside>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-bounce-slow">
+        <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center cursor-hover">
+          <ChevronDown className="w-6 h-6 text-white/50" />
         </div>
       </div>
     </section>
