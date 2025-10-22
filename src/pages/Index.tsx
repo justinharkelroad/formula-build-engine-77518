@@ -42,14 +42,40 @@ const Index = () => {
         reverse={true}
       />
       
-      {/* Partner Podcasts CTA */}
-      <section className="py-16 px-4 bg-black">
-        <div className="container mx-auto max-w-7xl text-center">
-          <a href="/2025partners">
-            <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
-              2025 Partner Podcast Episodes
-            </button>
-          </a>
+      {/* Partner Podcasts Section */}
+      <section id="partner-podcasts" className="py-24 px-4 bg-black">
+        <div className="container mx-auto max-w-7xl">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white text-center mb-16">
+            HEAR FROM OUR 2025 FORMULA PARTNERS
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { name: "RICOCHET", embedId: "FlM2ZQ_FVwQ" },
+              { name: "MEDIA ALPHA", embedId: "tox1dLwKnPM" },
+              { name: "DISRUPTUR", embedId: "CjbFq-S9YgQ" },
+            ].map((podcast) => (
+              <div
+                key={podcast.embedId}
+                className="group relative bg-white/5 rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300"
+              >
+                <div className="aspect-video w-full relative overflow-hidden bg-black">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${podcast.embedId}`}
+                    title={`${podcast.name} Podcast Episode`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-white text-center">
+                    {podcast.name}
+                  </h3>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       
