@@ -52,8 +52,11 @@ const Navigation = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden"
+            type="button"
+            className="md:hidden p-2 text-foreground hover:text-primary transition-colors z-50"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -61,13 +64,13 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t">
+          <div className="md:hidden py-4 border-t bg-white">
               <div className="flex flex-col space-y-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
                     to={item.href}
-                    className={`text-foreground hover:text-primary transition-colors ${
+                    className={`text-foreground hover:text-primary transition-colors py-2 ${
                       location.pathname === item.href ? 'text-primary font-medium' : ''
                     }`}
                     onClick={() => setIsOpen(false)}
@@ -75,6 +78,16 @@ const Navigation = () => {
                     {item.label}
                   </Link>
                 ))}
+                <div className="pt-4 border-t">
+                  <PassTypeDialog />
+                </div>
+                <Link
+                  to="/admin/auth"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admin
+                </Link>
               </div>
           </div>
         )}
