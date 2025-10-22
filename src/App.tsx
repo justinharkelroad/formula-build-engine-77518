@@ -26,6 +26,7 @@ import ThankYouEnhanced from "./pages/ThankYouEnhanced";
 import AdminRegistrations from "./pages/AdminRegistrations";
 import AdminMetrics from "./pages/AdminMetrics";
 import AdminAuth from "./pages/AdminAuth";
+import PartnerPodcasts from "./pages/PartnerPodcasts";
 import DeferredScripts from "./components/DeferredScripts";
 import GA4Script from "./components/GA4Script";
 import AnalyticsListener from "./components/AnalyticsListener";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/venue" element={<Venue />} />
             <Route path="/survey" element={<Survey />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/2025partners" element={<PartnerPodcasts />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/register" element={<Register />} />
