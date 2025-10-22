@@ -4,18 +4,23 @@ import { Target, Users, TrendingUp } from 'lucide-react';
 const services = [
   {
     icon: Target,
-    title: 'Cross-Sell Strategy',
-    description: 'Double your cross-sell rate with proven frameworks that turn single-policy clients into multi-line relationships.',
+    title: 'Train',
+    description: 'Every trainer will eliminate all the "about-me" parts and simply get straight to training you on their specific expertise.',
   },
   {
     icon: Users,
-    title: 'Team Building',
-    description: 'Hire, compensate, and coach producers who consistently hit 2+ sales per day without burning out.',
+    title: 'Type',
+    description: 'You will immerse yourself in your notes. Writing or typing your biggest takeaways as soon as the trainer is done with their session.',
   },
   {
     icon: TrendingUp,
-    title: 'Retention Playbook',
-    description: 'Deploy our 3-step renewal system that lifts retention rates and creates predictable revenue streams.',
+    title: 'Talk',
+    description: 'The breakthroughs happen in the breakouts. "On your feet" will que you to find someone you don\'t know and we will orchestrate powerful quick breakout sessions.',
+  },
+  {
+    icon: Target,
+    title: 'Teach',
+    description: 'After you come back to your seat, we teach and complete the circle by making sure the lessons can be applied by taking questions and getting powerful takeaways',
   },
 ];
 
@@ -33,11 +38,17 @@ const ServicesGrid = () => {
       <div className="container mx-auto max-w-7xl">
         <div className="text-xs text-white/50 mb-12 tracking-widest uppercase">[ what you'll master ]</div>
         
-        <h2 className="text-6xl md:text-7xl font-bold mb-20 leading-tight max-w-4xl">
+        <h2 className="text-6xl md:text-7xl font-bold mb-8 leading-tight max-w-4xl">
           Leading Your Teams With Authenticity, Purpose & Truth will Create Presence With Your Teams
         </h2>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="text-center mb-16">
+          <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#FF8C42] to-[#4A90E2] bg-clip-text text-transparent">
+            Formulas Learning Cycle
+          </h3>
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
