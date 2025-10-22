@@ -34,7 +34,7 @@ const ServicesGrid = () => {
         <div className="text-xs text-white/50 mb-12 tracking-widest uppercase">[ what you'll master ]</div>
         
         <h2 className="text-6xl md:text-7xl font-bold mb-20 leading-tight max-w-4xl">
-          Build your agency growth blueprint in 48 hours
+          Come Away Understanding That The Business Success Is A Direct Correlation To Your Leadership Authenticity and Connection To Purpose.
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
