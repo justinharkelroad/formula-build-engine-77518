@@ -67,8 +67,8 @@ const VideoTestimonialsGrid = () => {
       title: 'Maine'
     },
     {
-      videoSrc: 'https://www.youtube.com/embed/D38WH5asQj4',
-      posterSrc: 'https://img.youtube.com/vi/D38WH5asQj4/hqdefault.jpg',
+      videoSrc: 'https://www.youtube.com/embed/KieUmx_iC-c',
+      posterSrc: 'https://img.youtube.com/vi/KieUmx_iC-c/hqdefault.jpg',
       name: 'Ladd',
       title: 'Florida'
     },
