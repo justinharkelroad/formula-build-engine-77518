@@ -42,6 +42,17 @@ const Index = () => {
         reverse={true}
       />
       
+      {/* Partner Podcasts CTA */}
+      <section className="py-16 px-4 bg-black">
+        <div className="container mx-auto max-w-7xl text-center">
+          <a href="/2025partners">
+            <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
+              2025 Partner Podcast Episodes
+            </button>
+          </a>
+        </div>
+      </section>
+      
       <CTASection />
     </div>
   );
