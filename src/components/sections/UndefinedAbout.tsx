@@ -20,18 +20,15 @@ const UndefinedAbout = () => {
             <h2 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
               The Insurance Agency Growth Event
             </h2>
-            <p className="text-xl text-white/70 leading-relaxed mb-6">
-              Formula Forum brings together forward-thinking insurance agency owners for three days of intensive workshops, tactical breakouts, and peer collaboration.
-            </p>
             <p className="text-xl text-white/70 leading-relaxed">
-              Walk away with a complete 90-day growth blueprint designed specifically for your agency—no theory, just proven systems that work.
+              Formula proved that growth happens where clarity meets community. Across two immersive days, agency owners gained actionable frameworks, redefined leadership, and built relationships that extend far beyond the event. Attendees described it as "the most impactful insurance conference ever attended"—a space where mindset, execution, and accountability aligned to create lasting results.
             </p>
           </div>
 
           {/* Right Column - Image */}
           <div className="relative overflow-hidden rounded-2xl group">
             <img
-              src="/lovable-uploads/109ab2af-5591-4d6c-a9cd-d82bf264fdf8.png"
+              src="/lovable-uploads/about-section-image.png"
               alt="Formula Forum Event"
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
