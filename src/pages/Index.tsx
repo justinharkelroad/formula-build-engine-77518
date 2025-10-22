@@ -26,10 +26,10 @@ const Index = () => {
       <ServicesGrid />
       
       <FeatureSection
-        title="JW Marriott Bonnet Creek Resort"
-        description="Three days at one of Orlando's premier luxury resorts. World-class meeting spaces, multiple dining options, and resort amenities—all steps from your room."
-        imageSrc="/lovable-uploads/e7a76666-bec2-4ea3-bc14-767103436da5.png"
-        imageAlt="JW Marriott Bonnet Creek Resort"
+        title="2026 Location Announcement Coming Soon!"
+        description="The JW Marriott Bonnet Creek was exquisite for our event. It is not out of the running for 2026 but we will make that decision and announcement soon for what city and hotel will house FORMULA in 2026!"
+        imageSrc="/lovable-uploads/venue-pool-2026.jpg"
+        imageAlt="Luxury resort pool at sunset"
         reverse={false}
       />
       
