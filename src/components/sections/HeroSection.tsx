@@ -49,7 +49,7 @@ const HeroSection = () => {
         </p>
         
         <Link to="/register">
-          <Button size="lg" className="mt-6 md:mt-8 text-base md:text-lg px-8 md:px-12">
+          <Button variant="cta" size="xl" className="mt-6 md:mt-8">
             Join Waitlist
           </Button>
         </Link>
