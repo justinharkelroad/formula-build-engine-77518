@@ -7,58 +7,52 @@ const VideoTestimonialsGrid = () => {
 
   const videoTestimonials = [
     {
-      videoSrc: '/videos/testimonial-1.mp4',
-      posterSrc: '/videos/testimonial-1-poster.jpg',
-      name: 'John Doe',
-      title: 'F³ Member, Tampa'
+      videoSrc: 'https://www.youtube.com/embed/BbpXNx7Jixo',
+      posterSrc: 'https://img.youtube.com/vi/BbpXNx7Jixo/maxresdefault.jpg',
+      name: 'Melissa',
+      title: 'Tennessee'
     },
     {
-      videoSrc: '/videos/testimonial-2.mp4',
-      posterSrc: '/videos/testimonial-2-poster.jpg',
-      name: 'Mike Johnson',
-      title: 'F³ Member, Orlando'
+      videoSrc: 'https://www.youtube.com/embed/qnjwHng6MZ0',
+      posterSrc: 'https://img.youtube.com/vi/qnjwHng6MZ0/maxresdefault.jpg',
+      name: 'Kelly',
+      title: 'Pennsylvania'
     },
     {
-      videoSrc: '/videos/testimonial-3.mp4',
-      posterSrc: '/videos/testimonial-3-poster.jpg',
-      name: 'David Smith',
-      title: 'F³ Member, Miami'
+      videoSrc: 'https://www.youtube.com/embed/nxEutmCrBm0',
+      posterSrc: 'https://img.youtube.com/vi/nxEutmCrBm0/maxresdefault.jpg',
+      name: 'Anthony',
+      title: 'Virginia'
     },
     {
-      videoSrc: '/videos/testimonial-4.mp4',
-      posterSrc: '/videos/testimonial-4-poster.jpg',
-      name: 'Chris Williams',
-      title: 'F³ Member, Jacksonville'
+      videoSrc: 'https://www.youtube.com/embed/wvutVhMg-zM',
+      posterSrc: 'https://img.youtube.com/vi/wvutVhMg-zM/maxresdefault.jpg',
+      name: 'Jay',
+      title: 'Florida'
     },
     {
-      videoSrc: '/videos/testimonial-5.mp4',
-      posterSrc: '/videos/testimonial-5-poster.jpg',
-      name: 'Robert Brown',
-      title: 'F³ Member, Fort Lauderdale'
+      videoSrc: 'https://www.youtube.com/embed/RRBQd4dQJo0',
+      posterSrc: 'https://img.youtube.com/vi/RRBQd4dQJo0/maxresdefault.jpg',
+      name: 'Cody',
+      title: 'Texas'
     },
     {
-      videoSrc: '/videos/testimonial-6.mp4',
-      posterSrc: '/videos/testimonial-6-poster.jpg',
-      name: 'James Davis',
-      title: 'F³ Member, West Palm Beach'
+      videoSrc: 'https://www.youtube.com/embed/SR_9T5S6BeI',
+      posterSrc: 'https://img.youtube.com/vi/SR_9T5S6BeI/maxresdefault.jpg',
+      name: 'Romilee',
+      title: 'Louisiana'
     },
     {
-      videoSrc: '/videos/testimonial-7.mp4',
-      posterSrc: '/videos/testimonial-7-poster.jpg',
-      name: 'Michael Wilson',
-      title: 'F³ Member, Naples'
+      videoSrc: 'https://www.youtube.com/embed/-58mxGklI8k',
+      posterSrc: 'https://img.youtube.com/vi/-58mxGklI8k/maxresdefault.jpg',
+      name: 'John',
+      title: 'Florida'
     },
     {
-      videoSrc: '/videos/testimonial-8.mp4',
-      posterSrc: '/videos/testimonial-8-poster.jpg',
-      name: 'Thomas Garcia',
-      title: 'F³ Member, Sarasota'
-    },
-    {
-      videoSrc: '/videos/testimonial-9.mp4',
-      posterSrc: '/videos/testimonial-9-poster.jpg',
-      name: 'Daniel Martinez',
-      title: 'F³ Member, Clearwater'
+      videoSrc: 'https://www.youtube.com/embed/g0lNoUA6V04',
+      posterSrc: 'https://img.youtube.com/vi/g0lNoUA6V04/maxresdefault.jpg',
+      name: 'Kim',
+      title: 'Florida'
     }
   ];
 
