@@ -8,49 +8,49 @@ const VideoTestimonialsGrid = () => {
   const videoTestimonials = [
     {
       videoSrc: 'https://www.youtube.com/embed/BbpXNx7Jixo',
-      posterSrc: 'https://img.youtube.com/vi/BbpXNx7Jixo/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/BbpXNx7Jixo/hqdefault.jpg',
       name: 'Melissa',
       title: 'Tennessee'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/qnjwHng6MZ0',
-      posterSrc: 'https://img.youtube.com/vi/qnjwHng6MZ0/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/qnjwHng6MZ0/hqdefault.jpg',
       name: 'Kelly',
       title: 'Pennsylvania'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/nxEutmCrBm0',
-      posterSrc: 'https://img.youtube.com/vi/nxEutmCrBm0/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/nxEutmCrBm0/hqdefault.jpg',
       name: 'Anthony',
       title: 'Virginia'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/wvutVhMg-zM',
-      posterSrc: 'https://img.youtube.com/vi/wvutVhMg-zM/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/wvutVhMg-zM/hqdefault.jpg',
       name: 'Jay',
       title: 'Florida'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/RRBQd4dQJo0',
-      posterSrc: 'https://img.youtube.com/vi/RRBQd4dQJo0/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/RRBQd4dQJo0/hqdefault.jpg',
       name: 'Cody',
       title: 'Texas'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/SR_9T5S6BeI',
-      posterSrc: 'https://img.youtube.com/vi/SR_9T5S6BeI/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/SR_9T5S6BeI/hqdefault.jpg',
       name: 'Romilee',
       title: 'Louisiana'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/-58mxGklI8k',
-      posterSrc: 'https://img.youtube.com/vi/-58mxGklI8k/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/-58mxGklI8k/hqdefault.jpg',
       name: 'John',
       title: 'Florida'
     },
     {
       videoSrc: 'https://www.youtube.com/embed/g0lNoUA6V04',
-      posterSrc: 'https://img.youtube.com/vi/g0lNoUA6V04/maxresdefault.jpg',
+      posterSrc: 'https://img.youtube.com/vi/g0lNoUA6V04/hqdefault.jpg',
       name: 'Kim',
       title: 'Florida'
     }
