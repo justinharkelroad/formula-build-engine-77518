@@ -85,9 +85,9 @@ const VideoTestimonialsGrid = () => {
             [ TESTIMONIALS ]
           </p>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Hear from our{' '}
+            This Conference Feels Like{' '}
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              community
+              Home
             </span>
           </h2>
         </div>
