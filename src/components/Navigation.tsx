@@ -21,7 +21,7 @@ const Navigation = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
@@ -64,8 +64,8 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t bg-white">
-              <div className="flex flex-col space-y-4">
+          <div className="md:hidden absolute top-full left-0 right-0 z-40 bg-white border-t shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <div className="flex flex-col space-y-4 px-4 py-6">
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
