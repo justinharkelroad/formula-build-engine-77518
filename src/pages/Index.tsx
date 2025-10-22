@@ -54,6 +54,23 @@ const Index = () => {
               { name: "RICOCHET", embedId: "FlM2ZQ_FVwQ" },
               { name: "MEDIA ALPHA", embedId: "tox1dLwKnPM" },
               { name: "DISRUPTUR", embedId: "CjbFq-S9YgQ" },
+              { name: "TEAM HIRED", embedId: "cUv3cp19CRQ" },
+              { name: "SEARCH PERFECT", embedId: "1_KvGjczv2g" },
+              { name: "EVERYGREEN TALENT AGENCY", embedId: "1_KvGjczv2g" },
+              { name: "FILTERED QUOTES", embedId: "MUBj3wFMOvU" },
+              { name: "BRAISHFIELD", embedId: "0_-rbjLaE60" },
+              { name: "AGENCY TOOLCHEST", embedId: "Cfa7bsE5grs" },
+              { name: "SMARKETING", embedId: "LZ5Z6lMOC84" },
+              { name: "HAGERTY", embedId: "q4kAc9UHaXw" },
+              { name: "EOS", embedId: "wkPKGCTio2k" },
+              { name: "TOP TIER RECRUITING", embedId: "gnCLRzKgRNw" },
+              { name: "AMERICAN INTEGRITY", embedId: "vIyGxtvCcto" },
+              { name: "PERFORMOLOGY", embedId: "sV5NlFuFaCc" },
+              { name: "EMBRACE PET INSURANCE", embedId: "gXiTSNMAzgQ" },
+              { name: "POST PROS", embedId: "_mLcM6aXGno" },
+              { name: "DESTINY RESCUE", embedId: "eiJuHioRR6Q" },
+              { name: "QUOTE NERDS", embedId: "dqshvPjGD0U" },
+              { name: "COVER DESK", embedId: "KIsbPgEOeEc" },
             ].map((podcast) => (
               <div
                 key={podcast.embedId}
