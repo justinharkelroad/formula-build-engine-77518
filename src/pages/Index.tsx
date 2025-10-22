@@ -31,13 +31,14 @@ const Index = () => {
         imageSrc="/lovable-uploads/venue-pool-2026.jpg"
         imageAlt="Luxury resort pool at sunset"
         reverse={false}
+        id="location"
       />
       
       <FeatureSection
-        title="Intensive Workshop Format"
-        description="No passive listening. You'll work alongside peers and mentors to build your actual 90-day growth plan. Every session is hands-on, tactical, and designed for immediate implementation."
-        imageSrc="/lovable-uploads/3bcb9d4f-a156-4d11-9786-f14e083aee89.png"
-        imageAlt="Workshop Format"
+        title="Breakouts Create Breakthroughs"
+        description="Ask any attendee from 2025. We're built through truth and authenticity and that can only be done through connection. This is not your average conference format. We are active throughout the day and a half. We find ourselves in uncomfortable situations so when something like that happens in life, were trained."
+        imageSrc="/lovable-uploads/breakout-session.png"
+        imageAlt="Breakout session with attendees in discussion"
         reverse={true}
       />
       

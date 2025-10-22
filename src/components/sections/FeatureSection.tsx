@@ -8,12 +8,13 @@ interface FeatureSectionProps {
   reverse?: boolean;
 }
 
-const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false }: FeatureSectionProps) => {
+const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false, id }: FeatureSectionProps & { id?: string }) => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
     <section
       ref={ref}
+      id={id}
       className={`min-h-screen bg-black text-white py-32 px-8 transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}
