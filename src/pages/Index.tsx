@@ -8,10 +8,25 @@ import ServicesGrid from "@/components/sections/ServicesGrid";
 import FeatureSection from "@/components/sections/FeatureSection";
 import CTASection from "@/components/sections/CTASection";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Index = () => {
   const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 15–17";
   const description = "Insurance Agency Growth Conference in Orlando. Oct 15–17, 2026 at JW Marriott Bonnet Creek. Workshops, breakouts, and a 90-day growth plan.";
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const sectionId = (location.state as any)?.scrollTo;
+    if (sectionId) {
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 0);
+    }
+  }, [location, navigate]);
   
   return (
     <div className="min-h-screen bg-black">

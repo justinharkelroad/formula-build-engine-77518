@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import f3Logo from '@/assets/f3-logo.png';
 
 const UndefinedNavigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -15,10 +17,14 @@ const UndefinedNavigation = () => {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
     }
+    navigate('/', { state: { scrollTo: sectionId } });
   };
 
   return (
