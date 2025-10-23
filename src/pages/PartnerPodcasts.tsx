@@ -1,4 +1,4 @@
-import Navigation from "@/components/Navigation";
+import UndefinedNavigation from "@/components/UndefinedNavigation";
 import SEO from "@/components/SEO";
 import { CONFIG } from "@/config/event";
 
@@ -32,7 +32,7 @@ const PartnerPodcasts = () => {
   return (
     <div className="min-h-screen bg-black">
       <SEO title={title} description={description} path="/2025partners" />
-      <Navigation />
+      <UndefinedNavigation />
       
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-7xl">
