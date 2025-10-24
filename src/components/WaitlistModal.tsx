@@ -85,27 +85,28 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
-        .from("waitlist")
-        .insert({
+      const { data: response, error } = await supabase.functions.invoke('process-waitlist', {
+        body: {
           name: data.name,
           email: data.email,
           phone: data.phone,
           attended_2025: data.attended_2025 === "true",
           agency_state: data.agency_state,
-        });
+        },
+      });
 
       if (error) {
-        if (error.code === "23505") {
-          toast({
-            title: "Already registered!",
-            description: "You're already on the waitlist. We'll be in touch soon!",
-            variant: "default",
-          });
-        } else {
-          throw error;
-        }
-      } else {
+        throw error;
+      }
+
+      // Handle specific error responses from the edge function
+      if (response?.error === 'duplicate') {
+        toast({
+          title: "Already registered!",
+          description: "You're already on the waitlist. We'll be in touch soon!",
+          variant: "default",
+        });
+      } else if (response?.success) {
         toast({
           title: "Welcome to the waitlist!",
           description: "Thanks for joining! We'll be in touch soon.",
