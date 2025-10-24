@@ -11,11 +11,10 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Registration {
   id: string;
   email: string;
-  stripe_session_id: string;
-  amount: number;
-  currency: string;
-  pass_type: string;
-  quantity: number;
+  name: string;
+  phone: string;
+  attended_2025: boolean;
+  agency_state: string;
   created_at: string;
 }
 
@@ -28,7 +27,7 @@ const AdminRegistrations = () => {
   const fetchRegistrations = async () => {
     try {
       const { data, error } = await supabase
-        .from('registrations')
+        .from('waitlist')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -52,15 +51,14 @@ const AdminRegistrations = () => {
 
   const exportCSV = () => {
     const csvContent = [
-      ['Email', 'Pass Type', 'Amount', 'Currency', 'Quantity', 'Date', 'Session ID'],
+      ['Name', 'Email', 'Phone', 'Attended 2025', 'Agency State', 'Date'],
       ...registrations.map(reg => [
+        reg.name,
         reg.email,
-        reg.pass_type,
-        (reg.amount / 100).toFixed(2),
-        reg.currency.toUpperCase(),
-        reg.quantity,
-        new Date(reg.created_at).toLocaleDateString(),
-        reg.stripe_session_id
+        reg.phone,
+        reg.attended_2025 ? 'Yes' : 'No',
+        reg.agency_state,
+        new Date(reg.created_at).toLocaleDateString()
       ])
     ].map(row => row.join(',')).join('\n');
 
@@ -68,12 +66,10 @@ const AdminRegistrations = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `registrations-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `waitlist-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
-
-  const totalRevenue = registrations.reduce((sum, reg) => sum + reg.amount, 0) / 100;
 
   return (
     <>
@@ -87,8 +83,8 @@ const AdminRegistrations = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-              <h1 className="text-4xl font-bold">Registration Management</h1>
-              <p className="text-muted-foreground mt-2">View and manage all event registrations</p>
+              <h1 className="text-4xl font-bold">Waitlist Management</h1>
+              <p className="text-muted-foreground mt-2">View and manage Formula 2026 waitlist</p>
               {user && <p className="text-sm text-muted-foreground">Signed in as: {user.email}</p>}
             </div>
             <div className="flex gap-2">
@@ -119,7 +115,7 @@ const AdminRegistrations = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Total Registrations</CardTitle>
+                <CardTitle className="text-sm font-medium">Total Waitlist</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{registrations.length}</div>
@@ -128,21 +124,22 @@ const AdminRegistrations = () => {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                <CardTitle className="text-sm font-medium">Attended 2025</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
+                <div className="text-2xl font-bold">
+                  {registrations.filter(r => r.attended_2025).length}
+                </div>
               </CardContent>
             </Card>
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Agent vs Team</CardTitle>
+                <CardTitle className="text-sm font-medium">New Members</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm">
-                  Agent: {registrations.filter(r => r.pass_type === 'agent').length}<br />
-                  Team: {registrations.filter(r => r.pass_type === 'team').length}
+                <div className="text-2xl font-bold">
+                  {registrations.filter(r => !r.attended_2025).length}
                 </div>
               </CardContent>
             </Card>
@@ -150,38 +147,38 @@ const AdminRegistrations = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Recent Registrations</CardTitle>
+              <CardTitle>Waitlist Members</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-8">Loading registrations...</div>
+                <div className="text-center py-8">Loading waitlist...</div>
               ) : registrations.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  No registrations found.
+                  No waitlist members found.
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b">
+                        <th className="text-left p-3">Name</th>
                         <th className="text-left p-3">Email</th>
-                        <th className="text-left p-3">Pass Type</th>
-                        <th className="text-left p-3">Amount</th>
+                        <th className="text-left p-3">Phone</th>
+                        <th className="text-left p-3">Attended 2025</th>
+                        <th className="text-left p-3">State</th>
                         <th className="text-left p-3">Date</th>
-                        <th className="text-left p-3">Session ID</th>
                       </tr>
                     </thead>
                     <tbody>
                       {registrations.map((registration) => (
                         <tr key={registration.id} className="border-b hover:bg-muted/50">
+                          <td className="p-3">{registration.name}</td>
                           <td className="p-3">{registration.email}</td>
-                          <td className="p-3 capitalize">{registration.pass_type}</td>
-                          <td className="p-3">${(registration.amount / 100).toFixed(2)}</td>
+                          <td className="p-3">{registration.phone}</td>
+                          <td className="p-3">{registration.attended_2025 ? 'Yes' : 'No'}</td>
+                          <td className="p-3">{registration.agency_state}</td>
                           <td className="p-3">
                             {new Date(registration.created_at).toLocaleDateString()}
-                          </td>
-                          <td className="p-3 font-mono text-sm">
-                            {registration.stripe_session_id.substring(0, 20)}...
                           </td>
                         </tr>
                       ))}

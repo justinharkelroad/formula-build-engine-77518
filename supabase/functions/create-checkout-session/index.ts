@@ -118,7 +118,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         fallback: true, 
-        reason: error.message || "Stripe checkout failed" 
+        reason: error instanceof Error ? error.message : "Stripe checkout failed" 
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
