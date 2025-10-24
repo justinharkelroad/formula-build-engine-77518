@@ -9,20 +9,12 @@ import { Button } from '@/components/ui/button';
 
 const Gallery = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [displayCount, setDisplayCount] = useState(30);
 
-  const categories = ['all', 'venue', 'speakers', 'attendees', 'sessions', 'networking'];
-
-  const filteredImages = useMemo(() => {
-    if (selectedCategory === 'all') return galleryImages;
-    return galleryImages.filter(img => img.category === selectedCategory);
-  }, [selectedCategory]);
-
-  const displayedImages = filteredImages.slice(0, displayCount);
+  const displayedImages = galleryImages.slice(0, displayCount);
 
   const handleLoadMore = () => {
-    setDisplayCount(prev => Math.min(prev + 30, filteredImages.length));
+    setDisplayCount(prev => Math.min(prev + 30, galleryImages.length));
   };
 
   return (
@@ -43,26 +35,9 @@ const Gallery = () => {
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {categories.map(category => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
-              onClick={() => {
-                setSelectedCategory(category);
-                setDisplayCount(30);
-              }}
-              className="capitalize"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-
         {/* Image Count */}
         <p className="text-center text-muted-foreground mb-8">
-          Showing {displayedImages.length} of {filteredImages.length} photos
+          Showing {displayedImages.length} of {galleryImages.length} photos
         </p>
 
         {/* Gallery Grid */}
@@ -72,7 +47,7 @@ const Gallery = () => {
         />
 
         {/* Load More Button */}
-        {displayCount < filteredImages.length && (
+        {displayCount < galleryImages.length && (
           <div className="flex justify-center mt-12">
             <Button
               onClick={handleLoadMore}
