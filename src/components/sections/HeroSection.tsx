@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { WaitlistModal } from '@/components/WaitlistModal';
 
 const HeroSection = () => {
   const [letterIndex, setLetterIndex] = useState(0);
@@ -48,11 +48,11 @@ const HeroSection = () => {
           RETURNS IN FALL OF 2026
         </p>
         
-        <Link to="/register">
+        <WaitlistModal>
           <Button variant="cta" size="xl" className="mt-6 md:mt-8">
             Join Waitlist
           </Button>
-        </Link>
+        </WaitlistModal>
       </div>
 
       {/* Scroll Indicator */}

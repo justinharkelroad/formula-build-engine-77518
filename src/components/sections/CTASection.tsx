@@ -1,4 +1,5 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { WaitlistModal } from '@/components/WaitlistModal';
 
 const CTASection = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -23,9 +24,11 @@ const CTASection = () => {
         </p>
 
         <div className="flex justify-center">
-          <button className="bg-white text-black px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform cursor-hover">
-            Join Waitlist
-          </button>
+          <WaitlistModal>
+            <button className="bg-white text-black px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform cursor-hover">
+              Join Waitlist
+            </button>
+          </WaitlistModal>
         </div>
       </div>
     </section>
