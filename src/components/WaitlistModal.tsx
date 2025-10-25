@@ -115,31 +115,17 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
         },
       });
 
-      // Check response first (handles 409 duplicate case)
-      if (response?.error === 'duplicate') {
-        toast({
-          title: "Already registered!",
-          description: "You're already on the waitlist. We'll be in touch soon!",
-          variant: "default",
-        });
-        form.reset();
-        setOpen(false);
-        return;
+      if (error) {
+        throw error;
       }
 
       if (response?.success) {
         toast({
-          title: "Welcome to the waitlist!",
-          description: "Thanks for joining! We'll be in touch soon.",
+          title: "You're on the waitlist!",
+          description: "Your information has been saved. We'll be in touch soon!",
         });
         form.reset();
         setOpen(false);
-        return;
-      }
-
-      // If we get here and there's an error, throw it
-      if (error) {
-        throw error;
       }
     } catch (error) {
       console.error("Waitlist submission error:", error);

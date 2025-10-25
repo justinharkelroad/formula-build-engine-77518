@@ -49,16 +49,19 @@ serve(async (req) => {
       );
     }
 
-    // Save to database
+    // Save to database (upsert allows updates on duplicate email)
     const { data: dbData, error: dbError } = await supabase
       .from('waitlist')
-      .insert({
+      .upsert({
         first_name: requestData.first_name,
         last_name: requestData.last_name,
         email: requestData.email,
         phone: requestData.phone,
         attended_2025: requestData.attended_2025,
         agency_state: requestData.agency_state,
+      }, {
+        onConflict: 'email',
+        ignoreDuplicates: false
       })
       .select()
       .single();
@@ -66,18 +69,6 @@ serve(async (req) => {
     // Handle database errors
     if (dbError) {
       console.error('Database error:', dbError);
-      
-      // Duplicate email
-      if (dbError.code === '23505') {
-        return new Response(
-          JSON.stringify({ 
-            error: 'duplicate', 
-            message: 'Email already registered' 
-          }),
-          { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-      
       throw dbError;
     }
 
