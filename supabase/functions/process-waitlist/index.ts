@@ -7,7 +7,8 @@ const corsHeaders = {
 };
 
 interface WaitlistData {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
   attended_2025: boolean;
@@ -31,7 +32,7 @@ serve(async (req) => {
     console.log('Processing waitlist submission:', { email: requestData.email });
 
     // Basic validation
-    if (!requestData.name || !requestData.email || !requestData.phone || 
+    if (!requestData.first_name || !requestData.last_name || !requestData.email || !requestData.phone || 
         typeof requestData.attended_2025 !== 'boolean' || !requestData.agency_state) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields' }),
@@ -43,7 +44,8 @@ serve(async (req) => {
     const { data: dbData, error: dbError } = await supabase
       .from('waitlist')
       .insert({
-        name: requestData.name,
+        first_name: requestData.first_name,
+        last_name: requestData.last_name,
         email: requestData.email,
         phone: requestData.phone,
         attended_2025: requestData.attended_2025,
@@ -79,7 +81,8 @@ serve(async (req) => {
       try {
         const webhookPayload = {
           id: dbData.id,
-          name: dbData.name,
+          first_name: dbData.first_name,
+          last_name: dbData.last_name,
           email: dbData.email,
           phone: dbData.phone,
           attended_2025: dbData.attended_2025,

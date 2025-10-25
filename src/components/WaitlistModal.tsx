@@ -40,10 +40,14 @@ const US_STATES = [
 ];
 
 const waitlistSchema = z.object({
-  name: z.string()
+  first_name: z.string()
     .trim()
-    .min(1, "Name is required")
-    .max(100, "Name must be less than 100 characters"),
+    .min(1, "First name is required")
+    .max(50, "First name must be less than 50 characters"),
+  last_name: z.string()
+    .trim()
+    .min(1, "Last name is required")
+    .max(50, "Last name must be less than 50 characters"),
   email: z.string()
     .trim()
     .email("Invalid email address")
@@ -73,7 +77,8 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
   const form = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistSchema),
     defaultValues: {
-      name: "",
+      first_name: "",
+      last_name: "",
       email: "",
       phone: "",
       attended_2025: undefined,
@@ -87,7 +92,8 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
     try {
       const { data: response, error } = await supabase.functions.invoke('process-waitlist', {
         body: {
-          name: data.name,
+          first_name: data.first_name,
+          last_name: data.last_name,
           email: data.email,
           phone: data.phone,
           attended_2025: data.attended_2025 === "true",
@@ -141,19 +147,35 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="first_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="last_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}

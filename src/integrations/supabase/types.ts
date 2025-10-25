@@ -20,8 +20,9 @@ export type Database = {
           attended_2025: boolean
           created_at: string
           email: string
+          first_name: string
           id: string
-          name: string
+          last_name: string
           phone: string
         }
         Insert: {
@@ -29,8 +30,9 @@ export type Database = {
           attended_2025: boolean
           created_at?: string
           email: string
+          first_name: string
           id?: string
-          name: string
+          last_name: string
           phone: string
         }
         Update: {
@@ -38,8 +40,9 @@ export type Database = {
           attended_2025?: boolean
           created_at?: string
           email?: string
+          first_name?: string
           id?: string
-          name?: string
+          last_name?: string
           phone?: string
         }
         Relationships: []

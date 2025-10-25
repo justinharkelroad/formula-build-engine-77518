@@ -11,7 +11,8 @@ import { useAuth } from '@/contexts/AuthContext';
 interface Registration {
   id: string;
   email: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   phone: string;
   attended_2025: boolean;
   agency_state: string;
@@ -51,9 +52,10 @@ const AdminRegistrations = () => {
 
   const exportCSV = () => {
     const csvContent = [
-      ['Name', 'Email', 'Phone', 'Attended 2025', 'Agency State', 'Date'],
+      ['First Name', 'Last Name', 'Email', 'Phone', 'Attended 2025', 'Agency State', 'Date'],
       ...registrations.map(reg => [
-        reg.name,
+        `"${reg.first_name}"`,
+        `"${reg.last_name}"`,
         reg.email,
         reg.phone,
         reg.attended_2025 ? 'Yes' : 'No',
@@ -161,7 +163,8 @@ const AdminRegistrations = () => {
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-3">Name</th>
+                        <th className="text-left p-3">First Name</th>
+                        <th className="text-left p-3">Last Name</th>
                         <th className="text-left p-3">Email</th>
                         <th className="text-left p-3">Phone</th>
                         <th className="text-left p-3">Attended 2025</th>
@@ -172,7 +175,8 @@ const AdminRegistrations = () => {
                     <tbody>
                       {registrations.map((registration) => (
                         <tr key={registration.id} className="border-b hover:bg-muted/50">
-                          <td className="p-3">{registration.name}</td>
+                          <td className="p-3">{registration.first_name}</td>
+                          <td className="p-3">{registration.last_name}</td>
                           <td className="p-3">{registration.email}</td>
                           <td className="p-3">{registration.phone}</td>
                           <td className="p-3">{registration.attended_2025 ? 'Yes' : 'No'}</td>
