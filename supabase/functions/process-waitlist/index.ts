@@ -40,6 +40,15 @@ serve(async (req) => {
       );
     }
 
+    // Validate E.164 phone format
+    const e164Regex = /^\+1\d{10}$/;
+    if (!e164Regex.test(requestData.phone)) {
+      return new Response(
+        JSON.stringify({ error: 'Phone must be in E.164 format (+1XXXXXXXXXX)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Save to database
     const { data: dbData, error: dbError } = await supabase
       .from('waitlist')

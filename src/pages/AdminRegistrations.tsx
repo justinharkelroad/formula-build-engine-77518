@@ -50,6 +50,18 @@ const AdminRegistrations = () => {
     fetchRegistrations();
   }, []);
 
+  const formatPhoneDisplay = (phone: string): string => {
+    // If already in E.164 format, format for display
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length === 11 && digits.startsWith('1')) {
+      const areaCode = digits.slice(1, 4);
+      const prefix = digits.slice(4, 7);
+      const line = digits.slice(7, 11);
+      return `(${areaCode}) ${prefix}-${line}`;
+    }
+    return phone; // Return as-is if not recognized format
+  };
+
   const exportCSV = () => {
     const csvContent = [
       ['First Name', 'Last Name', 'Email', 'Phone', 'Attended 2025', 'Agency State', 'Date'],
@@ -57,7 +69,7 @@ const AdminRegistrations = () => {
         `"${reg.first_name}"`,
         `"${reg.last_name}"`,
         reg.email,
-        reg.phone,
+        reg.phone, // Export in E.164 format
         reg.attended_2025 ? 'Yes' : 'No',
         reg.agency_state,
         new Date(reg.created_at).toLocaleDateString()
@@ -178,7 +190,7 @@ const AdminRegistrations = () => {
                           <td className="p-3">{registration.first_name}</td>
                           <td className="p-3">{registration.last_name}</td>
                           <td className="p-3">{registration.email}</td>
-                          <td className="p-3">{registration.phone}</td>
+                          <td className="p-3">{formatPhoneDisplay(registration.phone)}</td>
                           <td className="p-3">{registration.attended_2025 ? 'Yes' : 'No'}</td>
                           <td className="p-3">{registration.agency_state}</td>
                           <td className="p-3">

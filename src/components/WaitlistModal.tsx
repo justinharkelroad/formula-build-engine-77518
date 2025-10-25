@@ -39,6 +39,19 @@ const US_STATES = [
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
 ];
 
+// Phone formatting utilities
+const formatPhoneNumber = (value: string): string => {
+  const numbers = value.replace(/\D/g, '');
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 6) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+};
+
+const toE164 = (phone: string): string => {
+  const digits = phone.replace(/\D/g, '');
+  return `+1${digits}`;
+};
+
 const waitlistSchema = z.object({
   first_name: z.string()
     .trim()
@@ -54,8 +67,9 @@ const waitlistSchema = z.object({
     .toLowerCase(),
   phone: z.string()
     .trim()
-    .min(10, "Phone number is required")
-    .regex(/^[\d\s\-\(\)]+$/, "Invalid phone number format"),
+    .transform(val => val.replace(/\D/g, ''))
+    .refine(val => val.length === 10, "Phone must be 10 digits")
+    .transform(val => `+1${val}`),
   attended_2025: z.enum(["true", "false"], {
     required_error: "Please select an option",
   }),
@@ -198,7 +212,15 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="(555) 123-4567" {...field} />
+                    <Input 
+                      type="tel" 
+                      placeholder="555-123-4567" 
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value);
+                        field.onChange(formatted);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
