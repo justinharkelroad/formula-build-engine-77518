@@ -34,10 +34,10 @@ const ContactInfo = () => {
               <Phone className="text-primary mx-auto mb-4" size={48} />
               <h3 className="text-xl font-semibold mb-2 text-foreground">Phone</h3>
               <a 
-                href="tel:+15619062000" 
+                href="tel:+12605151349" 
                 className="text-primary hover:underline"
               >
-                (561) 906-2000
+                (260) 515-1349
               </a>
             </div>
           </div>

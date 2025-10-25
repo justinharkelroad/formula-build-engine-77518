@@ -57,7 +57,7 @@ const UndefinedNavigation = () => {
         {/* CTA Buttons */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={() => navigate('/contact')}
             className="bg-[#FF8C42] hover:bg-[#FF7A2E] text-white px-6 py-2 rounded-full text-sm font-semibold transition cursor-hover"
           >
             contact us
