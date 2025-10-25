@@ -89,8 +89,8 @@ export const CONFIG = {
   BASE_TICKET_PRICE: "1499",
   SEAT_CAP: 250,
   EARLY_BIRD_END_ISO: "2025-09-15T23:59:00-04:00",
-  OG_IMAGE_1200x630: "/lovable-uploads/fbdeac05-bb42-487e-8a74-42c0558bf8ce.png",
-  TW_IMAGE_1200x600: "/lovable-uploads/fbdeac05-bb42-487e-8a74-42c0558bf8ce.png",
+  OG_IMAGE_1200x630: "/assets/hero-1200x630.jpg",
+  TW_IMAGE_1200x600: "/assets/hero-1200x630.jpg",
   HOTEL_BOOK_URL: "https://hotel-booking-link.example",
   LOGO_PARTNERS: [
     { name: "Ricochet360", tier: "Platinum", logoUrl: "/lovable-uploads/29100412-4e6c-4333-b865-192e0fca781e.png", linkUrl: "https://ricochet360.com" },

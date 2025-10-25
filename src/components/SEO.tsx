@@ -25,7 +25,11 @@ const SEO = ({ title, description, path = "/" }: SEOProps) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={`${CONFIG.EVENT_NAME} - ${CONFIG.TAGLINE}`} />
       <meta property="og:url" content={canonical} />
+      <meta property="og:site_name" content={CONFIG.EVENT_NAME} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
