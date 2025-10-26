@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Download, Plus, Check } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Plus, Check } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface GalleryLightboxProps {
@@ -38,7 +38,7 @@ const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate, on
               e.stopPropagation();
               onToggleSelect(images[currentIndex]);
             }}
-            className={`absolute top-4 right-28 z-50 p-2 rounded-full transition-colors ${
+            className={`absolute top-4 right-16 z-50 p-2 rounded-full transition-colors ${
               isSelected(images[currentIndex])
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-white/10 hover:bg-white/20'
@@ -51,16 +51,6 @@ const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate, on
               <Plus className="w-6 h-6 text-white" />
             )}
           </button>
-
-          {/* Download Button */}
-          <a
-            href={images[currentIndex].src}
-            download={`formula-forum-${currentIndex + 1}.jpg`}
-            className="absolute top-4 right-16 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-            aria-label="Download image"
-          >
-            <Download className="w-6 h-6 text-white" />
-          </a>
 
           {/* Close Button */}
           <button
