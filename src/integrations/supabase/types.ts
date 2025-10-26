@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      gallery_downloads: {
+        Row: {
+          created_at: string | null
+          download_type: string
+          email: string
+          id: string
+          name: string
+          phone: string
+          photo_count: number
+          selected_photos: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          download_type: string
+          email: string
+          id?: string
+          name: string
+          phone: string
+          photo_count: number
+          selected_photos?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          download_type?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string
+          photo_count?: number
+          selected_photos?: Json | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null

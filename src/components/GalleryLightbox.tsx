@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Download, Plus, Check } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface GalleryLightboxProps {
@@ -8,9 +8,11 @@ interface GalleryLightboxProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigate: (index: number) => void;
+  onToggleSelect: (image: { src: string; alt: string }) => void;
+  isSelected: (image: { src: string; alt: string }) => boolean;
 }
 
-const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate }: GalleryLightboxProps) => {
+const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate, onToggleSelect, isSelected }: GalleryLightboxProps) => {
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -30,6 +32,26 @@ const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate }: 
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-screen-xl w-full h-[90vh] p-0 bg-black/95 border-0">
         <div className="relative w-full h-full flex items-center justify-center">
+          {/* Add to Bucket Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSelect(images[currentIndex]);
+            }}
+            className={`absolute top-4 right-28 z-50 p-2 rounded-full transition-colors ${
+              isSelected(images[currentIndex])
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-white/10 hover:bg-white/20'
+            }`}
+            aria-label={isSelected(images[currentIndex]) ? "Remove from bucket" : "Add to bucket"}
+          >
+            {isSelected(images[currentIndex]) ? (
+              <Check className="w-6 h-6 text-white" />
+            ) : (
+              <Plus className="w-6 h-6 text-white" />
+            )}
+          </button>
+
           {/* Download Button */}
           <a
             href={images[currentIndex].src}
