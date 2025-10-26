@@ -60,7 +60,7 @@ const Index = () => {
                 See All The Photos From The 2025 Formula Experience!
               </h2>
               <p className="text-xl text-white/70 leading-relaxed mb-8">
-                Explore & Relive the 2025 Formula Forum!
+                Click below to gain access to all the photos from this years event. Add the photos you want to download to your bucket, and immediately get them saved to your device!
               </p>
               <a href="/gallery">
                 <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">

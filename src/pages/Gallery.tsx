@@ -74,7 +74,7 @@ const Gallery = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Photo Gallery</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-            Explore moments from Formula Forum conferences
+            Explore & Relive the 2025 Formula Forum!
           </p>
         </div>
 
