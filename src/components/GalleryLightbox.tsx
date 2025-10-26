@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface GalleryLightboxProps {
@@ -30,6 +30,16 @@ const GalleryLightbox = ({ images, currentIndex, isOpen, onClose, onNavigate }: 
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-screen-xl w-full h-[90vh] p-0 bg-black/95 border-0">
         <div className="relative w-full h-full flex items-center justify-center">
+          {/* Download Button */}
+          <a
+            href={images[currentIndex].src}
+            download={`formula-forum-${currentIndex + 1}.jpg`}
+            className="absolute top-4 right-16 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            aria-label="Download image"
+          >
+            <Download className="w-6 h-6 text-white" />
+          </a>
+
           {/* Close Button */}
           <button
             onClick={onClose}

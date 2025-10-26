@@ -6,6 +6,7 @@ import SEO from '@/components/SEO';
 import UndefinedNavigation from '@/components/UndefinedNavigation';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
 
 const Gallery = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
@@ -30,9 +31,15 @@ const Gallery = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Photo Gallery</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             Explore moments from Formula Forum conferences
           </p>
+          <Button asChild size="lg" className="gap-2">
+            <a href="/downloads/formula-forum-2025-photos.zip" download="formula-forum-2025-all-photos.zip">
+              <Download className="w-5 h-5" />
+              Download All Photos (117MB)
+            </a>
+          </Button>
         </div>
 
         {/* Image Count */}
