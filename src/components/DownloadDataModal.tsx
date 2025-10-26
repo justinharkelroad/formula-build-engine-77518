@@ -10,6 +10,19 @@ import { useToast } from '@/hooks/use-toast';
 import { GalleryImage } from '@/config/galleryImages';
 import { Loader2 } from 'lucide-react';
 
+// Phone formatting utilities
+const formatPhoneNumber = (value: string): string => {
+  const numbers = value.replace(/\D/g, '');
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 6) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+};
+
+const toE164 = (phone: string): string => {
+  const digits = phone.replace(/\D/g, '');
+  return `+1${digits}`;
+};
+
 const downloadSchema = z.object({
   name: z.string()
     .trim()
@@ -21,9 +34,9 @@ const downloadSchema = z.object({
     .max(255, "Email must be less than 255 characters"),
   phone: z.string()
     .trim()
-    .min(10, "Phone number must be at least 10 digits")
-    .max(20, "Phone number is too long")
-    .regex(/^[\d\s\-\(\)\+]+$/, "Please enter a valid phone number")
+    .min(12, "Phone number must be 10 digits")
+    .max(12, "Phone number must be 10 digits")
+    .regex(/^\d{3}-\d{3}-\d{4}$/, "Phone format must be XXX-XXX-XXXX")
 });
 
 type DownloadFormData = z.infer<typeof downloadSchema>;
@@ -57,13 +70,16 @@ const DownloadDataModal = ({
 
   const handleSubmit = async (data: DownloadFormData) => {
     try {
+      // Convert phone to E.164 format (+1XXXXXXXXXX)
+      const phoneE164 = toE164(data.phone);
+
       // Insert download record into database
       const { error: insertError } = await supabase
         .from('gallery_downloads')
         .insert({
           name: data.name,
           email: data.email,
-          phone: data.phone,
+          phone: phoneE164,
           download_type: downloadType,
           photo_count: photoCount,
           selected_photos: downloadType === 'selected' 
@@ -142,7 +158,15 @@ const DownloadDataModal = ({
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" placeholder="XXX-XXX-XXXX" {...field} />
+                    <Input 
+                      type="tel" 
+                      placeholder="555-123-4567"
+                      value={field.value}
+                      onChange={(e) => {
+                        const formatted = formatPhoneNumber(e.target.value);
+                        field.onChange(formatted);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
