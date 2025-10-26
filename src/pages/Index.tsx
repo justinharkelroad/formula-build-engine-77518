@@ -37,6 +37,41 @@ const Index = () => {
       
       <HeroSection />
       <VideoTestimonialsGrid />
+      
+      {/* Photos Section */}
+      <section className="min-h-screen bg-black text-white py-32 px-8">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-xs text-white/50 mb-12 tracking-widest uppercase">[ photos ]</div>
+          
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            {/* Image Column - Left */}
+            <div className="relative overflow-hidden rounded-2xl group">
+              <img
+                src="/lovable-uploads/photos-section.jpg"
+                alt="Formula Forum 2025 attendees"
+                className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+            </div>
+
+            {/* Text Column - Right */}
+            <div>
+              <h2 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
+                See All The Photos From The 2025 Formula Experience!
+              </h2>
+              <p className="text-xl text-white/70 leading-relaxed mb-8">
+                Click below to gain access to all the photos from this years event. Add the photos you want to download to your bucket, and immediately get them saved to your device!
+              </p>
+              <a href="/gallery">
+                <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
+                  View Gallery
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <UndefinedAbout />
       <ServicesGrid />
       
