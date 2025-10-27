@@ -104,15 +104,6 @@ const UndefinedNavigation = () => {
                   {item.label}
                 </button>
               ))}
-              <button
-                onClick={() => {
-                  navigate('/register');
-                  setIsMenuOpen(false);
-                }}
-                className="bg-[#FF8C42] hover:bg-[#FF7A2E] text-white py-3 px-4 rounded-xl font-semibold transition cursor-hover mt-2"
-              >
-                register now
-              </button>
             </div>
           </div>
         </div>
