@@ -28,15 +28,11 @@ const UndefinedNavigation = () => {
     navigate('/', { state: { scrollTo: sectionId } });
   };
 
-  const navItems = [
-    { label: 'agenda', path: '/agenda' },
-    { label: 'pricing', path: '/pricing' },
-    { label: 'speakers', path: '/speakers' },
-    { label: 'venue', path: '/venue' },
-    { label: 'partners', path: '/partners' },
-    { label: 'photos', path: '/gallery' },
-    { label: 'faq', path: '/faq' },
-    { label: 'contact', path: '/contact' },
+  const sectionLinks = [
+    { label: 'about', sectionId: 'about' },
+    { label: 'event', sectionId: 'event' },
+    { label: 'location', sectionId: 'location' },
+    { label: 'photos', sectionId: 'photos' },
   ];
 
   return (
@@ -65,6 +61,10 @@ const UndefinedNavigation = () => {
             <button onClick={() => scrollToSection('location')} className="hover:text-white transition cursor-hover">
               location
             </button>
+            <span className="text-white/30">|</span>
+            <button onClick={() => scrollToSection('photos')} className="hover:text-white transition cursor-hover">
+              photos
+            </button>
           </div>
 
           {/* CTA Buttons */}
@@ -77,33 +77,26 @@ const UndefinedNavigation = () => {
             </button>
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition cursor-hover md:hidden"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition cursor-hover"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
-            </button>
-            <button 
-              onClick={() => navigate('/register')}
-              className="hidden md:flex w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition cursor-hover"
-              aria-label="Register"
-            >
-              <Menu className="w-5 h-5 text-white" />
             </button>
           </div>
         </nav>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Menu Dropdown */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
+        <div className="fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
           <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-6">
             <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
+              {sectionLinks.map((item) => (
                 <button
-                  key={item.path}
+                  key={item.sectionId}
                   onClick={() => {
-                    navigate(item.path);
+                    scrollToSection(item.sectionId);
                     setIsMenuOpen(false);
                   }}
                   className="text-white/90 hover:text-white text-left py-3 px-4 rounded-xl hover:bg-white/10 transition cursor-hover"
