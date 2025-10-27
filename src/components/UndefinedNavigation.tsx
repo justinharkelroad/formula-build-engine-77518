@@ -32,7 +32,6 @@ const UndefinedNavigation = () => {
     { label: 'about', sectionId: 'about' },
     { label: 'event', sectionId: 'event' },
     { label: 'location', sectionId: 'location' },
-    { label: 'photos', sectionId: 'photos' },
   ];
 
   return (
@@ -62,7 +61,7 @@ const UndefinedNavigation = () => {
               location
             </button>
             <span className="text-white/30">|</span>
-            <button onClick={() => scrollToSection('photos')} className="hover:text-white transition cursor-hover">
+            <button onClick={() => navigate('/gallery')} className="hover:text-white transition cursor-hover">
               photos
             </button>
           </div>
@@ -104,6 +103,15 @@ const UndefinedNavigation = () => {
                   {item.label}
                 </button>
               ))}
+              <button
+                onClick={() => {
+                  navigate('/gallery');
+                  setIsMenuOpen(false);
+                }}
+                className="text-white/90 hover:text-white text-left py-3 px-4 rounded-xl hover:bg-white/10 transition cursor-hover"
+              >
+                photos
+              </button>
             </div>
           </div>
         </div>
