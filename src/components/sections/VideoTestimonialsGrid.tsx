@@ -83,6 +83,18 @@ const VideoTestimonialsGrid = () => {
       posterSrc: 'https://img.youtube.com/vi/5Em3NPtlTUs/hqdefault.jpg',
       name: 'Sean',
       title: 'Florida'
+    },
+    {
+      videoSrc: 'https://www.youtube.com/embed/NOLMVH50QYM',
+      posterSrc: 'https://img.youtube.com/vi/NOLMVH50QYM/hqdefault.jpg',
+      name: 'Jeff',
+      title: 'Florida'
+    },
+    {
+      videoSrc: 'https://www.youtube.com/embed/jazyZ8OoX8w',
+      posterSrc: 'https://img.youtube.com/vi/jazyZ8OoX8w/hqdefault.jpg',
+      name: 'Craig',
+      title: 'Florida'
     }
   ];
 
