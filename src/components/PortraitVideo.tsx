@@ -44,7 +44,7 @@ const PortraitVideo = ({ mediaId }: PortraitVideoProps) => {
   }, [mediaId]);
 
   return (
-    <div className="relative w-full max-w-md mx-auto lg:mx-0 h-full flex items-center">
+    <div className="relative w-full max-w-md mx-auto lg:mx-0 h-full flex items-center z-20">
       <style>{`
         wistia-player[media-id='${mediaId}']:not(:defined) { 
           background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch'); 
@@ -52,8 +52,12 @@ const PortraitVideo = ({ mediaId }: PortraitVideoProps) => {
           filter: blur(5px); 
           padding-top: 177.78%; 
         }
+        wistia-player[media-id='${mediaId}'] {
+          position: relative;
+          z-index: 20;
+        }
       `}</style>
-      <div ref={containerRef} className="w-full" />
+      <div ref={containerRef} className="w-full relative z-20" />
     </div>
   );
 };
