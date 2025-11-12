@@ -31,39 +31,39 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 h-full container mx-auto px-4 md:px-8">
-        <div className="h-full grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-center">
-          {/* Left Column - Text Content */}
-          <div className="flex flex-col items-start justify-center">
-            <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
-              {text.split('').map((letter, index) => (
-                <span
-                  key={index}
-                  className={`letter-animate ${index < letterIndex ? 'opacity-100' : 'opacity-0'}`}
-                  style={{
-                    animationDelay: `${index * 0.1}s`,
-                  }}
-                >
-                  {letter}
-                </span>
-              ))}
-            </h1>
-            
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
-              RETURNS IN FALL OF 2026
-            </p>
-            
-            <WaitlistModal>
-              <Button variant="cta" size="xl" className="mt-6 md:mt-8">
-                Join Waitlist
-              </Button>
-            </WaitlistModal>
-          </div>
-
-          {/* Right Column - Portrait Video */}
-          <div className="hidden lg:flex items-center justify-center h-[80vh] max-h-[800px] relative lg:w-[420px] xl:w-[480px] shrink-0 z-10">
-            <PortraitVideo mediaId="5emnt0yofp" />
-          </div>
+      <div className="h-full grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-center">
+        {/* Portrait Video - Shows on mobile above text, right column on desktop */}
+        <div className="flex items-center justify-center relative z-10 w-full max-w-[280px] mx-auto mb-8 lg:mb-0 lg:w-[420px] xl:w-[480px] lg:max-w-none shrink-0 h-auto lg:h-[80vh] lg:max-h-[800px]">
+          <PortraitVideo mediaId="5emnt0yofp" />
         </div>
+
+        {/* Text Content */}
+        <div className="flex flex-col items-start justify-center">
+          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
+            {text.split('').map((letter, index) => (
+              <span
+                key={index}
+                className={`letter-animate ${index < letterIndex ? 'opacity-100' : 'opacity-0'}`}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </h1>
+          
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
+            RETURNS IN FALL OF 2026
+          </p>
+          
+          <WaitlistModal>
+            <Button variant="cta" size="xl" className="mt-6 md:mt-8">
+              Join Waitlist
+            </Button>
+          </WaitlistModal>
+        </div>
+      </div>
       </div>
 
       {/* Scroll Indicator */}
