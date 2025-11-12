@@ -38,7 +38,7 @@ const HeroSection = () => {
         </div>
 
         {/* Text Content */}
-        <div className="flex flex-col items-start justify-center">
+        <div className="flex flex-col items-center justify-center">
           <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
             {text.split('').map((letter, index) => (
               <span
