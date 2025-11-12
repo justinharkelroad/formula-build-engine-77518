@@ -9,7 +9,7 @@ const PortraitVideo = ({ mediaId }: PortraitVideoProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative w-full max-w-md mx-auto lg:mx-0">
+    <div className="relative w-full mx-auto lg:mx-0">
       {/* 9:16 aspect ratio wrapper */}
       <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
         {/* Poster thumbnail - shows instantly */}

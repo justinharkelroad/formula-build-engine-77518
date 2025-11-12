@@ -60,7 +60,7 @@ const HeroSection = () => {
           </div>
 
           {/* Right Column - Portrait Video */}
-          <div className="hidden lg:flex items-center justify-center h-[80vh] max-h-[800px] relative z-20">
+          <div className="hidden lg:flex items-center justify-center h-[80vh] max-h-[800px] relative lg:w-[420px] xl:w-[480px] shrink-0 z-10">
             <PortraitVideo mediaId="5emnt0yofp" />
           </div>
         </div>
