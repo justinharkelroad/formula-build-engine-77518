@@ -18,7 +18,7 @@ const HeroSection = () => {
   }, [letterIndex, text.length]);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative min-h-screen lg:h-screen overflow-visible lg:overflow-hidden">
       {/* Parallax Background */}
       <div
         className="absolute inset-0 parallax bg-[#1a1a1a]"
@@ -30,8 +30,8 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full container mx-auto px-4 md:px-8">
-      <div className="h-full grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 container mx-auto px-4 md:px-8 py-10 sm:py-12 lg:py-0">
+      <div className="grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-center">
         {/* Portrait Video - Shows on mobile above text, right column on desktop */}
         <div className="flex items-center justify-center relative z-10 w-full max-w-[280px] mx-auto mb-8 lg:mb-0 lg:w-[420px] xl:w-[480px] lg:max-w-none shrink-0 h-auto lg:h-[80vh] lg:max-h-[800px]">
           <PortraitVideo mediaId="5emnt0yofp" />
