@@ -15,7 +15,7 @@ const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = fals
     <section
       ref={ref}
       id={id}
-      className={`min-h-screen bg-black text-white py-32 px-8 transition-all duration-1000 ${
+      className={`min-h-screen bg-black text-white py-32 px-4 sm:px-8 transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}
     >
@@ -23,7 +23,7 @@ const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = fals
         <div className={`grid md:grid-cols-2 gap-16 items-center ${reverse ? 'md:grid-flow-dense' : ''}`}>
           {/* Text Column */}
           <div className={reverse ? 'md:col-start-2' : ''}>
-            <h2 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-8 leading-tight">
               {title}
             </h2>
             <p className="text-xl text-white/70 leading-relaxed">
