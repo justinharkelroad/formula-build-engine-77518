@@ -26,7 +26,7 @@ const CTASection = () => {
         <div className="flex justify-center">
           <WaitlistModal>
             <button className="bg-white text-black px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform cursor-hover">
-              Join Waitlist
+              Get Access to All of It
             </button>
           </WaitlistModal>
         </div>
