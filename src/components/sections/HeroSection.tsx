@@ -59,7 +59,7 @@ const HeroSection = () => {
           
           <WaitlistModal>
             <Button variant="cta" size="xl" className="mt-6 md:mt-8">
-              Join Waitlist
+              Get Access to All of It
             </Button>
           </WaitlistModal>
         </div>
