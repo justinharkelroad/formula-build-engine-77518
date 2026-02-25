@@ -52,6 +52,9 @@ const HeroSection = () => {
               </span>
             ))}
           </h1>
+          <span className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] xl:text-[9rem] font-bold leading-none tracking-tighter text-white select-none">
+            is back!
+          </span>
           
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
             OCTOBER 14–16, 2026
