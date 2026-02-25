@@ -15,7 +15,7 @@ const CTASection = () => {
       <div className="container mx-auto max-w-5xl text-center">
         <div className="text-xs text-white/70 mb-8 tracking-widest uppercase">[ save the date ]</div>
         
-        <h2 className="text-7xl md:text-9xl font-bold mb-12 leading-none">
+        <h2 className="text-5xl sm:text-7xl md:text-9xl font-bold mb-12 leading-none">
           Oct 14–16th, 2026
         </h2>
         
