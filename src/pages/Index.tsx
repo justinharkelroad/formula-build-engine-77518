@@ -76,8 +76,8 @@ const Index = () => {
       <ServicesGrid />
       
       <FeatureSection
-        title="2026 Location Coming Soon!"
-        description="The JW Marriott Bonnet Creek was exquisite for our event. It is not out of the running for 2026 but we will make that decision and announcement soon for what city and hotel will house FORMULA in 2026!"
+        title="JW Marriott Bonnet Creek"
+        description="We are excited to announce that we are going back home to our official first location and making this an amazing tradition and bringing you all back down to experience this beautiful space."
         imageSrc="/lovable-uploads/venue-pool-2026.jpg"
         imageAlt="Luxury resort pool at sunset"
         reverse={false}
