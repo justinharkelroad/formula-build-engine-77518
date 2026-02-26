@@ -1,3 +1,27 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /ga-setup
+Disallow: /payment-success
+Disallow: /thank-you
+
+# AI Crawlers — welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
 Sitemap: https://f3florida.com/sitemap.xml

@@ -88,8 +88,9 @@ const AdminRegistrations = () => {
   return (
     <>
       <SEO 
-        title="Admin - Registrations | F³ Formula Forum 2025"
+        title="Admin - Registrations | F³ Formula Forum 2026"
         description="View and manage event registrations"
+        noindex={true}
       />
       <Navigation />
       

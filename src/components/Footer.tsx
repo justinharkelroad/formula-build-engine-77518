@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -7,27 +9,27 @@ const Footer = () => {
             Formula Forum is an insurance agency event. Not affiliated with any Florida policy forum.
           </p>
           <div className="flex flex-wrap gap-4 text-sm justify-center md:justify-end">
-            <a href="/agenda" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            <Link to="/agenda" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Agenda
-            </a>
-            <a href="/speakers" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/speakers" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Speakers
-            </a>
-            <a href="/pricing" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/pricing" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Pricing
-            </a>
-            <a href="/venue" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/venue" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Venue
-            </a>
-            <a href="/partners" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/partners" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Partners
-            </a>
-            <a href="/faq" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/faq" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               FAQ
-            </a>
-            <a href="/contact" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
+            </Link>
+            <Link to="/contact" className="text-muted-foreground hover:text-foreground underline underline-offset-4">
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       </div>

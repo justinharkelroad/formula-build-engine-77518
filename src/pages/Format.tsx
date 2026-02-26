@@ -1,11 +1,13 @@
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
 import { Clock, Users, PenTool, Target } from "lucide-react";
 
 const Format = () => {
-  const title = "Format — F³ Formula Forum 2025";
+  const title = "Format — F³ Formula Forum 2026";
   const description = "Workshops, breakouts, and real operator playbooks at the Formula Forum insurance agency growth event.";
 
   const exampleFlow = [
@@ -38,6 +40,7 @@ const Format = () => {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <SEO title={title} description={description} path="/format" />
+      <StructuredData page="format" />
       
       {/* Hero Background */}
       <div className="absolute inset-0 hero-bg" aria-hidden="true">
@@ -59,6 +62,11 @@ const Format = () => {
           </h2>
           <p className="text-lg text-muted-foreground">Full Agenda Coming Soon</p>
         </header>
+
+        {/* Speakable Format description */}
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-center mb-12" data-speakable="true">
+          Formula Forum uses a proprietary four-step Format Framework for every session: a 15–20 minute focused speaker training, a 2–3 minute personal takeaway capture, a 10-minute small-group breakout for peer sharing, and a 3-minute speaker close. This cycle ensures attendees leave with written, actionable plans rather than passive notes.
+        </p>
 
         <section className="max-w-4xl mx-auto space-y-12">
           {/* Example Flow Section */}
@@ -97,7 +105,7 @@ const Format = () => {
               </p>
             </div>
             <Button asChild variant="cta" size="lg" className="text-xl px-8 py-6">
-              <a href="/pricing">Get Tickets</a>
+              <Link to="/pricing">Get Tickets</Link>
             </Button>
           </div>
         </section>

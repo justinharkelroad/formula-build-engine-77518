@@ -5,6 +5,7 @@ import PartnerMarquee from "@/components/sections/PartnerMarquee";
 import PartnerVideos from "@/components/sections/PartnerVideos";
 import PartnerCTA from "@/components/sections/PartnerCTA";
 import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
 import { CONFIG } from "@/config/event";
 
 const Partners = () => {
@@ -13,6 +14,7 @@ const Partners = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO title={title} description={description} path="/partners" />
+      <StructuredData page="general" />
       <Navigation />
       <PartnerHero />
       <PartnerLevels />

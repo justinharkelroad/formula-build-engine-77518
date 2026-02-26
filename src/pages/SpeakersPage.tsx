@@ -1,11 +1,12 @@
 import Navigation from "@/components/Navigation";
 import Speakers from "@/components/sections/Speakers";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 
 const SpeakersPage = () => {
-  const title = "Speakers — F³ Formula Forum 2025";
+  const title = "Speakers — F³ Formula Forum 2026";
   const description = "Meet operators and experts speaking at Formula Forum, the insurance agency growth event in Orlando.";
 
   return (
@@ -21,7 +22,7 @@ const SpeakersPage = () => {
         <Speakers />
         <div className="text-center mt-8">
           <Button asChild size="lg">
-            <a href="/pricing">View Pricing</a>
+            <Link to="/pricing">View Pricing</Link>
           </Button>
         </div>
       </main>

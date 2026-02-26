@@ -66,11 +66,11 @@ export const getCountdownDeadline = (): { deadline: string; resetCount: number; 
 };
 
 export const CONFIG = {
-  EVENT_NAME: "Formula Forum 2025",
+  EVENT_NAME: "Formula Forum 2026",
   BRAND_SHORT: "F³",
   TAGLINE: "National Insurance Agency Growth Conference",
-  START_DATETIME_ISO: "2025-10-15T09:00:00-04:00",
-  END_DATETIME_ISO: "2025-10-17T17:00:00-04:00",
+  START_DATETIME_ISO: "2026-10-14T09:00:00-04:00",
+  END_DATETIME_ISO: "2026-10-16T17:00:00-04:00",
   CITY: "Orlando",
   STATE: "FL",
   VENUE_NAME: "JW Marriott Orlando Bonnet Creek",
@@ -88,10 +88,10 @@ export const CONFIG = {
   CURRENCY: "USD",
   BASE_TICKET_PRICE: "1499",
   SEAT_CAP: 250,
-  EARLY_BIRD_END_ISO: "2025-09-15T23:59:00-04:00",
+  EARLY_BIRD_END_ISO: "2026-09-15T23:59:00-04:00",
   OG_IMAGE_1200x630: "/assets/hero-1200x630.jpg",
   TW_IMAGE_1200x600: "/assets/hero-1200x630.jpg",
-  HOTEL_BOOK_URL: "https://hotel-booking-link.example",
+  HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
     { name: "Ricochet360", tier: "Platinum", logoUrl: "/lovable-uploads/29100412-4e6c-4333-b865-192e0fca781e.png", linkUrl: "https://ricochet360.com" },
     { name: "The Standard", tier: "Platinum", logoUrl: "/lovable-uploads/c24dc654-fa2e-440d-adc8-9c19054f856c.png", linkUrl: "https://standardplaybook.com" },

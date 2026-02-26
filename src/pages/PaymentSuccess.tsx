@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Calendar, MapPin, Mail, Phone } from "lucide-react";
 import Navigation from "@/components/Navigation";
@@ -35,8 +35,9 @@ const PaymentSuccess = () => {
   return (
     <>
       <SEO 
-        title="Payment Successful - F³ Formula Forum 2025"
-        description="Thank you for registering for F³ Formula Forum 2025. Your payment has been processed successfully."
+        title="Payment Successful - F³ Formula Forum 2026"
+        description="Thank you for registering for F³ Formula Forum 2026. Your payment has been processed successfully."
+        noindex={true}
       />
       <Navigation />
       
@@ -50,7 +51,7 @@ const PaymentSuccess = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground mb-8">
-              Congratulations! You've successfully registered for the F³ Formula Forum 2025.
+              Congratulations! You've successfully registered for the F³ Formula Forum 2026.
             </p>
 
             {sessionId && (
@@ -109,9 +110,9 @@ const PaymentSuccess = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild variant="default" size="lg">
-                <a href="/" className="w-full sm:w-auto">
+                <Link to="/" className="w-full sm:w-auto">
                   Return to Home
-                </a>
+                </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <a 

@@ -29,6 +29,9 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
+      {/* Crawlable H1 for SEO */}
+      <h1 className="sr-only">Formula Forum 2026 — Insurance Agency Growth Conference in Orlando</h1>
+
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 md:px-8 py-10 sm:py-12 lg:py-16 lg:min-h-screen lg:flex lg:items-center">
       <div className="grid lg:grid-cols-[1fr,auto] gap-8 lg:gap-12 items-center">
@@ -39,7 +42,7 @@ const HeroSection = () => {
 
         {/* Text Content */}
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none">
+          <span aria-hidden="true" className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[12rem] font-bold leading-none tracking-tighter text-white overflow-hidden select-none block">
             {text.split('').map((letter, index) => (
               <span
                 key={index}
@@ -51,7 +54,7 @@ const HeroSection = () => {
                 {letter}
               </span>
             ))}
-          </h1>
+          </span>
           <span className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] xl:text-[9rem] font-bold leading-none tracking-tighter text-white select-none">
             is back!
           </span>

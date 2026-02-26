@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -52,8 +52,9 @@ const ThankYouEnhanced = () => {
   return (
     <>
       <SEO 
-        title="Registration Confirmed | F³ Formula Forum 2025"
-        description="Your registration is confirmed for the F³ Formula Forum 2025"
+        title="Registration Confirmed | F³ Formula Forum 2026"
+        description="Your registration is confirmed for the F³ Formula Forum 2026"
+        noindex={true}
       />
       <Navigation />
       
@@ -67,7 +68,7 @@ const ThankYouEnhanced = () => {
                 You're In! 🎉
               </h1>
               <p className="text-xl text-muted-foreground">
-                Welcome to the F³ Formula Forum 2025 - The Most Anticipated Agency Growth Event of the Year
+                Welcome to the F³ Formula Forum 2026 - The Most Anticipated Agency Growth Event of the Year
               </p>
             </div>
 
@@ -160,10 +161,10 @@ const ThankYouEnhanced = () => {
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild variant="outline">
-                <a href="/">
+                <Link to="/">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Return to Home
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

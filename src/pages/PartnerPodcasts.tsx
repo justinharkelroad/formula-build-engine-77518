@@ -1,5 +1,6 @@
 import UndefinedNavigation from "@/components/UndefinedNavigation";
 import SEO from "@/components/SEO";
+import { Helmet } from "react-helmet-async";
 import { CONFIG } from "@/config/event";
 
 const PartnerPodcasts = () => {
@@ -29,9 +30,38 @@ const PartnerPodcasts = () => {
     { name: "COVER DESK", embedId: "KIsbPgEOeEc" },
   ];
 
+  const videoObjectSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "2025 Formula Forum Partner Podcast Episodes",
+    "numberOfItems": podcasts.length,
+    "itemListElement": podcasts.map((podcast, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "VideoObject",
+        "name": `${podcast.name} — Formula Forum 2025 Partner Podcast`,
+        "description": `Podcast episode featuring ${podcast.name}, a Formula Forum 2025 partner.`,
+        "thumbnailUrl": `https://img.youtube.com/vi/${podcast.embedId}/hqdefault.jpg`,
+        "embedUrl": `https://www.youtube.com/embed/${podcast.embedId}`,
+        "uploadDate": "2025-10-01",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Formula Forum",
+          "url": "https://f3florida.com"
+        }
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-black">
       <SEO title={title} description={description} path="/2025partners" />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(videoObjectSchema)}
+        </script>
+      </Helmet>
       <UndefinedNavigation />
       
       <section className="pt-28 pb-16 px-4">
@@ -39,9 +69,9 @@ const PartnerPodcasts = () => {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white text-center mb-16">HEAR FROM OUR 2025 FORMULA PARTNERS</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {podcasts.map((podcast) => (
+            {podcasts.map((podcast, index) => (
               <div
-                key={podcast.embedId}
+                key={`${podcast.embedId}-${index}`}
                 className="group relative bg-white/5 rounded-lg overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300"
               >
                 <div className="aspect-video w-full relative overflow-hidden bg-black">

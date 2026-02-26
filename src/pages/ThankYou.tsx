@@ -28,8 +28,8 @@ const ThankYou = () => {
     return () => clearTimeout(timer);
   }, [sessionId]);
 
-  const title = "Thank You | Registration Confirmed | Formula Forum 2025";
-  const description = "Your registration for Formula Forum 2025 has been confirmed. Thank you for joining us in Orlando.";
+  const title = "Thank You | Registration Confirmed | Formula Forum 2026";
+  const description = "Your registration for Formula Forum 2026 has been confirmed. Thank you for joining us in Orlando.";
 
   if (isLoading) {
     return (
@@ -57,7 +57,7 @@ const ThankYou = () => {
           </div>
           
           <div className="bg-card border border-border rounded-lg p-8 mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Welcome to Formula Forum 2025</h2>
+            <h2 className="text-2xl font-semibold mb-4">Welcome to Formula Forum 2026</h2>
             <p className="text-lg mb-6">
               Thank you for registering! You'll receive a confirmation email shortly with all the details.
             </p>

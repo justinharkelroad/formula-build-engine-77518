@@ -78,8 +78,9 @@ const AdminAuth = () => {
     return (
       <div className="min-h-screen bg-background">
         <SEO 
-          title="Access Denied | F³ Formula Forum 2025"
+          title="Access Denied | F³ Formula Forum 2026"
           description="Admin access required"
+          noindex={true}
         />
         <Navigation />
         <div className="container mx-auto px-4 py-16">
@@ -107,8 +108,9 @@ const AdminAuth = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO 
-        title="Admin Login | F³ Formula Forum 2025"
+        title="Admin Login | F³ Formula Forum 2026"
         description="Admin authentication for F³ Formula Forum"
+        noindex={true}
       />
       <Navigation />
       

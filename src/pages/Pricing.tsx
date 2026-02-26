@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { PRICING } from "@/config/pricing";
 import { ACCESS_PASS_BENEFITS } from "@/config/benefits";
@@ -7,8 +8,8 @@ import { Check } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import StructuredData from "@/components/StructuredData";
 const Pricing = () => {
-  const title = "Pricing — F³ Formula Forum 2025";
-  const description = "Pass options for the Formula Forum insurance agency growth event. Oct 15–17, 2025 • JW Marriott Orlando Bonnet Creek.";
+  const title = "Pricing — F³ Formula Forum 2026";
+  const description = "Pass options for the Formula Forum insurance agency growth event. Oct 14–16, 2026 • JW Marriott Orlando Bonnet Creek.";
   // Benefits mirrored from Access Pass
   return (
     <div className="min-h-screen bg-background">
@@ -29,8 +30,8 @@ const Pricing = () => {
 
         <section className="max-w-4xl mx-auto space-y-8">
           <article className="text-center space-y-4">
-            <p>
-              Secure your spot at the insurance agency growth conference. Limited seating for workshops and breakouts.
+            <p data-speakable="true">
+              Formula Forum 2026 offers two pass tiers: the Agent Pass at $849 for agency owners and senior producers, and the Team Member Pass at $549 for team members and junior producers. Both passes include access to all sessions, the printed Book of Formulas playbook, networking events, meals, and enrollment in the 90-Day Scale-Up Challenge. Limited to 250 attendees.
             </p>
           </article>
 
@@ -50,7 +51,7 @@ const Pricing = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30" aria-hidden="true"></div>
                    <img
                      src="/lovable-uploads/13190d3e-be9d-4836-9991-e7cee56f7509.png"
-                     alt="F³ Formula Forum 2025 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
+                     alt="F³ Formula Forum 2026 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
                      className="relative z-10 max-w-sm w-full h-auto rounded-2xl shadow-2xl"
                      loading="lazy"
                      width="400"
@@ -63,7 +64,7 @@ const Pricing = () => {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
             <Button asChild variant="cta" size="lg" className="min-h-16 text-xl md:text-2xl px-8 md:px-12 py-6">
-              <a href="/register" aria-label={`Register ${PRICING.agent.name} pass for $${PRICING.agent.new}`}>
+              <Link to="/register" aria-label={`Register ${PRICING.agent.name} pass for $${PRICING.agent.new}`}>
                 <span className="inline-flex items-center gap-2">
                   <span>Register Now — {PRICING.agent.name}</span>
                   <span className="relative inline-block text-muted-foreground">
@@ -72,11 +73,11 @@ const Pricing = () => {
                   </span>
                   <span className="font-semibold">${PRICING.agent.new}</span>
                 </span>
-              </a>
+              </Link>
             </Button>
 
             <Button asChild variant="secondary" size="lg" className="min-h-16 text-xl md:text-2xl px-8 md:px-12 py-6">
-              <a href="/register" aria-label={`Register ${PRICING.team.name} pass for $${PRICING.team.new}`}>
+              <Link to="/register" aria-label={`Register ${PRICING.team.name} pass for $${PRICING.team.new}`}>
                 <span className="inline-flex items-center gap-2">
                   <span>Register Now — {PRICING.team.name}</span>
                   <span className="relative inline-block text-muted-foreground">
@@ -85,7 +86,7 @@ const Pricing = () => {
                   </span>
                   <span className="font-semibold">${PRICING.team.new}</span>
                 </span>
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -100,12 +101,12 @@ const Pricing = () => {
 
           <div className="text-center space-y-4">
             <Button asChild size="lg" className="min-h-11">
-              <a href="/register" aria-label="Register now">
+              <Link to="/register" aria-label="Register now">
                 Register Now
-              </a>
+              </Link>
             </Button>
             <p className="text-sm text-muted-foreground">
-              <a href="/venue#room-block" className="text-primary underline">Room block available at JW Marriott Orlando Bonnet Creek</a>
+              <Link to="/venue#room-block" className="text-primary underline">Room block available at JW Marriott Orlando Bonnet Creek</Link>
             </p>
           </div>
         </section>

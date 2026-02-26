@@ -112,7 +112,7 @@ const EventDetails = () => {
               <div className="bg-card/50 backdrop-blur-sm p-8 rounded-lg shadow-sm border border-primary/10 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                 <Calendar className="text-primary mx-auto mb-4" size={48} />
                 <h3 className="text-xl font-semibold mb-2 text-card-foreground text-center">When</h3>
-                <p className="text-lg text-muted-foreground text-center mb-4">October 15–17, 2025</p>
+                <p className="text-lg text-muted-foreground text-center mb-4">October 14–16, 2026</p>
                 <div className="text-sm text-muted-foreground text-center space-y-1">
                   <div><strong>Wednesday:</strong> PM Welcome Event</div>
                   <div><strong>Thursday:</strong> 9AM - 6PM + PM Special Event</div>

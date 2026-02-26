@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import GalleryGrid from '@/components/GalleryGrid';
 import GalleryLightbox from '@/components/GalleryLightbox';
 import SEO from '@/components/SEO';
+import StructuredData from '@/components/StructuredData';
 import UndefinedNavigation from '@/components/UndefinedNavigation';
 import { galleryImages, GalleryImage } from '@/config/galleryImages';
 import DownloadBucket from '@/components/DownloadBucket';
@@ -68,13 +69,14 @@ const Gallery = () => {
         description="View photos from Formula Forum conferences - venue, speakers, sessions, and networking moments."
         path="/gallery"
       />
+      <StructuredData page="general" />
       <UndefinedNavigation />
 
       <main className="container mx-auto px-4 py-24">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">Photo Gallery</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
-            Explore & Relive the 2025 Formula Forum!
+            Explore & Relive the Formula Forum Experience!
           </p>
         </div>
 
@@ -176,8 +178,8 @@ const Gallery = () => {
               : selectedPhotos;
             
             const filename = downloadType === 'all'
-              ? 'formula-forum-2025-all-photos.zip'
-              : 'formula-forum-2025-selected-photos.zip';
+              ? 'formula-forum-all-photos.zip'
+              : 'formula-forum-selected-photos.zip';
             
             await generatePhotoZip(imagesToDownload, filename);
             

@@ -41,7 +41,7 @@ const WhatsIncluded = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                  <img 
                    src="/lovable-uploads/13190d3e-be9d-4836-9991-e7cee56f7509.png" 
-                   alt="F³ Formula Forum 2025 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
+                   alt="F³ Formula Forum 2026 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
                    className="relative z-10 max-w-sm w-full h-auto rounded-2xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300"
                    loading="lazy"
                    width="400"

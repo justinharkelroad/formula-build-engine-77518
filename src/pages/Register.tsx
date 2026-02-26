@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,8 @@ const Register = () => {
   const [searchParams] = useSearchParams();
   const canceled = searchParams.get("canceled");
   
-  const title = "Register | Formula Forum 2025 | Insurance Agency Growth Conference";
-  const description = "Register for Formula Forum 2025 in Orlando. Agent and Team Member passes available. Save $100 with code F3100OFF.";
+  const title = "Register | Formula Forum 2026 | Insurance Agency Growth Conference";
+  const description = "Register for Formula Forum 2026 in Orlando. Agent and Team Member passes available. Save $100 with code F3100OFF.";
 
   useEffect(() => {
     // Fire GA4 begin_checkout event
@@ -25,8 +25,8 @@ const Register = () => {
         value: 849,
         items: [
           {
-            item_id: 'formula-forum-2025',
-            item_name: 'Formula Forum 2025 Pass',
+            item_id: 'formula-forum-2026',
+            item_name: 'Formula Forum 2026 Pass',
             category: 'Conference',
             price: 849,
             quantity: 1,
@@ -44,11 +44,11 @@ const Register = () => {
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Register for Formula Forum 2025
+            Register for Formula Forum 2026
           </h1>
           
           <p className="text-xl md:text-2xl text-foreground/90 mb-6">
-            Insurance Agency Growth Conference in Orlando. Oct 15–17, 2025.
+            Insurance Agency Growth Conference in Orlando. Oct 14–16, 2026.
           </p>
 
           {canceled && (
@@ -119,7 +119,7 @@ const Register = () => {
           </div>
           
           <p className="text-muted-foreground">
-            Questions? <a href="/contact" className="underline underline-offset-4 hover:text-foreground">Contact us</a>
+            Questions? <Link to="/contact" className="underline underline-offset-4 hover:text-foreground">Contact us</Link>
           </p>
         </div>
       </main>

@@ -9,11 +9,11 @@ import FeatureSection from "@/components/sections/FeatureSection";
 import CTASection from "@/components/sections/CTASection";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 const Index = () => {
-  const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 15–17";
-  const description = "Insurance Agency Growth Conference in Orlando. Oct 15–17, 2026 at JW Marriott Bonnet Creek. Workshops, breakouts, and a 90-day growth plan.";
+  const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 14–16";
+  const description = "Insurance Agency Growth Conference in Orlando. Oct 14–16, 2026 at JW Marriott Bonnet Creek. Workshops, breakouts, and a 90-day growth plan.";
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -37,7 +37,20 @@ const Index = () => {
       
       <HeroSection />
       <VideoTestimonialsGrid />
-      
+
+      {/* What is Formula Forum? — Atomic Citation Block */}
+      <section className="py-20 px-8 bg-black text-white" data-speakable="true">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">What is Formula Forum?</h2>
+          <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6">
+            Formula Forum (F³) is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, producers, and industry partners for three days of operator-led training, peer breakout sessions, and actionable implementation planning. The 2026 event takes place October 14–16 at the JW Marriott Orlando Bonnet Creek Resort & Spa.
+          </p>
+          <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+            Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training, personal takeaway capture, small-group breakouts, and speaker close. Every attendee leaves with a printed Book of Formulas playbook and enrolls in a 90-Day Scale-Up Challenge for post-event accountability. Ticket options include the Agent Pass ($849) for agency owners and the Team Member Pass ($549).
+          </p>
+        </div>
+      </section>
+
       {/* Photos Section */}
       <section className="min-h-screen bg-black text-white py-32 px-8">
         <div className="container mx-auto max-w-7xl">
@@ -62,11 +75,11 @@ const Index = () => {
               <p className="text-xl text-white/70 leading-relaxed mb-8">
                 Click below to gain access to all the photos from this years event. Add the photos you want to download to your bucket, and immediately get them saved to your device!
               </p>
-              <a href="/gallery">
+              <Link to="/gallery">
                 <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
                   View Gallery
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -95,11 +108,11 @@ const Index = () => {
       {/* Partner Podcasts CTA */}
       <section className="py-16 px-4 bg-black">
         <div className="container mx-auto max-w-7xl text-center">
-          <a href="/2025partners">
+          <Link to="/2025partners">
             <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
               2025 Partner Podcast Episodes
             </button>
-          </a>
+          </Link>
         </div>
       </section>
       

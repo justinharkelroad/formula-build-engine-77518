@@ -4,6 +4,7 @@ import { Input } from '../components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import Navigation from '../components/Navigation';
+import SEO from '../components/SEO';
 
 const GASetup = () => {
   const [measurementId, setMeasurementId] = useState('');
@@ -18,6 +19,7 @@ const GASetup = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO title="GA4 Setup | F³ Formula Forum" description="GA4 configuration page" noindex={true} />
       <Navigation />
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-2xl mx-auto">

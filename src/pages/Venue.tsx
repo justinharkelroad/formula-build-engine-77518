@@ -4,8 +4,8 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 
 const Venue = () => {
-  const title = "Venue and Travel Information | Formula Forum 2025";
-  const description = "JW Marriott Orlando Bonnet Creek venue information for Formula Forum 2025. Address, directions, parking, and travel details.";
+  const title = "Venue and Travel Information | Formula Forum 2026";
+  const description = "JW Marriott Orlando Bonnet Creek venue information for Formula Forum 2026. Address, directions, parking, and travel details.";
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,6 +24,11 @@ const Venue = () => {
         </header>
 
         <div className="max-w-4xl mx-auto space-y-12">
+          {/* Speakable venue summary */}
+          <p className="text-lg text-muted-foreground" data-speakable="true">
+            Formula Forum 2026 takes place at the JW Marriott Orlando Bonnet Creek Resort & Spa, located at 14900 Chelonia Parkway, Orlando, FL 32821. The venue is approximately 21 miles from Orlando International Airport (MCO) and offers a discounted room block at $239 per night for attendees.
+          </p>
+
           {/* Address Block */}
           <section>
             <h2 className="text-2xl font-semibold mb-4">Address</h2>
@@ -45,7 +50,7 @@ const Venue = () => {
           <section>
             <h2 className="text-2xl font-semibold mb-4">Event Dates</h2>
             <p className="text-lg">
-              Event dates: Oct 15–17, 2025. Registration opens 4:00 p.m. on Wednesday Oct 15.
+              Event dates: Oct 14–16, 2026. Registration opens 4:00 p.m. on Wednesday Oct 14.
             </p>
           </section>
 
@@ -81,7 +86,7 @@ const Venue = () => {
           <section id="room-block">
             <h2 className="text-2xl font-semibold mb-4">Room block</h2>
             <p className="text-lg mb-4">
-              JW Marriott Orlando Bonnet Creek • Group rate: $239/night • Cut-off: Sep 15, 2025
+              JW Marriott Orlando Bonnet Creek • Group rate: $239/night • Cut-off: Sep 15, 2026
             </p>
             <p className="text-lg mb-4">
               Book online with our group link or call the hotel and mention code <strong>F3-2025</strong>.
@@ -95,13 +100,13 @@ const Venue = () => {
                   if (typeof window !== 'undefined' && (window as any).gtag) {
                     (window as any).gtag('event', 'room_block_click', {
                       page_location: window.location.href,
-                      link_url: 'https://book.passkey.com/go/FloridaFormulaForumATTENDEE'
+                      link_url: 'https://book.passkey.com/event/51189838/owner/49980248/home'
                     });
                   }
                 }}
               >
                 <a 
-                  href="https://book.passkey.com/go/FloridaFormulaForumATTENDEE?utm_source=site&utm_medium=roomblock&utm_campaign=f3-2025"
+                  href="https://book.passkey.com/event/51189838/owner/49980248/home?utm_source=site&utm_medium=roomblock&utm_campaign=f3-2026"
                   rel="nofollow noopener"
                   target="_blank"
                 >

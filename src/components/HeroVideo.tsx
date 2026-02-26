@@ -35,7 +35,7 @@ const HeroVideo = ({ wistiaId, title = "Event video" }: HeroVideoProps) => {
           >
             <img 
               src="/assets/hero-1200x630.jpg"
-              alt="Insurance agency growth conference in Orlando at JW Marriott Bonnet Creek Oct 15–17 2025"
+              alt="Insurance agency growth conference in Orlando at JW Marriott Bonnet Creek Oct 14–16 2026"
               className="h-full w-full object-cover"
               loading="eager"
               fetchPriority="high"

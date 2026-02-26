@@ -5,10 +5,10 @@ interface SEOProps {
   title: string;
   description: string;
   path?: string; // e.g., "/pricing"
+  noindex?: boolean;
 }
 
-const SEO = ({ title, description, path = "/" }: SEOProps) => {
-  const origin = typeof window !== "undefined" ? window.location.origin : CONFIG.SITE_URL;
+const SEO = ({ title, description, path = "/", noindex = false }: SEOProps) => {
   const canonical = `${CONFIG.SITE_URL}${path === "/" ? "" : path}`;
   const ogImage = `${CONFIG.SITE_URL}${CONFIG.OG_IMAGE_1200x630}`;
   const twitterImage = `${CONFIG.SITE_URL}${CONFIG.TW_IMAGE_1200x600}`;
@@ -17,8 +17,8 @@ const SEO = ({ title, description, path = "/" }: SEOProps) => {
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="robots" content="index,follow" />
-      <link rel="canonical" href={canonical} />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index,follow"} />
+      {!noindex && <link rel="canonical" href={canonical} />}
 
       {/* Open Graph */}
       <meta property="og:type" content="event" />

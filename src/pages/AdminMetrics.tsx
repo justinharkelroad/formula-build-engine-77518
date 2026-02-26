@@ -50,8 +50,9 @@ const AdminMetrics = () => {
   return (
     <>
       <SEO 
-        title="Admin - Analytics Metrics | F³ Formula Forum 2025"
+        title="Admin - Analytics Metrics | F³ Formula Forum 2026"
         description="View analytics and conversion metrics"
+        noindex={true}
       />
       <Navigation />
       

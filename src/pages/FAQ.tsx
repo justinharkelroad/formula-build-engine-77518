@@ -1,11 +1,12 @@
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import FAQAccordion from "@/components/sections/FAQAccordion";
 
 const FAQ = () => {
-  const title = "FAQ — F³ Formula Forum 2025";
+  const title = "FAQ — F³ Formula Forum 2026";
   const description = "Frequently asked questions about Formula Forum: the insurance agency growth event in Orlando.";
 
   return (
@@ -25,13 +26,13 @@ const FAQ = () => {
           <div className="text-sm text-muted-foreground space-y-2">
             <p>• <strong>No refunds:</strong> All sales are final</p>
             <p>• <strong>Transfers allowed:</strong> You can transfer your ticket to another person up to 7 days before the event</p>
-            <p>• <strong>Room block:</strong> Discounted hotel rates at JW Marriott Orlando Bonnet Creek - <a href="/venue#room-block" className="text-primary underline">use our room block link</a> or call with code F3-2025. Cut-off Sep 15, 2025.</p>
+            <p>• <strong>Room block:</strong> Discounted hotel rates at JW Marriott Orlando Bonnet Creek - <Link to="/venue#room-block" className="text-primary underline">use our room block link</Link> or call with code F3-2025. Cut-off Sep 15, 2026.</p>
           </div>
         </div>
         
         <div className="text-center mt-8">
           <Button asChild size="lg">
-            <a href="/contact">Still have questions?</a>
+            <Link to="/contact">Still have questions?</Link>
           </Button>
         </div>
       </main>

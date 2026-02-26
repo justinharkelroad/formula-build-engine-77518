@@ -140,7 +140,7 @@ const Speakers = () => {
                 <div className="rounded-xl p-1 bg-gradient-to-r from-primary to-accent shadow-lg">
                   <img
                     src={keynote.image}
-                    alt="Garrett J. White — Wake Up Warrior, Formula Forum 2025 speaker"
+                    alt="Garrett J. White — Wake Up Warrior, Formula Forum 2026 speaker"
                     className="w-full aspect-square object-cover rounded-lg"
                     loading="lazy"
                   />
@@ -177,7 +177,7 @@ const Speakers = () => {
                 <div className="relative bg-card rounded-2xl p-1 shadow-lg">
                   <img
                     src={speaker.image}
-                    alt={`${speaker.name} — ${speaker.company}, Formula Forum 2025 speaker`}
+                    alt={`${speaker.name} — ${speaker.company}, Formula Forum 2026 speaker`}
                     className="w-full aspect-square object-cover rounded-xl"
                     loading="lazy"
                   />

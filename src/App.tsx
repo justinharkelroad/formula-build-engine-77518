@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,31 +8,43 @@ import { HelmetProvider } from "react-helmet-async";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Index from "./pages/Index";
-import Partners from "./pages/Partners";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import Pricing from "./pages/Pricing";
-import SpeakersPage from "./pages/SpeakersPage";
-import Agenda from "./pages/Agenda";
-import Format from "./pages/Format";
-import Venue from "./pages/Venue";
-import Survey from "./pages/Survey";
-import FAQ from "./pages/FAQ";
-import Register from "./pages/Register";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import ThankYou from "./pages/ThankYou";
-import GASetup from "./pages/GASetup";
-import ThankYouEnhanced from "./pages/ThankYouEnhanced";
-import AdminRegistrations from "./pages/AdminRegistrations";
-import AdminMetrics from "./pages/AdminMetrics";
-import AdminAuth from "./pages/AdminAuth";
-import PartnerPodcasts from "./pages/PartnerPodcasts";
-import Gallery from "./pages/Gallery";
 import DeferredScripts from "./components/DeferredScripts";
 import GA4Script from "./components/GA4Script";
 import AnalyticsListener from "./components/AnalyticsListener";
-import Footer from "./components/Footer";
+
+// Eager-load homepage for fast LCP
+import Index from "./pages/Index";
+
+// Lazy-load all other pages
+const Partners = lazy(() => import("./pages/Partners"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const SpeakersPage = lazy(() => import("./pages/SpeakersPage"));
+const Agenda = lazy(() => import("./pages/Agenda"));
+const Format = lazy(() => import("./pages/Format"));
+const Venue = lazy(() => import("./pages/Venue"));
+const Survey = lazy(() => import("./pages/Survey"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Register = lazy(() => import("./pages/Register"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+const GASetup = lazy(() => import("./pages/GASetup"));
+const ThankYouEnhanced = lazy(() => import("./pages/ThankYouEnhanced"));
+const AdminRegistrations = lazy(() => import("./pages/AdminRegistrations"));
+const AdminMetrics = lazy(() => import("./pages/AdminMetrics"));
+const AdminAuth = lazy(() => import("./pages/AdminAuth"));
+const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto mb-4"></div>
+      <p className="text-sm text-muted-foreground">Loading...</p>
+    </div>
+  </div>
+);
 
 const queryClient = new QueryClient();
 
@@ -46,6 +59,7 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
           <AnalyticsListener />
+          <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/agenda" element={<Agenda />} />
@@ -77,6 +91,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
            </Routes>
+           </Suspense>
            {/* Footer hidden on homepage, visible on other pages */}
             <DeferredScripts />
           </AuthProvider>
