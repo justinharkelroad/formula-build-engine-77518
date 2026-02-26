@@ -135,8 +135,8 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       "@type": "AggregateOffer",
       "url": `${siteUrl}/pricing`,
       "priceCurrency": "USD",
-      "lowPrice": "549",
-      "highPrice": "849",
+      "lowPrice": "347",
+      "highPrice": "647",
       "offerCount": 2,
       "availability": "https://schema.org/InStock",
       "validFrom": "2026-01-01T00:00:00-05:00"
@@ -240,26 +240,26 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "name": `${CONFIG.EVENT_NAME} Passes`,
     "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, printed playbook, networking events, and 90-day challenge.`,
     "priceCurrency": "USD",
-    "lowPrice": "549",
-    "highPrice": "849",
+    "lowPrice": "347",
+    "highPrice": "647",
     "offerCount": 2,
     "offers": [
       {
         "@type": "Offer",
-        "name": "Agent Pass",
-        "price": "849",
+        "name": "Agency Owner Pass",
+        "price": "647",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": `${siteUrl}/register`,
+        "url": `${siteUrl}/pricing`,
         "priceValidUntil": "2026-10-14"
       },
       {
         "@type": "Offer",
         "name": "Team Member Pass",
-        "price": "549",
+        "price": "347",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": `${siteUrl}/register`,
+        "url": `${siteUrl}/pricing`,
         "priceValidUntil": "2026-10-14"
       }
     ],

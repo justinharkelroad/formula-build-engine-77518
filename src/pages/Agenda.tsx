@@ -71,7 +71,7 @@ const Agenda = () => {
               </p>
             </div>
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/register">Register Now — Limited Seats Available</Link>
+              <Link to="/pricing">Register Now — Limited Seats Available</Link>
             </Button>
           </div>
         </section>

@@ -9,7 +9,7 @@ const RegisterCTA = ({ className = "", variant = "cta" }: RegisterCTAProps) => {
   return (
     <div className={`text-center py-8 ${className}`}>
       <Button asChild variant={variant} size="lg">
-        <a href="/register">Register now</a>
+        <a href="/pricing">Register now</a>
       </Button>
     </div>
   );

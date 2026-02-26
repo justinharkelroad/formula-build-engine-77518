@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -26,7 +26,7 @@ const Format = lazy(() => import("./pages/Format"));
 const Venue = lazy(() => import("./pages/Venue"));
 const Survey = lazy(() => import("./pages/Survey"));
 const FAQ = lazy(() => import("./pages/FAQ"));
-const Register = lazy(() => import("./pages/Register"));
+const VIP = lazy(() => import("./pages/VIP"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const GASetup = lazy(() => import("./pages/GASetup"));
@@ -73,7 +73,8 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/vip" element={<VIP />} />
+            <Route path="/register" element={<Navigate to="/pricing" replace />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/thank-you" element={<ThankYouEnhanced />} />
             <Route path="/ga-setup" element={<GASetup />} />

@@ -6,9 +6,6 @@ const StickyHeaderCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
 
-  // Don't show on survey page
-  if (location.pathname === "/survey") return null;
-
   useEffect(() => {
     const handleScroll = () => {
       // Show after scrolling 100px
@@ -19,6 +16,9 @@ const StickyHeaderCTA = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Don't show on survey or vip page
+  if (location.pathname === "/survey" || location.pathname === "/vip") return null;
+
   if (!isVisible) return null;
 
   return (
@@ -26,7 +26,7 @@ const StickyHeaderCTA = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-center">
           <Button asChild variant="cta" size="sm">
-            <a href="/register" aria-label="Register now">
+            <a href="/pricing" aria-label="View pricing">
               Register now
             </a>
           </Button>
