@@ -6,6 +6,7 @@ import UndefinedNavigation from "@/components/UndefinedNavigation";
 import UndefinedAbout from "@/components/sections/UndefinedAbout";
 import ServicesGrid from "@/components/sections/ServicesGrid";
 import FeatureSection from "@/components/sections/FeatureSection";
+import { Button } from "@/components/ui/button";
 import CTASection from "@/components/sections/CTASection";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 import { useEffect } from "react";
@@ -102,7 +103,13 @@ const Index = () => {
         imageAlt="Luxury resort pool at sunset"
         reverse={false}
         id="location"
-      />
+      >
+        <Button asChild variant="cta" size="lg" className="mt-6 text-lg">
+          <a href="https://book.passkey.com/go/FFF2026" target="_blank" rel="noopener noreferrer">
+            Secure Your Discounted Room Before They Sell Out!
+          </a>
+        </Button>
+      </FeatureSection>
       
       <FeatureSection
         title="Breakouts Create Breakthroughs"
