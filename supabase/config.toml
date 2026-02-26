@@ -2,3 +2,6 @@ project_id = "koubtooblwjcwubcuhml"
 
 [functions.process-waitlist]
 verify_jwt = false
+
+[functions.stripe-webhook-enhanced]
+verify_jwt = false
