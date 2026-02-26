@@ -1,10 +1,8 @@
-import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import { PRICING } from "@/config/pricing";
 import { ACCESS_PASS_BENEFITS } from "@/config/benefits";
 import { Check, Star } from "lucide-react";
-import CountdownTimer from "@/components/CountdownTimer";
 import { trackBeginCheckout, trackCTAClick } from "@/hooks/useAnalytics";
 
 const VIP = () => {
@@ -23,7 +21,6 @@ const VIP = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO title={title} description={description} path="/vip" noindex={true} />
-      <Navigation />
       <main className="container mx-auto px-4 py-12">
         <header className="text-center mb-10">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
@@ -34,9 +31,6 @@ const VIP = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             As a past Formula Forum attendee, you get our deepest discount — locked in just for you.
           </p>
-          <div className="mt-6">
-            <CountdownTimer autoReset={true} className="text-center" />
-          </div>
         </header>
 
         <section className="max-w-3xl mx-auto space-y-6">
