@@ -6,9 +6,10 @@ interface FeatureSectionProps {
   imageSrc: string;
   imageAlt: string;
   reverse?: boolean;
+  webpSrc?: string;
 }
 
-const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false, id }: FeatureSectionProps & { id?: string }) => {
+const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false, id, webpSrc }: FeatureSectionProps & { id?: string }) => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
@@ -33,11 +34,28 @@ const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = fals
 
           {/* Image Column */}
           <div className={`relative overflow-hidden rounded-2xl group ${reverse ? 'md:col-start-1 md:row-start-1' : ''}`}>
-            <img
-              src={imageSrc}
-              alt={imageAlt}
-              className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
-            />
+            {webpSrc ? (
+              <picture>
+                <source srcSet={webpSrc} type="image/webp" />
+                <img
+                  src={imageSrc}
+                  alt={imageAlt}
+                  loading="lazy"
+                  width="960"
+                  height="654"
+                  className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </picture>
+            ) : (
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                loading="lazy"
+                width="960"
+                height="654"
+                className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
           </div>
         </div>

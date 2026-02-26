@@ -27,11 +27,17 @@ const UndefinedAbout = () => {
 
           {/* Right Column - Image */}
           <div className="relative overflow-hidden rounded-2xl group">
-            <img
-              src="/lovable-uploads/about-section-image.png"
-              alt="Formula Forum Event"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
+            <picture>
+              <source srcSet="/lovable-uploads/about-section-image.webp" type="image/webp" />
+              <img
+                src="/lovable-uploads/about-section-image.png"
+                alt="Formula Forum Event"
+                loading="lazy"
+                width="960"
+                height="778"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </picture>
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
           </div>
         </div>

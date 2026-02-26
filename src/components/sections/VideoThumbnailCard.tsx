@@ -17,6 +17,9 @@ const VideoThumbnailCard = ({ posterSrc, name, title, onClick }: VideoThumbnailC
       <img
         src={posterSrc}
         alt={`${name} testimonial`}
+        loading="lazy"
+        width="360"
+        height="640"
         className="w-full h-full object-cover"
       />
 

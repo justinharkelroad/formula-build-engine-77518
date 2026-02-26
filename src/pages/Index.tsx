@@ -59,11 +59,17 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Image Column - Left */}
             <div className="relative overflow-hidden rounded-2xl group">
-              <img
-                src="/lovable-uploads/photos-section.jpg"
-                alt="Formula Forum 2025 attendees"
-                className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+              <picture>
+                <source srcSet="/lovable-uploads/photos-section.webp" type="image/webp" />
+                <img
+                  src="/lovable-uploads/photos-section.jpg"
+                  alt="Formula Forum 2025 attendees"
+                  loading="lazy"
+                  width="960"
+                  height="540"
+                  className="w-full h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
 
@@ -92,6 +98,7 @@ const Index = () => {
         title="JW Marriott Bonnet Creek"
         description="We are excited to announce that we are going back home to our official first location and making this an amazing tradition and bringing you all back down to experience this beautiful space."
         imageSrc="/lovable-uploads/venue-pool-2026.jpg"
+        webpSrc="/lovable-uploads/venue-pool-2026.webp"
         imageAlt="Luxury resort pool at sunset"
         reverse={false}
         id="location"
@@ -101,6 +108,7 @@ const Index = () => {
         title="Breakouts Create Breakthroughs"
         description="Ask any attendee from 2025. We're built through truth and authenticity and that can only be done through connection. This is not your average conference format. We are active throughout the day and a half. We find ourselves in uncomfortable situations so when something like that happens in life, were trained."
         imageSrc="/lovable-uploads/breakout-session.png"
+        webpSrc="/lovable-uploads/breakout-session.webp"
         imageAlt="Breakout session with attendees in discussion"
         reverse={true}
       />
