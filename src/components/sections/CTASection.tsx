@@ -1,5 +1,5 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { WaitlistModal } from '@/components/WaitlistModal';
+import PassTypeDialog from '@/components/PassTypeDialog';
 
 const CTASection = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -14,21 +14,17 @@ const CTASection = () => {
     >
       <div className="container mx-auto max-w-5xl text-center">
         <div className="text-xs text-white/70 mb-8 tracking-widest uppercase">[ save the date ]</div>
-        
+
         <h2 className="text-5xl sm:text-7xl md:text-9xl font-bold mb-12 leading-none">
           Oct 14–16th, 2026
         </h2>
-        
+
         <p className="text-2xl md:text-3xl text-white/90 mb-16 max-w-3xl mx-auto leading-relaxed">
           Formula returns in the fall of 2026 for 1.5 days of agency, mental, emotional and personal growth training.
         </p>
 
         <div className="flex justify-center">
-          <WaitlistModal>
-            <button className="bg-white text-black px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform cursor-hover">
-              Get Access to All of It
-            </button>
-          </WaitlistModal>
+          <PassTypeDialog />
         </div>
       </div>
     </section>

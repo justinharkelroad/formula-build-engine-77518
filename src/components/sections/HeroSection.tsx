@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { WaitlistModal } from '@/components/WaitlistModal';
 import PortraitVideo from '@/components/PortraitVideo';
+import PassTypeDialog from '@/components/PassTypeDialog';
 
 const HeroSection = () => {
   const [letterIndex, setLetterIndex] = useState(0);
@@ -58,16 +57,14 @@ const HeroSection = () => {
           <span className="text-[3rem] sm:text-[4.5rem] md:text-[6rem] lg:text-[7.5rem] xl:text-[9rem] font-bold leading-none tracking-tighter text-white select-none">
             is back!
           </span>
-          
+
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/70 mt-4 md:mt-8 max-w-2xl">
             OCTOBER 14–16, 2026
           </p>
-          
-          <WaitlistModal>
-            <Button variant="cta" size="xl" className="mt-6 md:mt-8">
-              Get Access to All of It
-            </Button>
-          </WaitlistModal>
+
+          <div className="mt-6 md:mt-8">
+            <PassTypeDialog />
+          </div>
         </div>
       </div>
       </div>
