@@ -130,10 +130,11 @@ const VIP = () => {
           </div>
 
           {/* Hotel Room Block */}
-          <div className="text-center pt-2">
-            <Button asChild variant="cta" size="lg" className="text-lg">
+          <div className="text-center pt-4">
+            <p className="text-sm text-muted-foreground mb-3">Discounted hotel rooms are limited</p>
+            <Button asChild variant="cta" size="lg">
               <a href="https://book.passkey.com/go/FFF2026" target="_blank" rel="noopener noreferrer">
-                Secure Your Discounted Room Before They Sell Out!
+                Book Your Room →
               </a>
             </Button>
           </div>
