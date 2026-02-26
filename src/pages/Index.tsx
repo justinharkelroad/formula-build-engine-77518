@@ -9,14 +9,32 @@ import FeatureSection from "@/components/sections/FeatureSection";
 import { Button } from "@/components/ui/button";
 import CTASection from "@/components/sections/CTASection";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
-import { useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import VimeoModal from "@/components/VimeoModal";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams, Link } from "react-router-dom";
+
+const HOMEPAGE_VIMEO_ID = "1168470992";
 
 const Index = () => {
   const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 14–16";
   const description = "Insurance Agency Growth Conference in Orlando. Oct 14–16, 2026 at JW Marriott Bonnet Creek. Workshops, breakouts, and a 90-day growth plan.";
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [showVideo, setShowVideo] = useState(false);
+
+  // Open video modal only when ?video=1 is in the URL
+  useEffect(() => {
+    if (searchParams.get("video") === "1") {
+      setShowVideo(true);
+    }
+  }, [searchParams]);
+
+  const handleCloseVideo = () => {
+    setShowVideo(false);
+    searchParams.delete("video");
+    setSearchParams(searchParams, { replace: true });
+  };
   
   useEffect(() => {
     const sectionId = (location.state as any)?.scrollTo;
@@ -36,6 +54,7 @@ const Index = () => {
       <CustomCursor />
       <UndefinedNavigation />
       
+      <VimeoModal isOpen={showVideo} onClose={handleCloseVideo} vimeoId={HOMEPAGE_VIMEO_ID} />
       <HeroSection />
       <VideoTestimonialsGrid />
 
