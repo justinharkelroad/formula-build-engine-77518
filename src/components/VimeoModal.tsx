@@ -10,15 +10,15 @@ interface VimeoModalProps {
 const VimeoModal = ({ isOpen, onClose, vimeoId }: VimeoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[90vw] md:max-w-[500px] w-full p-0 bg-black border-white/10 overflow-hidden">
+      <DialogContent className="max-w-[90vw] md:max-w-[900px] w-full p-0 bg-black border-white/10 overflow-hidden [&>button:last-child]:hidden">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+          className="absolute -top-12 right-0 z-50 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-white/80 transition-colors shadow-lg"
           aria-label="Close video"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
-        <div className="relative aspect-[9/16] w-full bg-black">
+        <div className="relative aspect-video w-full bg-black">
           {isOpen && (
             <iframe
               className="w-full h-full"
