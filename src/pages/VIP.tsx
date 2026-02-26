@@ -52,6 +52,11 @@ const VIP = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             As a past Formula Forum attendee, you get our deepest discount — locked in just for you.
           </p>
+          <div className="mt-4 text-muted-foreground text-base space-y-1">
+            <p className="font-semibold text-foreground">October 14–16, 2026</p>
+            <p>JW Marriott Orlando Bonnet Creek</p>
+            <p>14900 Chelonia Pkwy, Orlando, FL 32821</p>
+          </div>
         </header>
 
         <section className="max-w-3xl mx-auto space-y-6">
