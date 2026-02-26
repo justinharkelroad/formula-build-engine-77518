@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Download, RefreshCw, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface Registration {
   id: string;
@@ -101,6 +102,9 @@ const AdminRegistrations = () => {
               <h1 className="text-4xl font-bold">Waitlist Management</h1>
               <p className="text-muted-foreground mt-2">View and manage Formula 2026 waitlist</p>
               {user && <p className="text-sm text-muted-foreground">Signed in as: {user.email}</p>}
+              <Link to="/admin/sales" className="text-sm text-primary hover:underline mt-1 inline-block">
+                View Sales Dashboard
+              </Link>
             </div>
             <div className="flex gap-2">
               <Button 

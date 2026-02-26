@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      purchases: {
+        Row: {
+          id: string
+          email: string
+          name: string | null
+          stripe_session_id: string
+          stripe_payment_link_id: string | null
+          amount: number
+          currency: string
+          pass_type: string
+          tier: string
+          quantity: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          name?: string | null
+          stripe_session_id: string
+          stripe_payment_link_id?: string | null
+          amount: number
+          currency?: string
+          pass_type: string
+          tier: string
+          quantity?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          name?: string | null
+          stripe_session_id?: string
+          stripe_payment_link_id?: string | null
+          amount?: number
+          currency?: string
+          pass_type?: string
+          tier?: string
+          quantity?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
       gallery_downloads: {
         Row: {
           created_at: string | null

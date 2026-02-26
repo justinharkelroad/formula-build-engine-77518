@@ -7,6 +7,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
 };
 
+// Price (amount in cents) → tier + pass type lookup
+// Each Stripe Payment Link has a unique price, so we match on amount_total
+const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
+  64700: { tier: "earlyBird", passType: "agencyOwner" },
+  34700: { tier: "earlyBird", passType: "team" },
+  44800: { tier: "vip", passType: "agencyOwner" },
+  29800: { tier: "vip", passType: "team" },
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -17,7 +26,7 @@ serve(async (req) => {
     const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    
+
     if (!stripeSecret || !webhookSecret || !supabaseUrl || !supabaseServiceKey) {
       console.error("Missing required environment variables");
       return new Response("Missing configuration", { status: 500 });
@@ -50,32 +59,40 @@ serve(async (req) => {
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      
+
+      const amount = session.amount_total || 0;
+      const tierInfo = PRICE_TIER_MAP[amount] || { tier: "unknown", passType: "unknown" };
+
       console.log("Checkout session completed:", {
         sessionId: session.id,
         customerEmail: session.customer_details?.email,
-        amountTotal: session.amount_total,
-        passType: session.metadata?.passType,
-        quantity: session.metadata?.quantity,
+        customerName: session.customer_details?.name,
+        amountTotal: amount,
+        paymentLink: session.payment_link,
+        detectedTier: tierInfo.tier,
+        detectedPassType: tierInfo.passType,
       });
 
-      // Store registration in database
-      if (session.customer_details?.email && session.amount_total) {
+      // Store purchase in database
+      if (session.customer_details?.email && amount > 0) {
         const { error: insertError } = await supabase
-          .from('registrations')
+          .from('purchases')
           .insert({
             email: session.customer_details.email,
+            name: session.customer_details.name || null,
             stripe_session_id: session.id,
-            amount: session.amount_total,
+            stripe_payment_link_id: typeof session.payment_link === 'string' ? session.payment_link : null,
+            amount: amount,
             currency: session.currency || 'usd',
-            pass_type: session.metadata?.passType || 'unknown',
-            quantity: parseInt(session.metadata?.quantity || '1'),
+            pass_type: tierInfo.passType,
+            tier: tierInfo.tier,
+            quantity: 1,
           });
 
         if (insertError) {
-          console.error("Error inserting registration:", insertError);
+          console.error("Error inserting purchase:", insertError);
         } else {
-          console.log("Registration stored successfully");
+          console.log("Purchase stored successfully");
         }
       }
 
@@ -86,14 +103,14 @@ serve(async (req) => {
           event_name: 'purchase',
           event_params: {
             transaction_id: session.id,
-            value: session.amount_total ? session.amount_total / 100 : 0,
+            value: amount / 100,
             currency: session.currency || 'usd',
             items: [{
-              item_id: session.metadata?.passType || 'unknown',
-              item_name: `${session.metadata?.passType || 'Unknown'} Pass`,
+              item_id: tierInfo.passType,
+              item_name: `${tierInfo.tier} - ${tierInfo.passType}`,
               currency: session.currency || 'usd',
-              price: session.amount_total ? session.amount_total / 100 : 0,
-              quantity: parseInt(session.metadata?.quantity || '1')
+              price: amount / 100,
+              quantity: 1,
             }]
           },
           page_location: 'stripe_webhook',
