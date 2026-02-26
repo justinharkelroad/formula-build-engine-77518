@@ -4,10 +4,30 @@ import { PRICING } from "@/config/pricing";
 import { ACCESS_PASS_BENEFITS } from "@/config/benefits";
 import { Check, Star } from "lucide-react";
 import { trackBeginCheckout, trackCTAClick } from "@/hooks/useAnalytics";
+import VimeoModal from "@/components/VimeoModal";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+
+const VIP_VIMEO_ID = "1168470859";
 
 const VIP = () => {
   const title = "Past Attendee Exclusive — F³ Formula Forum 2026";
   const description = "Exclusive past attendee pricing for Formula Forum 2026. Agency Owner $448, Team Member $298.";
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("video") === "1") {
+      setShowVideo(true);
+    }
+  }, [searchParams]);
+
+  const handleCloseVideo = () => {
+    setShowVideo(false);
+    searchParams.delete("video");
+    setSearchParams(searchParams, { replace: true });
+  };
 
   const { agencyOwner, team } = PRICING.vip;
 
@@ -20,6 +40,7 @@ const VIP = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <VimeoModal isOpen={showVideo} onClose={handleCloseVideo} vimeoId={VIP_VIMEO_ID} />
       <SEO title={title} description={description} path="/vip" noindex={true} />
       <main className="container mx-auto px-4 py-12">
         <header className="text-center mb-10">
