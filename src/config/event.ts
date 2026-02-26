@@ -83,7 +83,7 @@ export const CONFIG = {
   PARTNERS_URL: "https://f3florida.com/partners",
   ORGANIZER_NAME: "Formula Forum",
   ORGANIZER_URL: "https://f3florida.com",
-  ORGANIZER_EMAIL: "Ashleeb@f3florida.com",
+  ORGANIZER_EMAIL: "info@f3florida.com",
   ORGANIZER_PHONE: "260-515-1349",
   CURRENCY: "USD",
   BASE_TICKET_PRICE: "1499",

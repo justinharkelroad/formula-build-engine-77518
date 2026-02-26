@@ -23,10 +23,10 @@ const ContactInfo = () => {
               <Mail className="text-primary mx-auto mb-4" size={48} />
               <h3 className="text-xl font-semibold mb-2 text-foreground">Email</h3>
               <a 
-                href="mailto:Ashleeb@f3florida.com" 
+                href="mailto:info@f3florida.com" 
                 className="text-primary hover:underline"
               >
-                Ashleeb@f3florida.com
+                info@f3florida.com
               </a>
             </div>
             
