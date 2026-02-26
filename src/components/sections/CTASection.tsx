@@ -20,7 +20,7 @@ const CTASection = () => {
         </h2>
 
         <p className="text-2xl md:text-3xl text-white/90 mb-16 max-w-3xl mx-auto leading-relaxed">
-          Formula returns in the fall of 2026 for 1.5 days of agency, mental, emotional and personal growth training.
+          Formula returns in the fall of 2026 with agency, mental, emotional and personal growth training designed to transform how you lead.
         </p>
 
         <div className="flex justify-center">
