@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface FeatureSectionProps {
@@ -7,9 +8,10 @@ interface FeatureSectionProps {
   imageAlt: string;
   reverse?: boolean;
   webpSrc?: string;
+  children?: ReactNode;
 }
 
-const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false, id, webpSrc }: FeatureSectionProps & { id?: string }) => {
+const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = false, id, webpSrc, children }: FeatureSectionProps & { id?: string }) => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
@@ -30,6 +32,7 @@ const FeatureSection = ({ title, description, imageSrc, imageAlt, reverse = fals
             <p className="text-xl text-white/70 leading-relaxed">
               {description}
             </p>
+            {children}
           </div>
 
           {/* Image Column */}
