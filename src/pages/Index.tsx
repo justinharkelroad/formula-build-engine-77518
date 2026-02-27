@@ -66,7 +66,7 @@ const Index = () => {
             Formula Forum (F³) is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, producers, and industry partners for three days of operator-led training, peer breakout sessions, and actionable implementation planning. The 2026 event takes place October 14–16 at the JW Marriott Orlando Bonnet Creek Resort & Spa.
           </p>
           <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-            Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training, personal takeaway capture, small-group breakouts, and speaker close. Every attendee leaves with a printed Book of Formulas playbook and enrolls in a 90-Day Scale-Up Challenge for post-event accountability. Ticket options include the Agency Owner Pass ($647) for agency owners and the Team Member Pass ($347).
+            Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training, personal takeaway capture, small-group breakouts, and speaker close.
           </p>
         </div>
       </section>
