@@ -1,0 +1,1 @@
+ALTER TABLE public.purchases DROP CONSTRAINT IF EXISTS purchases_stripe_session_id_key;
