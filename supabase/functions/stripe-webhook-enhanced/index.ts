@@ -7,8 +7,8 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
 };
 
-// Price (amount in cents) → tier + pass type lookup
-// Each Stripe Payment Link has a unique price, so we match on amount_total
+// Price (unit_amount in cents) → tier + pass type lookup
+// We match on each line item's unit_amount, not the session total
 const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
   64700: { tier: "earlyBird", passType: "agencyOwner" },
   34700: { tier: "earlyBird", passType: "team" },
@@ -60,67 +60,163 @@ serve(async (req) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
 
-      const amount = session.amount_total || 0;
-      const tierInfo = PRICE_TIER_MAP[amount] || { tier: "unknown", passType: "unknown" };
-
       console.log("Checkout session completed:", {
         sessionId: session.id,
         customerEmail: session.customer_details?.email,
         customerName: session.customer_details?.name,
-        amountTotal: amount,
+        amountTotal: session.amount_total,
         paymentLink: session.payment_link,
-        detectedTier: tierInfo.tier,
-        detectedPassType: tierInfo.passType,
       });
 
-      // Store purchase in database
-      if (session.customer_details?.email && amount > 0) {
-        const { error: insertError } = await supabase
+      if (session.customer_details?.email && (session.amount_total || 0) > 0) {
+        const email = session.customer_details.email;
+        const name = session.customer_details.name || null;
+        const paymentLinkId = typeof session.payment_link === 'string' ? session.payment_link : null;
+        const currency = session.currency || 'usd';
+
+        // Idempotency: skip if we already have records for this session
+        const { data: existing } = await supabase
           .from('purchases')
-          .insert({
-            email: session.customer_details.email,
-            name: session.customer_details.name || null,
-            stripe_session_id: session.id,
-            stripe_payment_link_id: typeof session.payment_link === 'string' ? session.payment_link : null,
-            amount: amount,
-            currency: session.currency || 'usd',
-            pass_type: tierInfo.passType,
-            tier: tierInfo.tier,
-            quantity: 1,
+          .select('id')
+          .eq('stripe_session_id', session.id)
+          .limit(1);
+
+        if (existing && existing.length > 0) {
+          console.log("Session already processed, skipping:", session.id);
+          return new Response(JSON.stringify({ received: true, skipped: true }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 200,
           });
-
-        if (insertError) {
-          console.error("Error inserting purchase:", insertError);
-        } else {
-          console.log("Purchase stored successfully");
         }
-      }
 
-      // Log analytics event
-      const { error: analyticsError } = await supabase
-        .from('analytics_events')
-        .insert({
-          event_name: 'purchase',
-          event_params: {
-            transaction_id: session.id,
-            value: amount / 100,
-            currency: session.currency || 'usd',
-            items: [{
+        // Fetch actual line items to get per-unit prices and quantities
+        let lineItems: Stripe.LineItem[] = [];
+        try {
+          const lineItemsResponse = await stripe.checkout.sessions.listLineItems(session.id);
+          lineItems = lineItemsResponse.data;
+          console.log("Fetched line items:", lineItems.length);
+        } catch (err) {
+          console.error("Failed to fetch line items, falling back to amount_total:", err);
+        }
+
+        if (lineItems.length > 0) {
+          // Insert one purchase record per line item
+          const analyticsItems: Array<Record<string, unknown>> = [];
+
+          for (const item of lineItems) {
+            const unitAmount = item.price?.unit_amount || 0;
+            const qty = item.quantity || 1;
+            const tierInfo = PRICE_TIER_MAP[unitAmount] || { tier: "unknown", passType: "unknown" };
+
+            console.log("Processing line item:", {
+              unitAmount,
+              quantity: qty,
+              itemTotal: item.amount_total,
+              detectedTier: tierInfo.tier,
+              detectedPassType: tierInfo.passType,
+            });
+
+            const { error: insertError } = await supabase
+              .from('purchases')
+              .insert({
+                email,
+                name,
+                stripe_session_id: session.id,
+                stripe_payment_link_id: paymentLinkId,
+                amount: item.amount_total,
+                currency,
+                pass_type: tierInfo.passType,
+                tier: tierInfo.tier,
+                quantity: qty,
+              });
+
+            if (insertError) {
+              console.error("Error inserting purchase for line item:", insertError);
+            } else {
+              console.log("Purchase stored for line item:", tierInfo.passType, qty);
+            }
+
+            analyticsItems.push({
               item_id: tierInfo.passType,
               item_name: `${tierInfo.tier} - ${tierInfo.passType}`,
-              currency: session.currency || 'usd',
-              price: amount / 100,
+              currency,
+              price: unitAmount / 100,
+              quantity: qty,
+            });
+          }
+
+          // Log analytics event with all items
+          const { error: analyticsError } = await supabase
+            .from('analytics_events')
+            .insert({
+              event_name: 'purchase',
+              event_params: {
+                transaction_id: session.id,
+                value: (session.amount_total || 0) / 100,
+                currency,
+                items: analyticsItems,
+              },
+              page_location: 'stripe_webhook',
+            });
+
+          if (analyticsError) {
+            console.error("Error logging analytics event:", analyticsError);
+          }
+        } else {
+          // Fallback: use amount_total when line items unavailable
+          const amount = session.amount_total || 0;
+          const tierInfo = PRICE_TIER_MAP[amount] || { tier: "unknown", passType: "unknown" };
+
+          console.log("Fallback: using amount_total for tier detection:", {
+            amount,
+            detectedTier: tierInfo.tier,
+            detectedPassType: tierInfo.passType,
+          });
+
+          const { error: insertError } = await supabase
+            .from('purchases')
+            .insert({
+              email,
+              name,
+              stripe_session_id: session.id,
+              stripe_payment_link_id: paymentLinkId,
+              amount,
+              currency,
+              pass_type: tierInfo.passType,
+              tier: tierInfo.tier,
               quantity: 1,
-            }]
-          },
-          page_location: 'stripe_webhook',
-        });
+            });
 
-      if (analyticsError) {
-        console.error("Error logging analytics event:", analyticsError);
+          if (insertError) {
+            console.error("Error inserting purchase:", insertError);
+          }
+
+          const { error: analyticsError } = await supabase
+            .from('analytics_events')
+            .insert({
+              event_name: 'purchase',
+              event_params: {
+                transaction_id: session.id,
+                value: amount / 100,
+                currency,
+                items: [{
+                  item_id: tierInfo.passType,
+                  item_name: `${tierInfo.tier} - ${tierInfo.passType}`,
+                  currency,
+                  price: amount / 100,
+                  quantity: 1,
+                }]
+              },
+              page_location: 'stripe_webhook',
+            });
+
+          if (analyticsError) {
+            console.error("Error logging analytics event:", analyticsError);
+          }
+        }
+
+        console.log("Purchase processing completed successfully");
       }
-
-      console.log("Purchase processing completed successfully");
     }
 
     return new Response(JSON.stringify({ received: true }), {

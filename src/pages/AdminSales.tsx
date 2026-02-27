@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, RefreshCw, LogOut } from 'lucide-react';
+import { Download, RefreshCw, LogOut, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,7 @@ const SEAT_CAP = 250;
 const AdminSales = () => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fixing, setFixing] = useState(false);
   const { toast } = useToast();
   const { signOut, user } = useAuth();
 
@@ -59,9 +60,34 @@ const AdminSales = () => {
 
   const totalRevenue = purchases.reduce((sum, p) => sum + p.amount, 0);
   const totalQuantity = purchases.reduce((sum, p) => sum + p.quantity, 0);
-  const agencyOwnerCount = purchases.filter(p => p.pass_type === 'agencyOwner').length;
-  const teamCount = purchases.filter(p => p.pass_type === 'team').length;
+  const agencyOwnerCount = purchases.filter(p => p.pass_type === 'agencyOwner').reduce((sum, p) => sum + p.quantity, 0);
+  const teamCount = purchases.filter(p => p.pass_type === 'team').reduce((sum, p) => sum + p.quantity, 0);
   const remainingSeats = SEAT_CAP - totalQuantity;
+  const unknownCount = purchases.filter(p => p.pass_type === 'unknown').length;
+
+  const fixUnknownPurchases = async () => {
+    setFixing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('reprocess-purchases');
+      if (error) throw error;
+      const fixed = data?.fixed ?? 0;
+      const failed = data?.failed ?? 0;
+      toast({
+        title: "Reprocess Complete",
+        description: `Fixed ${fixed} purchases${failed > 0 ? `, ${failed} failed` : ''}`,
+      });
+      await fetchPurchases();
+    } catch (error) {
+      console.error('Error fixing unknown purchases:', error);
+      toast({
+        title: "Error",
+        description: "Failed to reprocess unknown purchases",
+        variant: "destructive",
+      });
+    } finally {
+      setFixing(false);
+    }
+  };
 
   const formatPassType = (passType: string) => {
     switch (passType) {
@@ -123,7 +149,18 @@ const AdminSales = () => {
                 View Waitlist
               </Link>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {unknownCount > 0 && (
+                <Button
+                  onClick={fixUnknownPurchases}
+                  disabled={fixing}
+                  variant="destructive"
+                  size="sm"
+                >
+                  <AlertTriangle className={`w-4 h-4 mr-2 ${fixing ? 'animate-spin' : ''}`} />
+                  {fixing ? 'Fixing...' : `Fix ${unknownCount} Unknown`}
+                </Button>
+              )}
               <Button
                 onClick={fetchPurchases}
                 disabled={loading}
@@ -151,10 +188,10 @@ const AdminSales = () => {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Total Purchases</CardTitle>
+                <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{purchases.length}</div>
+                <div className="text-2xl font-bold">{totalQuantity}</div>
               </CardContent>
             </Card>
 
@@ -216,6 +253,7 @@ const AdminSales = () => {
                         <th className="text-left p-3">Pass Type</th>
                         <th className="text-left p-3">Tier</th>
                         <th className="text-left p-3">Amount</th>
+                        <th className="text-left p-3">Qty</th>
                         <th className="text-left p-3">Date</th>
                       </tr>
                     </thead>
@@ -227,6 +265,7 @@ const AdminSales = () => {
                           <td className="p-3">{formatPassType(purchase.pass_type)}</td>
                           <td className="p-3">{formatTier(purchase.tier)}</td>
                           <td className="p-3">${(purchase.amount / 100).toFixed(2)}</td>
+                          <td className="p-3">{purchase.quantity}</td>
                           <td className="p-3">
                             {new Date(purchase.created_at).toLocaleDateString()}
                           </td>
