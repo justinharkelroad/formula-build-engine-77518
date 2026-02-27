@@ -10,8 +10,8 @@ interface SEOProps {
 
 const SEO = ({ title, description, path = "/", noindex = false }: SEOProps) => {
   const canonical = `${CONFIG.SITE_URL}${path === "/" ? "" : path}`;
-  const ogImage = `${CONFIG.SITE_URL}${CONFIG.OG_IMAGE_1200x630}`;
-  const twitterImage = `${CONFIG.SITE_URL}${CONFIG.TW_IMAGE_1200x600}`;
+  const ogImage = CONFIG.OG_IMAGE_1200x630.startsWith("http") ? CONFIG.OG_IMAGE_1200x630 : `${CONFIG.SITE_URL}${CONFIG.OG_IMAGE_1200x630}`;
+  const twitterImage = CONFIG.TW_IMAGE_1200x600.startsWith("http") ? CONFIG.TW_IMAGE_1200x600 : `${CONFIG.SITE_URL}${CONFIG.TW_IMAGE_1200x600}`;
 
   return (
     <Helmet>
