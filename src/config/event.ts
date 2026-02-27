@@ -89,8 +89,8 @@ export const CONFIG = {
   BASE_TICKET_PRICE: "347",
   SEAT_CAP: 250,
   EARLY_BIRD_END_ISO: "2026-09-15T23:59:00-04:00",
-  OG_IMAGE_1200x630: "/assets/hero-1200x630.jpg",
-  TW_IMAGE_1200x600: "/assets/hero-1200x630.jpg",
+  OG_IMAGE_1200x630: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
+  TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
     { name: "Ricochet360", tier: "Platinum", logoUrl: "/lovable-uploads/29100412-4e6c-4333-b865-192e0fca781e.png", linkUrl: "https://ricochet360.com" },
