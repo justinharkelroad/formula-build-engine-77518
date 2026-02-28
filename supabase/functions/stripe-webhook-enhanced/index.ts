@@ -30,7 +30,7 @@ function buildConfirmationEmailHtml(name: string | null): string {
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>You're In — Florida Formula Forum 2026</title>
+<title>You're In — FORMULA 2026</title>
 </head>
 <body style="margin:0;padding:0;background-color:#1a1a1a;font-family:Arial,Helvetica,sans-serif;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a1a;padding:32px 16px;">
@@ -61,7 +61,7 @@ function buildConfirmationEmailHtml(name: string | null): string {
   <tr>
     <td style="padding:36px 32px 20px;text-align:center;">
       <h1 style="color:#f53214;font-size:32px;margin:0 0 8px;font-weight:900;">BOOM — You're In!</h1>
-      <p style="color:#555;font-size:16px;margin:0;">Your registration for the Florida Formula Forum is confirmed.</p>
+      <p style="color:#555;font-size:16px;margin:0;">Your registration for the FORMULA is confirmed.</p>
     </td>
   </tr>
 
@@ -73,7 +73,7 @@ function buildConfirmationEmailHtml(name: string | null): string {
         Hey ${firstName},
       </p>
       <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 24px;">
-        We are fired up to have you locked in. The Florida Formula Forum is going to be unlike anything you've experienced — real strategies, real connections, and a room full of agency owners who are serious about growth.
+        We are fired up to have you locked in. The FORMULA is going to be unlike anything you've experienced — real strategies, real connections, and a room full of agency owners who are serious about growth.
       </p>
 
       <!-- Event Details Card -->
@@ -164,7 +164,7 @@ function buildConfirmationEmailHtml(name: string | null): string {
   </tr>
   <tr>
     <td style="background-color:#1a1a1a;padding:24px 32px;text-align:center;">
-      <p style="color:#999;font-size:13px;margin:0 0 4px;">Florida Formula Forum &middot; October 14–16, 2026 &middot; Orlando, FL</p>
+      <p style="color:#999;font-size:13px;margin:0 0 4px;">FORMULA &middot; October 14–16, 2026 &middot; Orlando, FL</p>
       <p style="color:#666;font-size:12px;margin:0;">JW Marriott Orlando Bonnet Creek &middot; 14900 Chelonia Pkwy, Orlando, FL 32821</p>
     </td>
   </tr>
@@ -187,10 +187,10 @@ async function sendConfirmationEmail(email: string, name: string | null): Promis
   const recipientName = name || email.split("@")[0];
 
   const payload = {
-    sender: { name: "Florida Formula Forum", email: "justin@f3florida.com" },
+    sender: { name: "FORMULA", email: "justin@f3florida.com" },
     to: [{ email, name: recipientName }],
     replyTo: { email: "justin@f3florida.com", name: "Justin" },
-    subject: "You're In — Florida Formula Forum 2026 Registration Confirmed",
+    subject: "You're In — FORMULA 2026 Registration Confirmed",
     htmlContent,
   };
 
