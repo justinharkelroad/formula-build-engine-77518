@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.stripe-webhook-enhanced]
 verify_jwt = false
+
+[functions.test-confirmation-email]
+verify_jwt = false
