@@ -37,7 +37,7 @@ const PassTypeDialog = ({ tier = "earlyBird" }: PassTypeDialogProps) => {
           className="whitespace-nowrap"
           onClick={() => trackCTAClick('reserve_my_seat')}
         >
-          Reserve My Seat
+          EARLY BIRD PRICING
           <ArrowRight className="ml-2" size={16} />
         </Button>
       </DialogTrigger>
