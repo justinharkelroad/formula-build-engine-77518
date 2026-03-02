@@ -5,6 +5,7 @@ import { ACCESS_PASS_BENEFITS } from "@/config/benefits";
 import { Check, Star } from "lucide-react";
 import { trackBeginCheckout, trackCTAClick } from "@/hooks/useAnalytics";
 import VimeoModal from "@/components/VimeoModal";
+import CountdownTimer from "@/components/CountdownTimer";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -60,6 +61,14 @@ const VIP = () => {
         </header>
 
         <section className="max-w-3xl mx-auto space-y-6">
+          <div className="bg-muted/50 border border-border rounded-lg px-6 py-4">
+            <CountdownTimer
+              fallbackDeadline="2026-03-31T23:59:59"
+              label="Price increases after March 31 — lock in your rate:"
+              className="text-center"
+            />
+          </div>
+
           {/* Agency Owner Card */}
           <div className="border border-primary/30 rounded-2xl p-6 bg-card/80 backdrop-blur-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -11,6 +11,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import { PRICING, type PricingTier } from "@/config/pricing";
 import { trackBeginCheckout, trackCTAClick } from '@/hooks/useAnalytics';
+import CountdownTimer from "@/components/CountdownTimer";
 
 interface PassTypeDialogProps {
   tier?: PricingTier;
@@ -48,6 +49,13 @@ const PassTypeDialog = ({ tier = "earlyBird" }: PassTypeDialogProps) => {
             Complete checkout securely with Stripe.
           </DialogDescription>
         </DialogHeader>
+        <div className="bg-muted/50 rounded-lg px-4 py-3 mb-2">
+          <CountdownTimer
+            fallbackDeadline="2026-03-31T23:59:59"
+            label="Price increases after March 31:"
+            className="text-center"
+          />
+        </div>
         <div className="flex flex-col gap-4 py-4">
           {/* Agency Owner Pass */}
           <div className="space-y-3">
