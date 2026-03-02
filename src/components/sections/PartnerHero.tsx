@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const PartnerHero = () => {
   const handleScrollToLevels = () => {
@@ -18,12 +19,24 @@ const PartnerHero = () => {
           </h1>
           <Button
             variant="secondary"
-            size="xl" 
-            className="mb-8"
+            size="xl"
+            className="mb-10"
             onClick={handleScrollToLevels}
           >
             View Partnership Levels
           </Button>
+
+          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
+            <AspectRatio ratio={16 / 9}>
+              <iframe
+                src="https://player.vimeo.com/video/1169705054?badge=0&autopause=0&player_id=0&app_id=58479"
+                title="Formula Forum Partner Video"
+                className="w-full h-full"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                allowFullScreen
+              />
+            </AspectRatio>
+          </div>
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
