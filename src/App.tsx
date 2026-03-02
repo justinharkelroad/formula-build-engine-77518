@@ -37,6 +37,7 @@ const AdminMetrics = lazy(() => import("./pages/AdminMetrics"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
 const Gallery = lazy(() => import("./pages/Gallery"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/vip" element={<VIP />} />
             <Route path="/register" element={<Navigate to="/pricing" replace />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

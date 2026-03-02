@@ -1,4 +1,5 @@
 import { MapPin, Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ContactInfo = () => {
   return (
@@ -40,6 +41,12 @@ const ContactInfo = () => {
                 (260) 515-1349
               </a>
             </div>
+          </div>
+
+          <div className="text-center mt-8 pt-8 border-t">
+            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4">
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>

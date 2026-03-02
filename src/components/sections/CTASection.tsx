@@ -1,5 +1,6 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import PassTypeDialog from '@/components/PassTypeDialog';
+import { Link } from 'react-router-dom';
 
 const CTASection = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -25,6 +26,12 @@ const CTASection = () => {
 
         <div className="flex justify-center">
           <PassTypeDialog />
+        </div>
+
+        <div className="mt-16">
+          <Link to="/privacy" className="text-sm text-white/50 hover:text-white/80 transition-colors">
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </section>
