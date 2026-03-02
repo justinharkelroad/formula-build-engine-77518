@@ -16,7 +16,6 @@ const PartnerLevels = () => {
   const tiers: Tier[] = [
     {
       name: "Platinum",
-      soldOut: true,
       price: "$15,000",
       icon: Crown,
       color: "bg-gradient-to-br from-slate-400 to-slate-600",
@@ -37,7 +36,6 @@ const PartnerLevels = () => {
     },
     {
       name: "Gold",
-      soldOut: true,
       price: "$10,000",
       icon: Award,
       color: "bg-gradient-to-br from-accent to-warning",

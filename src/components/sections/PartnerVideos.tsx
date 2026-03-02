@@ -1,5 +1,4 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Badge } from "@/components/ui/badge";
 
 const PartnerVideos = () => {
   const videos = [
@@ -88,7 +87,7 @@ const PartnerVideos = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent mb-4">
-            How Our Partners Can Help Your Agency
+            See Our 2025 Partner Podcast. We're excited for 2026.
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </div>
@@ -100,11 +99,6 @@ const PartnerVideos = () => {
               className="group transform transition-all duration-300 hover:scale-105"
             >
               <div className="relative bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-2xl border border-white/10 hover:shadow-3xl hover:border-primary/20 transition-all duration-300">
-                {(video.company === "RICOCHET" || video.company === "MEDIA ALPHA") && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 bg-gradient-to-r from-yellow-500 to-amber-500 text-white border-0 text-[10px] font-bold px-4 py-1 whitespace-nowrap">
-                    PLATINUM PARTNER
-                  </Badge>
-                )}
                 <div className="mb-4 overflow-hidden rounded-xl shadow-lg">
                   <AspectRatio ratio={16 / 9}>
                     <iframe

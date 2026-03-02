@@ -16,10 +16,7 @@ const PartnerHero = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
             Fuel Agency Success. Amplify Your Brand.
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-white/90">
-            Become an F³ Partner & stand on the front lines of industry innovation.
-          </p>
-          <Button 
+          <Button
             variant="secondary"
             size="xl" 
             className="mb-8"
