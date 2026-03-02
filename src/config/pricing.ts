@@ -2,14 +2,14 @@ export const PRICING = {
   earlyBird: {
     agencyOwner: {
       name: "Agency Owner",
-      fullPrice: 949,
+      fullPrice: 897,
       price: 647,
       url: "https://buy.stripe.com/28E7sLgEH7MW8Z26CI3wQ08",
       passType: "agencyOwner" as const,
     },
     team: {
       name: "Team Member",
-      fullPrice: 649,
+      fullPrice: 597,
       price: 347,
       url: "https://buy.stripe.com/9B67sLgEHc3c1wAgdi3wQ0a",
       passType: "team" as const,
