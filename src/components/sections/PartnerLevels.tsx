@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Star, Award, Crown } from "lucide-react";
+import { CheckCircle, Star, Award, Crown, ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 type Tier = {
   name: string;
-  soldOut?: boolean;
   limit?: number;
   price: string;
   icon: any;
@@ -13,6 +13,8 @@ type Tier = {
 };
 
 const PartnerLevels = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   const tiers: Tier[] = [
     {
       name: "Platinum",
@@ -99,68 +101,72 @@ const PartnerLevels = () => {
         <p className="text-lg text-center mb-12 text-muted-foreground max-w-2xl mx-auto">
           Choose the level that best fits your goals. All partnerships include brand exposure to growth-focused insurance professionals.
         </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          {tiers.map((tier, index) => (
-            <div key={index} className="bg-card rounded-lg shadow-sm border hover:shadow-brand transition-shadow relative">
-              {tier.soldOut && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-destructive text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    SOLD OUT
-                  </span>
-                </div>
-              )}
-              {tier.limit && !tier.soldOut && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-destructive text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Only {tier.limit} Left
-                  </span>
-                </div>
-              )}
-              
-              <div className="p-8">
-                <div className={`${tier.color} w-16 h-16 rounded-lg flex items-center justify-center mb-6 mx-auto`}>
-                  <tier.icon className="text-white" size={32} />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-center mb-2 text-card-foreground">
-                  {tier.name}
-                </h3>
-                
-                <div className="text-center mb-6">
-                  <span className="text-3xl font-bold text-foreground">{tier.price}</span>
-                </div>
-                
-                <div className="space-y-3 mb-8">
-                  {tier.benefits.map((benefit, benefitIndex) => (
-                    <div key={benefitIndex} className="flex items-start gap-3">
-                      <CheckCircle className="text-primary mt-0.5 flex-shrink-0" size={18} />
-                      <span className="text-sm text-card-foreground">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <Button 
-                  variant={tier.soldOut ? "outline" : "cta"} 
-                  className="w-full"
-                  onClick={() => {
-                    if (tier.soldOut) return;
-                    if (tier.link) {
-                      window.open(tier.link, '_blank');
-                    } else {
-                      window.location.href = '/contact';
-                    }
-                  }}
-                  disabled={tier.soldOut}
+
+        <div className="max-w-3xl mx-auto space-y-3">
+          {tiers.map((tier, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div key={index} className="bg-card rounded-lg border shadow-sm overflow-hidden">
+                {/* Accordion header — always visible */}
+                <button
+                  type="button"
+                  className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-muted/30 transition-colors"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  aria-expanded={isOpen}
                 >
-                  {tier.soldOut ? 'SOLD OUT' : 
-                   tier.name === 'Silver' ? 'LOCK IN SILVER' :
-                   tier.name === 'Bronze' ? 'LOCK IN BRONZE' :
-                   `Apply for ${tier.name}`}
-                </Button>
+                  <div className={`${tier.color} w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0`}>
+                    <tier.icon className="text-white" size={20} />
+                  </div>
+                  <div className="flex-1 flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl font-bold text-card-foreground">{tier.name}</span>
+                      {tier.limit && (
+                        <span className="text-xs font-semibold bg-destructive text-white px-2 py-0.5 rounded-full">
+                          Only {tier.limit} Left
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl font-bold text-foreground">{tier.price}</span>
+                      <ChevronDown
+                        size={20}
+                        className={`text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                      />
+                    </div>
+                  </div>
+                </button>
+
+                {/* Accordion body — benefits + CTA */}
+                {isOpen && (
+                  <div className="px-6 pb-6 border-t">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mt-5 mb-6">
+                      {tier.benefits.map((benefit, benefitIndex) => (
+                        <div key={benefitIndex} className="flex items-start gap-2">
+                          <CheckCircle className="text-primary mt-0.5 flex-shrink-0" size={16} />
+                          <span className="text-sm text-card-foreground">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <Button
+                      variant="cta"
+                      className="w-full sm:w-auto"
+                      onClick={() => {
+                        if (tier.link) {
+                          window.open(tier.link, '_blank');
+                        } else {
+                          window.location.href = '/contact';
+                        }
+                      }}
+                    >
+                      {tier.name === 'Silver' ? 'LOCK IN SILVER' :
+                       tier.name === 'Bronze' ? 'LOCK IN BRONZE' :
+                       `Apply for ${tier.name}`}
+                    </Button>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

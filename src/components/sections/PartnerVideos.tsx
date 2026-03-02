@@ -87,7 +87,7 @@ const PartnerVideos = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent mb-4">
-            See Our 2025 Partner Podcast. We're excited for 2026.
+            See Our 2025 Partner Podcasts. We're excited for 2026.
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </div>

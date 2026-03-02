@@ -18,7 +18,7 @@ const PartnerMarquee = () => {
     "Cover Desk", "Hagerty"
   ];
 
-  const separator = <span className="mx-6 text-primary font-bold text-2xl select-none">·</span>;
+  const separator = <span className="mx-6 text-white/30 font-bold text-2xl select-none">·</span>;
 
   const marqueeItems = (
     <>
@@ -50,7 +50,7 @@ const PartnerMarquee = () => {
       ))}
       {textPartners.map((name, index) => (
         <span key={`text-${index}`} className="inline-flex items-center mx-8">
-          <span className="text-xl font-bold text-foreground tracking-wide whitespace-nowrap">
+          <span className="text-xl font-bold text-white tracking-wide whitespace-nowrap">
             {name}
           </span>
           {separator}
@@ -60,9 +60,9 @@ const PartnerMarquee = () => {
   );
 
   return (
-    <section className="py-12 bg-muted/30 border-t border-b">
+    <section className="py-12 bg-slate-900 border-t border-b border-slate-700">
       <div className="container mx-auto px-4 mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-foreground">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-white">
           Thank You to Our 2025 Partners
         </h2>
       </div>
