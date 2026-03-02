@@ -18,14 +18,14 @@ export const PRICING = {
   vip: {
     agencyOwner: {
       name: "Agency Owner",
-      fullPrice: 949,
+      fullPrice: 897,
       price: 448,
       url: "https://buy.stripe.com/cNieVd9cfd7g1wA4uA3wQ0b",
       passType: "agencyOwner" as const,
     },
     team: {
       name: "Team Member",
-      fullPrice: 649,
+      fullPrice: 597,
       price: 298,
       url: "https://buy.stripe.com/14A4gz7474AK0sw6CI3wQ0c",
       passType: "team" as const,
