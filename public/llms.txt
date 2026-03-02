@@ -26,7 +26,7 @@ Formula Forum uses a proprietary four-step session format called the Format Fram
 3. Breakouts (10 min): Small groups share takeaways and listen to others.
 4. Speaker Close (3 min): Solidify training and outline next steps.
 
-Every attendee leaves with a printed "Book of Formulas" playbook containing action maps from every speaker, plus enrollment in a 90-Day Scale-Up Challenge for post-event accountability.
+Every attendee leaves with a printed "Book of Formulas" playbook containing action maps from every speaker.
 
 ## Topics Covered
 
@@ -95,7 +95,7 @@ Q: Is there a group discount?
 A: Yes. Teams of five or more save 20% on registration. Email Gregg@f3florida.com for a custom group discount code.
 
 Q: What's included in the registration fee?
-A: Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, meals during the conference, and the 90-day post-event Scale-Up Challenge program.
+A: Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, and meals during the conference.
 
 Q: Will sessions be recorded?
 A: No. Sessions are not recorded to ensure open, honest discussions and to protect the confidential strategies shared by speakers and attendees.

@@ -193,7 +193,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "What's included in the registration fee?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, meals during the conference, and the 90-day post-event Scale-Up Challenge program."
+          "text": "Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, and meals during the conference."
         }
       },
       {
@@ -238,7 +238,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "@context": "https://schema.org",
     "@type": "AggregateOffer",
     "name": `${CONFIG.EVENT_NAME} Passes`,
-    "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, printed playbook, networking events, and 90-day challenge.`,
+    "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, printed playbook, and networking events.`,
     "priceCurrency": "USD",
     "lowPrice": "347",
     "highPrice": "647",
