@@ -57,7 +57,6 @@ const PartnerLevels = () => {
     },
     {
       name: "Silver",
-      limit: 3,
       price: "$7,500",
       icon: Star,
       color: "bg-gradient-to-br from-slate-300 to-slate-500",

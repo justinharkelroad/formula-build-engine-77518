@@ -24,7 +24,8 @@ const Pricing = () => {
           <h2 className="text-xl text-muted-foreground">Choose your pass</h2>
           <div className="mt-6">
             <CountdownTimer
-              autoReset={true}
+              fallbackDeadline="2026-03-31T23:59:59"
+              label="Price increases after March 31 — lock in your rate:"
               className="text-center"
             />
           </div>

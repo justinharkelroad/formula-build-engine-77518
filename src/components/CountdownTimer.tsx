@@ -5,9 +5,10 @@ interface CountdownTimerProps {
   autoReset?: boolean;
   className?: string;
   fallbackDeadline?: string;
+  label?: string;
 }
 
-const CountdownTimer = ({ autoReset = false, className = "", fallbackDeadline }: CountdownTimerProps) => {
+const CountdownTimer = ({ autoReset = false, className = "", fallbackDeadline, label }: CountdownTimerProps) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -71,6 +72,7 @@ const CountdownTimer = ({ autoReset = false, className = "", fallbackDeadline }:
   }
 
   const getCountdownLabel = () => {
+    if (label) return label;
     if (!autoReset || countdownInfo.isOriginal) {
       return "Early-bird pricing ends in:";
     }

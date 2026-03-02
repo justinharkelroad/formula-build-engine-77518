@@ -1,4 +1,5 @@
 import HeroSection from "@/components/sections/HeroSection";
+import CountdownTimer from "@/components/CountdownTimer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import CustomCursor from "@/components/CustomCursor";
@@ -150,6 +151,17 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Price-change countdown */}
+      <section className="py-12 px-4 bg-gradient-primary text-white">
+        <div className="container mx-auto max-w-3xl text-center">
+          <CountdownTimer
+            fallbackDeadline="2026-03-31T23:59:59"
+            label="Price increases after March 31 — lock in your rate:"
+            className="text-white [&>div:first-child]:text-white/90 [&>div:first-child]:text-lg [&>div:last-child]:justify-center"
+          />
+        </div>
+      </section>
+
       <CTASection />
     </div>
   );
