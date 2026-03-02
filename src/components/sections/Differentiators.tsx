@@ -19,8 +19,8 @@ const Differentiators = () => {
     },
     {
       icon: Target,
-      title: "Real-time 90-day challenge follow-up",
-      description: "Your transformation doesn't end when the conference does. Get ongoing support for 90 days."
+      title: "Actionable playbook you build on-site",
+      description: "Walk away with a custom growth plan you created during the sessions — not just notes, but a real strategy."
     }
   ];
 

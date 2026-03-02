@@ -25,7 +25,7 @@ const FAQAccordion = () => {
     },
     {
       q: "What's included in the registration fee?",
-      a: "Your Formula Forum registration includes access to all speaker sessions and general sessions, small-group breakout sessions, the printed Book of Formulas playbook with action maps from every speaker, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), an optional morning group workout, and enrollment in the 90-Day Scale-Up Challenge post-event accountability program."
+      a: "Your Formula Forum registration includes access to all speaker sessions and general sessions, small-group breakout sessions, the printed Book of Formulas playbook with action maps from every speaker, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), and an optional morning group workout."
     },
     {
       q: "Will sessions be recorded?",

@@ -34,7 +34,7 @@ const Pricing = () => {
         <section className="max-w-4xl mx-auto space-y-8">
           <article className="text-center space-y-4">
             <p data-speakable="true">
-              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include access to all sessions, the printed Book of Formulas playbook, networking events, meals, and enrollment in the 90-Day Scale-Up Challenge. Limited to 250 attendees.
+              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include access to all sessions, the printed Book of Formulas playbook, networking events, and meals. Limited to 250 attendees.
             </p>
           </article>
 
