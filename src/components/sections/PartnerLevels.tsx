@@ -22,18 +22,16 @@ const PartnerLevels = () => {
       icon: Crown,
       color: "bg-gradient-to-br from-slate-400 to-slate-600",
       benefits: [
-        "Premium booth: Two 6-ft tables in a prime spot",
-        "Co-branding: Welcome Reception & Thursday-Night Event",
+        "Premium booth: Two 6-ft tables in a PLATINUM location",
+        "Co-branding Option: Welcome Reception & Thursday-Night Event",
         "8 full-access passes (sessions, meals, evening events)",
         "5-min live stage slot during a General Session",
-        "Logo on event Step-and-Repeat backdrop",
         "1-on-1 video-podcast interview promoted to full email list + socials",
         "30-sec silent video ad on every General Session break screen",
-        "Branded F³ swag for your attending team",
         "30-sec video loop on partnership-room & hallway screens",
-        "Attendee lead list 30 days pre-event + exclusive email blast",
-        "Primary + VIP placement in the mobile app",
-        "Full photo/video package with your logo clearly visible"
+        "Attendee lead list 3 days pre-event + exclusive email blast",
+        "For You Page Banner + VIP placement in the mobile app",
+        "2 Participant Access Passes into General Session"
       ]
     },
     {
@@ -42,17 +40,16 @@ const PartnerLevels = () => {
       icon: Award,
       color: "bg-gradient-to-br from-accent to-warning",
       benefits: [
-        "Two 6-ft tables (premium placement)",
-        "Option to co-brand Welcome Reception & Thursday-Night Event",
+        "Two 6-ft tables in a GOLD location",
+        "Option to co-brand Breakfast & Lunch",
         "6 full-access passes",
         "On-stage verbal shout-out during General Session",
         "1-on-1 video-podcast promotion",
         "30-sec silent video ad on General Session break screens",
-        "Team swag packs",
         "30-sec hallway/partnership-room video loop",
-        "Lead list 10 days pre-event",
+        "Lead list 1 day pre-event",
         "VIP listing in the mobile app",
-        "Post-event photo/video bundle with branding"
+        "1 Participant Access Pass into General Session"
       ]
     },
     {
@@ -62,15 +59,14 @@ const PartnerLevels = () => {
       color: "bg-gradient-to-br from-slate-300 to-slate-500",
       link: "https://buy.stripe.com/bJeeVd0FJd7gb7a5yE3wQ02",
       benefits: [
-        "One 6-ft table booth",
+        "One 6-ft table booth in SILVER location",
         "4 full-access passes",
         "General Session voice call-out",
         "1-on-1 video-podcast promotion",
-        "Team swag packs",
         "30-sec hallway/partnership-room video loop",
-        "Lead list 5 days post-event",
+        "Lead list 2 days post-event",
         "Standard listing in the mobile app",
-        "Post-event photo/video bundle with branding"
+        "1 Participant Access Pass into General Session"
       ]
     },
     {
@@ -80,13 +76,13 @@ const PartnerLevels = () => {
       color: "bg-gradient-to-br from-amber-600 to-amber-800",
       link: "https://buy.stripe.com/14A28r9cf5EO0swaSY3wQ03",
       benefits: [
-        "One 6-ft table booth",
+        "One 6-ft table booth in BRONZE location",
         "2 full-access passes",
         "1-on-1 video-podcast promotion",
-        "Team swag packs",
         "Lead list 10 days post-event",
         "Standard listing in the mobile app",
-        "Post-event photo/video bundle with branding"
+        "Post-event photo/video bundle with branding",
+        "1 Participant Access Pass into General Session"
       ]
     }
   ];
