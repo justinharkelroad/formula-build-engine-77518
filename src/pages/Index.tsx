@@ -126,7 +126,7 @@ const Index = () => {
       >
         <Button asChild variant="cta" size="lg" className="mt-6 text-lg">
           <a href="https://book.passkey.com/go/FFF2026" target="_blank" rel="noopener noreferrer">
-            Secure Your Discounted Room Before They Sell Out!
+            Secure Discounted Room
           </a>
         </Button>
       </FeatureSection>
