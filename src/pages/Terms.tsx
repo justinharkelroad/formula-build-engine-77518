@@ -72,8 +72,8 @@ const Terms = () => {
             <h2 className="text-xl font-semibold mb-2">7. Contact</h2>
             <p className="text-muted-foreground">
               Questions? Email us at{" "}
-              <a href="mailto:support@theformulaforum.com" className="text-primary underline underline-offset-4 hover:text-primary/80">
-                support@theformulaforum.com
+              <a href="mailto:info@theformulaforum.com" className="text-primary underline underline-offset-4 hover:text-primary/80">
+                info@theformulaforum.com
               </a>.
             </p>
           </div>
