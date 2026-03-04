@@ -155,7 +155,9 @@ const PartnerLevels = () => {
                         }
                       }}
                     >
-                      {tier.name === 'Silver' ? 'LOCK IN SILVER' :
+                      {tier.name === 'Platinum' ? 'LOCK IN PLATINUM' :
+                       tier.name === 'Gold' ? 'LOCK IN GOLD' :
+                       tier.name === 'Silver' ? 'LOCK IN SILVER' :
                        tier.name === 'Bronze' ? 'LOCK IN BRONZE' :
                        `Apply for ${tier.name}`}
                     </Button>
