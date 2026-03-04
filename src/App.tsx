@@ -77,6 +77,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/vip" element={<VIP />} />
             <Route path="/register" element={<Navigate to="/pricing" replace />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
