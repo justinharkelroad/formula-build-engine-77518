@@ -21,6 +21,7 @@ const PartnerLevels = () => {
       price: "$15,000",
       icon: Crown,
       color: "bg-gradient-to-br from-slate-400 to-slate-600",
+      link: "https://buy.stripe.com/28EaEXdsvebk1wAbX23wQ0d",
       benefits: [
         "Premium booth: Two 6-ft tables in a PLATINUM location",
         "Co-branding Option: Welcome Reception & Thursday-Night Event",
