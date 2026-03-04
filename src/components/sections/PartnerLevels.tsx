@@ -40,6 +40,7 @@ const PartnerLevels = () => {
       price: "$10,000",
       icon: Award,
       color: "bg-gradient-to-br from-accent to-warning",
+      link: "https://buy.stripe.com/8x2bJ1corffob7a0ek3wQ0e",
       benefits: [
         "Two 6-ft tables in a GOLD location",
         "Option to co-brand Breakfast & Lunch",
