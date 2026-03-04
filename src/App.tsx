@@ -38,6 +38,7 @@ const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
