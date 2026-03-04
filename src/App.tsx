@@ -38,6 +38,7 @@ const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -76,6 +77,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/vip" element={<VIP />} />
             <Route path="/register" element={<Navigate to="/pricing" replace />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
