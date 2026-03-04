@@ -21,6 +21,7 @@ const PartnerLevels = () => {
       price: "$15,000",
       icon: Crown,
       color: "bg-gradient-to-br from-slate-400 to-slate-600",
+      link: "https://buy.stripe.com/28EaEXdsvebk1wAbX23wQ0d",
       benefits: [
         "Premium booth: Two 6-ft tables in a PLATINUM location",
         "Co-branding Option: Welcome Reception & Thursday-Night Event",
@@ -39,6 +40,7 @@ const PartnerLevels = () => {
       price: "$10,000",
       icon: Award,
       color: "bg-gradient-to-br from-accent to-warning",
+      link: "https://buy.stripe.com/8x2bJ1corffob7a0ek3wQ0e",
       benefits: [
         "Two 6-ft tables in a GOLD location",
         "Option to co-brand Breakfast & Lunch",
@@ -153,7 +155,9 @@ const PartnerLevels = () => {
                         }
                       }}
                     >
-                      {tier.name === 'Silver' ? 'LOCK IN SILVER' :
+                      {tier.name === 'Platinum' ? 'LOCK IN PLATINUM' :
+                       tier.name === 'Gold' ? 'LOCK IN GOLD' :
+                       tier.name === 'Silver' ? 'LOCK IN SILVER' :
                        tier.name === 'Bronze' ? 'LOCK IN BRONZE' :
                        `Apply for ${tier.name}`}
                     </Button>
