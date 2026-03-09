@@ -73,6 +73,14 @@ const PartnerVideos = () => {
     {
       url: "https://youtu.be/_mLcM6aXGno",
       company: "POST PROS"
+    },
+    {
+      url: "https://youtu.be/gXiTSNMAzgQ",
+      company: "EMBRACE PET INSURANCE"
+    },
+    {
+      url: "https://youtu.be/eiJuHioRR6Q",
+      company: "DESTINY RESCUE"
     }
   ];
 

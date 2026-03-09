@@ -5,7 +5,8 @@ const PartnerMarquee = () => {
     "Embrace Pet Insurance", "Smart Financial", "EOS", "Smarketing",
     "Search Perfect", "Team Hired", "Slide", "Braishfield",
     "Evergreen", "Agency Tool Chest", "Ivantage", "Quote Nerds",
-    "TopSphere Media", "Fl Penn / Edison / Ovation", "Cover Desk", "Hagerty", "Post Pros"
+    "TopSphere Media", "Fl Penn / Edison / Ovation", "Cover Desk", "Hagerty", "Post Pros",
+    "Destiny Rescue", "Top Tier Recruiting"
   ];
 
   const separator = <span className="mx-6 text-white/30 select-none font-bold">·</span>;
