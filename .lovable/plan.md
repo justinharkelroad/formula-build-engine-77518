@@ -1,12 +1,29 @@
 
+# Fix Vimeo Video Modal: Landscape Layout and Visible Close Button
 
-## Fix: Add Post Pros to Partner Marquee and Partner Videos
+## Problems
+1. The video uses `aspect-[9/16]` (portrait) but the Vimeo videos are landscape — causing the squished look
+2. The close button is hard to find: the custom X blends into the black background, and the dialog's built-in X is tiny
+3. The modal is only 500px wide, too small for landscape video
 
-Post Pros exists on the `/2025partners` (PartnerPodcasts) page but was never added to two components on the `/partners` page:
+## Changes
 
-### Changes
+### 1. Update `src/components/VimeoModal.tsx`
+- Change aspect ratio from `aspect-[9/16]` to `aspect-video` (16:9 landscape)
+- Increase max-width from `md:max-w-[500px]` to `md:max-w-[900px]` for proper landscape viewing
+- Make the close button larger, more prominent with a white background and better contrast
+- Position it outside/above the video so it's always clearly visible
 
-1. **`src/components/sections/PartnerMarquee.tsx`** — Add "Post Pros" to the partners array (line 8, alongside the other names).
+### Technical Details
 
-2. **`src/components/sections/PartnerVideos.tsx`** — Add a new video entry for Post Pros with YouTube URL `https://youtu.be/_mLcM6aXGno` and company name "POST PROS".
+```text
+Before:
+- max-w: 500px, aspect: 9/16 (portrait)
+- Close button: small, blends into black
 
+After:
+- max-w: 900px, aspect: 16/9 (landscape)  
+- Close button: larger, high contrast, positioned top-right outside video area
+```
+
+No other files need changes — the VimeoModal is already used correctly in Index.tsx and VIP.tsx.

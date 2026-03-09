@@ -69,6 +69,10 @@ const PartnerVideos = () => {
     {
       url: "https://youtu.be/vIyGxtvCcto",
       company: "AMERICAN INTEGRITY INSURANCE"
+    },
+    {
+      url: "https://youtu.be/_mLcM6aXGno",
+      company: "POST PROS"
     }
   ];
 
