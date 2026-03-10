@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.test-confirmation-email]
 verify_jwt = false
+
+[functions.send-partner-welcome]
+verify_jwt = false
+
+[functions.reprocess-purchases]
+verify_jwt = false
