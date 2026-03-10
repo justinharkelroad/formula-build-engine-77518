@@ -113,20 +113,21 @@ const AdminSales = () => {
   const fixUnknownPurchases = async () => {
     setFixing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('reprocess-purchases');
+      // Call the database RPC directly — no edge function needed
+      const { data, error } = await supabase.rpc('fix_partner_purchases' as any);
       if (error) throw error;
-      const fixed = data?.fixed ?? 0;
-      const failed = data?.failed ?? 0;
+      const purchasesFixed = (data as any)?.purchases_fixed ?? 0;
+      const profilesCreated = (data as any)?.profiles_created ?? 0;
       toast({
-        title: "Reprocess Complete",
-        description: `Fixed ${fixed} purchases${failed > 0 ? `, ${failed} failed` : ''}`,
+        title: "Partners Fixed",
+        description: `${purchasesFixed} purchases reclassified, ${profilesCreated} partner profiles created`,
       });
       await fetchData();
     } catch (error) {
-      console.error('Error fixing unknown purchases:', error);
+      console.error('Error fixing partner purchases:', error);
       toast({
         title: "Error",
-        description: "Failed to reprocess unknown purchases",
+        description: "Failed to fix partner purchases. Make sure the migration has been applied.",
         variant: "destructive",
       });
     } finally {
