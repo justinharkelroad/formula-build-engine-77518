@@ -118,8 +118,8 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "longitude": -81.5300
       }
     },
-    "image": [`${siteUrl}${CONFIG.OG_IMAGE_1200x630}`],
-    "description": "Three-day insurance agency growth conference in Orlando with workshops, breakouts, a printed Book of Formulas playbook, and a 90-day scale-up blueprint.",
+    "image": [CONFIG.OG_IMAGE_1200x630.startsWith("http") ? CONFIG.OG_IMAGE_1200x630 : `${siteUrl}${CONFIG.OG_IMAGE_1200x630}`],
+    "description": "Three-day insurance agency growth conference in Orlando with workshops, breakouts, and a printed Book of Formulas playbook.",
     "organizer": {
       "@type": "Organization",
       "name": "Formula Forum",
@@ -161,7 +161,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "How do I book the hotel room block?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use the room-block link on the Venue page or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2025. The group rate is $239 per night. The cut-off date is September 15, 2026."
+          "text": "Use the room-block link on the Venue page or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2026. The group rate is $239 per night. The cut-off date is September 15, 2026."
         }
       },
       {
@@ -318,15 +318,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
 
   return (
     <Helmet>
-      {/* WebSite schema — all pages */}
-      <script type="application/ld+json">
-        {JSON.stringify(webSiteSchema)}
-      </script>
-
-      {/* Organization schema — all pages */}
-      <script type="application/ld+json">
-        {JSON.stringify(organizationSchema)}
-      </script>
+      {/* WebSite and Organization schemas are in static index.html — no duplicates needed here */}
 
       {/* Speakable schema — all pages */}
       <script type="application/ld+json">

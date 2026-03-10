@@ -6,11 +6,10 @@ import PartnerVideos from "@/components/sections/PartnerVideos";
 import PartnerCTA from "@/components/sections/PartnerCTA";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import { CONFIG } from "@/config/event";
 
 const Partners = () => {
-  const title = `${CONFIG.EVENT_NAME} Sponsorships — Reach ${CONFIG.SEAT_CAP}+ Insurance Agencies | ${CONFIG.CITY}, ${CONFIG.STATE}`;
-  const description = `Sponsor ${CONFIG.EVENT_NAME} to connect with ${CONFIG.SEAT_CAP}+ growth-focused insurance professionals. Packages, branding, 1:1 meetings & lead access.`;
+  const title = "Partners & Sponsors | Formula Forum 2026";
+  const description = "Formula Forum 2026 partners: Ricochet360, The Standard, and MediaAlpha (Platinum), plus Gold, Silver, and 15+ additional insurance industry sponsors.";
   return (
     <div className="min-h-screen bg-background">
       <SEO title={title} description={description} path="/partners" />

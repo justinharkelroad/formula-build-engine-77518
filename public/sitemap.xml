@@ -1,73 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://f3florida.com/</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/agenda</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/speakers</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/speakers</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/pricing</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/pricing</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/agenda</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/venue</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://theformulaforum.com/format</loc>
+    <lastmod>2026-03-10</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/faq</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/venue</loc>
+    <lastmod>2026-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://theformulaforum.com/faq</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/format</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/partners</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/gallery</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://theformulaforum.com/contact</loc>
+    <lastmod>2026-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://theformulaforum.com/gallery</loc>
+    <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://f3florida.com/contact</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://f3florida.com/partners</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://f3florida.com/survey</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://f3florida.com/2025partners</loc>
+    <loc>https://theformulaforum.com/2025partners</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>

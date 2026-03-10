@@ -9,8 +9,8 @@ import StructuredData from "@/components/StructuredData";
 import { Link } from "react-router-dom";
 
 const Pricing = () => {
-  const title = "Pricing — F³ Formula Forum 2026";
-  const description = "Pass options for the Formula Forum insurance agency growth event. Oct 14–16, 2026 • JW Marriott Orlando Bonnet Creek.";
+  const title = "Ticket Pricing | Formula Forum 2026 — Agency Owner & Team Passes";
+  const description = "Formula Forum 2026 tickets: Agency Owner Pass $647, Team Member Pass $347. Includes all sessions, Book of Formulas playbook, meals, and networking events.";
   const { agencyOwner, team } = PRICING.earlyBird;
 
   return (

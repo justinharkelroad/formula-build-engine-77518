@@ -93,13 +93,10 @@ const PartnerWelcome = () => {
       }
       try {
         const { data } = await supabase
-          .from("partner_profiles" as any)
-          .select("*")
-          .eq("stripe_session_id", sessionId)
-          .limit(1);
+          .rpc("get_partner_profile_by_session", { p_session_id: sessionId });
 
-        if (data && data.length > 0) {
-          const p = data[0] as any;
+        if (data) {
+          const p = data as any;
           setExistingId(p.id);
           setCompanyName(p.company_name || "");
           setCompanyBio(p.company_bio || "");
@@ -239,40 +236,27 @@ const PartnerWelcome = () => {
       // Filter out empty attendee slots
       const filledAttendees = attendees.filter((a) => a.name.trim() || a.email.trim());
 
-      const profileData = {
-        tier,
-        stripe_session_id: sessionId,
-        company_name: companyName || null,
-        company_bio: companyBio || null,
-        website_url: websiteUrl || null,
-        logo_url: logoUrl || null,
-        video_loop_url: finalVideoLoopUrl || null,
-        stage_file_urls: finalStageFileUrls.length > 0 ? finalStageFileUrls : null,
-        primary_contact_name: primaryContactName || null,
-        primary_contact_email: primaryContactEmail || null,
-        primary_contact_phone: primaryContactPhone || null,
-        marketing_contact_name: marketingContactName || null,
-        marketing_contact_email: marketingContactEmail || null,
-        social_linkedin: socialLinkedin || null,
-        social_facebook: socialFacebook || null,
-        social_instagram: socialInstagram || null,
-        social_twitter: socialTwitter || null,
-        attendees: filledAttendees,
-        onboarding_completed: true,
-        updated_at: new Date().toISOString(),
-      };
-
-      let error;
-      if (existingId) {
-        ({ error } = await supabase
-          .from("partner_profiles" as any)
-          .update(profileData)
-          .eq("id", existingId));
-      } else {
-        ({ error } = await supabase
-          .from("partner_profiles" as any)
-          .insert(profileData));
-      }
+      const { error } = await supabase.rpc("save_partner_profile", {
+        p_session_id: sessionId,
+        p_tier: tier,
+        p_company_name: companyName || null,
+        p_company_bio: companyBio || null,
+        p_website_url: websiteUrl || null,
+        p_logo_url: logoUrl || null,
+        p_video_loop_url: finalVideoLoopUrl || null,
+        p_stage_file_urls: finalStageFileUrls.length > 0 ? finalStageFileUrls : null,
+        p_primary_contact_name: primaryContactName || null,
+        p_primary_contact_email: primaryContactEmail || null,
+        p_primary_contact_phone: primaryContactPhone || null,
+        p_marketing_contact_name: marketingContactName || null,
+        p_marketing_contact_email: marketingContactEmail || null,
+        p_social_linkedin: socialLinkedin || null,
+        p_social_facebook: socialFacebook || null,
+        p_social_instagram: socialInstagram || null,
+        p_social_twitter: socialTwitter || null,
+        p_attendees: filledAttendees,
+        p_onboarding_completed: true,
+      });
 
       if (error) throw error;
 

@@ -6,8 +6,8 @@ import StructuredData from "@/components/StructuredData";
 import { Calendar } from "lucide-react";
 
 const Agenda = () => {
-  const title = "Agenda — Formula Forum 2026";
-  const description = "Three-day schedule for Formula Forum 2026, the insurance agency growth conference in Orlando, October 14-16.";
+  const title = "Event Agenda | Formula Forum 2026 — Three Days of Agency Growth";
+  const description = "Formula Forum 2026 three-day agenda: Oct 14 welcome reception, Oct 15 full conference day with breakouts, Oct 16 implementation and action planning.";
 
   return (
     <div className="min-h-screen bg-background">

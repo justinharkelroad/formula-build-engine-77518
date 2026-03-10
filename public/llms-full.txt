@@ -7,9 +7,9 @@
 - Full name: Formula Forum 2026
 - Abbreviation: F³
 - Tagline: National Insurance Agency Growth Conference
-- Website: https://f3florida.com
+- Website: https://theformulaforum.com
 - Organizer: Formula Forum
-- Organizer email: Ashleeb@f3florida.com
+- Organizer email: Ashleeb@theformulaforum.com
 - Organizer phone: 260-515-1349
 - Social media:
   - Facebook: https://www.facebook.com/FormulaForum
@@ -22,7 +22,7 @@
 - Dates: October 14–16, 2026
 - Day 1 (Oct 14): Welcome & Networking — check-in, welcome reception, meet the trainers
 - Day 2 (Oct 15): Main Conference Day — full day of speaker sessions, breakouts, meals, rooftop party
-- Day 3 (Oct 16): Implementation & Action Planning — final sessions, Book of Formulas playbook distribution, 90-day blueprint
+- Day 3 (Oct 16): Implementation & Action Planning — final sessions, Book of Formulas playbook distribution
 - Location: JW Marriott Orlando Bonnet Creek Resort & Spa
 - Address: 14900 Chelonia Parkway, Orlando, FL 32821
 - GPS Coordinates: 28.3569, -81.5300
@@ -37,18 +37,18 @@
 - Rideshare pickup/drop-off: Main hotel entrance
 - Room block: JW Marriott Orlando Bonnet Creek, group rate $239/night
 - Room block booking: https://book.passkey.com/event/51189838/owner/49980248/home
-- Room block hotel code: F3-2025
+- Room block hotel code: F3-2026
 - Room block cut-off: September 15, 2026
 - Hotel phone: +1 (407) 390-5000
 
 ## Ticket Pricing
 
-- Agent Pass: $849 (for agency owners and senior producers)
-  - Original price: $949 (discounted to $849)
-- Team Member Pass: $549 (for team members and junior producers)
-  - Original price: $649 (discounted to $549)
+- Agency Owner Pass: $647 (for agency owners and senior producers)
+  - Price: $647
+- Team Member Pass: $347 (for team members and junior producers)
+  - Price: $347
 - Discount code: F3100OFF (saves $100)
-- Group discount: Teams of 5+ save 20% (email Gregg@f3florida.com)
+- Group discount: Teams of 5+ save 20% (email Gregg@theformulaforum.com)
 - Refund policy: No refunds, all sales are final
 - Transfer policy: Tickets transferable up to 7 days before the event
 - Payment: Secure checkout via Stripe with Apple Pay & Google Pay support
@@ -62,7 +62,6 @@
 - Networking events including welcome reception and rooftop party
 - Meals during the conference (breakfast and lunch)
 - Optional morning group workout
-- 90-Day Scale-Up Challenge program (post-event accountability)
 
 ## The Format Framework
 
@@ -80,15 +79,7 @@ This format ensures attendees leave with written, actionable plans — not just 
 Every attendee receives a printed "Book of Formulas" playbook. This physical guide contains:
 - Action maps from every speaker session
 - Implementation frameworks and templates
-- A 90-day post-event blueprint for scaling
 - Contact information for speakers and partners
-
-## 90-Day Scale-Up Challenge
-
-After the conference, attendees are enrolled in the 90-Day Scale-Up Challenge. This post-event program provides:
-- Structured accountability for implementing what was learned
-- Regular check-ins and milestones
-- Community support through the Formula Forum Facebook group
 
 ## Speakers
 
@@ -150,7 +141,7 @@ Q: Are tickets refundable?
 A: No. All sales are final. Tickets may be transferred to another person up to 7 days before the event at no additional cost. Contact the Formula Forum team with the new attendee's information.
 
 Q: How do I book the hotel room block?
-A: Use the room-block link at https://book.passkey.com/event/51189838/owner/49980248/home or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2025. The group rate is $239/night. The cut-off date is September 15, 2026.
+A: Use the room-block link at https://book.passkey.com/event/51189838/owner/49980248/home or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2026. The group rate is $239/night. The cut-off date is September 15, 2026.
 
 Q: What is the dress code?
 A: Business casual is the recommended dress code for all Formula Forum sessions and networking events.
@@ -159,10 +150,10 @@ Q: Can I transfer my ticket?
 A: Yes, tickets are transferable until October 7, 2026. Contact the Formula Forum team with the new attendee's information and they will handle the transfer at no additional cost.
 
 Q: Is there a group discount?
-A: Yes. Teams of five or more save 20% on registration. Email Gregg@f3florida.com for a custom group discount code.
+A: Yes. Teams of five or more save 20% on registration. Email Gregg@theformulaforum.com for a custom group discount code.
 
 Q: What's included in the registration fee?
-A: Registration includes access to all speaker sessions, the printed Book of Formulas playbook, networking events (welcome reception and rooftop party), meals during the conference (breakfast and lunch), an optional morning group workout, and enrollment in the 90-Day Scale-Up Challenge post-event accountability program.
+A: Registration includes access to all speaker sessions, the printed Book of Formulas playbook, networking events (welcome reception and rooftop party), meals during the conference (breakfast and lunch), and an optional morning group workout.
 
 Q: Will sessions be recorded?
 A: No. For the privacy and engagement of attendees, sessions are not recorded. This ensures open, honest discussions and protects the confidential strategies shared by speakers and attendees.
@@ -172,16 +163,16 @@ A: Bring business cards and a laptop for workshop sessions. All materials, tools
 
 ## All Public Pages
 
-- Homepage: https://f3florida.com/
-- Agenda: https://f3florida.com/agenda
-- Speakers: https://f3florida.com/speakers
-- Pricing: https://f3florida.com/pricing
-- Format: https://f3florida.com/format
-- Venue: https://f3florida.com/venue
-- FAQ: https://f3florida.com/faq
-- Gallery: https://f3florida.com/gallery
-- Partners: https://f3florida.com/partners
-- Contact: https://f3florida.com/contact
-- Register: https://f3florida.com/register
-- 2025 Partner Podcasts: https://f3florida.com/2025partners
-- Survey: https://f3florida.com/survey
+- Homepage: https://theformulaforum.com/
+- Agenda: https://theformulaforum.com/agenda
+- Speakers: https://theformulaforum.com/speakers
+- Pricing: https://theformulaforum.com/pricing
+- Format: https://theformulaforum.com/format
+- Venue: https://theformulaforum.com/venue
+- FAQ: https://theformulaforum.com/faq
+- Gallery: https://theformulaforum.com/gallery
+- Partners: https://theformulaforum.com/partners
+- Contact: https://theformulaforum.com/contact
+- Register: https://theformulaforum.com/register
+- 2025 Partner Podcasts: https://theformulaforum.com/2025partners
+- Survey: https://theformulaforum.com/survey

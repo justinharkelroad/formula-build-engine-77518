@@ -29,8 +29,12 @@ const FACEBOOK_GROUP_URL = "https://www.facebook.com/groups/1637602806874362";
 const WEBSITE_URL = "https://theformulaforum.com";
 const LOGO_URL = "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images//FORMULA%20GRADIENT%20WORD.png";
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 function buildConfirmationEmailHtml(name: string | null): string {
-  const firstName = name ? name.split(" ")[0] : "there";
+  const firstName = name ? escapeHtml(name.split(" ")[0]) : "there";
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -197,7 +201,7 @@ const PARTNER_PASSES: Record<string, number> = {
 };
 
 function buildPartnerWelcomeEmailHtml(name: string | null, tier: string, sessionId: string): string {
-  const firstName = name ? name.split(" ")[0] : "there";
+  const firstName = name ? escapeHtml(name.split(" ")[0]) : "there";
   const tierName = PARTNER_TIER_NAMES[tier] || tier;
   const passes = PARTNER_PASSES[tier] || 2;
   const onboardingUrl = `https://theformulaforum.com/partner-welcome/${tier}?session_id=${sessionId}`;

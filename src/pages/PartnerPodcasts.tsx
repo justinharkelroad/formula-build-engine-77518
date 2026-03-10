@@ -48,7 +48,7 @@ const PartnerPodcasts = () => {
         "publisher": {
           "@type": "Organization",
           "name": "Formula Forum",
-          "url": "https://f3florida.com"
+          "url": "https://theformulaforum.com"
         }
       }
     }))

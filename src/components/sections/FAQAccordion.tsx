@@ -9,7 +9,7 @@ const FAQAccordion = () => {
     },
     {
       q: "How do I book the hotel room block?",
-      a: "Book the Formula Forum room block at the JW Marriott Orlando Bonnet Creek by using the room-block link on the Venue page or by calling the hotel at +1 (407) 390-5000 and mentioning code F3-2025. The group rate is $239 per night. The cut-off date is September 15, 2026."
+      a: "Book the Formula Forum room block at the JW Marriott Orlando Bonnet Creek by using the room-block link on the Venue page or by calling the hotel at +1 (407) 390-5000 and mentioning code F3-2026. The group rate is $239 per night. The cut-off date is September 15, 2026."
     },
     {
       q: "What is the dress code?",

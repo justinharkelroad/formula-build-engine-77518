@@ -7,8 +7,8 @@ import StructuredData from "@/components/StructuredData";
 import { Clock, Users, PenTool, Target } from "lucide-react";
 
 const Format = () => {
-  const title = "Format — F³ Formula Forum 2026";
-  const description = "Workshops, breakouts, and real operator playbooks at the Formula Forum insurance agency growth event.";
+  const title = "The Format Framework | Formula Forum 2026 — How Sessions Work";
+  const description = "The Format Framework: Formula Forum's proprietary four-step session cycle — speaker training, takeaway capture, peer breakouts, and speaker close. Designed for implementation.";
 
   const exampleFlow = [
     {

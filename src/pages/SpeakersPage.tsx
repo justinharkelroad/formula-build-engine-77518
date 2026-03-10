@@ -6,8 +6,8 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 
 const SpeakersPage = () => {
-  const title = "Speakers — F³ Formula Forum 2026";
-  const description = "Meet operators and experts speaking at Formula Forum, the insurance agency growth event in Orlando.";
+  const title = "Speaker Lineup | Formula Forum 2026 — Operators, Builders & Experts";
+  const description = "Meet the 12 speakers at Formula Forum 2026: keynote by Garrett J. White, plus sessions on VA systems, referral marketing, producer scaling, AI, EOS, and agency growth.";
 
   return (
     <div className="min-h-screen bg-background">

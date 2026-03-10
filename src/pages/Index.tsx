@@ -17,8 +17,8 @@ import { useLocation, useNavigate, useSearchParams, Link } from "react-router-do
 const HOMEPAGE_VIMEO_ID = "1168470992";
 
 const Index = () => {
-  const title = "Formula Forum 2026 | Insurance Agency Growth Conference | Orlando Oct 14–16";
-  const description = "Insurance Agency Growth Conference in Orlando. Oct 14–16, 2026 at JW Marriott Bonnet Creek. Workshops, breakouts, and a 90-day growth plan.";
+  const title = "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16";
+  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek. Operator-led workshops, peer breakouts, and the Book of Formulas playbook.";
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,10 +64,10 @@ const Index = () => {
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">What is Formula Forum?</h2>
           <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6">
-            Formula is the number one national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, their team members, and industry partners for an operator-led training, peer breakout sessions, actionable implementation planning. The 2026 event returns to the JW Marriott Orlando Bonnet Creek Resort and Spa on October 14th through the 16th.
+            Formula Forum (F³) is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, producers, and industry partners for three days of operator-led training, peer breakout sessions, and actionable implementation planning. The 2026 event takes place October 14–16 at the JW Marriott Orlando Bonnet Creek Resort & Spa.
           </p>
           <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-            Unlike traditional conferences, Formula uses a proprietary framework where every session cycles through focused speaker training, personal takeaway capture, small group breakouts, and the notification process of the lesson to make sure action items land.
+            Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training, personal takeaway capture, small-group breakouts, and speaker close.
           </p>
         </div>
       </section>
@@ -100,7 +100,7 @@ const Index = () => {
                 See All The Photos From The 2025 Formula Experience!
               </h2>
               <p className="text-xl text-white/70 leading-relaxed mb-8">
-                Click below to gain access to all the photos from this years event. Add the photos you want to download to your bucket, and immediately get them saved to your device!
+                Click below to gain access to all the photos from this year's event. Add the photos you want to download to your bucket, and immediately get them saved to your device!
               </p>
               <Link to="/gallery">
                 <button className="bg-gradient-primary text-white px-12 py-5 rounded-full text-lg font-bold hover:scale-105 transition-transform shadow-brand">
@@ -126,7 +126,7 @@ const Index = () => {
       >
         <Button asChild variant="cta" size="lg" className="mt-6 text-lg">
           <a href="https://book.passkey.com/go/FFF2026" target="_blank" rel="noopener noreferrer">
-            Secure Discounted Room
+            Secure Your Discounted Room Before They Sell Out!
           </a>
         </Button>
       </FeatureSection>

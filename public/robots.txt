@@ -25,4 +25,22 @@ Allow: /
 User-agent: Amazonbot
 Allow: /
 
-Sitemap: https://f3florida.com/sitemap.xml
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+Sitemap: https://theformulaforum.com/sitemap.xml

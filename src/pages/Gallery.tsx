@@ -65,8 +65,8 @@ const Gallery = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Photo Gallery | Formula Forum 2026"
-        description="View photos from Formula Forum conferences - venue, speakers, sessions, and networking moments."
+        title="Photo Gallery | Formula Forum 2025 Highlights"
+        description="Browse photos from Formula Forum 2025: networking events, breakout sessions, speaker presentations, and attendee experiences at JW Marriott Orlando."
         path="/gallery"
       />
       <StructuredData page="general" />

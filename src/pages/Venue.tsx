@@ -4,8 +4,8 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 
 const Venue = () => {
-  const title = "Venue and Travel Information | Formula Forum 2026";
-  const description = "JW Marriott Orlando Bonnet Creek venue information for Formula Forum 2026. Address, directions, parking, and travel details.";
+  const title = "Venue | JW Marriott Orlando Bonnet Creek — Formula Forum 2026";
+  const description = "Formula Forum 2026 venue: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Pkwy, Orlando FL 32821. Room block $239/night, code F3-2026.";
 
   return (
     <div className="min-h-screen bg-background">
@@ -89,7 +89,7 @@ const Venue = () => {
               JW Marriott Orlando Bonnet Creek • Group rate: $239/night • Cut-off: Sep 15, 2026
             </p>
             <p className="text-lg mb-4">
-              Book online with our group link or call the hotel and mention code <strong>F3-2025</strong>.
+              Book online with our group link or call the hotel and mention code <strong>F3-2026</strong>.
             </p>
             <div className="mb-4">
               <Button 

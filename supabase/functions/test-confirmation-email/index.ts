@@ -9,8 +9,12 @@ const HOTEL_BOOK_URL = "https://book.passkey.com/event/51189838/owner/49980248/h
 const FACEBOOK_GROUP_URL = "https://www.facebook.com/groups/1637602806874362";
 const WEBSITE_URL = "https://theformulaforum.com";
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 function buildConfirmationEmailHtml(name: string | null): string {
-  const firstName = name ? name.split(" ")[0] : "there";
+  const firstName = name ? escapeHtml(name.split(" ")[0]) : "there";
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,7 +168,7 @@ serve(async (req) => {
     sender: { name: "FORMULA", email: "justin@f3florida.com" },
     to: [{ email: testEmail, name: testName }],
     replyTo: { email: "justin@f3florida.com", name: "Justin" },
-    subject: "[TEST] You're In — FORMULA 2026 Registration Confirmed",
+    subject: "You're In — FORMULA 2026 Registration Confirmed",
     htmlContent,
   };
 

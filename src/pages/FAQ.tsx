@@ -6,8 +6,8 @@ import StructuredData from "@/components/StructuredData";
 import FAQAccordion from "@/components/sections/FAQAccordion";
 
 const FAQ = () => {
-  const title = "FAQ — F³ Formula Forum 2026";
-  const description = "Frequently asked questions about Formula Forum: the insurance agency growth event in Orlando.";
+  const title = "FAQ | Formula Forum 2026 — Tickets, Hotel, Refunds & More";
+  const description = "Frequently asked questions about Formula Forum 2026: refund policy, hotel room block at JW Marriott ($239/night), group discounts, dress code, and what's included.";
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,7 +26,7 @@ const FAQ = () => {
           <div className="text-sm text-muted-foreground space-y-2">
             <p>• <strong>No refunds:</strong> All sales are final</p>
             <p>• <strong>Transfers allowed:</strong> You can transfer your ticket to another person up to 7 days before the event</p>
-            <p>• <strong>Room block:</strong> Discounted hotel rates at JW Marriott Orlando Bonnet Creek - <Link to="/venue#room-block" className="text-primary underline">use our room block link</Link> or call with code F3-2025. Cut-off Sep 15, 2026.</p>
+            <p>• <strong>Room block:</strong> Discounted hotel rates at JW Marriott Orlando Bonnet Creek - <Link to="/venue#room-block" className="text-primary underline">use our room block link</Link> or call with code F3-2026. Cut-off Sep 15, 2026.</p>
           </div>
         </div>
         

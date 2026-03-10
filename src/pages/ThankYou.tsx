@@ -101,7 +101,7 @@ const ThankYou = () => {
           <div className="bg-card border border-border rounded-lg p-8 mb-8">
             <h3 className="text-2xl font-semibold mb-4">Room block</h3>
             <p className="text-lg mb-4">
-              Book online with our group link or call the hotel and mention code <strong>F3-2025</strong>.
+              Book online with our group link or call the hotel and mention code <strong>F3-2026</strong>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
               <Button 
