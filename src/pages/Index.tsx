@@ -66,8 +66,11 @@ const Index = () => {
           <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6">
             Formula Forum (F³) is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, producers, and industry partners for three days of operator-led training, peer breakout sessions, and actionable implementation planning. The 2026 event takes place October 14–16 at the JW Marriott Orlando Bonnet Creek Resort & Spa.
           </p>
+          <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6">
+            Every session runs the same way: focused training, you capture your personal takeaway, small-group breakout to pressure-test it against your real situation, then the speaker closes it out. That's the Format Framework — and the reason people leave with an actual plan instead of a notebook full of highlights they'll never look at again.
+          </p>
           <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-            Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training, personal takeaway capture, small-group breakouts, and speaker close.
+            If you've been to a conference and come home fired up for 48 hours before everything went back to normal…this is the pattern we are determined to interrupt.
           </p>
         </div>
       </section>
