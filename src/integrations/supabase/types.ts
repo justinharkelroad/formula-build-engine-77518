@@ -49,76 +49,82 @@ export type Database = {
       }
       partner_profiles: {
         Row: {
+          attendees: Json | null
+          company_bio: string | null
+          company_name: string | null
+          created_at: string
           id: string
-          tier: string
-          stripe_session_id: string | null
+          logo_url: string | null
+          marketing_contact_email: string | null
+          marketing_contact_name: string | null
+          onboarding_completed: boolean
+          primary_contact_email: string | null
+          primary_contact_name: string | null
+          primary_contact_phone: string | null
           purchase_email: string | null
           purchase_name: string | null
-          company_name: string | null
-          company_bio: string | null
-          website_url: string | null
-          logo_url: string | null
-          primary_contact_name: string | null
-          primary_contact_email: string | null
-          primary_contact_phone: string | null
-          marketing_contact_name: string | null
-          marketing_contact_email: string | null
-          attendees: Json
-          social_linkedin: string | null
           social_facebook: string | null
           social_instagram: string | null
+          social_linkedin: string | null
           social_twitter: string | null
-          onboarding_completed: boolean
-          created_at: string
+          stage_file_urls: Json | null
+          stripe_session_id: string | null
+          tier: string
           updated_at: string
+          video_loop_url: string | null
+          website_url: string | null
         }
         Insert: {
+          attendees?: Json | null
+          company_bio?: string | null
+          company_name?: string | null
+          created_at?: string
           id?: string
-          tier: string
-          stripe_session_id?: string | null
+          logo_url?: string | null
+          marketing_contact_email?: string | null
+          marketing_contact_name?: string | null
+          onboarding_completed?: boolean
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          primary_contact_phone?: string | null
           purchase_email?: string | null
           purchase_name?: string | null
-          company_name?: string | null
-          company_bio?: string | null
-          website_url?: string | null
-          logo_url?: string | null
-          primary_contact_name?: string | null
-          primary_contact_email?: string | null
-          primary_contact_phone?: string | null
-          marketing_contact_name?: string | null
-          marketing_contact_email?: string | null
-          attendees?: Json
-          social_linkedin?: string | null
           social_facebook?: string | null
           social_instagram?: string | null
+          social_linkedin?: string | null
           social_twitter?: string | null
-          onboarding_completed?: boolean
-          created_at?: string
+          stage_file_urls?: Json | null
+          stripe_session_id?: string | null
+          tier: string
           updated_at?: string
+          video_loop_url?: string | null
+          website_url?: string | null
         }
         Update: {
+          attendees?: Json | null
+          company_bio?: string | null
+          company_name?: string | null
+          created_at?: string
           id?: string
-          tier?: string
-          stripe_session_id?: string | null
+          logo_url?: string | null
+          marketing_contact_email?: string | null
+          marketing_contact_name?: string | null
+          onboarding_completed?: boolean
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          primary_contact_phone?: string | null
           purchase_email?: string | null
           purchase_name?: string | null
-          company_name?: string | null
-          company_bio?: string | null
-          website_url?: string | null
-          logo_url?: string | null
-          primary_contact_name?: string | null
-          primary_contact_email?: string | null
-          primary_contact_phone?: string | null
-          marketing_contact_name?: string | null
-          marketing_contact_email?: string | null
-          attendees?: Json
-          social_linkedin?: string | null
           social_facebook?: string | null
           social_instagram?: string | null
+          social_linkedin?: string | null
           social_twitter?: string | null
-          onboarding_completed?: boolean
-          created_at?: string
+          stage_file_urls?: Json | null
+          stripe_session_id?: string | null
+          tier?: string
           updated_at?: string
+          video_loop_url?: string | null
+          website_url?: string | null
         }
         Relationships: []
       }
@@ -223,12 +229,40 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_partner_profile_by_session: {
+        Args: { p_session_id: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      save_partner_profile: {
+        Args: {
+          p_attendees?: Json
+          p_company_bio?: string
+          p_company_name?: string
+          p_logo_url?: string
+          p_marketing_contact_email?: string
+          p_marketing_contact_name?: string
+          p_onboarding_completed?: boolean
+          p_primary_contact_email?: string
+          p_primary_contact_name?: string
+          p_primary_contact_phone?: string
+          p_session_id: string
+          p_social_facebook?: string
+          p_social_instagram?: string
+          p_social_linkedin?: string
+          p_social_twitter?: string
+          p_stage_file_urls?: Json
+          p_tier: string
+          p_video_loop_url?: string
+          p_website_url?: string
+        }
+        Returns: Json
       }
     }
     Enums: {
