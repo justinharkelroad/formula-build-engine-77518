@@ -254,7 +254,7 @@ const PartnerWelcome = () => {
         p_social_facebook: socialFacebook || null,
         p_social_instagram: socialInstagram || null,
         p_social_twitter: socialTwitter || null,
-        p_attendees: filledAttendees,
+        p_attendees: filledAttendees as unknown as import("@/integrations/supabase/types").Json,
         p_onboarding_completed: true,
       });
 

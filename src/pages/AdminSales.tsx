@@ -70,7 +70,7 @@ const AdminSales = () => {
 
       if (purchasesRes.error) throw purchasesRes.error;
       setPurchases(purchasesRes.data || []);
-      setPartnerProfiles((partnersRes.data || []) as PartnerProfile[]);
+      setPartnerProfiles((partnersRes.data || []) as unknown as PartnerProfile[]);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
