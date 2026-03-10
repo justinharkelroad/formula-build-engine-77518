@@ -10,10 +10,16 @@ const corsHeaders = {
 // Price (unit_amount in cents) → tier + pass type lookup
 // We match on each line item's unit_amount, not the session total
 const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
+  // Attendee passes
   64700: { tier: "earlyBird", passType: "agencyOwner" },
   34700: { tier: "earlyBird", passType: "team" },
   44800: { tier: "vip", passType: "agencyOwner" },
   29800: { tier: "vip", passType: "team" },
+  // Partner tiers
+  1500000: { tier: "platinum", passType: "partner" },
+  1000000: { tier: "gold", passType: "partner" },
+  750000: { tier: "silver", passType: "partner" },
+  500000: { tier: "bronze", passType: "partner" },
 };
 
 // --- Confirmation Email via Brevo ---
@@ -174,6 +180,212 @@ function buildConfirmationEmailHtml(name: string | null): string {
 </table>
 </body>
 </html>`;
+}
+
+const PARTNER_TIER_NAMES: Record<string, string> = {
+  platinum: "Platinum",
+  gold: "Gold",
+  silver: "Silver",
+  bronze: "Bronze",
+};
+
+const PARTNER_PASSES: Record<string, number> = {
+  platinum: 8,
+  gold: 6,
+  silver: 4,
+  bronze: 2,
+};
+
+function buildPartnerWelcomeEmailHtml(name: string | null, tier: string, sessionId: string): string {
+  const firstName = name ? name.split(" ")[0] : "there";
+  const tierName = PARTNER_TIER_NAMES[tier] || tier;
+  const passes = PARTNER_PASSES[tier] || 2;
+  const onboardingUrl = `https://theformulaforum.com/partner-welcome/${tier}?session_id=${sessionId}`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Welcome, ${tierName} Partner — FORMULA 2026</title>
+</head>
+<body style="margin:0;padding:0;background-color:#1a1a1a;font-family:Arial,Helvetica,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a1a;padding:32px 16px;">
+<tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;max-width:600px;width:100%;">
+
+  <!-- Logo Header -->
+  <tr>
+    <td style="background-color:#1a1a1a;padding:40px 32px 20px;text-align:center;">
+      <a href="${WEBSITE_URL}" target="_blank">
+        <img src="${LOGO_URL}" alt="FORMULA" width="400" style="display:block;margin:0 auto;max-width:400px;width:100%;height:auto;" />
+      </a>
+    </td>
+  </tr>
+
+  <!-- Accent Bar -->
+  <tr>
+    <td style="font-size:0;line-height:0;height:4px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="33%" style="background-color:#f53214;height:4px;"></td>
+        <td width="34%" style="background-color:#fa9c27;height:4px;"></td>
+        <td width="33%" style="background-color:#48b4d1;height:4px;"></td>
+      </tr></table>
+    </td>
+  </tr>
+
+  <!-- Hero -->
+  <tr>
+    <td style="padding:36px 32px 20px;text-align:center;">
+      <h1 style="color:#f53214;font-size:28px;margin:0 0 8px;font-weight:900;">Welcome to the FORMULA Family!</h1>
+      <p style="color:#555;font-size:16px;margin:0;">Your <strong>${tierName} Partnership</strong> is confirmed.</p>
+    </td>
+  </tr>
+
+  <!-- Body -->
+  <tr>
+    <td style="padding:0 32px 32px;">
+
+      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 24px;">
+        Hey ${firstName},
+      </p>
+      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 24px;">
+        We are fired up to have you locked in as a ${tierName} Partner for FORMULA 2026. Your partnership includes <strong>${passes} full-access passes</strong>, a 1-on-1 video podcast interview, and so much more. Let's get your brand set up.
+      </p>
+
+      <!-- Onboarding CTA -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+        <tr><td style="padding:24px;background-color:#fff7ed;border-radius:8px;border:1px solid #fa9c27;text-align:center;">
+          <p style="font-size:18px;color:#7c4a03;margin:0 0 16px;font-weight:bold;">
+            Complete Your Partner Onboarding
+          </p>
+          <p style="font-size:14px;color:#7c4a03;margin:0 0 16px;">
+            Upload your logo, company bio, attendee names, and social links so we can start promoting your brand right away.
+          </p>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background-color:#f53214;border-radius:6px;">
+            <a href="${onboardingUrl}" target="_blank" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:16px;font-weight:bold;text-decoration:none;">
+              Set Up My Partner Profile &rarr;
+            </a>
+          </td></tr></table>
+        </td></tr>
+      </table>
+
+      <!-- Event Details Card -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f8f8;border-radius:8px;border-left:4px solid #f53214;margin-bottom:24px;">
+        <tr><td style="padding:20px 24px;">
+          <p style="font-size:14px;color:#f53214;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;font-weight:bold;">Event Details</p>
+          <p style="font-size:16px;color:#1e293b;margin:0 0 6px;"><strong>Dates:</strong> October 14–16, 2026</p>
+          <p style="font-size:16px;color:#1e293b;margin:0 0 6px;"><strong>Location:</strong> Orlando, Florida</p>
+          <p style="font-size:16px;color:#1e293b;margin:0;"><strong>Venue:</strong> JW Marriott Orlando Bonnet Creek</p>
+        </td></tr>
+      </table>
+
+      <!-- What's Coming -->
+      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 8px;">
+        <strong>Here's What's Coming</strong>
+      </p>
+      <ul style="font-size:15px;color:#333;line-height:1.8;margin:0 0 24px;padding-left:20px;">
+        <li><strong>Podcast scheduling link</strong> — we'll send this separately so you can book your 1-on-1 video interview</li>
+        <li><strong>Mobile app listing</strong> — download the FORMULA app on <a href="https://apps.apple.com/us/app/formula-forum/id6759879318" style="color:#48b4d1;">iOS</a> (Android coming soon)</li>
+        <li><strong>Marketing promotions</strong> — your logo and brand will be featured in our communications leading up to the event</li>
+        <li><strong>Hotel room block</strong> — book your rooms at the discounted group rate</li>
+      </ul>
+
+      <!-- Hotel CTA -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+        <tr><td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#fa9c27;border-radius:6px;">
+            <a href="${HOTEL_BOOK_URL}" target="_blank" style="display:inline-block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:bold;text-decoration:none;">
+              Reserve Your Room &rarr;
+            </a>
+          </td></tr></table>
+        </td></tr>
+      </table>
+
+      <!-- Questions -->
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+        <tr><td style="padding:16px 24px;background-color:#edf8fb;border-radius:8px;">
+          <p style="font-size:15px;color:#2a7d93;margin:0;">
+            <strong>Questions?</strong> Just reply to this email or reach out directly at
+            <a href="mailto:Gregg@f3florida.com" style="color:#48b4d1;">Gregg@f3florida.com</a> or
+            <a href="mailto:Justin@f3florida.com" style="color:#48b4d1;">Justin@f3florida.com</a>
+          </p>
+        </td></tr>
+      </table>
+
+      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 4px;">
+        We can't wait to see you there.
+      </p>
+      <p style="font-size:18px;color:#f53214;font-weight:bold;margin:0;">
+        Let's get to work,<br/>FORMULA
+      </p>
+
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="font-size:0;line-height:0;height:4px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="33%" style="background-color:#f53214;height:4px;"></td>
+        <td width="34%" style="background-color:#fa9c27;height:4px;"></td>
+        <td width="33%" style="background-color:#48b4d1;height:4px;"></td>
+      </tr></table>
+    </td>
+  </tr>
+  <tr>
+    <td style="background-color:#1a1a1a;padding:24px 32px;text-align:center;">
+      <p style="color:#999;font-size:13px;margin:0 0 4px;">FORMULA &middot; October 14–16, 2026 &middot; Orlando, FL</p>
+      <p style="color:#666;font-size:12px;margin:0;">JW Marriott Orlando Bonnet Creek &middot; 14900 Chelonia Pkwy, Orlando, FL 32821</p>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+async function sendPartnerWelcomeEmail(email: string, name: string | null, tier: string, sessionId: string): Promise<void> {
+  const brevoApiKey = Deno.env.get("BREVO_API_KEY");
+  if (!brevoApiKey) {
+    console.error("BREVO_API_KEY not set — skipping partner welcome email");
+    return;
+  }
+
+  const tierName = PARTNER_TIER_NAMES[tier] || tier;
+  const htmlContent = buildPartnerWelcomeEmailHtml(name, tier, sessionId);
+  const recipientName = name || email.split("@")[0];
+
+  const payload = {
+    sender: { name: "FORMULA", email: "justin@f3florida.com" },
+    to: [{ email, name: recipientName }],
+    replyTo: { email: "justin@f3florida.com", name: "Justin" },
+    subject: `Welcome, ${tierName} Partner — FORMULA 2026`,
+    htmlContent,
+  };
+
+  try {
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": brevoApiKey,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("Brevo API error (partner email):", res.status, body);
+    } else {
+      console.log("Partner welcome email sent to", email);
+    }
+  } catch (err) {
+    console.error("Failed to send partner welcome email:", err);
+  }
 }
 
 async function sendConfirmationEmail(email: string, name: string | null): Promise<void> {
@@ -417,8 +629,47 @@ serve(async (req) => {
 
         console.log("Purchase processing completed successfully");
 
-        // Send confirmation email (non-blocking — don't fail the webhook if this errors)
-        await sendConfirmationEmail(email, name);
+        // Determine if this is a partner purchase and send appropriate email
+        // Check the first line item's tier to decide
+        let detectedTier = "unknown";
+        let detectedPassType = "unknown";
+        if (lineItems.length > 0) {
+          const unitAmount = lineItems[0].price?.unit_amount || 0;
+          const info = PRICE_TIER_MAP[unitAmount];
+          if (info) {
+            detectedTier = info.tier;
+            detectedPassType = info.passType;
+          }
+        } else if (session.amount_total) {
+          const info = PRICE_TIER_MAP[session.amount_total];
+          if (info) {
+            detectedTier = info.tier;
+            detectedPassType = info.passType;
+          }
+        }
+
+        if (detectedPassType === "partner") {
+          // Create a starter partner_profiles row so the onboarding page can find it
+          const { error: profileError } = await supabase
+            .from('partner_profiles')
+            .insert({
+              tier: detectedTier,
+              stripe_session_id: session.id,
+              purchase_email: email,
+              purchase_name: name,
+            });
+          if (profileError) {
+            console.error("Error creating partner profile:", profileError);
+          } else {
+            console.log("Partner profile seeded for", email, detectedTier);
+          }
+
+          // Send partner-specific welcome email
+          await sendPartnerWelcomeEmail(email, name, detectedTier, session.id);
+        } else {
+          // Send standard attendee confirmation email
+          await sendConfirmationEmail(email, name);
+        }
       }
     }
 

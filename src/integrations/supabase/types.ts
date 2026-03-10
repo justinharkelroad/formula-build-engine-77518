@@ -47,6 +47,81 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_profiles: {
+        Row: {
+          id: string
+          tier: string
+          stripe_session_id: string | null
+          purchase_email: string | null
+          purchase_name: string | null
+          company_name: string | null
+          company_bio: string | null
+          website_url: string | null
+          logo_url: string | null
+          primary_contact_name: string | null
+          primary_contact_email: string | null
+          primary_contact_phone: string | null
+          marketing_contact_name: string | null
+          marketing_contact_email: string | null
+          attendees: Json
+          social_linkedin: string | null
+          social_facebook: string | null
+          social_instagram: string | null
+          social_twitter: string | null
+          onboarding_completed: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tier: string
+          stripe_session_id?: string | null
+          purchase_email?: string | null
+          purchase_name?: string | null
+          company_name?: string | null
+          company_bio?: string | null
+          website_url?: string | null
+          logo_url?: string | null
+          primary_contact_name?: string | null
+          primary_contact_email?: string | null
+          primary_contact_phone?: string | null
+          marketing_contact_name?: string | null
+          marketing_contact_email?: string | null
+          attendees?: Json
+          social_linkedin?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_twitter?: string | null
+          onboarding_completed?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tier?: string
+          stripe_session_id?: string | null
+          purchase_email?: string | null
+          purchase_name?: string | null
+          company_name?: string | null
+          company_bio?: string | null
+          website_url?: string | null
+          logo_url?: string | null
+          primary_contact_name?: string | null
+          primary_contact_email?: string | null
+          primary_contact_phone?: string | null
+          marketing_contact_name?: string | null
+          marketing_contact_email?: string | null
+          attendees?: Json
+          social_linkedin?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_twitter?: string | null
+          onboarding_completed?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           amount: number

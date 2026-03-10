@@ -81,6 +81,7 @@ const PartnerLevels = () => {
         "One 6-ft table booth in BRONZE location",
         "2 full-access passes",
         "1-on-1 video-podcast promotion",
+        "30-sec hallway/partnership-room video loop",
         "Lead list 10 days post-event",
         "Standard listing in the mobile app",
         "Post-event photo/video bundle with branding",
@@ -155,11 +156,7 @@ const PartnerLevels = () => {
                         }
                       }}
                     >
-                      {tier.name === 'Platinum' ? 'LOCK IN PLATINUM' :
-                       tier.name === 'Gold' ? 'LOCK IN GOLD' :
-                       tier.name === 'Silver' ? 'LOCK IN SILVER' :
-                       tier.name === 'Bronze' ? 'LOCK IN BRONZE' :
-                       `Apply for ${tier.name}`}
+                      {`LOCK IN ${tier.name.toUpperCase()}`}
                     </Button>
                   </div>
                 )}
