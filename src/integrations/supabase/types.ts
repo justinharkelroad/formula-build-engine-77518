@@ -229,6 +229,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      fix_partner_purchases: { Args: never; Returns: Json }
       get_partner_profile_by_session: {
         Args: { p_session_id: string }
         Returns: Json
