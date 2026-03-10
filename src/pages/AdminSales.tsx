@@ -5,7 +5,7 @@ import SEO from '@/components/SEO';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink } from 'lucide-react';
+import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
@@ -56,6 +56,7 @@ const AdminSales = () => {
   const [partnerProfiles, setPartnerProfiles] = useState<PartnerProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [fixing, setFixing] = useState(false);
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
   const { toast } = useToast();
   const { signOut, user } = useAuth();
 
@@ -133,6 +134,42 @@ const AdminSales = () => {
     } finally {
       setFixing(false);
     }
+  };
+
+  const resendWelcomeEmail = async (profile: PartnerProfile) => {
+    const email = profile.primary_contact_email || profile.purchase_email;
+    if (!email || !profile.stripe_session_id) {
+      toast({ title: "Error", description: "Missing email or session ID for this partner", variant: "destructive" });
+      return;
+    }
+    setSendingEmailId(profile.id);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-partner-welcome', {
+        body: {
+          email,
+          name: profile.primary_contact_name || profile.purchase_name,
+          tier: profile.tier,
+          sessionId: profile.stripe_session_id,
+        },
+      });
+      if (error) throw error;
+      toast({ title: "Email Sent", description: `Partner welcome email sent to ${email}` });
+    } catch (error) {
+      console.error('Error sending partner email:', error);
+      toast({ title: "Error", description: "Failed to send email. Make sure the send-partner-welcome function is deployed.", variant: "destructive" });
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
+
+  const copyOnboardingLink = (profile: PartnerProfile) => {
+    if (!profile.stripe_session_id) {
+      toast({ title: "Error", description: "No session ID for this partner", variant: "destructive" });
+      return;
+    }
+    const url = `https://theformulaforum.com/partner-welcome/${profile.tier}?session_id=${profile.stripe_session_id}`;
+    navigator.clipboard.writeText(url);
+    toast({ title: "Copied", description: "Onboarding link copied to clipboard" });
   };
 
   const formatPassType = (passType: string) => {
@@ -498,6 +535,7 @@ const AdminSales = () => {
                             <th className="text-left p-3">Logo</th>
                             <th className="text-left p-3">Attendees</th>
                             <th className="text-left p-3">Date</th>
+                            <th className="text-left p-3">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -547,6 +585,31 @@ const AdminSales = () => {
                                 </td>
                                 <td className="p-3">{attendeeCount}</td>
                                 <td className="p-3">{new Date(profile.created_at).toLocaleDateString()}</td>
+                                <td className="p-3">
+                                  <div className="flex gap-1">
+                                    <Button
+                                      onClick={() => resendWelcomeEmail(profile)}
+                                      disabled={sendingEmailId === profile.id}
+                                      variant="outline"
+                                      size="sm"
+                                      title="Resend welcome email"
+                                    >
+                                      {sendingEmailId === profile.id ? (
+                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                      ) : (
+                                        <Mail className="w-3 h-3" />
+                                      )}
+                                    </Button>
+                                    <Button
+                                      onClick={() => copyOnboardingLink(profile)}
+                                      variant="outline"
+                                      size="sm"
+                                      title="Copy onboarding link"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                </td>
                               </tr>
                             );
                           })}
