@@ -8,43 +8,6 @@ import VimeoModal from "@/components/VimeoModal";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const DEADLINE = new Date("2026-03-31T23:59:59").getTime();
-
-const PriceCountdown = () => {
-  const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const tick = () => {
-      const diff = DEADLINE - Date.now();
-      if (diff <= 0) { setT({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
-      setT({
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff % 86400000) / 3600000),
-        minutes: Math.floor((diff % 3600000) / 60000),
-        seconds: Math.floor((diff % 60000) / 1000),
-      });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return (
-    <div className="bg-orange-500 rounded-xl px-6 py-4 text-white text-center">
-      <p className="text-sm font-semibold uppercase tracking-widest mb-3 opacity-90">
-        ⚡ Price increases after March 31 — lock in your rate now
-      </p>
-      <div className="flex justify-center gap-3">
-        {[["Days", t.days], ["Hours", t.hours], ["Min", t.minutes], ["Sec", t.seconds]].map(([label, val]) => (
-          <div key={label as string} className="bg-white/20 rounded-lg px-4 py-2 min-w-[60px]">
-            <div className="text-2xl font-bold leading-none">{String(val).padStart(2, "0")}</div>
-            <div className="text-xs mt-1 opacity-80">{label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 const VIP_VIMEO_ID = "1168470859";
 
@@ -98,7 +61,7 @@ const VIP = () => {
         </header>
 
         <section className="max-w-3xl mx-auto space-y-6">
-          <PriceCountdown />
+          
 
           {/* Agency Owner Card */}
           <div className="border border-primary/30 rounded-2xl p-6 bg-card/80 backdrop-blur-sm">
