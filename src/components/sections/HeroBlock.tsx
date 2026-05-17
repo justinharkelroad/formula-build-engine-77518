@@ -2,6 +2,9 @@ import { ArrowUpRight } from "lucide-react";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import WaveDivider from "@/components/WaveDivider";
+import PortraitVideo from "@/components/PortraitVideo";
+
+const HERO_VIDEO_ID = "5emnt0yofp";
 
 const HeroBlock = () => {
   const { open } = usePassDialog();
@@ -35,10 +38,12 @@ const HeroBlock = () => {
           FORMULA<br />FORUM <span className="display-outline">26</span>
         </h1>
 
-        {/* Meta pills + overview grid */}
-        <div className="grid md:grid-cols-2 gap-12 mt-12 md:mt-16">
+        {/* Meta pills + overview + portrait video grid.
+            Desktop: 3 columns (pills/CTA | copy | video).
+            Mobile: stacked — pills → CTA → video → copy (via order utilities) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mt-12 md:mt-16 items-start">
           {/* Left column — pills + CTA */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 order-1 md:col-span-1">
             <div className={`flex flex-wrap gap-3 reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
               <span className="meta-pill">OCT 14–16</span>
               <span className="meta-pill meta-pill-dot">TICKETS ACTIVE</span>
@@ -58,8 +63,15 @@ const HeroBlock = () => {
             </button>
           </div>
 
-          {/* Right column — meeting overview */}
-          <div className={`reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
+          {/* Portrait video — desktop right column / mobile between CTA and copy */}
+          <div className={`order-2 md:order-3 md:col-span-1 reveal-up delay-3 ${isVisible ? "is-visible" : ""}`}>
+            <div className="mx-auto md:mx-0 w-full max-w-[280px] sm:max-w-[320px] md:max-w-none">
+              <PortraitVideo mediaId={HERO_VIDEO_ID} />
+            </div>
+          </div>
+
+          {/* Operator's conference copy — desktop center / mobile last */}
+          <div className={`order-3 md:order-2 md:col-span-1 reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             <div className="text-2xl md:text-3xl font-bold leading-tight mb-6">
               The Operator's Conference for<br />
               Insurance Agency Owners
