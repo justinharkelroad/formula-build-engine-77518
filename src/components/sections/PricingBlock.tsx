@@ -13,7 +13,7 @@ const PricingBlock = () => {
       ref={ref}
       className="relative text-white py-20 md:py-24 px-5 md:px-12 overflow-hidden animate-tide"
       style={{
-        backgroundImage: "linear-gradient(180deg, rgba(0,0,0,0.78), rgba(0,0,0,0.92)), url(/lovable-uploads/Pricing%20Section.jpg)",
+        backgroundImage: "linear-gradient(180deg, rgba(0,0,0,0.78), rgba(0,0,0,0.92)), url(/lovable-uploads/pricing-section.jpg)",
         backgroundPosition: "center"
       }}
     >

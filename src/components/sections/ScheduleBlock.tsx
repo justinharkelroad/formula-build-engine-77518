@@ -31,7 +31,7 @@ const ScheduleBlock = () => {
 
         {/* Top row: massive headline + date pills */}
         <div className="grid md:grid-cols-2 gap-8 items-end mb-12 md:mb-16">
-          <h2 className={`display-bold text-[clamp(3rem,15vw,11rem)] md:text-[14vw] lg:text-[12vw] break-words reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
+          <h2 className={`display-bold text-[clamp(3rem,15vw,9rem)] md:text-[11vw] lg:text-[9vw] whitespace-nowrap reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
             SCHEDULE
           </h2>
           <div className={`flex flex-wrap gap-3 justify-end reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>

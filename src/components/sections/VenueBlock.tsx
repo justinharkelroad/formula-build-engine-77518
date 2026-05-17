@@ -17,7 +17,7 @@ const VenueBlock = () => {
           {/* LEFT — copy */}
           <div className={`reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
             <div className="text-xs tracking-widest uppercase text-black/40 mb-4">LOCATION</div>
-            <h2 className="display-bold text-[clamp(3rem,16vw,8rem)] md:text-[10vw] lg:text-[8vw] mb-8 break-words">
+            <h2 className="display-bold text-[clamp(3rem,16vw,8rem)] md:text-[10vw] lg:text-[8vw] mb-8 whitespace-nowrap">
               JW<br />MARRIOTT
             </h2>
 
@@ -50,7 +50,7 @@ const VenueBlock = () => {
           {/* RIGHT — large image */}
           <div className={`relative rounded-2xl overflow-hidden aspect-[4/5] md:aspect-[4/5] shadow-2xl reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             <img
-              src="/lovable-uploads/JW%20Marriot%20Pool.jpg"
+              src="/lovable-uploads/jw-marriott-pool.jpg"
               alt="JW Marriott Orlando Bonnet Creek — pool"
               className="w-full h-full object-cover animate-ken-burns"
               loading="lazy"
