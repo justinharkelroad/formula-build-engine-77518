@@ -1,11 +1,10 @@
-# Formula Forum (F³) — Extended Reference
+# Formula Forum — Extended Reference
 
 > Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida. Founded to bring together insurance agency owners, producers, and industry partners for operator-led training, peer breakouts, and post-event accountability.
 
 ## Identity
 
 - Full name: Formula Forum 2026
-- Abbreviation: F³
 - Tagline: National Insurance Agency Growth Conference
 - Website: https://theformulaforum.com
 - Organizer: Formula Forum

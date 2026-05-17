@@ -1,11 +1,10 @@
-# Formula Forum (F³)
+# Formula Forum
 
 > Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida. It is designed for insurance agency owners and producers who want to scale their businesses through actionable strategies, operator-led training, and peer accountability.
 
 ## Key Facts
 
 - Full name: Formula Forum 2026
-- Abbreviation: F³
 - Type: In-person insurance agency growth conference
 - Dates: October 14–16, 2026
 - Location: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Parkway, Orlando, FL 32821

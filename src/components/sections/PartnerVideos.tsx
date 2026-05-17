@@ -1,143 +1,74 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
+const videos = [
+  { url: "https://youtu.be/FlM2ZQ_FVwQ", company: "RICOCHET" },
+  { url: "https://youtu.be/tox1dLwKnPM", company: "MEDIA ALPHA" },
+  { url: "https://youtu.be/CjbFq-S9YgQ", company: "DISRUPTR" },
+  { url: "https://youtu.be/cUv3cp19CRQ", company: "TEAM HIRED" },
+  { url: "https://youtu.be/1_KvGjczv2g", company: "SEARCH PERFECT" },
+  { url: "https://youtu.be/n49BfH5Hg3Q", company: "EVERGREEN TALENT AGENCY" },
+  { url: "https://youtu.be/MUBj3wFMOvU", company: "FILTERED QUOTES" },
+  { url: "https://youtu.be/0_-rbjLaE60", company: "BRAISHFIELD ASSOCIATES" },
+  { url: "https://youtu.be/dqshvPjGD0U", company: "QUOTE NERDS" },
+  { url: "https://youtu.be/KIsbPgEOeEc", company: "COVER DESK" },
+  { url: "https://youtu.be/Cfa7bsE5grs", company: "AGENCY TOOL CHEST" },
+  { url: "https://youtu.be/LZ5Z6lMOC84", company: "SMARKETING" },
+  { url: "https://youtu.be/q4kAc9UHaXw", company: "HAGERTY" },
+  { url: "https://youtu.be/gnCLRzKgRNw", company: "TOP TIER RECRUITING" },
+  { url: "https://youtu.be/wkPKGCTio2k", company: "EOS" },
+  { url: "https://youtu.be/sV5NlFuFaCc", company: "PERFORMOLOGY" },
+  { url: "https://youtu.be/vIyGxtvCcto", company: "AMERICAN INTEGRITY INSURANCE" },
+  { url: "https://youtu.be/_mLcM6aXGno", company: "POST PROS" },
+  { url: "https://youtu.be/gXiTSNMAzgQ", company: "EMBRACE PET INSURANCE" },
+  { url: "https://youtu.be/eiJuHioRR6Q", company: "DESTINY RESCUE" }
+];
+
+const getEmbedUrl = (youtubeUrl: string) => {
+  const videoId = youtubeUrl.split("/").pop()?.split("?")[0];
+  return `https://www.youtube.com/embed/${videoId}`;
+};
+
 const PartnerVideos = () => {
-  const videos = [
-    {
-      url: "https://youtu.be/FlM2ZQ_FVwQ",
-      company: "RICOCHET"
-    },
-    {
-      url: "https://youtu.be/tox1dLwKnPM",
-      company: "MEDIA ALPHA"
-    },
-    {
-      url: "https://youtu.be/CjbFq-S9YgQ",
-      company: "DISRUPTR"
-    },
-    {
-      url: "https://youtu.be/cUv3cp19CRQ",
-      company: "TEAM HIRED"
-    },
-    {
-      url: "https://youtu.be/1_KvGjczv2g",
-      company: "SEARCH PERFECT"
-    },
-    {
-      url: "https://youtu.be/n49BfH5Hg3Q",
-      company: "EVERGREEN TALENT AGENCY"
-    },
-    {
-      url: "https://youtu.be/MUBj3wFMOvU",
-      company: "FILTERED QUOTES"
-    },
-    {
-      url: "https://youtu.be/0_-rbjLaE60",
-      company: "BRAISHFIELD ASSOCIATES"
-    },
-    {
-      url: "https://youtu.be/dqshvPjGD0U",
-      company: "QUOTE NERDS"
-    },
-    {
-      url: "https://youtu.be/KIsbPgEOeEc",
-      company: "COVER DESK"
-    },
-    {
-      url: "https://youtu.be/Cfa7bsE5grs",
-      company: "AGENCY TOOL CHEST"
-    },
-    {
-      url: "https://youtu.be/LZ5Z6lMOC84",
-      company: "SMARKETING"
-    },
-    {
-      url: "https://youtu.be/q4kAc9UHaXw",
-      company: "HAGERTY"
-    },
-    {
-      url: "https://youtu.be/gnCLRzKgRNw",
-      company: "TOP TIER RECRUITING AND CONSULTING"
-    },
-    {
-      url: "https://youtu.be/wkPKGCTio2k",
-      company: "EOS"
-    },
-    {
-      url: "https://youtu.be/sV5NlFuFaCc",
-      company: "PERFORMOLOGY"
-    },
-    {
-      url: "https://youtu.be/vIyGxtvCcto",
-      company: "AMERICAN INTEGRITY INSURANCE"
-    },
-    {
-      url: "https://youtu.be/_mLcM6aXGno",
-      company: "POST PROS"
-    },
-    {
-      url: "https://youtu.be/gXiTSNMAzgQ",
-      company: "EMBRACE PET INSURANCE"
-    },
-    {
-      url: "https://youtu.be/eiJuHioRR6Q",
-      company: "DESTINY RESCUE"
-    }
-  ];
-
-  const getEmbedUrl = (youtubeUrl: string) => {
-    const videoId = youtubeUrl.split('/').pop()?.split('?')[0];
-    return `https://www.youtube.com/embed/${videoId}`;
-  };
-
   return (
-    <section className="py-16 bg-gradient-to-br from-background via-muted/30 to-background relative overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-20" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl opacity-20" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent mb-4">
-            See Our 2025 Partner Podcasts. We're excited for 2026.
+    <section className="bg-[hsl(0,0%,96%)] text-[hsl(0,0%,8%)] py-20 md:py-28 px-5 md:px-12">
+      <div className="container mx-auto max-w-7xl">
+        <div className="eyebrow text-black mb-8">2025 PARTNER PODCASTS</div>
+
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-end mb-12 md:mb-16">
+          <h2 className="display-bold text-[clamp(2.5rem,9vw,6rem)] md:text-[6vw] lg:text-[5vw] leading-[0.95] break-words">
+            HEAR THEM<br />TELL IT
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
+          <p className="text-base md:text-lg text-black/70 leading-relaxed max-w-md md:justify-self-end">
+            Twenty 2025 partners on what they built, who they met, and what changed for their book of business after Orlando.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {videos.map((video, index) => (
-            <div 
-              key={index}
-              className="group transform transition-all duration-300 hover:scale-105"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {videos.map((v, i) => (
+            <div
+              key={i}
+              className="bg-white border border-black/5 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
             >
-              <div className="relative bg-card/80 backdrop-blur-sm rounded-2xl p-6 shadow-2xl border border-white/10 hover:shadow-3xl hover:border-primary/20 transition-all duration-300">
-                <div className="mb-4 overflow-hidden rounded-xl shadow-lg">
-                  <AspectRatio ratio={16 / 9}>
-                    <iframe
-                      src={getEmbedUrl(video.url)}
-                      title={`${video.company} Video`}
-                      className="w-full h-full rounded-xl"
-                      loading="lazy"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </AspectRatio>
-                </div>
-                <h3 className="text-xl font-bold text-center text-foreground tracking-wider">
-                  {video.company}
-                </h3>
+              <AspectRatio ratio={16 / 9}>
+                <iframe
+                  src={getEmbedUrl(v.url)}
+                  title={`${v.company} podcast`}
+                  className="w-full h-full"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </AspectRatio>
+              <div className="p-5">
+                <div className="text-xs tracking-widest uppercase text-black/40 mb-1">PARTNER</div>
+                <div className="font-bold text-base md:text-lg">{v.company}</div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Blinking marquee */}
-        <div className="text-center">
-          <div className="inline-block bg-gradient-to-r from-primary/20 to-accent/20 rounded-full px-8 py-3 border border-primary/30">
-            <span className="text-xl font-bold text-primary animate-pulse tracking-widest">
-              MORE TO COME...
-            </span>
-          </div>
+        <div className="mt-10 text-xs tracking-widest uppercase text-black/40 text-center">
+          ◆ More partner stories on the way
         </div>
       </div>
     </section>

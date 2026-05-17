@@ -1,34 +1,37 @@
-import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
+import CustomCursor from "@/components/CustomCursor";
+import BoldHeader from "@/components/BoldHeader";
+import PassDialogHost from "@/components/PassDialogHost";
+import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import PartnerHero from "@/components/sections/PartnerHero";
 import PartnerLevels from "@/components/sections/PartnerLevels";
 import PartnerMarquee from "@/components/sections/PartnerMarquee";
 import PartnerVideos from "@/components/sections/PartnerVideos";
 import PartnerCTA from "@/components/sections/PartnerCTA";
-import SEO from "@/components/SEO";
-import StructuredData from "@/components/StructuredData";
+import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 
 const Partners = () => {
-  const title = "Partners & Sponsors | Formula Forum 2026";
-  const description = "Formula Forum 2026 partners: Ricochet360, The Standard, and MediaAlpha (Platinum), plus Gold, Silver, and 15+ additional insurance industry sponsors.";
+  const title = "Partner with Formula Forum 2026 | Platinum, Gold, Silver, Bronze";
+  const description = "Become a 2026 Formula Forum partner. Four tiers from $5,000 to $15,000 — stage time, 1-on-1 podcast interviews, booth placement, attendee lead lists, and mobile-app exposure.";
+
   return (
-    <div className="min-h-screen bg-background">
-      <SEO title={title} description={description} path="/partners" />
-      <StructuredData page="general" />
-      <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 h-16 flex items-center">
-          <Link to="/">
-            <img src="/lovable-uploads/98ddc4b5-a053-48ca-989b-0e1cfae3d8dd.png" alt="Formula Forum 2026" className="h-8" width="120" height="32" fetchPriority="high" />
-          </Link>
-        </div>
-      </header>
-      <PartnerHero />
-      <PartnerLevels />
-      <PartnerMarquee />
-      <PartnerVideos />
-      <PartnerCTA />
-      {/* Mobile padding for sticky CTA */}
-      <div className="h-20 md:h-0"></div>
-    </div>
+    <PassDialogProvider>
+      <div className="min-h-screen bg-black">
+        <SEO title={title} description={description} path="/partners" />
+        <StructuredData page="general" />
+        <CustomCursor />
+        <BoldHeader />
+        <PassDialogHost />
+
+        <PartnerHero />
+        <PartnerLevels />
+        <PartnerMarquee />
+        <PartnerVideos />
+        <PartnerCTA />
+        <GiantTicketFooter />
+      </div>
+    </PassDialogProvider>
   );
 };
 

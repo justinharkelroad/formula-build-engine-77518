@@ -1,168 +1,181 @@
-import { Button } from "@/components/ui/button";
-import { CheckCircle, Star, Award, Crown, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpRight, Check } from "lucide-react";
 
 type Tier = {
   name: string;
-  limit?: number;
   price: string;
-  icon: any;
-  color: string;
+  blurb: string;
   link?: string;
   benefits: string[];
+  variant: "platinum" | "gold" | "silver" | "bronze";
+};
+
+const tiers: Tier[] = [
+  {
+    name: "Platinum",
+    price: "$15,000",
+    blurb: "Top-tier visibility. Co-branding on the welcome reception, stage time, and lead access before doors open.",
+    link: "https://buy.stripe.com/28EaEXdsvebk1wAbX23wQ0d",
+    variant: "platinum",
+    benefits: [
+      "Two 6-ft tables in PLATINUM location",
+      "Co-branding: Welcome Reception & Thursday-Night Event",
+      "8 full-access passes",
+      "5-min live stage slot during a General Session",
+      "1-on-1 video-podcast interview + full email & social promo",
+      "30-sec silent video ad on General Session break screens",
+      "30-sec video loop in partnership room & hallways",
+      "Attendee lead list 3 days pre-event + email blast",
+      "For You Page banner + VIP placement in mobile app",
+      "2 Participant Access Passes into General Session"
+    ]
+  },
+  {
+    name: "Gold",
+    price: "$10,000",
+    blurb: "Breakfast & lunch co-branding, on-stage call-out, and a featured podcast spot.",
+    link: "https://buy.stripe.com/8x2bJ1corffob7a0ek3wQ0e",
+    variant: "gold",
+    benefits: [
+      "Two 6-ft tables in GOLD location",
+      "Co-branding option: Breakfast & Lunch",
+      "6 full-access passes",
+      "On-stage verbal shout-out during General Session",
+      "1-on-1 video-podcast promotion",
+      "30-sec silent video ad on General Session break screens",
+      "30-sec hallway/partnership-room video loop",
+      "Lead list 1 day pre-event",
+      "VIP listing in mobile app",
+      "1 Participant Access Pass into General Session"
+    ]
+  },
+  {
+    name: "Silver",
+    price: "$7,500",
+    blurb: "Solid booth presence, voice call-out, and post-event lead delivery.",
+    link: "https://buy.stripe.com/bJeeVd0FJd7gb7a5yE3wQ02",
+    variant: "silver",
+    benefits: [
+      "One 6-ft table booth in SILVER location",
+      "4 full-access passes",
+      "General Session voice call-out",
+      "1-on-1 video-podcast promotion",
+      "30-sec hallway/partnership-room video loop",
+      "Lead list 2 days post-event",
+      "Standard listing in mobile app",
+      "1 Participant Access Pass into General Session"
+    ]
+  },
+  {
+    name: "Bronze",
+    price: "$5,000",
+    blurb: "Entry point into the room — booth + podcast + branded post-event content bundle.",
+    link: "https://buy.stripe.com/14A28r9cf5EO0swaSY3wQ03",
+    variant: "bronze",
+    benefits: [
+      "One 6-ft table booth in BRONZE location",
+      "2 full-access passes",
+      "1-on-1 video-podcast promotion",
+      "30-sec hallway/partnership-room video loop",
+      "Lead list 10 days post-event",
+      "Standard listing in mobile app",
+      "Post-event photo/video bundle with branding",
+      "1 Participant Access Pass into General Session"
+    ]
+  }
+];
+
+const variantStyles: Record<Tier["variant"], { card: string; text: string; chip: string; cta: string }> = {
+  platinum: {
+    card: "bg-white text-black",
+    text: "text-black/70",
+    chip: "bg-black text-white",
+    cta: "bg-black text-white hover:bg-[hsl(var(--secondary))]"
+  },
+  gold: {
+    card: "brand-block-blue text-white",
+    text: "text-white/85",
+    chip: "bg-white text-[hsl(var(--secondary))]",
+    cta: "bg-white text-black hover:bg-black hover:text-white"
+  },
+  silver: {
+    card: "bg-[hsl(0,0%,10%)] text-white border border-white/15",
+    text: "text-white/70",
+    chip: "bg-white text-black",
+    cta: "bg-white text-black hover:bg-[hsl(var(--secondary))] hover:text-white"
+  },
+  bronze: {
+    card: "bg-[hsl(0,0%,10%)] text-white border border-white/15",
+    text: "text-white/70",
+    chip: "bg-[hsl(var(--primary))] text-white",
+    cta: "bg-[hsl(var(--primary))] text-white hover:bg-white hover:text-black"
+  }
 };
 
 const PartnerLevels = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const tiers: Tier[] = [
-    {
-      name: "Platinum",
-      price: "$15,000",
-      icon: Crown,
-      color: "bg-gradient-to-br from-slate-400 to-slate-600",
-      link: "https://buy.stripe.com/28EaEXdsvebk1wAbX23wQ0d",
-      benefits: [
-        "Premium booth: Two 6-ft tables in a PLATINUM location",
-        "Co-branding Option: Welcome Reception & Thursday-Night Event",
-        "8 full-access passes (sessions, meals, evening events)",
-        "5-min live stage slot during a General Session",
-        "1-on-1 video-podcast interview promoted to full email list + socials",
-        "30-sec silent video ad on every General Session break screen",
-        "30-sec video loop on partnership-room & hallway screens",
-        "Attendee lead list 3 days pre-event + exclusive email blast",
-        "For You Page Banner + VIP placement in the mobile app",
-        "2 Participant Access Passes into General Session"
-      ]
-    },
-    {
-      name: "Gold",
-      price: "$10,000",
-      icon: Award,
-      color: "bg-gradient-to-br from-accent to-warning",
-      link: "https://buy.stripe.com/8x2bJ1corffob7a0ek3wQ0e",
-      benefits: [
-        "Two 6-ft tables in a GOLD location",
-        "Option to co-brand Breakfast & Lunch",
-        "6 full-access passes",
-        "On-stage verbal shout-out during General Session",
-        "1-on-1 video-podcast promotion",
-        "30-sec silent video ad on General Session break screens",
-        "30-sec hallway/partnership-room video loop",
-        "Lead list 1 day pre-event",
-        "VIP listing in the mobile app",
-        "1 Participant Access Pass into General Session"
-      ]
-    },
-    {
-      name: "Silver",
-      price: "$7,500",
-      icon: Star,
-      color: "bg-gradient-to-br from-slate-300 to-slate-500",
-      link: "https://buy.stripe.com/bJeeVd0FJd7gb7a5yE3wQ02",
-      benefits: [
-        "One 6-ft table booth in SILVER location",
-        "4 full-access passes",
-        "General Session voice call-out",
-        "1-on-1 video-podcast promotion",
-        "30-sec hallway/partnership-room video loop",
-        "Lead list 2 days post-event",
-        "Standard listing in the mobile app",
-        "1 Participant Access Pass into General Session"
-      ]
-    },
-    {
-      name: "Bronze",
-      price: "$5,000",
-      icon: Star,
-      color: "bg-gradient-to-br from-amber-600 to-amber-800",
-      link: "https://buy.stripe.com/14A28r9cf5EO0swaSY3wQ03",
-      benefits: [
-        "One 6-ft table booth in BRONZE location",
-        "2 full-access passes",
-        "1-on-1 video-podcast promotion",
-        "30-sec hallway/partnership-room video loop",
-        "Lead list 10 days post-event",
-        "Standard listing in the mobile app",
-        "Post-event photo/video bundle with branding",
-        "1 Participant Access Pass into General Session"
-      ]
-    }
-  ];
-
   return (
-    <section id="levels" className="py-16 bg-background">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-foreground">
-          Partnership Levels
-        </h2>
-        <p className="text-lg text-center mb-12 text-muted-foreground max-w-2xl mx-auto">
-          Choose the level that best fits your goals. All partnerships include brand exposure to growth-focused insurance professionals.
-        </p>
+    <section id="levels" className="bg-black text-white py-20 md:py-28 px-5 md:px-12">
+      <div className="container mx-auto max-w-7xl">
+        <div className="eyebrow mb-8">PARTNERSHIP LEVELS</div>
 
-        <div className="max-w-3xl mx-auto space-y-3">
-          {tiers.map((tier, index) => {
-            const isOpen = openIndex === index;
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-end mb-12 md:mb-16">
+          <h2 className="display-bold text-[clamp(2.75rem,11vw,7rem)] md:text-[8vw] lg:text-[6vw] leading-[0.9] break-words">
+            CHOOSE<br />YOUR LEVEL
+          </h2>
+          <p className="text-lg text-white/70 leading-relaxed max-w-md md:justify-self-end">
+            Four tiers, each with stage, podcast, lead list, and booth placement weighted to your investment. Pick the one that fits your goals.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+          {tiers.map((t) => {
+            const v = variantStyles[t.variant];
             return (
-              <div key={index} className="bg-card rounded-lg border shadow-sm overflow-hidden">
-                {/* Accordion header — always visible */}
-                <button
-                  type="button"
-                  className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-muted/30 transition-colors"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  aria-expanded={isOpen}
-                >
-                  <div className={`${tier.color} w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0`}>
-                    <tier.icon className="text-white" size={20} />
+              <div
+                key={t.name}
+                className={`${v.card} rounded-2xl md:rounded-3xl p-7 md:p-10 flex flex-col`}
+              >
+                {/* Top — name + price */}
+                <div className="flex items-start justify-between mb-2">
+                  <div className="text-xs tracking-widest uppercase opacity-60">
+                    {t.name.toUpperCase()}
                   </div>
-                  <div className="flex-1 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl font-bold text-card-foreground">{tier.name}</span>
-                      {tier.limit && (
-                        <span className="text-xs font-semibold bg-destructive text-white px-2 py-0.5 rounded-full">
-                          Only {tier.limit} Left
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl font-bold text-foreground">{tier.price}</span>
-                      <ChevronDown
-                        size={20}
-                        className={`text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-                      />
-                    </div>
-                  </div>
-                </button>
+                  <span className={`${v.chip} text-xs tracking-widest uppercase px-2.5 py-1 rounded-full`}>
+                    {t.name.toUpperCase()} TIER
+                  </span>
+                </div>
+                <div className="display-bold text-5xl sm:text-6xl md:text-7xl leading-none mb-4">
+                  {t.price}
+                </div>
+                <p className={`${v.text} leading-relaxed mb-6`}>{t.blurb}</p>
 
-                {/* Accordion body — benefits + CTA */}
-                {isOpen && (
-                  <div className="px-6 pb-6 border-t">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mt-5 mb-6">
-                      {tier.benefits.map((benefit, benefitIndex) => (
-                        <div key={benefitIndex} className="flex items-start gap-2">
-                          <CheckCircle className="text-primary mt-0.5 flex-shrink-0" size={16} />
-                          <span className="text-sm text-card-foreground">{benefit}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <Button
-                      variant="cta"
-                      className="w-full sm:w-auto"
-                      onClick={() => {
-                        if (tier.link) {
-                          window.open(tier.link, '_blank');
-                        } else {
-                          window.location.href = '/contact';
-                        }
-                      }}
-                    >
-                      {`LOCK IN ${tier.name.toUpperCase()}`}
-                    </Button>
-                  </div>
-                )}
+                {/* Benefits list */}
+                <ul className="space-y-2.5 mb-8">
+                  {t.benefits.map((b, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed">
+                      <Check className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <button
+                  onClick={() => {
+                    if (t.link) window.open(t.link, "_blank");
+                    else window.location.href = "/contact";
+                  }}
+                  className={`${v.cta} mt-auto inline-flex items-center justify-between w-full px-6 py-4 rounded-full font-bold transition-colors`}
+                >
+                  <span>LOCK IN {t.name.toUpperCase()}</span>
+                  <ArrowUpRight className="w-5 h-5" />
+                </button>
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-10 text-xs tracking-widest uppercase text-white/40 text-center">
+          ◆ Questions? <a href="mailto:Gregg@f3florida.com" className="text-white underline">Gregg@f3florida.com</a>
         </div>
       </div>
     </section>

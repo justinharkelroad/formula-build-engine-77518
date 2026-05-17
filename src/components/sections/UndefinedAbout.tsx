@@ -21,7 +21,7 @@ const UndefinedAbout = () => {
               The Insurance Agency Growth Event
             </h2>
             <p className="text-xl text-white/70 leading-relaxed">
-              Formula proved that growth happens where clarity meets community. Across two immersive days, agency owners gained actionable frameworks, redefined leadership, and built relationships that extend far beyond the event. Attendees described it as "the most impactful insurance conference ever attended"—a space where mindset, execution, and accountability aligned to create lasting results.
+              Formula proved that growth happens where clarity meets community. Across two immersive days, agency owners and team members gained actionable frameworks, redefined leadership, and built relationships that extend far beyond the event. Attendees described it as "the most impactful insurance conference ever attended"—a space where mindset, execution, and accountability aligned to create lasting results.
             </p>
           </div>
 

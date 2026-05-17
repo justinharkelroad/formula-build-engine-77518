@@ -1,45 +1,75 @@
-import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { ArrowDown } from "lucide-react";
 
 const PartnerHero = () => {
   const handleScrollToLevels = () => {
-    const levelsElement = document.getElementById('levels');
-    if (levelsElement) {
-      levelsElement.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById("levels")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="bg-gradient-primary py-20 md:py-32 text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Fuel Agency Success. Amplify Your Brand.
-          </h1>
-          <Button
-            variant="secondary"
-            size="xl"
-            className="mb-10"
-            onClick={handleScrollToLevels}
-          >
-            View Partnership Levels
-          </Button>
+    <section className="relative bg-black text-white overflow-hidden pt-28 pb-12 md:pt-40 md:pb-20">
+      {/* subtle radial glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="hero-orb hero-orb-secondary absolute top-1/3 -left-32 w-[500px] h-[500px]" />
+        <div className="hero-orb hero-orb-primary absolute bottom-0 right-0 w-[400px] h-[400px] opacity-40" />
+      </div>
 
-          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
-            <AspectRatio ratio={16 / 9}>
-              <iframe
-                src="https://player.vimeo.com/video/1169705054?badge=0&autopause=0&player_id=0&app_id=58479"
-                title="Formula Forum Partner Video"
-                className="w-full h-full"
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-                allowFullScreen
-              />
-            </AspectRatio>
+      <div className="relative z-10 container mx-auto px-5 md:px-12">
+        {/* MEGA HEADLINE */}
+        <h1 className="display-bold text-[clamp(3.25rem,14vw,10rem)] md:text-[12vw] lg:text-[10vw] mb-8 break-words">
+          PARTNER<br />WITH<br /><span className="display-outline">FORMULA</span>
+        </h1>
+
+        {/* Meta pills + intro grid */}
+        <div className="grid md:grid-cols-2 gap-10 md:gap-12 mt-10 md:mt-16">
+          {/* Left — pills + CTA */}
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap gap-3">
+              <span className="meta-pill meta-pill-solid">2026 PARTNER PROGRAM</span>
+              <span className="meta-pill meta-pill-dot">SPOTS OPEN</span>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <span className="meta-pill">PLATINUM · GOLD</span>
+              <span className="meta-pill">SILVER · BRONZE</span>
+            </div>
+
+            <button
+              onClick={handleScrollToLevels}
+              className="mt-4 self-start inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-full font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40"
+            >
+              VIEW PARTNERSHIP LEVELS
+              <ArrowDown className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Right — intro copy */}
+          <div>
+            <div className="text-2xl md:text-3xl font-bold leading-tight mb-6">
+              Fuel Agency Success.<br />
+              Amplify Your Brand.
+            </div>
+            <div className="space-y-1 text-lg text-white/85">
+              <div>Stage time + 1-on-1 podcast interviews</div>
+              <div>Booth placement in high-traffic flow</div>
+              <div>Attendee lead lists pre- and post-event</div>
+              <div>App + screen ad placement throughout</div>
+            </div>
           </div>
         </div>
+
+        {/* Intro video — full width */}
+        <div className="mt-12 md:mt-20 max-w-5xl mx-auto rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+          <AspectRatio ratio={16 / 9}>
+            <iframe
+              src="https://player.vimeo.com/video/1169705054?badge=0&autopause=0&player_id=0&app_id=58479"
+              title="Formula Forum Partner Video"
+              className="w-full h-full"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              allowFullScreen
+            />
+          </AspectRatio>
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
     </section>
   );
 };

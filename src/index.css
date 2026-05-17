@@ -19,7 +19,7 @@ All colors MUST be HSL.
     --popover: 0 0% 0%;
     --popover-foreground: 0 0% 100%;
 
-    /* F³ Brand Colors - Orange & Blue */
+    /* Formula Brand Colors - Orange & Blue */
     --primary: 20 100% 63%; /* #FF8C42 - Orange from logo */
     --primary-foreground: 0 0% 100%;
 
@@ -297,5 +297,233 @@ All colors MUST be HSL.
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* ───────── Bold Block Redesign (2026 refresh) ───────── */
+
+  /* Display headline — used for FORMULA, SCHEDULE, BUY TICKET massive titles.
+     Hard-bold, tight tracking, all caps, scales fluidly. */
+  .display-bold {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    text-transform: uppercase;
+    font-stretch: 100%;
+  }
+
+  /* Outline-only variant for the ampersand or letter accents */
+  .display-outline {
+    -webkit-text-stroke: 2px hsl(0 0% 100%);
+    color: transparent;
+  }
+
+  /* Pill — used for "12 AUGUST", "TICKETS ACTIVE", "2025" badges */
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(0 0% 100% / 0.25);
+    background: hsl(0 0% 100% / 0.04);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: hsl(0 0% 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .meta-pill-solid {
+    background: hsl(var(--secondary));
+    border-color: hsl(var(--secondary));
+    color: hsl(0 0% 100%);
+  }
+
+  .meta-pill-dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: hsl(120 80% 55%);
+    box-shadow: 0 0 8px hsl(120 80% 55% / 0.8);
+  }
+
+  /* Blue brand block — used for hero info card, stat cards, pricing card */
+  .brand-block-blue {
+    background: hsl(var(--secondary));
+    color: hsl(0 0% 100%);
+    border-radius: 1.25rem;
+  }
+
+  /* Subtle ash card — used for value-prop grid items */
+  .ash-card {
+    background: hsl(0 0% 6%);
+    border: 1px solid hsl(0 0% 14%);
+    border-radius: 1rem;
+    transition: var(--transition-smooth);
+  }
+  .ash-card:hover {
+    background: hsl(0 0% 8%);
+    border-color: hsl(0 0% 22%);
+  }
+
+  /* Soft-ash card for "white background" sections */
+  .pale-card {
+    background: hsl(0 0% 96%);
+    border: 1px solid hsl(0 0% 90%);
+    border-radius: 1rem;
+    color: hsl(0 0% 8%);
+  }
+
+  /* Section eyebrow label — small uppercase tracked text */
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+  .eyebrow::before {
+    content: '◆ ';
+    color: hsl(var(--secondary));
+    opacity: 0.7;
+    margin-right: 0.35rem;
+  }
+
+  /* Bold accordion row — used in Schedule + FAQ */
+  .bold-row {
+    border-top: 1px solid hsl(0 0% 16%);
+    padding: 1.5rem 0;
+  }
+  .bold-row:last-child { border-bottom: 1px solid hsl(0 0% 16%); }
+
+  /* ───────── Florida-themed Animation Library ─────────
+     All GPU-only transforms + opacity. prefers-reduced-motion respected
+     by the base block at the top of this file. */
+
+  /* Scroll-reveal — fade + rise (paired with useScrollAnimation hook) */
+  .reveal-up {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0);
+    transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .reveal-up.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  /* Cascade delays for stagger reveals */
+  .delay-1 { transition-delay: 80ms; }
+  .delay-2 { transition-delay: 160ms; }
+  .delay-3 { transition-delay: 240ms; }
+  .delay-4 { transition-delay: 320ms; }
+  .delay-5 { transition-delay: 400ms; }
+  .delay-6 { transition-delay: 480ms; }
+
+  /* Tide-shift — slow background gradient drift, used on hero/footer */
+  @keyframes tide-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .animate-tide {
+    background-size: 220% 220%;
+    animation: tide-shift 18s ease-in-out infinite;
+  }
+
+  /* Sun-pulse — gentle scale + opacity on the warm orb */
+  @keyframes sun-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.08); opacity: 0.75; }
+  }
+  .animate-sun {
+    animation: sun-pulse 8s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  /* Flicker — organic breath / candle-like fade for hero orbs.
+     Irregular keyframes give it an unpredictable "flicker" rhythm
+     instead of a clinical sine wave. */
+  @keyframes orb-flicker {
+    0%   { opacity: 0.45; transform: scale(1) translate3d(0, 0, 0); }
+    18%  { opacity: 0.82; transform: scale(1.06) translate3d(2%, -1%, 0); }
+    34%  { opacity: 0.38; transform: scale(0.98) translate3d(-1%, 1%, 0); }
+    52%  { opacity: 0.75; transform: scale(1.04) translate3d(1%, 2%, 0); }
+    71%  { opacity: 0.5;  transform: scale(1.02) translate3d(-2%, -1%, 0); }
+    88%  { opacity: 0.7;  transform: scale(1.05) translate3d(0, 1%, 0); }
+    100% { opacity: 0.45; transform: scale(1) translate3d(0, 0, 0); }
+  }
+  .animate-flicker {
+    animation: orb-flicker 12s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  .animate-flicker-slow {
+    animation: orb-flicker 18s ease-in-out infinite reverse;
+    will-change: opacity, transform;
+  }
+  .animate-flicker-fast {
+    animation: orb-flicker 9s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  /* Stagger entry of each orb's animation cycle */
+  .delay-orb-1 { animation-delay: -3s; }
+  .delay-orb-2 { animation-delay: -6s; }
+  .delay-orb-3 { animation-delay: -9s; }
+
+  /* Wave-sway — for SVG waves between sections */
+  @keyframes wave-sway {
+    0% { transform: translate3d(-25%, 0, 0); }
+    100% { transform: translate3d(0%, 0, 0); }
+  }
+  .animate-wave {
+    animation: wave-sway 14s linear infinite;
+    will-change: transform;
+  }
+  .animate-wave-slow {
+    animation: wave-sway 22s linear infinite reverse;
+    will-change: transform;
+  }
+
+  /* Shimmer — subtle highlight pass on display-outline text */
+  @keyframes shimmer {
+    0% { background-position: -120% 0; }
+    100% { background-position: 220% 0; }
+  }
+  .text-shimmer {
+    background-image: linear-gradient(110deg, transparent 35%, hsl(var(--secondary) / 0.55) 50%, transparent 65%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+
+  /* Ken Burns — very subtle continuous image breathing */
+  @keyframes ken-burns {
+    0%, 100% { transform: scale(1) translate3d(0, 0, 0); }
+    50% { transform: scale(1.05) translate3d(0, -1%, 0); }
+  }
+  .animate-ken-burns {
+    animation: ken-burns 16s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Lift-on-hover — for cards. Adds depth without paint thrash. */
+  .lift-hover {
+    transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 320ms ease;
+    will-change: transform;
+  }
+  .lift-hover:hover {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Dot pulse — green TICKETS ACTIVE indicator */
+  @keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(120 80% 55% / 0.7); }
+    50% { box-shadow: 0 0 0 6px hsl(120 80% 55% / 0); }
+  }
+  .meta-pill-dot::before {
+    animation: dot-pulse 2.4s ease-in-out infinite;
   }
 }

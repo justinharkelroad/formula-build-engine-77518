@@ -6,7 +6,9 @@ import GalleryGrid from '@/components/GalleryGrid';
 import GalleryLightbox from '@/components/GalleryLightbox';
 import SEO from '@/components/SEO';
 import StructuredData from '@/components/StructuredData';
-import UndefinedNavigation from '@/components/UndefinedNavigation';
+import BoldHeader from '@/components/BoldHeader';
+import PassDialogHost from '@/components/PassDialogHost';
+import { PassDialogProvider } from '@/contexts/PassDialogContext';
 import { galleryImages, GalleryImage } from '@/config/galleryImages';
 import DownloadBucket from '@/components/DownloadBucket';
 import DownloadBucketPanel from '@/components/DownloadBucketPanel';
@@ -63,6 +65,7 @@ const Gallery = () => {
   }, [displayCount]);
 
   return (
+    <PassDialogProvider>
     <div className="min-h-screen bg-background">
       <SEO
         title="Photo Gallery | Formula Forum 2025 Highlights"
@@ -70,7 +73,8 @@ const Gallery = () => {
         path="/gallery"
       />
       <StructuredData page="general" />
-      <UndefinedNavigation />
+      <BoldHeader />
+      <PassDialogHost />
 
       <main className="container mx-auto px-4 py-24">
         <div className="text-center mb-12">
@@ -205,6 +209,7 @@ const Gallery = () => {
 
       <Footer />
     </div>
+    </PassDialogProvider>
   );
 };
 

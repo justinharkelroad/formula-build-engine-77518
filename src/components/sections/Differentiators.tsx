@@ -15,7 +15,7 @@ const Differentiators = () => {
     {
       icon: Network,
       title: "Curated networking, zero random badge-scans",
-      description: "Connect with pre-qualified agency owners and industry professionals who share your ambitions."
+      description: "Connect with pre-qualified agency owners, team members, and industry professionals who share your ambitions."
     },
     {
       icon: Target,

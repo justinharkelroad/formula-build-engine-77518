@@ -17,7 +17,7 @@ const FinalCTA = () => {
             Ready to Crack the Code?
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Join ambitious agency owners who refuse to settle for average results.
+            Join ambitious agency owners and team members who refuse to settle for average results.
           </p>
           <div className="flex justify-center">
             <PassTypeDialog />

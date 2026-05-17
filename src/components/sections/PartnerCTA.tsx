@@ -1,26 +1,46 @@
-import { Button } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 
 const PartnerCTA = () => {
+  const handleScrollToLevels = () => {
+    document.getElementById("levels")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="py-20 bg-gradient-secondary text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Lock Your Spot Before They're Gone
-          </h2>
-          <p className="text-xl mb-8 text-white/90">
-            Partnership opportunities are limited and fill up fast. Secure your position as an F³ industry leader today.
+    <section
+      className="relative text-white py-20 md:py-28 px-5 md:px-12 overflow-hidden"
+      style={{
+        backgroundImage: "linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url(/lovable-uploads/DSC09333.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+      }}
+    >
+      <div className="container mx-auto max-w-7xl">
+        <div className="eyebrow mb-8">FINAL CALL</div>
+
+        <h2 className="display-bold text-[clamp(2.5rem,12vw,9rem)] md:text-[10vw] lg:text-[8vw] leading-[0.9] mb-10 break-words">
+          LOCK YOUR<br />SPOT
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
+            Partnership tiers fill in waves — Platinum and Gold typically go first. Secure your position as a 2026 industry leader before the slot you want is gone.
           </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-            <Button 
-              variant="secondary"
-              size="xl"
-              className="w-full md:w-auto bg-white text-foreground hover:bg-white/90"
-              onClick={() => window.location.href = 'mailto:gregg@f3florida.com'}
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleScrollToLevels}
+              className="inline-flex items-center justify-between bg-white text-black px-7 py-4 rounded-full font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors"
             >
-              I Have Questions →
-            </Button>
+              <span>VIEW PARTNERSHIP LEVELS</span>
+              <ArrowUpRight className="w-5 h-5" />
+            </button>
+            <a
+              href="mailto:gregg@f3florida.com"
+              className="inline-flex items-center justify-between brand-block-blue px-7 py-4 rounded-full font-bold hover:brightness-110 transition-all"
+            >
+              <span>I HAVE QUESTIONS</span>
+              <ArrowUpRight className="w-5 h-5" />
+            </a>
           </div>
         </div>
       </div>

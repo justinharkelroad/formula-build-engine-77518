@@ -144,11 +144,12 @@ export const WaitlistModal = ({ children }: WaitlistModalProps) => {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[520px] bg-black border-white/15 text-white rounded-3xl p-8 shadow-[0_40px_120px_-20px_rgba(74,144,226,0.45)]">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Join the Waitlist</DialogTitle>
-          <DialogDescription>
-            Be the first to know when Formula 2026 registration opens.
+          <div className="eyebrow mb-2">WAITLIST</div>
+          <DialogTitle className="display-bold text-3xl md:text-4xl leading-none">JOIN THE LIST</DialogTitle>
+          <DialogDescription className="text-white/65 pt-2">
+            Be the first to know when Formula Forum 2026 hits the next tier of registration.
           </DialogDescription>
         </DialogHeader>
         

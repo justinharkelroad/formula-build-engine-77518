@@ -42,7 +42,7 @@ export const PARTNER_TIERS: Record<PartnerTierKey, PartnerTierConfig> = {
       "Logo on event Step-and-Repeat backdrop",
       "1-on-1 video-podcast interview",
       "30-sec video ad on General Session break screens",
-      "Branded F³ swag for your team",
+      "Branded Formula swag for your team",
       "Video loop on partnership-room & hallway screens",
       "Attendee lead list 30 days pre-event + exclusive email blast",
       "Primary + VIP mobile app placement",

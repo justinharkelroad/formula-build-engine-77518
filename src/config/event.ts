@@ -67,7 +67,7 @@ export const getCountdownDeadline = (): { deadline: string; resetCount: number; 
 
 export const CONFIG = {
   EVENT_NAME: "Formula Forum 2026",
-  BRAND_SHORT: "F³",
+  BRAND_SHORT: "Formula",
   TAGLINE: "National Insurance Agency Growth Conference",
   START_DATETIME_ISO: "2026-10-14T09:00:00-04:00",
   END_DATETIME_ISO: "2026-10-16T17:00:00-04:00",
@@ -93,9 +93,9 @@ export const CONFIG = {
   TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
-    { name: "Ricochet360", tier: "Platinum", logoUrl: "/lovable-uploads/29100412-4e6c-4333-b865-192e0fca781e.png", linkUrl: "https://ricochet360.com" },
     { name: "The Standard", tier: "Platinum", logoUrl: "/lovable-uploads/c24dc654-fa2e-440d-adc8-9c19054f856c.png", linkUrl: "https://standardplaybook.com" },
-    { name: "MediaAlpha", tier: "Platinum", logoUrl: "/lovable-uploads/6dae2514-00d4-40b4-b301-56e531551ddd.png", linkUrl: "https://mediaalpha.com" }
+    { name: "MediaAlpha", tier: "Platinum", logoUrl: "/lovable-uploads/6dae2514-00d4-40b4-b301-56e531551ddd.png", linkUrl: "https://mediaalpha.com" },
+    { name: "AgencyToolChest", tier: "Platinum", logoUrl: "/lovable-uploads/Agencytool%20chest%20logo.png", linkUrl: "https://agencytoolchest.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },

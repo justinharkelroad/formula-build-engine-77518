@@ -19,7 +19,7 @@ const GASetup = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="GA4 Setup | F³ Formula Forum" description="GA4 configuration page" noindex={true} />
+      <SEO title="GA4 Setup | Formula Forum" description="GA4 configuration page" noindex={true} />
       <Navigation />
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-2xl mx-auto">

@@ -52,8 +52,8 @@ const ThankYouEnhanced = () => {
   return (
     <>
       <SEO 
-        title="Registration Confirmed | F³ Formula Forum 2026"
-        description="Your registration is confirmed for the F³ Formula Forum 2026"
+        title="Registration Confirmed | Formula Forum 2026"
+        description="Your registration is confirmed for the Formula Forum 2026"
         noindex={true}
       />
       <Navigation />
@@ -68,7 +68,7 @@ const ThankYouEnhanced = () => {
                 You're In! 🎉
               </h1>
               <p className="text-xl text-muted-foreground">
-                Welcome to the F³ Formula Forum 2026 - The Most Anticipated Agency Growth Event of the Year
+                Welcome to the Formula Forum 2026 - The Most Anticipated Agency Growth Event of the Year
               </p>
             </div>
 

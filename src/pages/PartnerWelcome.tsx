@@ -454,7 +454,7 @@ const PartnerWelcome = () => {
             <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
               We're fired up to have you on board as a {tierConfig.name} Partner.
               Let's get your brand dialed in so we can start promoting you to our
-              community of growth-focused agency owners.
+              community of growth-focused agency owners and team members.
             </p>
 
             {/* Quick recap of what they get */}

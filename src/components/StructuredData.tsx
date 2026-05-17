@@ -13,7 +13,6 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Formula Forum",
-    "alternateName": "F³",
     "url": siteUrl,
     "description": "Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida."
   };
@@ -23,10 +22,9 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Formula Forum",
-    "alternateName": "F³",
     "url": siteUrl,
     "logo": `${siteUrl}/assets/logo.png`,
-    "description": "Formula Forum organizes the national insurance agency growth conference in Orlando, bringing together agency owners, producers, and industry partners.",
+    "description": "Formula Forum organizes the national insurance agency growth conference in Orlando, bringing together agency owners, team members, producers, and industry partners.",
     "email": CONFIG.ORGANIZER_EMAIL,
     "telephone": CONFIG.ORGANIZER_PHONE,
     "contactPoint": {
@@ -119,7 +117,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       }
     },
     "image": [CONFIG.OG_IMAGE_1200x630.startsWith("http") ? CONFIG.OG_IMAGE_1200x630 : `${siteUrl}${CONFIG.OG_IMAGE_1200x630}`],
-    "description": "Three-day insurance agency growth conference in Orlando with workshops, breakouts, and a printed Book of Formulas playbook.",
+    "description": "1.5-day insurance agency growth conference in Orlando with workshops, breakouts, and a printed Book of Formulas playbook.",
     "organizer": {
       "@type": "Organization",
       "name": "Formula Forum",

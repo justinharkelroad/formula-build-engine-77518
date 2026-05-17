@@ -26,27 +26,28 @@
         src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyeMZs.woff2') format('woff2');
       }
 
-      /* Critical above-the-fold styles */
+      /* Critical above-the-fold styles — matches src/index.css dark theme */
       :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
-        --primary: 193 55% 58%;
+        --background: 0 0% 0%;
+        --foreground: 0 0% 100%;
+        --primary: 20 100% 63%;
         --primary-foreground: 0 0% 100%;
-        --secondary: 20 93% 54%;
+        --secondary: 214 73% 58%;
         --secondary-foreground: 0 0% 100%;
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --border: 214.3 31.8% 91.4%;
+        --muted: 0 0% 10%;
+        --muted-foreground: 0 0% 60%;
+        --border: 0 0% 20%;
         --radius: 0.5rem;
       }
 
       * { box-sizing: border-box; }
 
+      html, body { background: #000; }
+
       body {
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
         margin: 0;
         padding: 0;
-        background: hsl(var(--background));
         color: hsl(var(--foreground));
         line-height: 1.5;
       }
@@ -139,7 +140,7 @@
       "@type": "BusinessEvent",
       "@id": "https://theformulaforum.com/#event",
       "name": "Formula Forum 2026 — The #1 Insurance Agency Growth Conference",
-      "alternateName": "F3 Florida",
+      "alternateName": "Formula Forum",
       "description": "Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida, bringing together agency owners, team members, and industry partners for operator-led training, peer breakout sessions, and actionable implementation planning.",
       "url": "https://theformulaforum.com",
       "startDate": "2026-10-14T09:00:00-04:00",
@@ -220,10 +221,10 @@
       "@type": "Organization",
       "@id": "https://theformulaforum.com/#organizer",
       "name": "Formula Forum",
-      "alternateName": ["F3 Florida", "The Formula Forum", "F3"],
+      "alternateName": ["The Formula Forum"],
       "url": "https://theformulaforum.com",
       "logo": "https://theformulaforum.com/assets/logo.png",
-      "description": "Formula Forum organizes the national insurance agency growth conference in Orlando, bringing together agency owners, producers, and industry partners.",
+      "description": "Formula Forum organizes the national insurance agency growth conference in Orlando, bringing together agency owners, team members, producers, and industry partners.",
       "email": "info@f3florida.com",
       "telephone": "+1-260-515-1349",
       "contactPoint": {
@@ -249,7 +250,7 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Formula Forum",
-      "alternateName": "F3",
+      "alternateName": "Formula Forum",
       "url": "https://theformulaforum.com",
       "description": "Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida."
     }
@@ -394,8 +395,6 @@
 </head>
 
   <body>
-    <div class="sticky-header-space"></div>
-
     <!-- Facebook Pixel (noscript fallback moved to body) -->
     <noscript>
       <img height="1" width="1" style="display:none"
@@ -407,7 +406,7 @@
       <div style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:system-ui,sans-serif;line-height:1.6">
         <h1>Formula Forum 2026 — The #1 Insurance Agency Growth Conference</h1>
         <p><strong>October 14-16, 2026 | JW Marriott Orlando Bonnet Creek Resort & Spa | Orlando, FL</strong></p>
-        <p>Formula Forum (F3) is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, producers, and industry partners for three days of operator-led training, peer breakout sessions, and actionable implementation planning.</p>
+        <p>Formula Forum is the national insurance agency growth conference held annually in Orlando, Florida. It brings together insurance agency owners, team members, producers, and industry partners for 1.5 days of operator-led training, peer breakout sessions, and actionable implementation planning.</p>
         <p>Unlike traditional conferences, Formula Forum uses a proprietary Format Framework where every session cycles through focused speaker training (15-20 min), personal takeaway capture (2-3 min), small-group breakouts (10 min), and speaker close (3 min). Every attendee leaves with a printed Book of Formulas playbook.</p>
 
         <h2>Ticket Pricing</h2>

@@ -11,7 +11,7 @@ const Speakers = () => {
       socialUrl: "https://www.instagram.com/garrettjwhite/",
       platform: "Instagram",
       topic: "Keynote: Accountability, Authenticity & Relentless Self-Leadership",
-      bio: "Garrett J. White is the founder of the Wake Up Warrior Movement, bestselling author of Warrior Book, and creator of transformational experiences like Warrior Week. He rebuilt his life on principles of accountability, authenticity, and relentless self-leadership—and now challenges others to do the same. At Formula Forum 2026, Garrett delivers the keynote address, setting the tone for three days of tactical growth, radical ownership, and breakthrough performance."
+      bio: "Garrett J. White is the founder of the Wake Up Warrior Movement, bestselling author of Warrior Book, and creator of transformational experiences like Warrior Week. He rebuilt his life on principles of accountability, authenticity, and relentless self-leadership—and now challenges others to do the same. At Formula Forum 2026, Garrett delivers the keynote address, setting the tone for 1.5 days of tactical growth, radical ownership, and breakthrough performance."
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const Speakers = () => {
       socialUrl: "https://www.facebook.com/gregg.blanchard.3",
       platform: "Facebook",
       topic: "Streamline, Simplify, Scale — VA Systems That Work",
-      bio: "Gregg Blanchard is a top-performing Allstate agency owner who has mastered the art of leveraging virtual assistant systems to scale operations without sacrificing service quality. His agency runs on systematized processes that free him to focus on growth rather than day-to-day tasks. At Formula Forum 2026, Gregg will share his proven VA integration playbook — from hiring and onboarding to daily workflows and KPI tracking — so agency owners can immediately reduce overhead while increasing capacity."
+      bio: "Gregg Blanchard is a top-performing Allstate agency owner who has mastered the art of leveraging virtual assistant systems to scale operations without sacrificing service quality. His agency runs on systematized processes that free him to focus on growth rather than day-to-day tasks. At Formula Forum 2026, Gregg will share his proven VA integration playbook — from hiring and onboarding to daily workflows and KPI tracking — so agency owners and team members can immediately reduce overhead while increasing capacity."
     },
     {
       id: 3,
@@ -61,7 +61,7 @@ const Speakers = () => {
       socialUrl: "https://www.instagram.com/joe.marinucci/",
       platform: "Instagram",
       topic: "Creating and Keeping the Mindset of a CEO",
-      bio: "Joe Marranucci is the founder of Walk on Ventures and a serial entrepreneur who has built and scaled multiple businesses. His expertise lies in the mental shift required to move from operator to true CEO — delegating effectively, thinking strategically, and maintaining resilience through growth challenges. At Formula Forum 2026, Joe will share the mindset frameworks and daily practices that separate agency owners who plateau from those who break through to the next level."
+      bio: "Joe Marranucci is the founder of Walk on Ventures and a serial entrepreneur who has built and scaled multiple businesses. His expertise lies in the mental shift required to move from operator to true CEO — delegating effectively, thinking strategically, and maintaining resilience through growth challenges. At Formula Forum 2026, Joe will share the mindset frameworks and daily practices that separate agency owners and team members who plateau from those who break through to the next level."
     },
     {
       id: 7,
@@ -71,7 +71,7 @@ const Speakers = () => {
       socialUrl: "https://www.instagram.com/davidwilliamsverified/",
       platform: "Instagram",
       topic: "The Five Pillars of a Thriving Life and Business",
-      bio: "David Williams is the founder of Team Hired, a recruiting and talent development firm serving the insurance industry. With deep expertise in building high-performing teams, David knows that business success starts with personal alignment. At Formula Forum 2026, he will present his Five Pillars framework — covering health, relationships, purpose, finances, and leadership — showing agency owners how to build a business that supports a thriving life, not one that consumes it."
+      bio: "David Williams is the founder of Team Hired, a recruiting and talent development firm serving the insurance industry. With deep expertise in building high-performing teams, David knows that business success starts with personal alignment. At Formula Forum 2026, he will present his Five Pillars framework — covering health, relationships, purpose, finances, and leadership — showing agency owners and team members how to build a business that supports a thriving life, not one that consumes it."
     },
     {
       id: 8,
@@ -91,7 +91,7 @@ const Speakers = () => {
       socialUrl: "https://www.linkedin.com/in/createaselfmanagingbusiness/",
       platform: "LinkedIn",
       topic: "From Running Behind to Leading Ahead with Clarity",
-      bio: "Ben Berman is a certified EOS Implementer who helps business owners gain traction through the Entrepreneurial Operating System. He specializes in helping insurance agencies implement EOS to create organizational clarity, accountability, and healthy team dynamics. At Formula Forum 2026, Ben will show agency owners how to stop running behind putting out fires and start leading ahead with a clear vision, aligned team, and predictable execution rhythm."
+      bio: "Ben Berman is a certified EOS Implementer who helps business owners gain traction through the Entrepreneurial Operating System. He specializes in helping insurance agencies implement EOS to create organizational clarity, accountability, and healthy team dynamics. At Formula Forum 2026, Ben will show agency owners and team members how to stop running behind putting out fires and start leading ahead with a clear vision, aligned team, and predictable execution rhythm."
     },
     {
       id: 10,

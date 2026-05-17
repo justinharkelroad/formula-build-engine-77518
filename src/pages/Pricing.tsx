@@ -54,7 +54,7 @@ const Pricing = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30" aria-hidden="true"></div>
                    <img
                      src="/lovable-uploads/13190d3e-be9d-4836-9991-e7cee56f7509.png"
-                     alt="F³ Formula Forum 2026 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
+                     alt="Formula Forum 2026 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
                      className="relative z-10 max-w-sm w-full h-auto rounded-2xl shadow-2xl"
                      loading="lazy"
                      width="400"

@@ -244,7 +244,7 @@ const AdminSales = () => {
   return (
     <>
       <SEO
-        title="Admin - Sales | F³ Formula Forum 2026"
+        title="Admin - Sales | Formula Forum 2026"
         description="View and manage ticket sales and partnerships"
         noindex={true}
       />

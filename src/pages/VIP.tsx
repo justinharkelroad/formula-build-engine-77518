@@ -12,7 +12,7 @@ import { useSearchParams } from "react-router-dom";
 const VIP_VIMEO_ID = "1168470859";
 
 const VIP = () => {
-  const title = "Past Attendee Exclusive — F³ Formula Forum 2026";
+  const title = "Past Attendee Exclusive — Formula Forum 2026";
   const description = "Exclusive past attendee pricing for Formula Forum 2026. Agency Owner $448 (reg. $897), Team Member $298 (reg. $597).";
 
   const [searchParams, setSearchParams] = useSearchParams();
