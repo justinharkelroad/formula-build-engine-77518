@@ -7,6 +7,7 @@ type Tier = {
   link?: string;
   benefits: string[];
   variant: "platinum" | "gold" | "silver" | "bronze";
+  soldOut?: boolean;
 };
 
 const tiers: Tier[] = [
@@ -16,6 +17,7 @@ const tiers: Tier[] = [
     blurb: "Top-tier visibility. Co-branding on the welcome reception, stage time, and lead access before doors open.",
     link: "https://buy.stripe.com/28EaEXdsvebk1wAbX23wQ0d",
     variant: "platinum",
+    soldOut: true,
     benefits: [
       "Two 6-ft tables in PLATINUM location",
       "Co-branding: Welcome Reception & Thursday-Night Event",
@@ -132,16 +134,27 @@ const PartnerLevels = () => {
             return (
               <div
                 key={t.name}
-                className={`${v.card} rounded-2xl md:rounded-3xl p-7 md:p-10 flex flex-col`}
+                className={`${v.card} relative overflow-hidden rounded-2xl md:rounded-3xl p-7 md:p-10 flex flex-col`}
               >
+                {/* SOLD OUT corner ribbon — celebratory, brand orange */}
+                {t.soldOut && (
+                  <div className="pointer-events-none absolute right-0 top-0 z-20 h-32 w-32 overflow-hidden md:h-36 md:w-36">
+                    <div className="absolute right-[-58px] top-[28px] w-[220px] rotate-45 bg-[hsl(var(--primary))] py-2 text-center text-sm font-black uppercase tracking-[0.35em] text-white shadow-lg md:top-[32px]">
+                      Sold Out
+                    </div>
+                  </div>
+                )}
+
                 {/* Top — name + price */}
                 <div className="flex items-start justify-between mb-2">
                   <div className="text-xs tracking-widest uppercase opacity-60">
                     {t.name.toUpperCase()}
                   </div>
-                  <span className={`${v.chip} text-xs tracking-widest uppercase px-2.5 py-1 rounded-full`}>
-                    {t.name.toUpperCase()} TIER
-                  </span>
+                  {!t.soldOut && (
+                    <span className={`${v.chip} text-xs tracking-widest uppercase px-2.5 py-1 rounded-full`}>
+                      {t.name.toUpperCase()} TIER
+                    </span>
+                  )}
                 </div>
                 <div className="display-bold text-5xl sm:text-6xl md:text-7xl leading-none mb-4">
                   {t.price}
@@ -158,17 +171,34 @@ const PartnerLevels = () => {
                   ))}
                 </ul>
 
-                {/* CTA */}
-                <button
-                  onClick={() => {
-                    if (t.link) window.open(t.link, "_blank");
-                    else window.location.href = "/contact";
-                  }}
-                  className={`${v.cta} mt-auto inline-flex items-center justify-between w-full px-6 py-4 rounded-full font-bold transition-colors`}
-                >
-                  <span>LOCK IN {t.name.toUpperCase()}</span>
-                  <ArrowUpRight className="w-5 h-5" />
-                </button>
+                {/* CTA — sold-out tiers get a big celebratory block instead of a purchase button */}
+                {t.soldOut ? (
+                  <div className="mt-auto w-full">
+                    <div
+                      aria-disabled="true"
+                      className="relative w-full overflow-hidden rounded-full bg-[hsl(var(--primary))] px-6 py-5 text-center"
+                    >
+                      <span className="relative z-10 block text-2xl font-black uppercase tracking-[0.2em] text-white md:text-3xl">
+                        Sold Out
+                      </span>
+                      <span className="pointer-events-none absolute inset-0 z-0 animate-pulse bg-white/15" />
+                    </div>
+                    <p className="mt-3 text-center text-sm font-bold text-black/70">
+                      Platinum is officially gone — thank you, partners! 🎉
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      if (t.link) window.open(t.link, "_blank");
+                      else window.location.href = "/contact";
+                    }}
+                    className={`${v.cta} mt-auto inline-flex items-center justify-between w-full px-6 py-4 rounded-full font-bold transition-colors`}
+                  >
+                    <span>LOCK IN {t.name.toUpperCase()}</span>
+                    <ArrowUpRight className="w-5 h-5" />
+                  </button>
+                )}
               </div>
             );
           })}
