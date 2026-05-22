@@ -95,7 +95,8 @@ export const CONFIG = {
   LOGO_PARTNERS: [
     { name: "The Standard", tier: "Platinum", logoUrl: "/lovable-uploads/c24dc654-fa2e-440d-adc8-9c19054f856c.png", linkUrl: "https://standardplaybook.com" },
     { name: "MediaAlpha", tier: "Platinum", logoUrl: "/lovable-uploads/6dae2514-00d4-40b4-b301-56e531551ddd.png", linkUrl: "https://mediaalpha.com" },
-    { name: "AgencyToolChest", tier: "Platinum", logoUrl: "/lovable-uploads/agency-tool-chest.png", linkUrl: "https://agencytoolchest.com" }
+    { name: "AgencyToolChest", tier: "Platinum", logoUrl: "/lovable-uploads/agency-tool-chest.png", linkUrl: "https://agencytoolchest.com" },
+    { name: "SecureEVAs", tier: "Platinum", logoUrl: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/partner-logos/securevas%20logo.png", linkUrl: "https://secureevas.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
