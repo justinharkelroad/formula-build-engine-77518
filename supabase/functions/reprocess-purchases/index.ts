@@ -7,11 +7,24 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Same price map as the webhook — includes both attendee and partner tiers
+// Same price map as the webhook — keep the two in sync.
+// Entries are additive and never removed: this function replays historical
+// Stripe sessions, so dropping a retired price reclassifies past purchases
+// as "unknown" — the exact bug this function exists to repair.
 const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  // Attendee passes
+  // Attendee passes — early bird promo ($200 off regular)
+  69700: { tier: "earlyBird", passType: "agencyOwner" },
+  39700: { tier: "earlyBird", passType: "team" },
+  // Retired early bird promo (mispriced at $250 off, live Feb 26 – Jul 16 2026)
   64700: { tier: "earlyBird", passType: "agencyOwner" },
   34700: { tier: "earlyBird", passType: "team" },
+  // Attendee passes — regular
+  89700: { tier: "regular", passType: "agencyOwner" },
+  59700: { tier: "regular", passType: "team" },
+  // Returning attendee (VIP)
+  53800: { tier: "vip", passType: "agencyOwner" },
+  35800: { tier: "vip", passType: "team" },
+  // Retired VIP pricing
   44800: { tier: "vip", passType: "agencyOwner" },
   29800: { tier: "vip", passType: "team" },
   // Partner tiers

@@ -9,10 +9,23 @@ const corsHeaders = {
 
 // Price (unit_amount in cents) → tier + pass type lookup
 // We match on each line item's unit_amount, not the session total
+// Entries are additive and never removed: reprocess-purchases replays historical
+// Stripe sessions through this same map, so dropping a retired price would
+// reclassify past purchases as "unknown".
 const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  // Attendee passes
+  // Attendee passes — early bird promo ($200 off regular)
+  69700: { tier: "earlyBird", passType: "agencyOwner" },
+  39700: { tier: "earlyBird", passType: "team" },
+  // Retired early bird promo (mispriced at $250 off, live Feb 26 – Jul 16 2026)
   64700: { tier: "earlyBird", passType: "agencyOwner" },
   34700: { tier: "earlyBird", passType: "team" },
+  // Attendee passes — regular
+  89700: { tier: "regular", passType: "agencyOwner" },
+  59700: { tier: "regular", passType: "team" },
+  // Returning attendee (VIP)
+  53800: { tier: "vip", passType: "agencyOwner" },
+  35800: { tier: "vip", passType: "team" },
+  // Retired VIP pricing
   44800: { tier: "vip", passType: "agencyOwner" },
   29800: { tier: "vip", passType: "team" },
   // Partner tiers
