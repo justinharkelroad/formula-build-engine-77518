@@ -5,7 +5,12 @@ import SEO from '@/components/SEO';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2, Search, X } from 'lucide-react';
+import { CONFIG } from '@/config/event';
+import { PARTNER_TIERS } from '@/config/partners';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
@@ -49,7 +54,16 @@ interface PartnerProfile {
   updated_at: string;
 }
 
-const SEAT_CAP = 250;
+const SEAT_CAP = CONFIG.SEAT_CAP;
+
+// Passes included with each partner tier. These people occupy seats in the room
+// even though they never buy an attendee ticket, so they count against SEAT_CAP.
+const PARTNER_SEATS_BY_TIER: Record<string, number> = {
+  platinum: PARTNER_TIERS.platinum.passes,
+  gold: PARTNER_TIERS.gold.passes,
+  silver: PARTNER_TIERS.silver.passes,
+  bronze: PARTNER_TIERS.bronze.passes,
+};
 
 const AdminSales = () => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -57,6 +71,10 @@ const AdminSales = () => {
   const [loading, setLoading] = useState(true);
   const [fixing, setFixing] = useState(false);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+  const [attendeeSearch, setAttendeeSearch] = useState('');
+  const [passTypeFilter, setPassTypeFilter] = useState('all');
+  const [tierFilter, setTierFilter] = useState('all');
+  const [partnerTierFilter, setPartnerTierFilter] = useState('all');
   const { toast } = useToast();
   const { signOut, user } = useAuth();
 
@@ -98,8 +116,18 @@ const AdminSales = () => {
   const totalQuantity = attendeePurchases.reduce((sum, p) => sum + p.quantity, 0);
   const agencyOwnerCount = purchases.filter(p => p.pass_type === 'agencyOwner').reduce((sum, p) => sum + p.quantity, 0);
   const teamCount = purchases.filter(p => p.pass_type === 'team').reduce((sum, p) => sum + p.quantity, 0);
-  const remainingSeats = SEAT_CAP - totalQuantity;
   const unknownCount = purchases.filter(p => p.pass_type === 'unknown').length;
+
+  // Partner passes occupy seats but are never sold as attendee tickets, so they
+  // have to be subtracted from the cap too — otherwise the room reads emptier
+  // than it is. Unrecognised tiers contribute 0 rather than silently guessing.
+  const partnerSeats = partnerPurchases.reduce(
+    (sum, p) => sum + (PARTNER_SEATS_BY_TIER[p.tier] ?? 0) * p.quantity,
+    0,
+  );
+  const seatsUsed = totalQuantity + partnerSeats;
+  const remainingSeats = SEAT_CAP - seatsUsed;
+  const capacityPct = SEAT_CAP > 0 ? Math.min(100, Math.round((seatsUsed / SEAT_CAP) * 100)) : 0;
 
   // Partner tier breakdown
   const partnersByTier = {
@@ -110,6 +138,46 @@ const AdminSales = () => {
   };
 
   const onboardedCount = partnerProfiles.filter(p => p.onboarding_completed).length;
+
+  // --- Filtering -----------------------------------------------------------
+  // Tier/pass-type options are derived from the data rather than hardcoded, so
+  // a price map addition (a new tier) shows up here without a code change.
+  const attendeeTiers = Array.from(new Set(attendeePurchases.map(p => p.tier))).sort();
+  const attendeePassTypes = Array.from(new Set(attendeePurchases.map(p => p.pass_type))).sort();
+  const partnerTiersPresent = Array.from(new Set(partnerPurchases.map(p => p.tier))).sort();
+
+  const matchesSearch = (p: Purchase) => {
+    const q = attendeeSearch.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      p.email.toLowerCase().includes(q) ||
+      (p.name?.toLowerCase().includes(q) ?? false)
+    );
+  };
+
+  const filteredAttendees = attendeePurchases.filter(
+    p =>
+      matchesSearch(p) &&
+      (passTypeFilter === 'all' || p.pass_type === passTypeFilter) &&
+      (tierFilter === 'all' || p.tier === tierFilter),
+  );
+
+  const filteredPartnerPurchases = partnerPurchases.filter(
+    p => partnerTierFilter === 'all' || p.tier === partnerTierFilter,
+  );
+
+  const attendeeFiltersActive =
+    attendeeSearch.trim() !== '' || passTypeFilter !== 'all' || tierFilter !== 'all';
+
+  const clearAttendeeFilters = () => {
+    setAttendeeSearch('');
+    setPassTypeFilter('all');
+    setTierFilter('all');
+  };
+
+  // Revenue/seat totals for whatever subset is currently on screen.
+  const filteredAttendeeRevenue = filteredAttendees.reduce((sum, p) => sum + p.amount, 0);
+  const filteredAttendeeSeats = filteredAttendees.reduce((sum, p) => sum + p.quantity, 0);
 
   const fixUnknownPurchases = async () => {
     setFixing(true);
@@ -259,7 +327,7 @@ const AdminSales = () => {
               <p className="text-muted-foreground mt-2">Track Formula 2026 tickets & partnerships</p>
               {user && <p className="text-sm text-muted-foreground">Signed in as: {user.email}</p>}
               <Link to="/admin/registrations" className="text-sm text-primary hover:underline mt-1 inline-block">
-                View Waitlist
+                View pre-launch waitlist &rarr;
               </Link>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -365,17 +433,110 @@ const AdminSales = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{remainingSeats}</div>
+                    <p className="text-xs text-muted-foreground mt-1">of {SEAT_CAP} total</p>
                   </CardContent>
                 </Card>
               </div>
 
+              {/* Room capacity — attendee tickets plus partner passes.
+                  Partner passes are invisible on the ticket counts above but
+                  still occupy seats, so they get their own line here. */}
+              <Card className="mb-6">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm font-medium">Room Capacity</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-end justify-between gap-4 flex-wrap">
+                    <div>
+                      <span className="text-3xl font-bold">{seatsUsed}</span>
+                      <span className="text-muted-foreground text-lg"> / {SEAT_CAP} seats</span>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {capacityPct}% full &middot; {remainingSeats} open
+                    </div>
+                  </div>
+                  <Progress value={capacityPct} className="h-2" />
+                  <div className="flex gap-4 text-sm text-muted-foreground flex-wrap">
+                    <span>
+                      <strong className="text-foreground">{totalQuantity}</strong> attendee tickets
+                    </span>
+                    <span>
+                      <strong className="text-foreground">{partnerSeats}</strong> partner passes
+                      {partnerPurchases.length > 0 && ` (${partnerPurchases.length} partners)`}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Attendee Purchases</CardTitle>
-                  <Button onClick={exportCSV} disabled={purchases.length === 0} size="sm">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export All CSV
-                  </Button>
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-row items-center justify-between gap-4">
+                    <CardTitle>
+                      Attendee Purchases
+                      {attendeeFiltersActive && (
+                        <span className="ml-2 text-sm font-normal text-muted-foreground">
+                          {filteredAttendees.length} of {attendeePurchases.length}
+                        </span>
+                      )}
+                    </CardTitle>
+                    <Button onClick={exportCSV} disabled={purchases.length === 0} size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Export All CSV
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <div className="relative flex-1 min-w-[200px]">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <Input
+                        value={attendeeSearch}
+                        onChange={e => setAttendeeSearch(e.target.value)}
+                        placeholder="Search name or email…"
+                        className="pl-9"
+                      />
+                    </div>
+
+                    <Select value={passTypeFilter} onValueChange={setPassTypeFilter}>
+                      <SelectTrigger className="w-full sm:w-[170px]">
+                        <SelectValue placeholder="Pass type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All pass types</SelectItem>
+                        {attendeePassTypes.map(pt => (
+                          <SelectItem key={pt} value={pt}>{formatPassType(pt)}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <Select value={tierFilter} onValueChange={setTierFilter}>
+                      <SelectTrigger className="w-full sm:w-[150px]">
+                        <SelectValue placeholder="Tier" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All tiers</SelectItem>
+                        {attendeeTiers.map(t => (
+                          <SelectItem key={t} value={t}>{formatTier(t)}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {attendeeFiltersActive && (
+                      <Button onClick={clearAttendeeFilters} variant="ghost" size="sm">
+                        <X className="w-4 h-4 mr-1" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+
+                  {attendeeFiltersActive && filteredAttendees.length > 0 && (
+                    <p className="text-sm text-muted-foreground">
+                      Showing <strong className="text-foreground">{filteredAttendeeSeats}</strong> tickets
+                      {' · '}
+                      <strong className="text-foreground">
+                        ${(filteredAttendeeRevenue / 100).toLocaleString()}
+                      </strong> in this view
+                    </p>
+                  )}
                 </CardHeader>
                 <CardContent>
                   {loading ? (
@@ -383,6 +544,13 @@ const AdminSales = () => {
                   ) : attendeePurchases.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       No attendee purchases yet.
+                    </div>
+                  ) : filteredAttendees.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No purchases match these filters.
+                      <Button onClick={clearAttendeeFilters} variant="link" size="sm">
+                        Clear filters
+                      </Button>
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
@@ -399,7 +567,7 @@ const AdminSales = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {attendeePurchases.map((purchase) => (
+                          {filteredAttendees.map((purchase) => (
                             <tr key={purchase.id} className="border-b hover:bg-muted/50">
                               <td className="p-3">{purchase.email}</td>
                               <td className="p-3">{purchase.name || '-'}</td>
@@ -459,17 +627,54 @@ const AdminSales = () => {
 
               {/* Partner Payments */}
               <Card className="mb-6">
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Partner Payments</CardTitle>
-                  <Button onClick={exportCSV} disabled={partnerPurchases.length === 0} size="sm">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export CSV
-                  </Button>
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-row items-center justify-between gap-4">
+                    <CardTitle>
+                      Partner Payments
+                      {partnerTierFilter !== 'all' && (
+                        <span className="ml-2 text-sm font-normal text-muted-foreground">
+                          {filteredPartnerPurchases.length} of {partnerPurchases.length}
+                        </span>
+                      )}
+                    </CardTitle>
+                    <Button onClick={exportCSV} disabled={partnerPurchases.length === 0} size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Export CSV
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <Select value={partnerTierFilter} onValueChange={setPartnerTierFilter}>
+                      <SelectTrigger className="w-full sm:w-[200px]">
+                        <SelectValue placeholder="Partner tier" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All tiers ({partnerPurchases.length})</SelectItem>
+                        {partnerTiersPresent.map(t => (
+                          <SelectItem key={t} value={t}>
+                            {formatTier(t)} ({partnerPurchases.filter(p => p.tier === t).length})
+                            {PARTNER_SEATS_BY_TIER[t] ? ` · ${PARTNER_SEATS_BY_TIER[t]} passes ea.` : ''}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    {partnerTierFilter !== 'all' && (
+                      <Button onClick={() => setPartnerTierFilter('all')} variant="ghost" size="sm">
+                        <X className="w-4 h-4 mr-1" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {partnerPurchases.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       No partner purchases yet.
+                    </div>
+                  ) : filteredPartnerPurchases.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No partners in this tier.
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
@@ -484,7 +689,7 @@ const AdminSales = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {partnerPurchases.map((purchase) => (
+                          {filteredPartnerPurchases.map((purchase) => (
                             <tr key={purchase.id} className="border-b hover:bg-muted/50">
                               <td className="p-3">{purchase.email}</td>
                               <td className="p-3">{purchase.name || '-'}</td>

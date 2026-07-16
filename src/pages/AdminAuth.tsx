@@ -22,7 +22,10 @@ const AdminAuth = () => {
 
   useEffect(() => {
     if (user && isAdmin) {
-      navigate('/admin/registrations');
+      // Sales is the working dashboard. The waitlist is a pre-launch artifact —
+      // its signup form is no longer rendered anywhere on the site — so landing
+      // there first meant opening a dead page instead of the numbers.
+      navigate('/admin/sales');
     }
   }, [user, isAdmin, navigate]);
 

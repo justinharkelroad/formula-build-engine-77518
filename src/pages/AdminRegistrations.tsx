@@ -99,11 +99,14 @@ const AdminRegistrations = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-              <h1 className="text-4xl font-bold">Waitlist Management</h1>
-              <p className="text-muted-foreground mt-2">View and manage Formula 2026 waitlist</p>
+              <h1 className="text-4xl font-bold">Pre-Launch Waitlist</h1>
+              <p className="text-muted-foreground mt-2">
+                Leads captured before tickets went on sale. The signup form is no longer live on
+                the site, so this list is historical &mdash; it does not grow. Still useful to market to.
+              </p>
               {user && <p className="text-sm text-muted-foreground">Signed in as: {user.email}</p>}
               <Link to="/admin/sales" className="text-sm text-primary hover:underline mt-1 inline-block">
-                View Sales Dashboard
+                &larr; Back to Sales Dashboard
               </Link>
             </div>
             <div className="flex gap-2">

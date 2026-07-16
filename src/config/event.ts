@@ -87,7 +87,11 @@ export const CONFIG = {
   ORGANIZER_PHONE: "260-515-1349",
   CURRENCY: "USD",
   BASE_TICKET_PRICE: "347",
-  SEAT_CAP: 250,
+  // Physical room capacity, counting attendee tickets AND partner passes.
+  // Public copy quotes "250 attendees" — that is the attendee-facing figure and
+  // is deliberately a different number from this one. Partner passes (8/6/4/2 by
+  // tier) occupy seats but are not sold as attendee tickets.
+  SEAT_CAP: 300,
   EARLY_BIRD_END_ISO: "2026-09-15T23:59:00-04:00",
   OG_IMAGE_1200x630: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
