@@ -18,3 +18,7 @@ verify_jwt = false
 # Gated by the x-stats-secret header instead of a Supabase JWT.
 [functions.admin-stats]
 verify_jwt = false
+
+# Same header gate; called by pg_cron via pg_net, which sends no JWT.
+[functions.snapshot-stats]
+verify_jwt = false

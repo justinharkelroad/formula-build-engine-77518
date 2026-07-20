@@ -1,5 +1,10 @@
-// Pure aggregation for the admin-stats endpoint. No I/O, no Deno globals — so
-// it can be unit-tested directly without booting the server.
+// Shared aggregation for the Formula stats surface. `computeStats` is pure —
+// no I/O, no Deno globals — so it can be unit-tested without booting a server.
+// `fetchAndComputeStats` wraps it with the reads.
+//
+// Consumed by two functions, which MUST stay numerically identical:
+//   admin-stats     — serves the payload over HTTP (pull)
+//   snapshot-stats  — writes the payload to the F3formula sink (push)
 //
 // SOURCE OF TRUTH: src/pages/AdminSales.tsx (lines 109-140). Every aggregation
 // here mirrors that file so the JSON matches the dashboard tile-for-tile. If
@@ -109,4 +114,37 @@ export function computeStats(purchases: PurchaseRow[], profiles: ProfileRow[]) {
 
     partners,
   };
+}
+
+// Minimal shape of the PostgREST client we need, so this module stays free of
+// a hard supabase-js import and remains unit-testable.
+interface QueryBuilder {
+  select(cols: string): { range(from: number, to: number): PromiseLike<{ data: unknown[] | null; error: { message: string } | null }> };
+}
+interface SupabaseLike {
+  from(table: string): QueryBuilder;
+}
+
+/**
+ * Reads both tables and returns the stats payload.
+ *
+ * PostgREST caps rows at 1000 by default. These tables are small today but grow
+ * with every sale — an explicit range keeps a silent truncation from quietly
+ * under-reporting revenue later.
+ *
+ * Throws on query failure so callers decide how to surface it.
+ */
+export async function fetchAndComputeStats(supabase: SupabaseLike) {
+  const [purchasesRes, profilesRes] = await Promise.all([
+    supabase.from("purchases").select("amount,pass_type,tier,quantity").range(0, 49999),
+    supabase.from("partner_profiles").select("tier,onboarding_completed").range(0, 49999),
+  ]);
+
+  const err = purchasesRes.error ?? profilesRes.error;
+  if (err) throw new Error(err.message);
+
+  return computeStats(
+    (purchasesRes.data ?? []) as PurchaseRow[],
+    (profilesRes.data ?? []) as ProfileRow[],
+  );
 }
