@@ -14,3 +14,7 @@ verify_jwt = false
 
 [functions.reprocess-purchases]
 verify_jwt = false
+
+# Gated by the x-stats-secret header instead of a Supabase JWT.
+[functions.admin-stats]
+verify_jwt = false
