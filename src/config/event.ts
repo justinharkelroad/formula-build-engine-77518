@@ -97,10 +97,10 @@ export const CONFIG = {
   TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
-    { name: "The Standard", tier: "Platinum", logoUrl: "/assets/sponsors/the-standard.png", linkUrl: "https://standardplaybook.com" },
     { name: "Agency Toolchest", tier: "Platinum", logoUrl: "/assets/sponsors/agency-toolchest.png", linkUrl: "https://agencytoolchest.com" },
     { name: "MediaAlpha", tier: "Platinum", logoUrl: "/assets/sponsors/mediaalpha.png", linkUrl: "https://mediaalpha.com" },
-    { name: "SecureEVAs", tier: "Platinum", logoUrl: "/assets/sponsors/secure-evas.png", linkUrl: "https://secureevas.com" }
+    { name: "SecureEVAs", tier: "Platinum", logoUrl: "/assets/sponsors/secure-evas.png", linkUrl: "https://secureevas.com" },
+    { name: "Standard", tier: "Platinum", logoUrl: "/assets/sponsors/the-standard.png", linkUrl: "https://standardplaybook.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
