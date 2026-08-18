@@ -14,7 +14,7 @@ const sessions = [
   {
     day: "DAY 3",
     title: "Formula General Session",
-    time: "9:00 AM – 12:00 PM"
+    time: "9:00 AM – 1:00 PM"
   }
 ];
 
