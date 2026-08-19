@@ -8,6 +8,7 @@ import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import HeroBlock from "@/components/sections/HeroBlock";
 import CountdownBlock from "@/components/sections/CountdownBlock";
 import PlatinumSponsors from "@/components/sections/PlatinumSponsors";
+import EventSponsors from "@/components/sections/EventSponsors";
 import ValuePropsGrid from "@/components/sections/ValuePropsGrid";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 import AboutSection from "@/components/sections/AboutSection";
@@ -68,6 +69,9 @@ const Index = () => {
 
       {/* 1c. Platinum sponsors — top-tier partner thank-you directly below countdown */}
       <PlatinumSponsors />
+
+      {/* 1d. Supporting sponsors — full logo wall beneath the Platinum tier */}
+      <EventSponsors />
 
       {/* 2. Value props — light section */}
       <ValuePropsGrid />

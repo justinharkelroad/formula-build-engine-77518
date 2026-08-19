@@ -102,6 +102,33 @@ export const CONFIG = {
     { name: "SecureEVAs", tier: "Platinum", logoUrl: "/assets/sponsors/secure-evas.png", linkUrl: "https://secureevas.com" },
     { name: "Standard", tier: "Platinum", logoUrl: "/assets/sponsors/the-standard.png", linkUrl: "https://standardplaybook.com" }
   ],
+  // Supporting 2026 sponsors — rendered below the Platinum grid on the homepage.
+  // These are deliberately NOT tier: "Platinum"; keep tiers accurate before promoting one.
+  LOGO_SPONSORS: [
+    { name: "EverQuote", tier: "Sponsor", logoUrl: "/assets/sponsors/everquote.png", linkUrl: "https://www.everquote.com/pro/" },
+    { name: "Filtered Quotes", tier: "Sponsor", logoUrl: "/assets/sponsors/filtered-quotes.png", linkUrl: "https://buyfiltered.com" },
+    { name: "Hagerty", tier: "Sponsor", logoUrl: "/assets/sponsors/hagerty.png", linkUrl: "https://www.hagerty.com" },
+    { name: "QuoteWizard by LendingTree", tier: "Sponsor", logoUrl: "/assets/sponsors/quotewizard.png", linkUrl: "https://agents.quotewizard.com" },
+    { name: "Wintrust Agent Finance", tier: "Sponsor", logoUrl: "/assets/sponsors/wintrust-agent-finance.png", linkUrl: "https://www.agentfinance.com" },
+    { name: "Search Perfect", tier: "Sponsor", logoUrl: "/assets/sponsors/search-perfect.png", linkUrl: "https://searchperfect.ca" },
+    { name: "Ricochet360", tier: "Sponsor", logoUrl: "/assets/sponsors/ricochet360.png", linkUrl: "https://ricochet360.com" },
+    { name: "Arbeit", tier: "Sponsor", logoUrl: "/assets/sponsors/arbeit.png", linkUrl: "https://arbeitsoftware.com" },
+    { name: "Post Pros", tier: "Sponsor", logoUrl: "/assets/sponsors/post-pros.svg", linkUrl: "https://postpros.com/insurance" },
+    { name: "NW Preferred Federal Credit Union", tier: "Sponsor", logoUrl: "/assets/sponsors/nw-preferred.png", linkUrl: "https://nwpreferredfcu.com" },
+    { name: "Performology", tier: "Sponsor", logoUrl: "/assets/sponsors/performology.svg", linkUrl: "https://performology.com" },
+    { name: "GOAL", tier: "Sponsor", logoUrl: "/assets/sponsors/goal.svg", linkUrl: "https://checkoutgoal.com" },
+    { name: "Mav", tier: "Bronze", logoUrl: "/assets/sponsors/mav.png", linkUrl: "https://hiremav.com" },
+    { name: "SmartFinancial", tier: "Sponsor", logoUrl: "/assets/sponsors/smart-financial.png", linkUrl: "https://smartfinancial.com" },
+    { name: "SmarketingMail", tier: "Sponsor", logoUrl: "/assets/sponsors/smarketing-mail.png", linkUrl: "https://smarketingmail.com" },
+    { name: "Quote Nerds", tier: "Sponsor", logoUrl: "/assets/sponsors/quote-nerds.png", linkUrl: "https://quotenerds.com" },
+    // No customer-facing site — renders as a logo tile with no link.
+    { name: "Ivantage", tier: "Sponsor", logoUrl: "/assets/sponsors/ivantage.png", linkUrl: "" },
+    { name: "YPC Media", tier: "Sponsor", logoUrl: "/assets/sponsors/ypc-media.png", linkUrl: "https://www.ypcmedia.com" },
+    { name: "National General", tier: "Sponsor", logoUrl: "/assets/sponsors/national-general.png", linkUrl: "https://nationalgeneral.com" },
+    { name: "DMS", tier: "Sponsor", logoUrl: "/assets/sponsors/dms.png", linkUrl: "https://digitalmediasolutions.com" },
+    { name: "LeadMiner", tier: "Sponsor", logoUrl: "/assets/sponsors/leadminer.png", linkUrl: "https://leadminer.ai" },
+    { name: "ServiceMaster Restore", tier: "Sponsor", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" }
+  ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
     { name: "Kory [LastName]", title: "Allstate Agent of the Year", company: "Crane Agency", photo: "/assets/speakers/kory.jpg" }
