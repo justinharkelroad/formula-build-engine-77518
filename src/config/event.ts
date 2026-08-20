@@ -127,7 +127,8 @@ export const CONFIG = {
     { name: "National General", tier: "Sponsor", logoUrl: "/assets/sponsors/national-general.png", linkUrl: "https://nationalgeneral.com" },
     { name: "DMS", tier: "Sponsor", logoUrl: "/assets/sponsors/dms.png", linkUrl: "https://digitalmediasolutions.com" },
     { name: "LeadMiner", tier: "Sponsor", logoUrl: "/assets/sponsors/leadminer.png", linkUrl: "https://leadminer.ai" },
-    { name: "ServiceMaster Restore", tier: "Sponsor", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" }
+    { name: "ServiceMaster Restore", tier: "Sponsor", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" },
+    { name: "Melon Local", tier: "Sponsor", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
