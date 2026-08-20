@@ -128,7 +128,8 @@ export const CONFIG = {
     { name: "DMS", tier: "Sponsor", logoUrl: "/assets/sponsors/dms.png", linkUrl: "https://digitalmediasolutions.com" },
     { name: "LeadMiner", tier: "Sponsor", logoUrl: "/assets/sponsors/leadminer.png", linkUrl: "https://leadminer.ai" },
     { name: "ServiceMaster Restore", tier: "Sponsor", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" },
-    { name: "Melon Local", tier: "Sponsor", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" }
+    { name: "Melon Local", tier: "Sponsor", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" },
+    { name: "Slide Insurance", tier: "Sponsor", logoUrl: "/assets/sponsors/slide-insurance.svg", linkUrl: "https://slideinsurance.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
