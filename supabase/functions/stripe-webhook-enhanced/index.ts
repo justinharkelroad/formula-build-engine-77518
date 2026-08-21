@@ -97,9 +97,9 @@ serve(async (req) => {
     }
 
     const email = session.customer_details?.email?.trim().toLowerCase();
-    if (!email || (session.amount_total || 0) <= 0) {
-      console.error("Paid Stripe session is missing customer data:", session.id);
-      return new Response("Paid session is missing required customer data", { status: 422 });
+    if (!email) {
+      console.error("Paid Stripe session is missing customer email:", session.id);
+      return new Response("Paid session is missing customer email", { status: 422 });
     }
 
     const name = session.customer_details?.name || null;
