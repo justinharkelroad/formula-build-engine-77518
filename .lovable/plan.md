@@ -1,29 +1,24 @@
+# Stripe live-connection verification (read-only)
 
-# Fix Vimeo Video Modal: Landscape Layout and Visible Close Button
+Nothing was modified. Results below.
 
-## Problems
-1. The video uses `aspect-[9/16]` (portrait) but the Vimeo videos are landscape — causing the squished look
-2. The close button is hard to find: the custom X blends into the black background, and the dialog's built-in X is tiny
-3. The modal is only 500px wide, too small for landscape video
+## Verified ready
 
-## Changes
+- **Secrets present in Lovable Cloud**: `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` both exist (values not read or shown). The Stripe key is a **live-mode** key (verified by an authenticated read-only Stripe account call).
+- **Function deployed**: `stripe-webhook-enhanced` responds at its public URL; an unsigned POST returns `400 Missing signature`.
+- **Signature verification**: the function requires the `stripe-signature` header and verifies it with `constructEventAsync` against `STRIPE_WEBHOOK_SECRET`; failures return 400 and nothing is written.
+- **Event handling**: the code accepts `checkout.session.completed` and `checkout.session.async_payment_succeeded`, ignores all other types, and skips sessions that are not `payment_status = paid`.
+- **Live traffic already landing**: real `cs_live_…` purchases were recorded as recently as Aug 20, so the endpoint secret in Cloud matches the Stripe endpoint.
+- **Webhook endpoint URL** (the one configured in Stripe):
+  `https://koubtooblwjcwubcuhml.supabase.co/functions/v1/stripe-webhook-enhanced`
+- **Required event types**: `checkout.session.completed`, `checkout.session.async_payment_succeeded`.
 
-### 1. Update `src/components/VimeoModal.tsx`
-- Change aspect ratio from `aspect-[9/16]` to `aspect-video` (16:9 landscape)
-- Increase max-width from `md:max-w-[500px]` to `md:max-w-[900px]` for proper landscape viewing
-- Make the close button larger, more prominent with a white background and better contrast
-- Position it outside/above the video so it's always clearly visible
+## Remaining launch gate
 
-### Technical Details
+**One gate, in the Stripe dashboard only:** the live endpoint above currently has **only `checkout.session.completed` enabled**. Add `checkout.session.async_payment_succeeded` to that endpoint, otherwise delayed-settlement payments (bank debits, some wallets) never produce a purchase record or a confirmation email.
 
-```text
-Before:
-- max-w: 500px, aspect: 9/16 (portrait)
-- Close button: small, blends into black
+Note, not a gate: two other live endpoints also receive `checkout.session.completed` — an old Google Cloud Function (`…cloudfunctions.net/stripeWebhook`) and a duplicated Make.com hook (listed twice). They do not block launch, but they mean the same payment is processed by legacy systems in parallel; worth disabling if they are no longer wanted.
 
-After:
-- max-w: 900px, aspect: 16/9 (landscape)  
-- Close button: larger, high contrast, positioned top-right outside video area
-```
+## Observed logs
 
-No other files need changes — the VimeoModal is already used correctly in Index.tsx and VIP.tsx.
+No recent `stripe-webhook-enhanced` invocations are inside the retained log window, so there are no success/failure entries to report from the new transactional email release. The delivery queue currently contains only the four earlier test rows (all `delivered`); no real Stripe purchase has run through the queue since it was deployed.
