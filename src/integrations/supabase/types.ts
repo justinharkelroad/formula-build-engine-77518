@@ -128,6 +128,105 @@ export type Database = {
         }
         Relationships: []
       }
+      purchase_email_deliveries: {
+        Row: {
+          attempt_count: number
+          created_at: string
+          delivered_at: string | null
+          email_type: string
+          failed_at: string | null
+          id: string
+          idempotency_key: string
+          last_attempt_at: string | null
+          last_error: string | null
+          max_attempts: number
+          metadata: Json
+          next_attempt_at: string
+          provider_email_id: string | null
+          recipient_email: string
+          recipient_name: string | null
+          sent_at: string | null
+          status: string
+          stripe_session_id: string
+          tier: string | null
+          updated_at: string
+        }
+        Insert: {
+          attempt_count?: number
+          created_at?: string
+          delivered_at?: string | null
+          email_type: string
+          failed_at?: string | null
+          id?: string
+          idempotency_key: string
+          last_attempt_at?: string | null
+          last_error?: string | null
+          max_attempts?: number
+          metadata?: Json
+          next_attempt_at?: string
+          provider_email_id?: string | null
+          recipient_email: string
+          recipient_name?: string | null
+          sent_at?: string | null
+          status?: string
+          stripe_session_id: string
+          tier?: string | null
+          updated_at?: string
+        }
+        Update: {
+          attempt_count?: number
+          created_at?: string
+          delivered_at?: string | null
+          email_type?: string
+          failed_at?: string | null
+          id?: string
+          idempotency_key?: string
+          last_attempt_at?: string | null
+          last_error?: string | null
+          max_attempts?: number
+          metadata?: Json
+          next_attempt_at?: string
+          provider_email_id?: string | null
+          recipient_email?: string
+          recipient_name?: string | null
+          sent_at?: string | null
+          status?: string
+          stripe_session_id?: string
+          tier?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      purchase_email_delivery_events: {
+        Row: {
+          event_created_at: string | null
+          event_type: string
+          id: string
+          payload: Json
+          provider_email_id: string | null
+          received_at: string
+          svix_id: string
+        }
+        Insert: {
+          event_created_at?: string | null
+          event_type: string
+          id?: string
+          payload?: Json
+          provider_email_id?: string | null
+          received_at?: string
+          svix_id: string
+        }
+        Update: {
+          event_created_at?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          provider_email_id?: string | null
+          received_at?: string
+          svix_id?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           amount: number

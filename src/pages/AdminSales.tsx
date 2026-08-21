@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
@@ -54,6 +54,17 @@ interface PartnerProfile {
   updated_at: string;
 }
 
+interface EmailDelivery {
+  id: string;
+  stripe_session_id: string;
+  email_type: 'attendee_confirmation' | 'partner_welcome';
+  recipient_email: string;
+  status: string;
+  attempt_count: number;
+  last_error: string | null;
+  updated_at: string;
+}
+
 const SEAT_CAP = CONFIG.SEAT_CAP;
 
 // Passes included with each partner tier. These people occupy seats in the room
@@ -68,6 +79,7 @@ const PARTNER_SEATS_BY_TIER: Record<string, number> = {
 const AdminSales = () => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [partnerProfiles, setPartnerProfiles] = useState<PartnerProfile[]>([]);
+  const [emailDeliveries, setEmailDeliveries] = useState<EmailDelivery[]>([]);
   const [loading, setLoading] = useState(true);
   const [fixing, setFixing] = useState(false);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
@@ -81,14 +93,18 @@ const AdminSales = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [purchasesRes, partnersRes] = await Promise.all([
+      const [purchasesRes, partnersRes, deliveriesRes] = await Promise.all([
         supabase.from('purchases').select('*').order('created_at', { ascending: false }),
         supabase.from('partner_profiles' as any).select('*').order('created_at', { ascending: false }),
+        supabase.from('purchase_email_deliveries').select('*').order('updated_at', { ascending: false }),
       ]);
 
       if (purchasesRes.error) throw purchasesRes.error;
+      if (partnersRes.error) throw partnersRes.error;
+      if (deliveriesRes.error) throw deliveriesRes.error;
       setPurchases(purchasesRes.data || []);
       setPartnerProfiles((partnersRes.data || []) as unknown as PartnerProfile[]);
+      setEmailDeliveries((deliveriesRes.data || []) as unknown as EmailDelivery[]);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
@@ -119,7 +135,7 @@ const AdminSales = () => {
   const unknownCount = purchases.filter(p => p.pass_type === 'unknown').length;
 
   // Partner passes occupy seats but are never sold as attendee tickets, so they
-  // have to be subtracted from the cap too — otherwise the room reads emptier
+  // have to be subtracted from the cap too. Otherwise the room reads emptier
   // than it is. Unrecognised tiers contribute 0 rather than silently guessing.
   const partnerSeats = partnerPurchases.reduce(
     (sum, p) => sum + (PARTNER_SEATS_BY_TIER[p.tier] ?? 0) * p.quantity,
@@ -138,6 +154,15 @@ const AdminSales = () => {
   };
 
   const onboardedCount = partnerProfiles.filter(p => p.onboarding_completed).length;
+  const deliveryByKey = useMemo(
+    () => new Map(
+      emailDeliveries.map(delivery => [
+        `${delivery.stripe_session_id}:${delivery.email_type}`,
+        delivery,
+      ]),
+    ),
+    [emailDeliveries],
+  );
 
   // --- Filtering -----------------------------------------------------------
   // Tier/pass-type options are derived from the data rather than hardcoded, so
@@ -182,7 +207,7 @@ const AdminSales = () => {
   const fixUnknownPurchases = async () => {
     setFixing(true);
     try {
-      // Call the database RPC directly — no edge function needed
+      // Call the database RPC directly. No edge function is needed.
       const { data, error } = await supabase.rpc('fix_partner_purchases' as any);
       if (error) throw error;
       const purchasesFixed = (data as any)?.purchases_fixed ?? 0;
@@ -212,7 +237,7 @@ const AdminSales = () => {
     }
     setSendingEmailId(profile.id);
     try {
-      const { data, error } = await supabase.functions.invoke('send-partner-welcome', {
+      const { error } = await supabase.functions.invoke('send-partner-welcome', {
         body: {
           email,
           name: profile.primary_contact_name || profile.purchase_name,
@@ -222,12 +247,69 @@ const AdminSales = () => {
       });
       if (error) throw error;
       toast({ title: "Email Sent", description: `Partner welcome email sent to ${email}` });
+      await fetchData();
     } catch (error) {
       console.error('Error sending partner email:', error);
       toast({ title: "Error", description: "Failed to send email. Make sure the send-partner-welcome function is deployed.", variant: "destructive" });
     } finally {
       setSendingEmailId(null);
     }
+  };
+
+  const resendAttendeeEmail = async (purchase: Purchase) => {
+    setSendingEmailId(purchase.stripe_session_id);
+    try {
+      const { error } = await supabase.functions.invoke('process-email-deliveries', {
+        body: {
+          action: 'resend',
+          stripeSessionId: purchase.stripe_session_id,
+          emailType: 'attendee_confirmation',
+          recipientEmail: purchase.email,
+          recipientName: purchase.name,
+          tier: purchase.tier,
+        },
+      });
+      if (error) throw error;
+      toast({
+        title: "Email Sent",
+        description: `Attendee confirmation sent to ${purchase.email}`,
+      });
+      await fetchData();
+    } catch (error) {
+      console.error('Error sending attendee confirmation:', error);
+      toast({
+        title: "Email Failed",
+        description: "The confirmation was not sent. Check the delivery error and Edge Function logs.",
+        variant: "destructive",
+      });
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
+
+  const findDelivery = (
+    stripeSessionId: string | null,
+    emailType: EmailDelivery['email_type'],
+  ) => deliveryByKey.get(`${stripeSessionId}:${emailType}`);
+
+  const renderEmailStatus = (delivery?: EmailDelivery) => {
+    if (!delivery) return <span className="text-xs text-muted-foreground">Not queued</span>;
+    const successful = delivery.status === 'sent' || delivery.status === 'delivered';
+    const pending = delivery.status === 'queued' || delivery.status === 'sending';
+    return (
+      <span
+        className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${
+          successful
+            ? 'bg-green-100 text-green-700'
+            : pending
+              ? 'bg-blue-100 text-blue-700'
+              : 'bg-red-100 text-red-700'
+        }`}
+        title={delivery.last_error || `Last updated ${new Date(delivery.updated_at).toLocaleString()}`}
+      >
+        {delivery.status.replace(/_/g, ' ')}
+      </span>
+    );
   };
 
   const copyOnboardingLink = (profile: PartnerProfile) => {
@@ -438,7 +520,7 @@ const AdminSales = () => {
                 </Card>
               </div>
 
-              {/* Room capacity — attendee tickets plus partner passes.
+              {/* Room capacity includes attendee tickets plus partner passes.
                   Partner passes are invisible on the ticket counts above but
                   still occupy seats, so they get their own line here. */}
               <Card className="mb-6">
@@ -564,6 +646,8 @@ const AdminSales = () => {
                             <th className="text-left p-3">Amount</th>
                             <th className="text-left p-3">Qty</th>
                             <th className="text-left p-3">Date</th>
+                            <th className="text-left p-3">Email Status</th>
+                            <th className="text-left p-3">Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -577,6 +661,27 @@ const AdminSales = () => {
                               <td className="p-3">{purchase.quantity}</td>
                               <td className="p-3">
                                 {new Date(purchase.created_at).toLocaleDateString()}
+                              </td>
+                              <td className="p-3">
+                                {renderEmailStatus(findDelivery(
+                                  purchase.stripe_session_id,
+                                  'attendee_confirmation',
+                                ))}
+                              </td>
+                              <td className="p-3">
+                                <Button
+                                  onClick={() => resendAttendeeEmail(purchase)}
+                                  disabled={sendingEmailId === purchase.stripe_session_id}
+                                  variant="outline"
+                                  size="sm"
+                                >
+                                  {sendingEmailId === purchase.stripe_session_id ? (
+                                    <Loader2 className="w-3 h-3 animate-spin mr-1" />
+                                  ) : (
+                                    <Mail className="w-3 h-3 mr-1" />
+                                  )}
+                                  Resend
+                                </Button>
                               </td>
                             </tr>
                           ))}
@@ -738,6 +843,7 @@ const AdminSales = () => {
                             <th className="text-left p-3">Contact</th>
                             <th className="text-left p-3">Email</th>
                             <th className="text-left p-3">Status</th>
+                            <th className="text-left p-3">Email</th>
                             <th className="text-left p-3">Logo</th>
                             <th className="text-left p-3">Attendees</th>
                             <th className="text-left p-3">Date</th>
@@ -781,6 +887,12 @@ const AdminSales = () => {
                                       <Clock className="w-4 h-4" /> Pending
                                     </span>
                                   )}
+                                </td>
+                                <td className="p-3">
+                                  {renderEmailStatus(findDelivery(
+                                    profile.stripe_session_id,
+                                    'partner_welcome',
+                                  ))}
                                 </td>
                                 <td className="p-3">
                                   {profile.logo_url ? (

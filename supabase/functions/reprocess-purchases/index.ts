@@ -1,383 +1,162 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { requireAdmin } from "../_shared/admin-auth.ts";
+import {
+  processPurchaseEmail,
+  queuePurchaseEmail,
+} from "../_shared/transactional-email.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Same price map as the webhook — keep the two in sync.
-// Entries are additive and never removed: this function replays historical
-// Stripe sessions, so dropping a retired price reclassifies past purchases
-// as "unknown" — the exact bug this function exists to repair.
 const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  // Attendee passes — early bird promo ($200 off regular)
   69700: { tier: "earlyBird", passType: "agencyOwner" },
   39700: { tier: "earlyBird", passType: "team" },
-  // Retired early bird promo (mispriced at $250 off, live Feb 26 – Jul 16 2026)
   64700: { tier: "earlyBird", passType: "agencyOwner" },
   34700: { tier: "earlyBird", passType: "team" },
-  // Attendee passes — regular
   89700: { tier: "regular", passType: "agencyOwner" },
   59700: { tier: "regular", passType: "team" },
-  // Returning attendee (VIP)
   53800: { tier: "vip", passType: "agencyOwner" },
   35800: { tier: "vip", passType: "team" },
-  // Retired VIP pricing
   44800: { tier: "vip", passType: "agencyOwner" },
   29800: { tier: "vip", passType: "team" },
-  // Partner tiers
   1500000: { tier: "platinum", passType: "partner" },
   1000000: { tier: "gold", passType: "partner" },
   750000: { tier: "silver", passType: "partner" },
   500000: { tier: "bronze", passType: "partner" },
 };
 
-const PARTNER_TIER_NAMES: Record<string, string> = {
-  platinum: "Platinum",
-  gold: "Gold",
-  silver: "Silver",
-  bronze: "Bronze",
-};
-
-const PARTNER_PASSES: Record<string, number> = {
-  platinum: 8,
-  gold: 6,
-  silver: 4,
-  bronze: 2,
-};
-
-const HOTEL_BOOK_URL = "https://book.passkey.com/event/51189838/owner/49980248/home";
-const WEBSITE_URL = "https://theformulaforum.com";
-const LOGO_URL = "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images//FORMULA%20GRADIENT%20WORD.png";
-
-function escapeHtml(str: string): string {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-
-function buildPartnerWelcomeEmailHtml(name: string | null, tier: string, sessionId: string): string {
-  const firstName = name ? escapeHtml(name.split(" ")[0]) : "there";
-  const tierName = PARTNER_TIER_NAMES[tier] || tier;
-  const passes = PARTNER_PASSES[tier] || 2;
-  const onboardingUrl = `https://theformulaforum.com/partner-welcome/${tier}?session_id=${sessionId}`;
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Welcome, ${tierName} Partner — FORMULA 2026</title>
-</head>
-<body style="margin:0;padding:0;background-color:#1a1a1a;font-family:Arial,Helvetica,sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a1a;padding:32px 16px;">
-<tr><td align="center">
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;max-width:600px;width:100%;">
-  <tr>
-    <td style="background-color:#1a1a1a;padding:40px 32px 20px;text-align:center;">
-      <a href="${WEBSITE_URL}" target="_blank">
-        <img src="${LOGO_URL}" alt="FORMULA" width="400" style="display:block;margin:0 auto;max-width:400px;width:100%;height:auto;" />
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td style="font-size:0;line-height:0;height:4px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="33%" style="background-color:#f53214;height:4px;"></td>
-        <td width="34%" style="background-color:#fa9c27;height:4px;"></td>
-        <td width="33%" style="background-color:#48b4d1;height:4px;"></td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:36px 32px 20px;text-align:center;">
-      <h1 style="color:#f53214;font-size:28px;margin:0 0 8px;font-weight:900;">Welcome to the FORMULA Family!</h1>
-      <p style="color:#555;font-size:16px;margin:0;">Your <strong>${tierName} Partnership</strong> is confirmed.</p>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:0 32px 32px;">
-      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 24px;">Hey ${firstName},</p>
-      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 24px;">
-        We are fired up to have you locked in as a ${tierName} Partner for FORMULA 2026. Your partnership includes <strong>${passes} full-access passes</strong>, a 1-on-1 video podcast interview, and so much more. Let's get your brand set up.
-      </p>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-        <tr><td style="padding:24px;background-color:#fff7ed;border-radius:8px;border:1px solid #fa9c27;text-align:center;">
-          <p style="font-size:18px;color:#7c4a03;margin:0 0 16px;font-weight:bold;">Complete Your Partner Onboarding</p>
-          <p style="font-size:14px;color:#7c4a03;margin:0 0 16px;">Upload your logo, company bio, attendee names, and social links so we can start promoting your brand right away.</p>
-          <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background-color:#f53214;border-radius:6px;">
-            <a href="${onboardingUrl}" target="_blank" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:16px;font-weight:bold;text-decoration:none;">Set Up My Partner Profile &rarr;</a>
-          </td></tr></table>
-        </td></tr>
-      </table>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f8f8;border-radius:8px;border-left:4px solid #f53214;margin-bottom:24px;">
-        <tr><td style="padding:20px 24px;">
-          <p style="font-size:14px;color:#f53214;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;font-weight:bold;">Event Details</p>
-          <p style="font-size:16px;color:#1e293b;margin:0 0 6px;"><strong>Dates:</strong> October 14–16, 2026</p>
-          <p style="font-size:16px;color:#1e293b;margin:0 0 6px;"><strong>Location:</strong> Orlando, Florida</p>
-          <p style="font-size:16px;color:#1e293b;margin:0;"><strong>Venue:</strong> JW Marriott Orlando Bonnet Creek</p>
-        </td></tr>
-      </table>
-      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 8px;"><strong>Here's What's Coming</strong></p>
-      <ul style="font-size:15px;color:#333;line-height:1.8;margin:0 0 24px;padding-left:20px;">
-        <li><strong>Podcast scheduling link</strong> — we'll send this separately so you can book your 1-on-1 video interview</li>
-        <li><strong>Mobile app listing</strong> — download the FORMULA app on <a href="https://apps.apple.com/us/app/formula-forum/id6759879318" style="color:#48b4d1;">iOS</a> (Android coming soon)</li>
-        <li><strong>Marketing promotions</strong> — your logo and brand will be featured in our communications leading up to the event</li>
-        <li><strong>Hotel room block</strong> — book your rooms at the discounted group rate</li>
-      </ul>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-        <tr><td align="center">
-          <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#fa9c27;border-radius:6px;">
-            <a href="${HOTEL_BOOK_URL}" target="_blank" style="display:inline-block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:bold;text-decoration:none;">Reserve Your Room &rarr;</a>
-          </td></tr></table>
-        </td></tr>
-      </table>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-        <tr><td style="padding:16px 24px;background-color:#edf8fb;border-radius:8px;">
-          <p style="font-size:15px;color:#2a7d93;margin:0;">
-            <strong>Questions?</strong> Just reply to this email or reach out directly at
-            <a href="mailto:Gregg@f3florida.com" style="color:#48b4d1;">Gregg@f3florida.com</a> or
-            <a href="mailto:Justin@f3florida.com" style="color:#48b4d1;">Justin@f3florida.com</a>
-          </p>
-        </td></tr>
-      </table>
-      <p style="font-size:16px;color:#333;line-height:1.6;margin:0 0 4px;">We can't wait to see you there.</p>
-      <p style="font-size:18px;color:#f53214;font-weight:bold;margin:0;">Let's get to work,<br/>FORMULA</p>
-    </td>
-  </tr>
-  <tr>
-    <td style="font-size:0;line-height:0;height:4px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="33%" style="background-color:#f53214;height:4px;"></td>
-        <td width="34%" style="background-color:#fa9c27;height:4px;"></td>
-        <td width="33%" style="background-color:#48b4d1;height:4px;"></td>
-      </tr></table>
-    </td>
-  </tr>
-  <tr>
-    <td style="background-color:#1a1a1a;padding:24px 32px;text-align:center;">
-      <p style="color:#999;font-size:13px;margin:0 0 4px;">FORMULA &middot; October 14–16, 2026 &middot; Orlando, FL</p>
-      <p style="color:#666;font-size:12px;margin:0;">JW Marriott Orlando Bonnet Creek &middot; 14900 Chelonia Pkwy, Orlando, FL 32821</p>
-    </td>
-  </tr>
-</table>
-</td></tr>
-</table>
-</body>
-</html>`;
-}
-
-async function sendPartnerWelcomeEmail(email: string, name: string | null, tier: string, sessionId: string): Promise<boolean> {
-  const brevoApiKey = Deno.env.get("BREVO_API_KEY");
-  if (!brevoApiKey) {
-    console.error("BREVO_API_KEY not set — skipping partner welcome email");
-    return false;
-  }
-
-  const tierName = PARTNER_TIER_NAMES[tier] || tier;
-  const htmlContent = buildPartnerWelcomeEmailHtml(name, tier, sessionId);
-  const recipientName = name || email.split("@")[0];
-
-  const payload = {
-    sender: { name: "FORMULA", email: "justin@f3florida.com" },
-    to: [{ email, name: recipientName }],
-    replyTo: { email: "justin@f3florida.com", name: "Justin" },
-    subject: `Welcome, ${tierName} Partner — FORMULA 2026`,
-    htmlContent,
-  };
-
-  try {
-    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        "api-key": brevoApiKey,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const body = await res.text();
-      console.error("Brevo API error (partner email):", res.status, body);
-      return false;
-    }
-    console.log("Partner welcome email sent to", email);
-    return true;
-  } catch (err) {
-    console.error("Failed to send partner welcome email:", err);
-    return false;
-  }
+function json(body: unknown, status = 200): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+
+  const stripeSecret = Deno.env.get("STRIPE_SECRET_KEY");
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!stripeSecret || !supabaseUrl || !serviceKey) {
+    return json({ error: "Missing configuration" }, 500);
   }
 
+  const supabase = createClient(supabaseUrl, serviceKey);
+  if (!(await requireAdmin(req, supabase))) return json({ error: "Unauthorized" }, 401);
+  const stripe = new Stripe(stripeSecret, { apiVersion: "2024-06-20" });
+
   try {
-    const stripeSecret = Deno.env.get("STRIPE_SECRET_KEY");
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-
-    if (!stripeSecret || !supabaseUrl || !supabaseServiceKey) {
-      return new Response(
-        JSON.stringify({ error: "Missing configuration" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const stripe = new Stripe(stripeSecret, { apiVersion: "2024-06-20" });
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-    // Fetch all unknown purchases
-    const { data: unknowns, error: fetchError } = await supabase
+    const { data: unknowns, error } = await supabase
       .from("purchases")
       .select("*")
       .eq("pass_type", "unknown");
-
-    if (fetchError) {
-      throw new Error(`Failed to fetch unknown purchases: ${fetchError.message}`);
-    }
-
-    if (!unknowns || unknowns.length === 0) {
-      return new Response(
-        JSON.stringify({ message: "No unknown purchases to fix", fixed: 0 }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    console.log(`Found ${unknowns.length} unknown purchases to reprocess`);
+    if (error) throw error;
+    if (!unknowns?.length) return json({ message: "No unknown purchases to fix", fixed: 0 });
 
     let fixed = 0;
     let failed = 0;
     let partnersCreated = 0;
-    let emailsSent = 0;
-    const details: Array<{ sessionId: string; status: string; items?: number; partner?: boolean; emailSent?: boolean }> = [];
+    let emailsQueued = 0;
+    const details: Array<Record<string, unknown>> = [];
 
     for (const purchase of unknowns) {
       const sessionId = purchase.stripe_session_id;
       try {
-        const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
-
-        if (!lineItems.data || lineItems.data.length === 0) {
-          console.log(`No line items found for session ${sessionId}, skipping`);
+        const lineItems = (await stripe.checkout.sessions.listLineItems(sessionId)).data;
+        if (!lineItems.length) {
           details.push({ sessionId, status: "skipped_no_items" });
           continue;
         }
 
-        // Delete the old unknown record
-        const { error: deleteError } = await supabase
+        const replacementRows = lineItems.map((item) => {
+          const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || {
+            tier: "unknown",
+            passType: "unknown",
+          };
+          return {
+            amount: item.amount_total,
+            pass_type: info.passType,
+            tier: info.tier,
+            quantity: item.quantity || 1,
+          };
+        });
+        const first = replacementRows[0];
+        const { error: updateError } = await supabase
           .from("purchases")
-          .delete()
+          .update(first)
           .eq("id", purchase.id);
+        if (updateError) throw updateError;
 
-        if (deleteError) {
-          console.error(`Failed to delete purchase ${purchase.id}:`, deleteError);
-          details.push({ sessionId, status: "delete_failed" });
-          failed++;
-          continue;
+        if (replacementRows.length > 1) {
+          const additionalRows = replacementRows.slice(1).map((row) => ({
+            ...row,
+            email: purchase.email,
+            name: purchase.name,
+            stripe_session_id: sessionId,
+            stripe_payment_link_id: purchase.stripe_payment_link_id,
+            currency: purchase.currency,
+          }));
+          const { error: insertError } = await supabase.from("purchases").insert(additionalRows);
+          if (insertError) throw insertError;
         }
 
-        // Insert correct records — one per line item
-        let insertedCount = 0;
-        let detectedTier = "unknown";
-        let detectedPassType = "unknown";
-
-        for (const item of lineItems.data) {
-          const unitAmount = item.price?.unit_amount || 0;
-          const qty = item.quantity || 1;
-          const tierInfo = PRICE_TIER_MAP[unitAmount] || { tier: "unknown", passType: "unknown" };
-
-          // Track the first item's tier for partner detection
-          if (insertedCount === 0) {
-            detectedTier = tierInfo.tier;
-            detectedPassType = tierInfo.passType;
-          }
-
-          const { error: insertError } = await supabase
-            .from("purchases")
-            .insert({
-              email: purchase.email,
-              name: purchase.name,
-              stripe_session_id: sessionId,
-              stripe_payment_link_id: purchase.stripe_payment_link_id,
-              amount: item.amount_total,
-              currency: purchase.currency,
-              pass_type: tierInfo.passType,
-              tier: tierInfo.tier,
-              quantity: qty,
-            });
-
-          if (insertError) {
-            console.error(`Failed to insert line item for session ${sessionId}:`, insertError);
-          } else {
-            insertedCount++;
-          }
-        }
-
-        // If this is a partner purchase, create partner_profiles row + send welcome email
-        let isPartner = false;
-        let sentEmail = false;
-        if (detectedPassType === "partner") {
-          isPartner = true;
-
-          // Check if partner_profiles row already exists
+        if (first.pass_type === "partner") {
           const { data: existingProfile } = await supabase
             .from("partner_profiles")
             .select("id")
             .eq("stripe_session_id", sessionId)
-            .limit(1);
-
-          if (!existingProfile || existingProfile.length === 0) {
-            const { error: profileError } = await supabase
-              .from("partner_profiles")
-              .insert({
-                tier: detectedTier,
-                stripe_session_id: sessionId,
-                purchase_email: purchase.email,
-                purchase_name: purchase.name,
-              });
-
-            if (profileError) {
-              console.error(`Error creating partner profile for ${sessionId}:`, profileError);
-            } else {
-              console.log("Partner profile seeded for", purchase.email, detectedTier);
-              partnersCreated++;
-            }
+            .maybeSingle();
+          if (!existingProfile) {
+            const { error: profileError } = await supabase.from("partner_profiles").insert({
+              tier: first.tier,
+              stripe_session_id: sessionId,
+              purchase_email: purchase.email,
+              purchase_name: purchase.name,
+            });
+            if (profileError) throw profileError;
+            partnersCreated++;
           }
-
-          // Send partner welcome email
-          sentEmail = await sendPartnerWelcomeEmail(purchase.email, purchase.name, detectedTier, sessionId);
-          if (sentEmail) emailsSent++;
+          const delivery = await queuePurchaseEmail(supabase, {
+            stripeSessionId: sessionId,
+            emailType: "partner_welcome",
+            recipientEmail: purchase.email,
+            recipientName: purchase.name,
+            tier: first.tier,
+          });
+          await processPurchaseEmail(supabase, delivery.id);
+          emailsQueued++;
         }
 
         fixed++;
-        details.push({ sessionId, status: "fixed", items: insertedCount, partner: isPartner, emailSent: sentEmail });
-        console.log(`Fixed session ${sessionId}: inserted ${insertedCount} records${isPartner ? ` (partner: ${detectedTier})` : ""}`);
-      } catch (err) {
-        console.error(`Error reprocessing session ${sessionId}:`, err);
-        details.push({ sessionId, status: "error" });
+        details.push({
+          sessionId,
+          status: "fixed",
+          items: replacementRows.length,
+          partner: first.pass_type === "partner",
+        });
+      } catch (itemError) {
         failed++;
+        console.error("Purchase reprocessing failed:", sessionId, itemError);
+        details.push({ sessionId, status: "error" });
       }
     }
 
-    return new Response(
-      JSON.stringify({
-        message: `Reprocessed ${unknowns.length} unknown purchases`,
-        fixed,
-        failed,
-        partnersCreated,
-        emailsSent,
-        details,
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return json({
+      message: `Reprocessed ${unknowns.length} unknown purchases`,
+      fixed,
+      failed,
+      partnersCreated,
+      emailsQueued,
+      details,
+    });
   } catch (error) {
-    console.error("Reprocess failed:", error);
-    return new Response(
-      JSON.stringify({ error: "Reprocess failed", details: String(error) }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    console.error("Purchase reprocessing failed:", error);
+    return json({ error: "Purchase reprocessing failed" }, 500);
   }
 });
