@@ -12,6 +12,10 @@ const DARK_TILES: Record<string, string> = {};
 // stays correct when a logo is swapped. Capped so tall marks can't blow out the row.
 const LOGO_AREA = 11500;
 const MAX_LOGO_HEIGHT = 80;
+// Equal area on a very wide wordmark (CRC Tapco is 7.45:1) cashes out almost
+// entirely as width, so it spans the cell edge-to-edge and reads as oversized
+// next to neighbours that sit with margin. Cap the width too.
+const MAX_LOGO_WIDTH = 272;
 
 // Equal area still reads unevenly: a hairline pale wordmark like Performology
 // covers ~20% of its box in ink where a heavy slab like GOAL covers ~55%, so it
@@ -53,8 +57,12 @@ const fitByArea = (img: HTMLImageElement) => {
     ? Math.min(MAX_INK_BOOST, Math.max(1, Math.sqrt(TARGET_INK_DENSITY / density)))
     : 1;
 
-  const height = Math.min(MAX_LOGO_HEIGHT, Math.round(Math.sqrt((LOGO_AREA * boost) / aspect)));
-  img.style.maxHeight = `${height}px`;
+  const height = Math.min(
+    MAX_LOGO_HEIGHT,
+    MAX_LOGO_WIDTH / aspect,
+    Math.round(Math.sqrt((LOGO_AREA * boost) / aspect))
+  );
+  img.style.maxHeight = `${Math.round(height)}px`;
 };
 
 const EventSponsors = () => {
