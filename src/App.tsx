@@ -39,6 +39,15 @@ const Gallery = lazy(() => import("./pages/Gallery"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PartnerWelcome = lazy(() => import("./pages/PartnerWelcome"));
+const SalesSequence = lazy(() => import("./pages/resources/SalesSequence"));
+const GrowthThroughService = lazy(() => import("./pages/resources/GrowthThroughService"));
+const OperatingSystem = lazy(() => import("./pages/resources/OperatingSystem"));
+const Training = lazy(() => import("./pages/resources/Training"));
+const MakingItRain = lazy(() => import("./pages/resources/MakingItRain"));
+const Being = lazy(() => import("./pages/resources/Being"));
+const Body = lazy(() => import("./pages/resources/Body"));
+const Balance = lazy(() => import("./pages/resources/Balance"));
+const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -95,6 +104,15 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/partner-welcome/:tier" element={<PartnerWelcome />} />
+            <Route path="/resources/sales-sequence" element={<SalesSequence />} />
+            <Route path="/resources/growth-through-service" element={<GrowthThroughService />} />
+            <Route path="/resources/operating-system" element={<OperatingSystem />} />
+            <Route path="/resources/training" element={<Training />} />
+            <Route path="/resources/making-it-rain" element={<MakingItRain />} />
+            <Route path="/resources/being" element={<Being />} />
+            <Route path="/resources/body" element={<Body />} />
+            <Route path="/resources/balance" element={<Balance />} />
+            <Route path="/resources/funding-the-build" element={<FundingTheBuild />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
            </Routes>

@@ -2,13 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { prerenderMeta } from "./build/prerenderMeta";
 
-// Note: vite-plugin-prerender is installed but has a CommonJS/ESM compatibility
-// issue in this project. Prerendering can be enabled once the plugin is updated
-// to support ESM, or by using an alternative like vite-ssg.
-// For now, the SPA is fully optimized with code splitting, structured data,
-// and static SEO files (sitemap.xml, robots.txt, llms.txt) which provide
-// strong crawlability for search engines and AI systems.
+// Per-route <head> metadata is baked into static HTML at build time by the
+// prerenderMeta plugin below, so crawlers that do not run JavaScript still get a
+// per-page title, description, canonical and Open Graph card. See
+// build/prerenderMeta.ts for how it hands those tags over to react-helmet-async.
+//
+// vite-plugin-prerender (full body prerendering) remains unused: it has a
+// CommonJS/ESM incompatibility here and would require a headless browser in the
+// build, which this approach deliberately avoids.
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -19,6 +22,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
+    prerenderMeta(),
   ].filter(Boolean),
   resolve: {
     alias: {
