@@ -819,6 +819,48 @@ export type Database = {
     }
     Functions: {
       fix_partner_purchases: { Args: never; Returns: Json }
+      formula_bridge_claim_projection_outbox_batch: {
+        Args: {
+          p_batch_size: number
+          p_integration_secret: string
+          p_lease_seconds: number
+          p_worker_id: string
+        }
+        Returns: {
+          attempt_count: number
+          event_registration_id: string
+          lease_expires_at: string
+          lease_token: string
+          outbox_id: string
+          payload_sha256: string
+          payload_text: string
+          projection_version: number
+          revocation_version: number
+          target_path: string
+        }[]
+      }
+      formula_bridge_complete_projection_outbox: {
+        Args: {
+          p_integration_secret: string
+          p_lease_token: string
+          p_outbox_id: string
+          p_payload_sha256: string
+          p_result_code: string
+        }
+        Returns: string
+      }
+      formula_bridge_fail_projection_outbox: {
+        Args: {
+          p_error_code: string
+          p_integration_secret: string
+          p_lease_token: string
+          p_outbox_id: string
+          p_payload_sha256: string
+          p_retry_after_seconds: number
+          p_retryable: boolean
+        }
+        Returns: string
+      }
       formula_claim_projection_outbox_batch: {
         Args: {
           p_batch_size: number
