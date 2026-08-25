@@ -14,6 +14,496 @@ export type Database = {
   }
   public: {
     Tables: {
+      formula_agencies: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          kind: string
+          source_id: string
+          source_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          kind: string
+          source_id: string
+          source_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          kind?: string
+          source_id?: string
+          source_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      formula_agency_memberships: {
+        Row: {
+          agency_id: string
+          created_at: string
+          id: string
+          is_primary: boolean
+          member_id: string
+          membership_role: string
+          source_id: string
+          source_type: string
+          state: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          member_id: string
+          membership_role: string
+          source_id: string
+          source_type: string
+          state?: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          member_id?: string
+          membership_role?: string
+          source_id?: string
+          source_type?: string
+          state?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_agency_memberships_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "formula_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_agency_memberships_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "formula_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_auth_identities: {
+        Row: {
+          created_at: string
+          id: string
+          link_state: string
+          linked_at: string | null
+          member_id: string
+          provider: string
+          provider_subject: string
+          revoked_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link_state?: string
+          linked_at?: string | null
+          member_id: string
+          provider?: string
+          provider_subject: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link_state?: string
+          linked_at?: string | null
+          member_id?: string
+          provider?: string
+          provider_subject?: string
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_auth_identities_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "formula_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_entitlements: {
+        Row: {
+          access_state: string
+          agency_business_module_slugs: string[]
+          ai_capture_allowed: boolean
+          capture_write_from: string | null
+          capture_write_until: string | null
+          created_at: string
+          dashboard_read_allowed: boolean
+          dashboard_read_until: string | null
+          event_attendance_allowed: boolean
+          event_registration_id: string
+          id: string
+          partner_hub_allowed: boolean
+          personal_module_slugs: string[]
+          projection_version: number
+          publisher_module_slugs: string[]
+          revocation_version: number
+          revoked_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_state?: string
+          agency_business_module_slugs?: string[]
+          ai_capture_allowed?: boolean
+          capture_write_from?: string | null
+          capture_write_until?: string | null
+          created_at?: string
+          dashboard_read_allowed?: boolean
+          dashboard_read_until?: string | null
+          event_attendance_allowed?: boolean
+          event_registration_id: string
+          id?: string
+          partner_hub_allowed?: boolean
+          personal_module_slugs?: string[]
+          projection_version?: number
+          publisher_module_slugs?: string[]
+          revocation_version?: number
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_state?: string
+          agency_business_module_slugs?: string[]
+          ai_capture_allowed?: boolean
+          capture_write_from?: string | null
+          capture_write_until?: string | null
+          created_at?: string
+          dashboard_read_allowed?: boolean
+          dashboard_read_until?: string | null
+          event_attendance_allowed?: boolean
+          event_registration_id?: string
+          id?: string
+          partner_hub_allowed?: boolean
+          personal_module_slugs?: string[]
+          projection_version?: number
+          publisher_module_slugs?: string[]
+          revocation_version?: number
+          revoked_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_entitlements_event_registration_id_fkey"
+            columns: ["event_registration_id"]
+            isOneToOne: true
+            referencedRelation: "formula_event_registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_event_registrations: {
+        Row: {
+          agency_id: string | null
+          checked_in_at: string | null
+          claim_state: string
+          claimed_at: string | null
+          created_at: string
+          event_id: string
+          event_role: string
+          id: string
+          invited_email: string | null
+          invited_name: string | null
+          member_id: string | null
+          normalized_email: string | null
+          registration_state: string
+          revoked_at: string | null
+          seat_type: string
+          source_record_id: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id?: string | null
+          checked_in_at?: string | null
+          claim_state?: string
+          claimed_at?: string | null
+          created_at?: string
+          event_id: string
+          event_role: string
+          id?: string
+          invited_email?: string | null
+          invited_name?: string | null
+          member_id?: string | null
+          normalized_email?: string | null
+          registration_state?: string
+          revoked_at?: string | null
+          seat_type: string
+          source_record_id: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string | null
+          checked_in_at?: string | null
+          claim_state?: string
+          claimed_at?: string | null
+          created_at?: string
+          event_id?: string
+          event_role?: string
+          id?: string
+          invited_email?: string | null
+          invited_name?: string | null
+          member_id?: string | null
+          normalized_email?: string | null
+          registration_state?: string
+          revoked_at?: string | null
+          seat_type?: string
+          source_record_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_event_registrations_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "formula_agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "formula_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_event_registrations_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "formula_members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_event_registrations_source_record_id_fkey"
+            columns: ["source_record_id"]
+            isOneToOne: true
+            referencedRelation: "formula_registration_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_events: {
+        Row: {
+          capture_write_from: string | null
+          capture_write_until: string | null
+          created_at: string
+          dashboard_read_until: string | null
+          display_name: string
+          ends_at: string
+          id: string
+          registry_hash: string
+          registry_version: number
+          slug: string
+          starts_at: string
+          state: string
+          timezone: string
+          updated_at: string
+        }
+        Insert: {
+          capture_write_from?: string | null
+          capture_write_until?: string | null
+          created_at?: string
+          dashboard_read_until?: string | null
+          display_name: string
+          ends_at: string
+          id: string
+          registry_hash: string
+          registry_version: number
+          slug: string
+          starts_at: string
+          state?: string
+          timezone: string
+          updated_at?: string
+        }
+        Update: {
+          capture_write_from?: string | null
+          capture_write_until?: string | null
+          created_at?: string
+          dashboard_read_until?: string | null
+          display_name?: string
+          ends_at?: string
+          id?: string
+          registry_hash?: string
+          registry_version?: number
+          slug?: string
+          starts_at?: string
+          state?: string
+          timezone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      formula_member_emails: {
+        Row: {
+          created_at: string
+          id: string
+          is_primary: boolean
+          member_id: string
+          normalized_email: string
+          original_email: string
+          source_id: string
+          source_type: string
+          state: string
+          updated_at: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          member_id: string
+          normalized_email: string
+          original_email: string
+          source_id: string
+          source_type: string
+          state?: string
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          member_id?: string
+          normalized_email?: string
+          original_email?: string
+          source_id?: string
+          source_type?: string
+          state?: string
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_member_emails_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "formula_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_members: {
+        Row: {
+          created_at: string
+          id: string
+          status: string
+          superseded_by_member_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status?: string
+          superseded_by_member_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status?: string
+          superseded_by_member_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_members_superseded_by_member_id_fkey"
+            columns: ["superseded_by_member_id"]
+            isOneToOne: false
+            referencedRelation: "formula_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formula_registration_sources: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          invited_email: string | null
+          invited_name: string | null
+          normalized_email: string | null
+          reconciliation_state: string
+          registration_id: string | null
+          review_reason: string | null
+          source_id: string
+          source_ordinal: number
+          source_payload_hash: string
+          source_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          invited_email?: string | null
+          invited_name?: string | null
+          normalized_email?: string | null
+          reconciliation_state: string
+          registration_id?: string | null
+          review_reason?: string | null
+          source_id: string
+          source_ordinal: number
+          source_payload_hash: string
+          source_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          invited_email?: string | null
+          invited_name?: string | null
+          normalized_email?: string | null
+          reconciliation_state?: string
+          registration_id?: string | null
+          review_reason?: string | null
+          source_id?: string
+          source_ordinal?: number
+          source_payload_hash?: string
+          source_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formula_registration_sources_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "formula_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formula_registration_sources_registration_fk"
+            columns: ["registration_id"]
+            isOneToOne: false
+            referencedRelation: "formula_event_registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       gallery_downloads: {
         Row: {
           created_at: string | null
