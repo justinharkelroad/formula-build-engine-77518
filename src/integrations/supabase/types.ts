@@ -819,6 +819,29 @@ export type Database = {
     }
     Functions: {
       fix_partner_purchases: { Args: never; Returns: Json }
+      formula_admin_roster_snapshot: { Args: never; Returns: Json }
+      formula_admin_set_attendee_access: {
+        Args: {
+          p_action: string
+          p_actor_id: string
+          p_registration_id: string
+        }
+        Returns: Json
+      }
+      formula_admin_upsert_attendee: {
+        Args: {
+          p_actor_id: string
+          p_agency_display_name?: string
+          p_agency_id?: string
+          p_email: string
+          p_name: string
+          p_purchase_id?: string
+          p_registration_id?: string
+          p_seat_type: string
+          p_source_ordinal?: number
+        }
+        Returns: Json
+      }
       formula_bridge_claim_projection_outbox_batch: {
         Args: {
           p_batch_size: number
@@ -858,6 +881,15 @@ export type Database = {
           p_payload_sha256: string
           p_retry_after_seconds: number
           p_retryable: boolean
+        }
+        Returns: string
+      }
+      formula_bridge_link_firebase_identity: {
+        Args: {
+          p_email: string
+          p_email_verified: boolean
+          p_firebase_uid: string
+          p_integration_secret: string
         }
         Returns: string
       }
