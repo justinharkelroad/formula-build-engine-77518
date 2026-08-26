@@ -530,15 +530,15 @@ const AdminFormulaAttendees = () => {
       </main>
 
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent className="w-full overflow-y-auto border-black/15 bg-[#f8f5ee] sm:max-w-xl">
+        <SheetContent className="w-full overflow-y-auto border-black/15 bg-[#f8f5ee] text-[#181816] [&>button]:text-[#181816] [&>button]:ring-offset-[#f8f5ee] sm:max-w-xl">
           <SheetHeader className="pr-8">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#c45120]">
               {sourceMode === 'edit' ? 'Edit roster' : sourceMode === 'purchase' ? 'Historical purchase' : 'Manual access'}
             </p>
-            <SheetTitle className="text-3xl tracking-[-0.04em]">
+            <SheetTitle className="text-3xl text-[#181816] tracking-[-0.04em]">
               {sourceMode === 'edit' ? 'Update attendee' : sourceMode === 'purchase' ? 'Assign a purchased seat' : 'Add an approved attendee'}
             </SheetTitle>
-            <SheetDescription className="max-w-md leading-6">
+            <SheetDescription className="max-w-md leading-6 text-black/60">
               {sourceMode === 'purchase'
                 ? 'Choose an unassigned seat, then enter the person who will use it.'
                 : 'Use the exact email they use in the Formula app. Access connects without a verification email.'}
@@ -548,12 +548,12 @@ const AdminFormulaAttendees = () => {
           <form className="mt-8 space-y-6" onSubmit={submitAttendee}>
             {sourceMode === 'purchase' && (
               <div className="space-y-2">
-                <Label htmlFor="purchase-seat">Unassigned purchased seat</Label>
+                <Label htmlFor="purchase-seat" className="text-[#181816]">Unassigned purchased seat</Label>
                 <Select value={form.purchaseSeat} onValueChange={selectPurchaseSeat}>
-                  <SelectTrigger id="purchase-seat" className="border-black/20 bg-white">
+                  <SelectTrigger id="purchase-seat" className="border-black/20 bg-white text-[#181816] focus:ring-[#f26622]">
                     <SelectValue placeholder="Choose a purchase and seat" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-black/15 bg-[#fffdf8] text-[#181816]">
                     {availableSeats.length === 0 ? (
                       <SelectItem value="none" disabled>No unassigned purchased seats</SelectItem>
                     ) : availableSeats.map(({ purchase, ordinal, value }) => (
@@ -568,41 +568,41 @@ const AdminFormulaAttendees = () => {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="attendee-name">Full name</Label>
+                <Label htmlFor="attendee-name" className="text-[#181816]">Full name</Label>
                 <Input
                   id="attendee-name"
                   autoComplete="name"
                   value={form.name}
                   onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
-                  className="border-black/20 bg-white"
+                  className="border-black/20 bg-white text-[#181816] caret-[#181816] focus-visible:ring-[#f26622]"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="attendee-email">Formula app email</Label>
+                <Label htmlFor="attendee-email" className="text-[#181816]">Formula app email</Label>
                 <Input
                   id="attendee-email"
                   type="email"
                   autoComplete="email"
                   value={form.email}
                   onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-                  className="border-black/20 bg-white"
+                  className="border-black/20 bg-white text-[#181816] caret-[#181816] focus-visible:ring-[#f26622]"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="attendee-role">Ticket role</Label>
+              <Label htmlFor="attendee-role" className="text-[#181816]">Ticket role</Label>
               <Select
                 value={form.seatType}
                 onValueChange={(value: SeatType) => setForm((current) => ({ ...current, seatType: value }))}
                 disabled={sourceMode === 'purchase'}
               >
-                <SelectTrigger id="attendee-role" className="border-black/20 bg-white">
+                <SelectTrigger id="attendee-role" className="border-black/20 bg-white text-[#181816] focus:ring-[#f26622] disabled:text-black/55">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-black/15 bg-[#fffdf8] text-[#181816]">
                   <SelectItem value="agencyOwner">Agency owner</SelectItem>
                   <SelectItem value="team">Team member</SelectItem>
                 </SelectContent>
@@ -611,15 +611,15 @@ const AdminFormulaAttendees = () => {
             </div>
 
             <div className="space-y-2 border-t border-black/10 pt-6">
-              <Label htmlFor="attendee-agency">Agency workspace</Label>
+              <Label htmlFor="attendee-agency" className="text-[#181816]">Agency workspace</Label>
               <Select
                 value={form.agencyChoice}
                 onValueChange={(value) => setForm((current) => ({ ...current, agencyChoice: value }))}
               >
-                <SelectTrigger id="attendee-agency" className="border-black/20 bg-white">
+                <SelectTrigger id="attendee-agency" className="border-black/20 bg-white text-[#181816] focus:ring-[#f26622]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-black/15 bg-[#fffdf8] text-[#181816]">
                   <SelectItem value="automatic">Individual workspace</SelectItem>
                   <SelectItem value="new">Create or match by agency name</SelectItem>
                   {(snapshot?.agencies ?? [])
@@ -637,7 +637,7 @@ const AdminFormulaAttendees = () => {
                   placeholder="Agency name"
                   value={form.newAgencyName}
                   onChange={(event) => setForm((current) => ({ ...current, newAgencyName: event.target.value }))}
-                  className="mt-3 border-black/20 bg-white"
+                  className="mt-3 border-black/20 bg-white text-[#181816] placeholder:text-black/45 focus-visible:ring-[#f26622]"
                 />
               )}
             </div>
@@ -648,7 +648,14 @@ const AdminFormulaAttendees = () => {
             </div>
 
             <div className="flex justify-end gap-3 border-t border-black/10 pt-6">
-              <Button type="button" variant="ghost" onClick={() => setSheetOpen(false)}>Cancel</Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="text-[#181816] hover:bg-black/5 hover:text-[#181816]"
+                onClick={() => setSheetOpen(false)}
+              >
+                Cancel
+              </Button>
               <Button type="submit" disabled={saving} className="min-w-36 bg-[#f26622] text-black hover:bg-[#dc5719]">
                 {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
                 {sourceMode === 'edit' ? 'Save changes' : sourceMode === 'purchase' ? 'Assign seat' : 'Add attendee'}
