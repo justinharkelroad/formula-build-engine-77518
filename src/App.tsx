@@ -49,6 +49,7 @@ const Being = lazy(() => import("./pages/resources/Being"));
 const Body = lazy(() => import("./pages/resources/Body"));
 const Balance = lazy(() => import("./pages/resources/Balance"));
 const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
+const PartnerHubGuide = lazy(() => import("./pages/PartnerHubGuide"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -81,7 +82,9 @@ const App = () => (
             <Route path="/format" element={<Format />} />
             <Route path="/venue" element={<Venue />} />
             <Route path="/survey" element={<Survey />} />
+            <Route path="/partner" element={<Navigate to="/partners" replace />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
             <Route path="/2025partners" element={<PartnerPodcasts />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />

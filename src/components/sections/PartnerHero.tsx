@@ -1,5 +1,6 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const PartnerHero = () => {
   const handleScrollToLevels = () => {
@@ -33,13 +34,22 @@ const PartnerHero = () => {
               <span className="meta-pill">SILVER · BRONZE</span>
             </div>
 
-            <button
-              onClick={handleScrollToLevels}
-              className="mt-4 self-start inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-full font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40"
-            >
-              VIEW PARTNERSHIP LEVELS
-              <ArrowDown className="w-4 h-4" />
-            </button>
+            <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row">
+              <button
+                onClick={handleScrollToLevels}
+                className="inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-full font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40"
+              >
+                VIEW PARTNERSHIP LEVELS
+                <ArrowDown className="w-4 h-4" />
+              </button>
+              <Link
+                to="/partners/partner-hub-guide"
+                className="inline-flex items-center gap-2 border border-white/25 bg-white/5 text-white px-7 py-4 rounded-full font-bold hover:bg-white/10 transition-colors"
+              >
+                PARTNER HUB GUIDE
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
 
           {/* Right — intro copy */}
