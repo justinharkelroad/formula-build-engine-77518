@@ -65,6 +65,12 @@ interface EmailDelivery {
   updated_at: string;
 }
 
+interface ReprocessPurchasesResult {
+  message?: string;
+  fixed?: number;
+  failed?: number;
+}
+
 const SEAT_CAP = CONFIG.SEAT_CAP;
 
 // Passes included with each partner tier. These people occupy seats in the room
@@ -204,24 +210,33 @@ const AdminSales = () => {
   const filteredAttendeeRevenue = filteredAttendees.reduce((sum, p) => sum + p.amount, 0);
   const filteredAttendeeSeats = filteredAttendees.reduce((sum, p) => sum + p.quantity, 0);
 
-  const fixUnknownPurchases = async () => {
+  const identifyUnknownPurchases = async () => {
     setFixing(true);
     try {
-      // Call the database RPC directly. No edge function is needed.
-      const { data, error } = await supabase.rpc('fix_partner_purchases' as any);
+      // Stripe line items are the source of truth for historical purchases.
+      // The legacy partner RPC only creates missing partner profiles and cannot
+      // classify attendee purchases, which left this counter unchanged.
+      const { data, error } = await supabase.functions.invoke<ReprocessPurchasesResult>(
+        'reprocess-purchases',
+        { body: {} },
+      );
       if (error) throw error;
-      const purchasesFixed = (data as any)?.purchases_fixed ?? 0;
-      const profilesCreated = (data as any)?.profiles_created ?? 0;
+      const purchasesFixed = data?.fixed ?? 0;
+      const purchasesFailed = data?.failed ?? 0;
       toast({
-        title: "Partners Fixed",
-        description: `${purchasesFixed} purchases reclassified, ${profilesCreated} partner profiles created`,
+        title: purchasesFixed > 0 ? "Purchases Identified" : "No Purchases Changed",
+        description: purchasesFixed > 0
+          ? `${purchasesFixed} purchase${purchasesFixed === 1 ? '' : 's'} identified from Stripe${purchasesFailed > 0 ? `; ${purchasesFailed} still need review` : ''}.`
+          : purchasesFailed > 0
+            ? `${purchasesFailed} purchase${purchasesFailed === 1 ? '' : 's'} could not be identified from Stripe and still need review.`
+            : data?.message ?? 'There are no unknown purchases to identify.',
       });
       await fetchData();
     } catch (error) {
-      console.error('Error fixing partner purchases:', error);
+      console.error('Error identifying purchases:', error);
       toast({
         title: "Error",
-        description: "Failed to fix partner purchases. Make sure the migration has been applied.",
+        description: "Could not identify these purchases from Stripe. Try again or review the function logs.",
         variant: "destructive",
       });
     } finally {
@@ -419,13 +434,15 @@ const AdminSales = () => {
             <div className="flex gap-2 flex-wrap">
               {unknownCount > 0 && (
                 <Button
-                  onClick={fixUnknownPurchases}
+                  onClick={identifyUnknownPurchases}
                   disabled={fixing}
                   variant="destructive"
                   size="sm"
                 >
                   <AlertTriangle className={`w-4 h-4 mr-2 ${fixing ? 'animate-spin' : ''}`} />
-                  {fixing ? 'Fixing...' : `Fix ${unknownCount} Unknown`}
+                  {fixing
+                    ? 'Checking Stripe...'
+                    : `Identify ${unknownCount} purchase${unknownCount === 1 ? '' : 's'}`}
                 </Button>
               )}
               <Button
