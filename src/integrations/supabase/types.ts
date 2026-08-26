@@ -861,6 +861,15 @@ export type Database = {
         }
         Returns: string
       }
+      formula_bridge_link_firebase_identity: {
+        Args: {
+          p_email: string
+          p_email_verified: boolean
+          p_firebase_uid: string
+          p_integration_secret: string
+        }
+        Returns: string
+      }
       formula_claim_projection_outbox_batch: {
         Args: {
           p_batch_size: number
