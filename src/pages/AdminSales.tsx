@@ -411,6 +411,10 @@ const AdminSales = () => {
               <Link to="/admin/registrations" className="text-sm text-primary hover:underline mt-1 inline-block">
                 View pre-launch waitlist &rarr;
               </Link>
+              <span className="mx-2 text-muted-foreground">&middot;</span>
+              <Link to="/admin/formula-attendees" className="text-sm text-primary hover:underline mt-1 inline-block">
+                Manage attendee access &rarr;
+              </Link>
             </div>
             <div className="flex gap-2 flex-wrap">
               {unknownCount > 0 && (

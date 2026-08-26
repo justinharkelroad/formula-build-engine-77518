@@ -33,6 +33,7 @@ const GASetup = lazy(() => import("./pages/GASetup"));
 const ThankYouEnhanced = lazy(() => import("./pages/ThankYouEnhanced"));
 const AdminRegistrations = lazy(() => import("./pages/AdminRegistrations"));
 const AdminSales = lazy(() => import("./pages/AdminSales"));
+const AdminFormulaAttendees = lazy(() => import("./pages/AdminFormulaAttendees"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
 const Gallery = lazy(() => import("./pages/Gallery"));
@@ -101,6 +102,11 @@ const App = () => (
             <Route path="/admin/sales" element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminSales />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/formula-attendees" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminFormulaAttendees />
               </ProtectedRoute>
             } />
             <Route path="/partner-welcome/:tier" element={<PartnerWelcome />} />

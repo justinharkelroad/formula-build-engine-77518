@@ -15,6 +15,10 @@ verify_jwt = false
 [functions.reprocess-purchases]
 verify_jwt = false
 
+# Performs its own admin-role check before using service-only roster RPCs.
+[functions.formula-admin-attendees]
+verify_jwt = false
+
 [functions.process-email-deliveries]
 verify_jwt = false
 
