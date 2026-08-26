@@ -131,7 +131,8 @@ export const CONFIG = {
     { name: "Melon Local", tier: "Sponsor", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" },
     { name: "Slide Insurance", tier: "Sponsor", logoUrl: "/assets/sponsors/slide-insurance.svg", linkUrl: "https://slideinsurance.com" },
     // Only ships a white-on-transparent lockup; recoloured to black for the light tiles.
-    { name: "CRC Tapco", tier: "Sponsor", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" }
+    { name: "CRC Tapco", tier: "Sponsor", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
+    { name: "Ask Fetch", tier: "Sponsor", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
   ],
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
