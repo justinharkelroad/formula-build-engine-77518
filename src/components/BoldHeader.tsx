@@ -9,6 +9,7 @@ const navItems = [
   { label: "schedule", sectionId: "schedule", path: "/" },
   { label: "venue", sectionId: "venue", path: "/" },
   { label: "partners", sectionId: null, path: "/partners" },
+  { label: "app", sectionId: null, path: "/formula-app-guide" },
   { label: "photos", sectionId: null, path: "/gallery" }
 ];
 

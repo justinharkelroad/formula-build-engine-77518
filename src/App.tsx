@@ -50,6 +50,7 @@ const Body = lazy(() => import("./pages/resources/Body"));
 const Balance = lazy(() => import("./pages/resources/Balance"));
 const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
 const PartnerHubGuide = lazy(() => import("./pages/PartnerHubGuide"));
+const FormulaAppGuide = lazy(() => import("./pages/FormulaAppGuide"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -85,6 +86,7 @@ const App = () => (
             <Route path="/partner" element={<Navigate to="/partners" replace />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
+            <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
             <Route path="/2025partners" element={<PartnerPodcasts />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
