@@ -1,5 +1,6 @@
 import { CONFIG } from "@/config/event";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import PartnerPodcastModal from "@/components/PartnerPodcastModal";
 
 const PlatinumSponsors = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
@@ -31,14 +32,14 @@ const PlatinumSponsors = () => {
           {CONFIG.LOGO_PARTNERS.map((partner, index) => (
             <li
               key={partner.name}
-              className={`border-b border-r border-black/15 reveal-up delay-${index + 1} ${isVisible ? "is-visible" : ""}`}
+              className={`relative border-b border-r border-black/15 reveal-up delay-${index + 1} ${isVisible ? "is-visible" : ""}`}
             >
               <a
                 href={partner.linkUrl}
                 target="_blank"
                 rel="sponsored noopener noreferrer"
                 aria-label={`Visit ${partner.name} website (opens in a new tab)`}
-                className="group relative flex min-h-40 items-center justify-center bg-white px-8 py-12 transition-colors duration-300 hover:bg-[hsl(0,0%,98%)] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-52 md:px-14"
+                className={`group relative flex min-h-40 items-center justify-center bg-white px-8 py-12 transition-colors duration-300 hover:bg-[hsl(0,0%,98%)] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-52 md:px-14 ${partner.podcast ? "pb-20 md:pb-20" : ""}`}
               >
                 <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.2em] text-black/35 md:left-5 md:top-5">
                   {String(index + 1).padStart(2, "0")}
@@ -53,6 +54,7 @@ const PlatinumSponsors = () => {
                   className="max-h-16 w-full max-w-[28rem] object-contain transition-transform duration-300 ease-out group-hover:scale-[1.025] md:max-h-24"
                 />
               </a>
+              {partner.podcast && <PartnerPodcastModal podcast={partner.podcast} />}
             </li>
           ))}
         </ul>

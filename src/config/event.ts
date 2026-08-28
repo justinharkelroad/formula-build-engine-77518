@@ -97,7 +97,21 @@ export const CONFIG = {
   TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
-    { name: "Agency Toolchest", tier: "Platinum", logoUrl: "/assets/sponsors/agency-toolchest.png", linkUrl: "https://agencytoolchest.com" },
+    {
+      name: "Agency Toolchest",
+      tier: "Platinum",
+      logoUrl: "/assets/sponsors/agency-toolchest.png",
+      linkUrl: "https://agencytoolchest.com",
+      podcast: {
+        company: "Agency Toolchest",
+        guestName: "Todd Mclain",
+        headshotUrl: "/assets/partners/todd-mclain.png",
+        vimeoId: "1222089520",
+        contactLabel: "Book a demo",
+        contactUrl: "https://agencytoolchest.com",
+        contactDisplay: "agencytoolchest.com",
+      },
+    },
     { name: "MediaAlpha", tier: "Platinum", logoUrl: "/assets/sponsors/mediaalpha.png", linkUrl: "https://mediaalpha.com" },
     { name: "SecureEVAs", tier: "Platinum", logoUrl: "/assets/sponsors/secure-evas.png", linkUrl: "https://secureevas.com" },
     { name: "Standard", tier: "Platinum", logoUrl: "/assets/sponsors/the-standard.png", linkUrl: "https://standardplaybook.com" }
