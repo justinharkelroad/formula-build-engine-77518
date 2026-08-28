@@ -1,5 +1,6 @@
 import { CONFIG } from "@/config/event";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import PartnerPodcastModal from "@/components/PartnerPodcastModal";
 
 // Any logo that only exists as white-on-dark artwork gets a dark card rather
 // than having its brand colours altered. Empty today — every sponsor currently
@@ -94,6 +95,7 @@ const EventSponsors = () => {
         <ul className="grid border-l border-t border-black/15 sm:grid-cols-2 lg:grid-cols-3" aria-label="Formula Forum 2026 sponsors">
           {CONFIG.LOGO_SPONSORS.map((sponsor, index) => {
             const tile = DARK_TILES[sponsor.name] ?? "bg-white";
+            const podcast = sponsor.podcast;
             const logo = (
               <img
                 src={sponsor.logoUrl}
@@ -109,7 +111,7 @@ const EventSponsors = () => {
             return (
               <li
                 key={sponsor.name}
-                className={`border-b border-r border-black/15 reveal-up delay-${Math.min(Math.floor(index / 3) + 1, 6)} ${isVisible ? "is-visible" : ""}`}
+                className={`relative border-b border-r border-black/15 reveal-up delay-${Math.min(Math.floor(index / 3) + 1, 6)} ${isVisible ? "is-visible" : ""}`}
               >
                 {sponsor.linkUrl ? (
                   <a
@@ -117,7 +119,7 @@ const EventSponsors = () => {
                     target="_blank"
                     rel="sponsored noopener noreferrer"
                     aria-label={`Visit ${sponsor.name} website (opens in a new tab)`}
-                    className={`group relative flex min-h-32 items-center justify-center ${tile} px-8 py-10 transition-opacity duration-300 hover:opacity-90 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-40 md:px-10`}
+                    className={`group relative flex h-full min-h-32 items-center justify-center ${tile} px-8 py-10 transition-opacity duration-300 hover:opacity-90 focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-40 md:px-10 ${podcast ? "pb-20 md:pb-20" : ""}`}
                   >
                     <span className="absolute right-4 top-4 text-[10px] font-semibold tracking-[0.16em] text-transparent transition-colors duration-300 group-hover:text-black/45 group-focus-visible:text-black/45 md:right-5 md:top-5">
                       VISIT ↗
@@ -125,10 +127,11 @@ const EventSponsors = () => {
                     {logo}
                   </a>
                 ) : (
-                  <div className={`group relative flex min-h-32 items-center justify-center ${tile} px-8 py-10 md:min-h-40 md:px-10`}>
+                  <div className={`group relative flex h-full min-h-32 items-center justify-center ${tile} px-8 py-10 md:min-h-40 md:px-10 ${podcast ? "pb-20 md:pb-20" : ""}`}>
                     {logo}
                   </div>
                 )}
+                {podcast && <PartnerPodcastModal podcast={podcast} />}
               </li>
             );
           })}

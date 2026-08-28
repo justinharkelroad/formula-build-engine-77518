@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink, Play } from "lucide-react";
+import { ExternalLink, Phone, Play } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +12,13 @@ export interface PartnerPodcastDetails {
   company: string;
   guestName: string;
   headshotUrl: string;
+  headshotWidth: number;
+  headshotHeight: number;
   vimeoId: string;
   contactLabel: string;
   contactUrl: string;
   contactDisplay: string;
+  contactDescription: string;
 }
 
 interface PartnerPodcastModalProps {
@@ -24,6 +27,9 @@ interface PartnerPodcastModalProps {
 
 const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isPhoneContact = podcast.contactUrl.startsWith("tel:");
+  const isExternalContact = podcast.contactUrl.startsWith("http");
+  const ContactIcon = isPhoneContact ? Phone : ExternalLink;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -68,8 +74,8 @@ const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
               <img
                 src={podcast.headshotUrl}
                 alt={`${podcast.guestName}, ${podcast.company}`}
-                width={872}
-                height={884}
+                width={podcast.headshotWidth}
+                height={podcast.headshotHeight}
                 className="mb-6 h-24 w-24 rounded-2xl object-cover sm:h-28 sm:w-28"
               />
               <h2 className="text-3xl font-black tracking-[-0.035em] text-white sm:text-4xl">
@@ -77,7 +83,7 @@ const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
               </h2>
               <p className="mt-2 text-base font-semibold text-white/65">{podcast.company}</p>
               <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/65 sm:text-base">
-                Todd shared Agency Toolchest as the best way to connect and book a demo.
+                {podcast.contactDescription}
               </p>
             </div>
 
@@ -85,12 +91,12 @@ const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
               <div className="mb-3 text-sm text-white/50">{podcast.contactDisplay}</div>
               <a
                 href={podcast.contactUrl}
-                target="_blank"
-                rel="sponsored noopener noreferrer"
+                target={isExternalContact ? "_blank" : undefined}
+                rel={isExternalContact ? "sponsored noopener noreferrer" : undefined}
                 className="inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[hsl(var(--secondary))] px-5 py-3.5 text-sm font-bold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
                 {podcast.contactLabel}
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                <ContactIcon className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
           </aside>
