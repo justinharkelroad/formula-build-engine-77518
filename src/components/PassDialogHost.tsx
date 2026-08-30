@@ -46,7 +46,7 @@ const PassDialogHost = () => {
             FORMULA<br />FORUM 26
           </DialogPrimitive.Title>
           <DialogPrimitive.Description className="text-white/60 text-sm mb-8">
-            Complete checkout securely with Stripe — instant confirmation.
+            Complete checkout securely with Stripe. Confirmation is sent instantly.
           </DialogPrimitive.Description>
 
           {/* Tier pills */}
@@ -55,6 +55,15 @@ const PassDialogHost = () => {
               EARLY BIRD
             </span>
             {tier === "vip" && <span className="meta-pill meta-pill-solid">VIP DISCOUNT</span>}
+          </div>
+
+          <div className="mb-6 rounded-2xl border border-[hsl(var(--secondary)/0.5)] bg-[hsl(var(--secondary)/0.16)] p-4">
+            <div className="text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--secondary))]">
+              Final-Day Attendee Gift
+            </div>
+            <p className="mt-1 text-sm leading-relaxed text-white/78">
+              Attend the final day to unlock the Agency AI Install Walkthrough, starter files, skill library, and secure portal access.
+            </p>
           </div>
 
           {/* Agency Owner */}
@@ -71,7 +80,7 @@ const PassDialogHost = () => {
               </span>
             </div>
             <div className="flex items-center justify-between text-sm opacity-70 group-hover:opacity-100">
-              <span>Full 1.5-day access · Book of Formulas · networking</span>
+              <span>Full access, Book of Formulas, networking</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </button>

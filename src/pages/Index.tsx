@@ -14,6 +14,7 @@ import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 import AboutSection from "@/components/sections/AboutSection";
 import ScheduleBlock from "@/components/sections/ScheduleBlock";
 import VenueBlock from "@/components/sections/VenueBlock";
+import AgencyAIInstallGift from "@/components/sections/AgencyAIInstallGift";
 import PricingBlock from "@/components/sections/PricingBlock";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 import { useEffect, useState } from "react";
@@ -23,7 +24,7 @@ const HOMEPAGE_VIMEO_ID = "1168470992";
 
 const Index = () => {
   const title = "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16";
-  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek. Operator-led workshops, peer breakouts, and the Book of Formulas playbook.";
+  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek, with operator-led workshops, peer breakouts, the Book of Formulas, and a final-day Agency AI Install attendee gift.";
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,7 +41,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const sectionId = (location.state as any)?.scrollTo;
+    const sectionId = (location.state as { scrollTo?: string } | null)?.scrollTo;
     if (sectionId) {
       setTimeout(() => {
         const el = document.getElementById(sectionId);
@@ -79,9 +80,9 @@ const Index = () => {
       {/* 3. Video testimonials — front-and-center (preserved) */}
       <section className="bg-black py-16 md:py-20 px-5 md:px-12">
         <div className="container mx-auto max-w-7xl mb-10 md:mb-12">
-          <div className="eyebrow mb-4">VOICES — REAL OWNERS</div>
+          <div className="eyebrow mb-4">VOICES - REAL OWNERS</div>
           <h2 className="text-2xl md:text-5xl font-bold leading-tight max-w-3xl">
-            Hear from agency owners and team members who installed the Formula playbook — in their words.
+            Hear from agency owners and team members who installed the Formula playbook, in their words.
           </h2>
         </div>
         <VideoTestimonialsGrid />
@@ -96,10 +97,13 @@ const Index = () => {
       {/* 6. Venue */}
       <VenueBlock />
 
-      {/* 7. Pricing */}
+      {/* 7. Final-day attendee gift */}
+      <AgencyAIInstallGift />
+
+      {/* 8. Pricing */}
       <PricingBlock />
 
-      {/* 8. Massive BUY TICKET footer */}
+      {/* 9. Massive BUY TICKET footer */}
       <GiantTicketFooter />
     </div>
     </PassDialogProvider>

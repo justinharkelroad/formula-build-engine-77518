@@ -20,7 +20,7 @@ const PricingBlock = () => {
       <div className="container mx-auto max-w-7xl">
         {/* top eyebrow + socials */}
         <div className="flex items-center justify-between mb-10 md:mb-12 gap-4 flex-wrap">
-          <div className="eyebrow text-white">PRICING — REGISTRATION OPEN</div>
+          <div className="eyebrow text-white">PRICING - REGISTRATION OPEN</div>
           <div className="flex items-center gap-2 md:gap-3">
             {[Instagram, Facebook, Youtube, Linkedin].map((Icon, i) => (
               <a key={i} href="#" className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition">
@@ -44,6 +44,18 @@ const PricingBlock = () => {
               CHOOSE<br />YOUR PASS
             </h2>
           </div>
+        </div>
+
+        <div className={`mb-5 rounded-2xl border border-white/15 bg-black/55 p-5 backdrop-blur-sm md:flex md:items-center md:justify-between md:gap-8 reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--secondary))]">
+              Final-Day Attendee Gift
+            </div>
+            <div className="mt-1 text-lg font-bold">Agency AI Install Walkthrough</div>
+          </div>
+          <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/68 md:mt-0 md:text-right">
+            Included with either pass when registered attendance is confirmed on the final day.
+          </p>
         </div>
 
         {/* TWO TICKET CARDS */}
@@ -84,7 +96,7 @@ const PricingBlock = () => {
               <span className="text-xs uppercase tracking-widest bg-white text-[hsl(var(--secondary))] px-2 py-1 rounded-full">SAVE ${prices.team.fullPrice - prices.team.price}</span>
             </div>
             <p className="text-sm text-white/85 leading-relaxed mb-6">
-              For team members and junior producers. Bring your producer or service lead — they get the same access, same playbook, same room.
+              For team members and junior producers. Bring your producer or service lead. They get the same access, same playbook, same room.
             </p>
             <div className="mt-auto flex items-center justify-between text-sm font-bold">
               <span>SECURE THIS PASS</span>
@@ -96,7 +108,7 @@ const PricingBlock = () => {
         {/* Bottom strip */}
         <div className="mt-10 md:mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-white/65 border-t border-white/15 pt-6">
           <div>
-            ◆ Teams of 5+ save an additional 20% — email <a href="mailto:Gregg@f3florida.com" className="text-white underline">Gregg@f3florida.com</a>
+            ◆ Teams of 5+ save an additional 20%. Email <a href="mailto:Gregg@f3florida.com" className="text-white underline">Gregg@f3florida.com</a>
           </div>
           <a href="mailto:info@f3florida.com" className="text-white/60 underline hover:text-white text-xs tracking-widest uppercase">
             contact: info@f3florida.com

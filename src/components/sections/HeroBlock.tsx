@@ -45,7 +45,7 @@ const HeroBlock = () => {
           {/* Left column — pills + CTA */}
           <div className="flex flex-col gap-4 order-1 md:col-span-1">
             <div className={`flex flex-wrap gap-3 reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
-              <span className="meta-pill">OCT 14–16</span>
+              <span className="meta-pill">OCT 14-16</span>
               <span className="meta-pill meta-pill-dot">TICKETS ACTIVE</span>
               <span className="meta-pill">2026</span>
             </div>
@@ -78,7 +78,7 @@ const HeroBlock = () => {
             </div>
             <div className="space-y-1 text-lg text-white/85">
               <div>Operator-led growth playbooks</div>
-              <div>AI installs for daily agency ops</div>
+              <div>Final-day AI Install attendee gift</div>
               <div>Producer scale + retention systems</div>
               <div>Format Framework breakouts</div>
             </div>

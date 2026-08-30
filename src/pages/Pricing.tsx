@@ -9,9 +9,9 @@ import StructuredData from "@/components/StructuredData";
 import { Link } from "react-router-dom";
 
 const Pricing = () => {
-  const title = "Ticket Pricing | Formula Forum 2026 — Agency Owner & Team Passes";
-  const description = "Formula Forum 2026 tickets: Agency Owner Pass $647, Team Member Pass $347. Includes all sessions, Book of Formulas playbook, meals, and networking events.";
   const { agencyOwner, team } = PRICING.earlyBird;
+  const title = "Ticket Pricing | Formula Forum 2026 - Agency Owner & Team Passes";
+  const description = `Formula Forum 2026 tickets: Agency Owner Pass $${agencyOwner.price}, Team Member Pass $${team.price}. Includes sessions, the Book of Formulas, meals, networking, and the final-day Agency AI Install attendee gift.`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -25,7 +25,7 @@ const Pricing = () => {
           <div className="mt-6">
             <CountdownTimer
               fallbackDeadline="2026-03-31T23:59:59"
-              label="Price increases after March 31 — lock in your rate:"
+              label="Price increases after March 31. Lock in your rate:"
               className="text-center"
             />
           </div>
@@ -34,7 +34,7 @@ const Pricing = () => {
         <section className="max-w-4xl mx-auto space-y-8">
           <article className="text-center space-y-4">
             <p data-speakable="true">
-              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include access to all sessions, the printed Book of Formulas playbook, networking events, and meals. Limited to 250 attendees.
+              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include all sessions, the printed Book of Formulas, networking events, meals, and the Agency AI Install Walkthrough when final-day attendance is confirmed. Limited to 250 attendees.
             </p>
           </article>
 
@@ -54,7 +54,7 @@ const Pricing = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30" aria-hidden="true"></div>
                    <img
                      src="/lovable-uploads/13190d3e-be9d-4836-9991-e7cee56f7509.png"
-                     alt="Formula Forum 2026 Book of Formulas Playbook — comprehensive guide for insurance agency growth"
+                     alt="Formula Forum 2026 Book of Formulas Playbook, a guide for insurance agency growth"
                      className="relative z-10 max-w-sm w-full h-auto rounded-2xl shadow-2xl"
                      loading="lazy"
                      width="400"
@@ -69,7 +69,7 @@ const Pricing = () => {
             <Button asChild variant="cta" size="lg" className="min-h-16 text-xl md:text-2xl px-8 md:px-12 py-6">
               <a href={agencyOwner.url} target="_blank" rel="noopener noreferrer" aria-label={`Buy Agency Owner pass for $${agencyOwner.price}`}>
                 <span className="inline-flex items-center gap-2">
-                  <span>Buy Now — {agencyOwner.name}</span>
+                  <span>Buy Now - {agencyOwner.name}</span>
                   <span className="relative inline-block text-muted-foreground">
                     <span className="line-through opacity-80">${agencyOwner.fullPrice}</span>
                     <span className="absolute inset-0 border-t border-destructive rotate-[-12deg] top-1/2 animate-fade-in" aria-hidden="true"></span>
@@ -82,7 +82,7 @@ const Pricing = () => {
             <Button asChild variant="secondary" size="lg" className="min-h-16 text-xl md:text-2xl px-8 md:px-12 py-6">
               <a href={team.url} target="_blank" rel="noopener noreferrer" aria-label={`Buy Team Member pass for $${team.price}`}>
                 <span className="inline-flex items-center gap-2">
-                  <span>Buy Now — {team.name}</span>
+                  <span>Buy Now - {team.name}</span>
                   <span className="relative inline-block text-muted-foreground">
                     <span className="line-through opacity-80">${team.fullPrice}</span>
                     <span className="absolute inset-0 border-t border-destructive rotate-[-12deg] top-1/2 animate-fade-in" aria-hidden="true"></span>

@@ -18,7 +18,7 @@ const AboutSection = () => {
               The Insurance<br />Agency Growth<br />Event
             </h2>
             <p className={`text-lg md:text-xl text-white/70 leading-relaxed max-w-xl reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
-              Formula proved that growth happens where clarity meets community. Across two immersive days, agency owners and team members gained actionable frameworks, redefined leadership, and built relationships that extend far beyond the event. Attendees described it as "the most impactful insurance conference ever attended" — a space where mindset, execution, and accountability aligned to create lasting results.
+              Formula proved that growth happens where clarity meets community. Across two immersive days, agency owners and team members gained actionable frameworks, redefined leadership, and built relationships that extend far beyond the event. Attendees described it as "the most impactful insurance conference ever attended," a space where mindset, execution, and accountability aligned to create lasting results.
             </p>
           </div>
 
@@ -28,7 +28,7 @@ const AboutSection = () => {
               <source srcSet="/lovable-uploads/about-section-image.webp" type="image/webp" />
               <img
                 src="/lovable-uploads/about-section-image.png"
-                alt="Formula Forum — speaker on stage"
+                alt="Formula Forum speaker on stage"
                 loading="lazy"
                 width="960"
                 height="778"

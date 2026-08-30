@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { CONFIG } from "@/config/event";
+import { PRICING } from "@/config/pricing";
 
 interface StructuredDataProps {
   page?: "home" | "venue" | "faq" | "speakers" | "pricing" | "format" | "contact" | "general";
@@ -133,8 +134,8 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       "@type": "AggregateOffer",
       "url": `${siteUrl}/pricing`,
       "priceCurrency": "USD",
-      "lowPrice": "347",
-      "highPrice": "647",
+      "lowPrice": String(PRICING.earlyBird.team.price),
+      "highPrice": String(PRICING.earlyBird.agencyOwner.price),
       "offerCount": 2,
       "availability": "https://schema.org/InStock",
       "validFrom": "2026-01-01T00:00:00-05:00"
@@ -191,7 +192,47 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "What's included in the registration fee?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, and meals during the conference."
+          "text": "Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, meals during the conference, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the Agency AI Install Walkthrough included with my Formula ticket?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It is included as a final-day attendee gift. You must have a registered Formula ticket and be in attendance on the final day when access is released."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the Agency AI Install being taught live during Formula?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Formula gift provides secure access to the guided Agency AI Install implementation walkthrough, build guides, starter files, and resources. It is not a seat at a future live Agency AI Install event."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to be technical to complete the AI Install?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. If you can create a folder, move files, and follow a guided checklist, you can complete the build. The training follows a clear order and includes verification checkpoints."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I build my business brain with Claude or Codex?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The core system works with both platforms. Attendees receive platform-specific setup files and instructions for Claude or Codex."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the AI Install send messages or change agency data automatically?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Nothing is sent without approval, numbers are not invented, and customer reports remain outside the business-brain folder. The training establishes clear safety and approval boundaries."
         }
       },
       {

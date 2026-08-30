@@ -5,7 +5,7 @@ const props = [
   {
     icon: TrendingUp,
     title: "Operator-led growth playbooks",
-    body: "Frameworks installed inside real agencies — not theory. Every speaker brings what's running in their book today."
+    body: "Frameworks installed inside real agencies, not theory. Every speaker brings what's running in their book today."
   },
   {
     icon: Users,
@@ -15,7 +15,7 @@ const props = [
   {
     icon: Briefcase,
     title: "AI installs for daily ops",
-    body: "Concrete AI workflows for service, sales, and producer ramp — owners who've actually wired this in for 2026."
+    body: "Concrete AI workflows for service, sales, and producer ramp from owners who have actually wired this in for 2026."
   },
   {
     icon: Wrench,
@@ -33,10 +33,10 @@ const ValuePropsGrid = () => {
 
         <div className="grid md:grid-cols-2 gap-16 mb-16">
           <p className={`text-base md:text-lg leading-relaxed text-black/70 max-w-md reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
-            A 1.5-day conference dedicated to insurance agency owners and team members who want to learn about future trends and projects in the industry — actually installed.
+            A 1.5-day conference for insurance agency owners and team members who want future-facing systems they can actually install.
           </p>
           <h2 className={`text-3xl md:text-4xl font-bold leading-tight reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
-            Gain valuable knowledge — Take<br />
+            Gain valuable knowledge. Take<br />
             advantage of the conference and<br />
             discover the most important advantages.
           </h2>

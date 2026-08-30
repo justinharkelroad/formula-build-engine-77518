@@ -4,4 +4,5 @@ export const ACCESS_PASS_BENEFITS = [
   "Networking Lunch",
   "Evening networking reception",
   "Mobile app + session materials",
+  "Final-day gift: Agency AI Install Walkthrough and toolkit",
 ] as const;

@@ -4,17 +4,17 @@ const sessions = [
   {
     day: "DAY 1",
     title: "Exclusive Welcome Event",
-    time: "6:00 PM – 8:00 PM"
+    time: "6:00 PM - 8:00 PM"
   },
   {
     day: "DAY 2",
     title: "Formula General Session",
-    time: "9:00 AM – 6:00 PM"
+    time: "9:00 AM - 6:00 PM"
   },
   {
     day: "DAY 3",
     title: "Formula General Session",
-    time: "9:00 AM – 1:00 PM"
+    time: "9:00 AM - 1:00 PM"
   }
 ];
 
@@ -35,7 +35,7 @@ const ScheduleBlock = () => {
             SCHEDULE
           </h2>
           <div className={`flex flex-wrap gap-3 justify-end reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
-            <span className="meta-pill meta-pill-solid">OCT 14–16</span>
+            <span className="meta-pill meta-pill-solid">OCT 14-16</span>
             <span className="meta-pill">2026</span>
           </div>
         </div>

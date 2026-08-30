@@ -29,7 +29,7 @@ const GiantTicketFooter = () => {
             THEFORMULAFORUM.COM
           </div>
           <div className="md:text-center text-white/70 text-xs md:text-sm">
-            {CONFIG.VENUE_NAME} · Orlando, FL · Oct 14–16, 2026
+            {CONFIG.VENUE_NAME}, Orlando, FL, Oct 14-16, 2026
           </div>
           <div className="md:text-right text-white/50 text-xs tracking-widest uppercase">
             ©2026 FORMULA FORUM

@@ -74,7 +74,7 @@ const CountdownBlock = () => {
           <p className={`text-base md:text-lg text-white/85 md:justify-self-end max-w-md reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             {time.isPast
               ? "Doors are open at the JW Marriott Bonnet Creek. Let's go."
-              : "Doors open in Orlando. The clock is live — secure your seat before the next price tier."}
+              : "Doors open in Orlando. The clock is live. Secure your seat before the next price tier."}
           </p>
         </div>
 

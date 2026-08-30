@@ -23,7 +23,7 @@ const VenueBlock = () => {
 
             <h3 className="text-2xl font-bold mb-3">{CONFIG.VENUE_NAME}</h3>
             <p className="text-black/70 leading-relaxed mb-8">
-              We are excited to announce that we are going back home to our official first location and making this an amazing tradition — bringing you all back down to experience this beautiful space.
+              We are excited to return to our original location and continue an amazing tradition, bringing everyone back to experience this beautiful space.
             </p>
 
             <div className="border-t border-black/10 pt-6 mb-8">
@@ -51,7 +51,7 @@ const VenueBlock = () => {
           <div className={`relative rounded-2xl overflow-hidden aspect-[4/5] md:aspect-[4/5] shadow-2xl reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             <img
               src="/lovable-uploads/jw-marriott-pool.jpg"
-              alt="JW Marriott Orlando Bonnet Creek — pool"
+              alt="JW Marriott Orlando Bonnet Creek pool"
               className="w-full h-full object-cover animate-ken-burns"
               loading="lazy"
               width="800"

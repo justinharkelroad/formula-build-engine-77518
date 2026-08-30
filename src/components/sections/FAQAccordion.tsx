@@ -25,7 +25,27 @@ const FAQAccordion = () => {
     },
     {
       q: "What's included in the registration fee?",
-      a: "Your Formula Forum registration includes access to all speaker sessions and general sessions, small-group breakout sessions, the printed Book of Formulas playbook with action maps from every speaker, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), and an optional morning group workout."
+      a: "Your Formula Forum registration includes access to all speaker sessions and general sessions, small-group breakout sessions, the printed Book of Formulas playbook with action maps from every speaker, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), an optional morning group workout, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
+    },
+    {
+      q: "Is the Agency AI Install Walkthrough included with my Formula ticket?",
+      a: "Yes. It is included as a final-day attendee gift. You must have a registered Formula ticket and be in attendance on the final day when access is released."
+    },
+    {
+      q: "Is the Agency AI Install being taught live during Formula?",
+      a: "The Formula gift provides secure access to the guided Agency AI Install implementation walkthrough, build guides, starter files, and resources. It is not a seat at a future live Agency AI Install event."
+    },
+    {
+      q: "Do I need to be technical to complete the AI Install?",
+      a: "No. If you can create a folder, move files, and follow a guided checklist, you can complete the build. The training follows a clear order and includes verification checkpoints."
+    },
+    {
+      q: "Can I build my business brain with Claude or Codex?",
+      a: "Yes. The core system works with both platforms. Attendees receive platform-specific setup files and instructions for Claude or Codex."
+    },
+    {
+      q: "Does the AI Install send messages or change agency data automatically?",
+      a: "No. Nothing is sent without approval, numbers are not invented, and customer reports remain outside the business-brain folder. The training establishes clear safety and approval boundaries."
     },
     {
       q: "Will sessions be recorded?",
