@@ -28,6 +28,7 @@ import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
 
 const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
+const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
 const GUIDE_PATH = "/formula-app-guide";
 
 const featureNav = [
@@ -69,17 +70,31 @@ const AppScreenshot = ({ src, alt, onOpen, className = "", label }: AppScreensho
   </button>
 );
 
-const AppStoreButton = ({ compact = false, inverse = false }: { compact?: boolean; inverse?: boolean }) => (
+type AppDownloadButtonProps = {
+  href: string;
+  platform: "iPhone" | "Android";
+  compact?: boolean;
+  inverse?: boolean;
+};
+
+const AppDownloadButton = ({ href, platform, compact = false, inverse = false }: AppDownloadButtonProps) => (
   <a
-    href={IOS_APP_URL}
+    href={href}
     target="_blank"
     rel="noopener noreferrer"
     className={`inline-flex items-center justify-center gap-2 rounded-full font-black uppercase transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 ${inverse ? "bg-black text-white hover:bg-white hover:text-black focus-visible:ring-black" : "bg-white text-black hover:bg-[hsl(var(--secondary))] hover:text-white focus-visible:ring-white"} ${compact ? "px-4 py-2.5 text-xs" : "w-full px-6 py-4 text-sm sm:w-auto"}`}
   >
     <Smartphone className="h-4 w-4" />
-    Download For iPhone
+    {compact ? platform : `Download For ${platform}`}
     <ArrowUpRight className="h-4 w-4" />
   </a>
+);
+
+const AppDownloadButtons = ({ compact = false, inverse = false, className = "" }: { compact?: boolean; inverse?: boolean; className?: string }) => (
+  <div className={`flex flex-wrap gap-3 ${className}`}>
+    <AppDownloadButton href={IOS_APP_URL} platform="iPhone" compact={compact} inverse={inverse} />
+    <AppDownloadButton href={ANDROID_APP_URL} platform="Android" compact={compact} inverse={inverse} />
+  </div>
 );
 
 type SectionTitleProps = {
@@ -132,7 +147,7 @@ const FormulaAppGuide = () => {
             <img src={f3Logo} alt="Formula Forum" className="h-8 w-8 shrink-0 object-contain" />
             <span className="hidden sm:inline">Formula Forum</span>
           </Link>
-          <div className="hidden sm:block"><AppStoreButton compact /></div>
+          <div className="hidden sm:block"><AppDownloadButtons compact /></div>
         </div>
       </header>
 
@@ -154,7 +169,7 @@ const FormulaAppGuide = () => {
                   <span className="meta-pill">DURING</span>
                   <span className="meta-pill">AFTER</span>
                 </div>
-                <AppStoreButton />
+                <AppDownloadButtons />
                 <a href="#profile" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">Start The Walkthrough <ArrowRight className="h-4 w-4" /></a>
               </div>
               <div>
@@ -344,13 +359,15 @@ const FormulaAppGuide = () => {
             <h2 className="display-bold max-w-6xl text-[clamp(4rem,14vw,11rem)]">OPEN THE <span className="text-[hsl(var(--secondary))]">APP</span></h2>
             <div className="mt-12 grid gap-8 border-t border-white/20 pt-8 md:grid-cols-2 md:items-end">
               <p className="max-w-xl text-lg leading-relaxed text-white/65">Set up the app now. When the room opens, you can focus on the people, ideas, and actions that matter.</p>
-              <div className="flex flex-col gap-3 md:items-end"><AppStoreButton /><a href={`mailto:${CONFIG.ORGANIZER_EMAIL}`} className="inline-flex items-center gap-2 text-sm font-black uppercase text-white/65 transition hover:text-white"><Mail className="h-4 w-4" />Get App Help</a><p className="text-sm text-white/40">{CONFIG.ORGANIZER_EMAIL} · {CONFIG.ORGANIZER_PHONE}</p></div>
+              <div className="flex flex-col gap-3 md:items-end"><AppDownloadButtons className="md:justify-end" /><a href={`mailto:${CONFIG.ORGANIZER_EMAIL}`} className="inline-flex items-center gap-2 text-sm font-black uppercase text-white/65 transition hover:text-white"><Mail className="h-4 w-4" />Get App Help</a><p className="text-sm text-white/40">{CONFIG.ORGANIZER_EMAIL} · {CONFIG.ORGANIZER_PHONE}</p></div>
             </div>
           </div>
         </section>
       </main>
 
-      <div className="fixed inset-x-3 bottom-3 z-30 flex justify-center sm:hidden"><AppStoreButton /></div>
+      <div className="fixed inset-x-3 bottom-3 z-30 flex justify-center sm:hidden">
+        <AppDownloadButtons compact className="w-full justify-center rounded-full border border-white/15 bg-black/90 p-2 shadow-xl backdrop-blur-xl" />
+      </div>
 
       {activeImage && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/95 p-4" role="dialog" aria-modal="true" aria-label={activeImage.alt} onMouseDown={(event) => { if (event.target === event.currentTarget) setActiveImage(null); }}>
