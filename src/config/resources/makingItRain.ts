@@ -4,9 +4,8 @@ import { partnerFor } from "./partners";
 // ─────────────────────────────────────────────────────────────
 // Business — Making It Rain (The Formula Growth Stack)
 //
-// The largest partner ecosystem at Formula. The workbook taught a three-stage
-// stack, so the page keeps that shape: SOURCE → CREATE → WORK + CONVERT. The
-// unfiltered list stays grouped by stage so the framework survives the volume.
+// The workbook taught a three-stage stack, so the page keeps that shape:
+// SOURCE → CREATE → WORK + CONVERT.
 // ─────────────────────────────────────────────────────────────
 
 const CATEGORIES = [
@@ -31,6 +30,14 @@ const CATEGORIES = [
 ];
 
 const PARTNERS = [
+  partnerFor("standard", {
+    helpsWith:
+      "Growth strategy, sales systems, producer standards and management rhythm across the opportunity stack.",
+    bestFit:
+      "Your Domino involves diagnosing where the growth system is breaking and building the operating standard around it.",
+    categories: ["source-opportunity", "create-opportunity", "work-convert"],
+  }),
+
   // 01 — Source opportunity
   partnerFor("mediaalpha", {
     helpsWith: "Insurance customer acquisition through a marketplace of shoppers, clicks and calls.",
@@ -51,75 +58,6 @@ const PARTNERS = [
     helpsWith: "Insurance leads and calls from a consumer quote-comparison marketplace.",
     bestFit: "Your Domino involves buying opportunity that matches a specific appetite or geography.",
     categories: ["source-opportunity"],
-  }),
-  partnerFor("quote-nerds", {
-    helpsWith: "Insurance lead generation and marketing support for agents and agencies.",
-    bestFit: "Your Domino involves adding another channel of quotable opportunity.",
-    categories: ["source-opportunity"],
-  }),
-  partnerFor("dms", {
-    helpsWith: "Performance marketing and consumer acquisition across digital channels.",
-    bestFit: "Your Domino involves sourcing insurance shoppers through digital media buying.",
-    categories: ["source-opportunity"],
-  }),
-  partnerFor("filtered-quotes", {
-    helpsWith: "Insurance opportunities screened before they reach the agency.",
-    bestFit: "Your Domino involves fewer, better-matched opportunities rather than more raw volume.",
-    categories: ["source-opportunity"],
-  }),
-
-  // 02 — Create your own opportunity
-  partnerFor("goal", {
-    helpsWith: "Generating your own in-market insurance leads rather than purchasing shared ones.",
-    bestFit: "Your Domino involves owning the opportunity you create instead of renting it.",
-    categories: ["create-opportunity"],
-  }),
-  partnerFor("search-perfect", {
-    helpsWith: "Search engine optimization and organic search visibility.",
-    bestFit: "Your Domino involves being found by people already searching for what you sell.",
-    categories: ["create-opportunity"],
-  }),
-  partnerFor("melon-local", {
-    helpsWith: "SEO, paid search, social media, websites and lead generation for insurance agents.",
-    bestFit: "Your Domino involves building a marketing presence the agency actually owns.",
-    categories: ["create-opportunity"],
-  }),
-  partnerFor("ypc-media", {
-    helpsWith: "Digital marketing built to generate exclusive leads for the business running it.",
-    bestFit: "Your Domino involves creating exclusive opportunity rather than competing on shared leads.",
-    categories: ["create-opportunity"],
-  }),
-  partnerFor("post-pros", {
-    helpsWith: "Personalized direct mail campaigns designed for insurance agents.",
-    bestFit: "Your Domino involves reaching prospects through mail instead of the phone.",
-    categories: ["create-opportunity"],
-  }),
-  partnerFor("smarketingmail", {
-    helpsWith: "Insurance direct mail campaigns for agency offers, built by an operating agent.",
-    bestFit: "Your Domino involves putting a specific offer in front of a targeted mailing list.",
-    categories: ["create-opportunity"],
-  }),
-
-  // 03 — Work + convert the opportunity
-  partnerFor("ricochet360", {
-    helpsWith: "CRM, calling, lead workflows, automation, follow-up and sales activity visibility.",
-    bestFit: "Your Domino involves speed-to-lead and what happens in the minutes after an opportunity lands.",
-    categories: ["work-convert"],
-  }),
-  partnerFor("arbeit", {
-    helpsWith: "VoIP phone systems, cloud dialing, recorded conversations and outbound workflows.",
-    bestFit: "Your Domino involves call volume, follow-up discipline or contact rates.",
-    categories: ["work-convert"],
-  }),
-  partnerFor("mav", {
-    helpsWith: "AI SMS engagement that works and qualifies insurance leads before a producer picks up.",
-    bestFit: "Your Domino involves producers spending too much time on prospects who are not ready to talk.",
-    categories: ["work-convert"],
-  }),
-  partnerFor("leadminer", {
-    helpsWith: "Lead nurture, qualification and moving engaged opportunities toward licensed agents.",
-    bestFit: "Your Domino involves contact rates, nurture, or getting producers into qualified conversations.",
-    categories: ["work-convert"],
   }),
 ];
 
@@ -149,7 +87,6 @@ export const MAKING_IT_RAIN: ResourcePageContent = {
   },
   categories: CATEGORIES,
   categoryDisplay: "stack",
-  groupByCategoryWhenUnfiltered: true,
   partners: PARTNERS,
   partnerList: {
     eyebrow: "Formula Partners · The Growth Stack",

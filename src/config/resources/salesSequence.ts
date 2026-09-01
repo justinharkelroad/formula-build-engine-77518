@@ -50,11 +50,6 @@ const PARTNERS = [
     bestFit: "Your Domino involves clearly defining, measuring and managing producer performance.",
     categories: ["build-the-sales-system", "coach-hold-the-standard"],
   }),
-  partnerFor("filtered-quotes", {
-    helpsWith: "Insurance opportunities paired with sales-performance and accountability support.",
-    bestFit: "Your Domino involves improving how producers work, manage and convert the opportunities they receive.",
-    categories: ["coach-hold-the-standard", "qualify-nurture"],
-  }),
   partnerFor("ricochet360", {
     helpsWith: "CRM, calling, lead workflows, automation, follow-up and sales activity visibility.",
     bestFit: "Your Domino involves speed-to-lead, consistent follow-up or a more disciplined producer workflow.",
@@ -118,7 +113,7 @@ export const SALES_SEQUENCE: ResourcePageContent = {
       },
       {
         problem: "Accountability / coaching / producer performance",
-        partnerIds: ["standard", "agency-toolchest", "performology", "filtered-quotes"],
+        partnerIds: ["standard", "agency-toolchest", "performology"],
       },
       {
         problem: "Speed-to-lead / calling / follow-up",
@@ -126,7 +121,7 @@ export const SALES_SEQUENCE: ResourcePageContent = {
       },
       {
         problem: "Too much producer time spent chasing opportunities",
-        partnerIds: ["mav", "leadminer", "filtered-quotes"],
+        partnerIds: ["mav", "leadminer"],
       },
     ],
   },

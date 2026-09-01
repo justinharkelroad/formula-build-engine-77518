@@ -63,6 +63,18 @@ const PARTNERS = [
       "Your Domino involves defining what good looks like for a role and managing against it.",
     categories: ["know-what-team-is-doing", "management-rhythms"],
   }),
+  partnerFor("ricochet360", {
+    helpsWith: "CRM workflows, activity visibility, automation and repeatable follow-up processes.",
+    bestFit:
+      "Your Domino involves making day-to-day sales activity visible and turning follow-up into a managed system.",
+    categories: ["know-what-team-is-doing", "management-rhythms"],
+  }),
+  partnerFor("ask-fetch", {
+    helpsWith: "AI-assisted carrier matching, risk assessment and underwriting workflows.",
+    bestFit:
+      "Your Domino involves getting underwriting knowledge out of one person's head and shortening a repeatable quoting process.",
+    categories: ["delegate-create-capacity", "knowledge-out-of-head"],
+  }),
 ];
 
 export const OPERATING_SYSTEM: ResourcePageContent = {
@@ -100,18 +112,21 @@ export const OPERATING_SYSTEM: ResourcePageContent = {
     headline: "Not sure where to start?",
     lede: "Match the problem in your workbook to the partners built closest to it.",
     rows: [
-      { problem: "Owner is still doing too much", partnerIds: ["standard", "secure-evas"] },
+      {
+        problem: "Owner is still doing too much",
+        partnerIds: ["standard", "secure-evas", "ask-fetch"],
+      },
       {
         problem: "I don't know if the team is executing",
-        partnerIds: ["agency-toolchest", "performology", "standard"],
+        partnerIds: ["agency-toolchest", "performology", "standard", "ricochet360"],
       },
       {
         problem: "We need stronger team leads / accountability",
-        partnerIds: ["standard", "performology", "agency-toolchest"],
+        partnerIds: ["standard", "performology", "agency-toolchest", "ricochet360"],
       },
       {
         problem: "Too much knowledge lives in people's heads",
-        partnerIds: ["standard", "secure-evas"],
+        partnerIds: ["standard", "secure-evas", "ask-fetch"],
       },
     ],
   },

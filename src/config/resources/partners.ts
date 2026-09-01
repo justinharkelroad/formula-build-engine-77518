@@ -30,6 +30,7 @@ export const PARTNER_REGISTRY = {
   performology: identity("performology", "Performology", "performology.svg", "https://performology.com/"),
   "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://buyfiltered.com/"),
   ricochet360: identity("ricochet360", "Ricochet360", "ricochet360.png", "https://ricochet360.com/"),
+  "ask-fetch": identity("ask-fetch", "Ask Fetch", "ask-fetch.png", "https://askfetch.com/"),
   arbeit: identity("arbeit", "Arbeit", "arbeit.png", "https://arbeitsoftware.com/"),
   mav: identity("mav", "Mav", "mav.png", "https://hiremav.com/"),
   leadminer: identity("leadminer", "LeadMiner", "leadminer.png", "https://leadminer.ai/"),
@@ -57,6 +58,7 @@ export const PARTNER_REGISTRY = {
 
   "wintrust-agent-finance": identity("wintrust-agent-finance", "Wintrust Agent Finance", "wintrust-agent-finance.png", "https://www.agentfinance.com/"),
   "nw-preferred": identity("nw-preferred", "NW Preferred Federal Credit Union", "nw-preferred.png", "https://nwpreferredfcu.com/"),
+  ivantage: identity("ivantage", "Ivantage", "ivantage.png", ""),
 } satisfies Record<string, PartnerIdentity>;
 
 export type PartnerId = keyof typeof PARTNER_REGISTRY;

@@ -20,12 +20,6 @@ const CATEGORIES = [
     sub: "Onboarding · handoffs · service experience · recovery after a loss",
   },
   {
-    id: "solve-customer-needs",
-    tag: "Coverage",
-    label: "Solve more customer needs",
-    sub: "Market access · specialty solutions · keeping the relationship",
-  },
-  {
     id: "sales-service-alignment",
     tag: "Alignment",
     label: "Improve sales + service alignment",
@@ -34,11 +28,6 @@ const CATEGORIES = [
 ];
 
 const PARTNERS = [
-  partnerFor("standard", {
-    helpsWith: "Operating standards, role ownership, service rhythm and team accountability.",
-    bestFit: "Your Domino involves who owns what, how service work moves between people, or the standard the team is held to.",
-    categories: ["create-capacity", "customer-experience", "sales-service-alignment"],
-  }),
   partnerFor("secure-evas", {
     helpsWith: "Trained virtual assistants who take on service, administrative and back-office workload.",
     bestFit: "Your Domino involves moving routine work off licensed staff so capacity opens up.",
@@ -49,26 +38,6 @@ const PARTNERS = [
     bestFit: "Your Domino involves the customer experience during a claim, when the relationship is most exposed.",
     categories: ["customer-experience"],
   }),
-  partnerFor("national-general", {
-    helpsWith: "Personal lines home and auto coverage, part of Allstate.",
-    bestFit: "Your Domino involves customers you currently have to turn away.",
-    categories: ["solve-customer-needs"],
-  }),
-  partnerFor("hagerty", {
-    helpsWith: "Specialty coverage for classic, collector and enthusiast vehicles.",
-    bestFit: "Your Domino involves customers with vehicles your standard markets are not built to write.",
-    categories: ["solve-customer-needs"],
-  }),
-  partnerFor("slide-insurance", {
-    helpsWith: "Homeowners coverage in Florida and South Carolina.",
-    bestFit: "Your Domino involves property risk your current markets are not writing.",
-    categories: ["solve-customer-needs"],
-  }),
-  partnerFor("crc-tapco", {
-    helpsWith: "Wholesale and excess & surplus lines market access for hard-to-place risk.",
-    bestFit: "Your Domino involves risk that falls outside your admitted markets.",
-    categories: ["solve-customer-needs"],
-  }),
 ];
 
 export const GROWTH_THROUGH_SERVICE: ResourcePageContent = {
@@ -76,7 +45,7 @@ export const GROWTH_THROUGH_SERVICE: ResourcePageContent = {
   seo: {
     title: "Growth Through Service Resources | Formula Forum 2026",
     description:
-      "Resources from Formula Forum partners to help insurance agencies create capacity, improve the customer experience, expand market access and align sales with service.",
+      "Resources from Formula Forum partners to help insurance agencies create capacity, improve the customer experience and align sales with service.",
     path: "/resources/growth-through-service",
   },
   hero: {
@@ -109,15 +78,11 @@ export const GROWTH_THROUGH_SERVICE: ResourcePageContent = {
     rows: [
       {
         problem: "Too much service work / unclear ownership",
-        partnerIds: ["secure-evas", "standard"],
+        partnerIds: ["secure-evas"],
       },
       {
         problem: "Bad sale-to-service handoff",
-        partnerIds: ["standard", "secure-evas"],
-      },
-      {
-        problem: "Customer needs something we cannot currently place",
-        partnerIds: ["national-general", "hagerty", "slide-insurance", "crc-tapco"],
+        partnerIds: ["secure-evas"],
       },
       {
         problem: "Customer experience after a loss",

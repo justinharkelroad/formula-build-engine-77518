@@ -45,32 +45,6 @@ const PARTNERS = [
       "coach-from-conversations",
     ],
   }),
-  partnerFor("agency-toolchest", {
-    helpsWith: "Performance visibility, scoreboards and reporting on what the team is executing.",
-    bestFit: "Your Domino involves verifying that training actually changed behavior.",
-    categories: ["build-training-system", "measure-training"],
-  }),
-  partnerFor("performology", {
-    helpsWith: "Employee performance management, goals, measurement and structured review.",
-    bestFit: "Your Domino involves defining role expectations and managing development against them.",
-    categories: ["build-training-system", "measure-training"],
-  }),
-  partnerFor("filtered-quotes", {
-    helpsWith:
-      "Insurance opportunities paired with sales-performance and accountability support.",
-    bestFit: "Your Domino involves coaching how the team works the opportunities they already have.",
-    categories: ["coach-real-performance", "measure-training"],
-  }),
-  partnerFor("ricochet360", {
-    helpsWith: "CRM, calling, recorded conversations, workflows and sales activity visibility.",
-    bestFit: "Your Domino involves coaching from what was actually said on the phone.",
-    categories: ["coach-real-performance", "coach-from-conversations"],
-  }),
-  partnerFor("arbeit", {
-    helpsWith: "Calling technology, recorded conversations, activity visibility and outbound workflows.",
-    bestFit: "Your Domino involves reviewing real calls instead of coaching from memory.",
-    categories: ["coach-real-performance", "coach-from-conversations"],
-  }),
 ];
 
 export const TRAINING: ResourcePageContent = {
@@ -110,19 +84,19 @@ export const TRAINING: ResourcePageContent = {
     rows: [
       {
         problem: "New people take too long to become productive",
-        partnerIds: ["standard", "agency-toolchest", "performology"],
+        partnerIds: ["standard"],
       },
       {
         problem: "We train but don't verify execution",
-        partnerIds: ["performology", "agency-toolchest", "standard"],
+        partnerIds: ["standard"],
       },
       {
         problem: "We need better call coaching",
-        partnerIds: ["standard", "ricochet360", "arbeit", "filtered-quotes"],
+        partnerIds: ["standard"],
       },
       {
         problem: "We need more visibility into performance",
-        partnerIds: ["agency-toolchest", "performology", "filtered-quotes"],
+        partnerIds: ["standard"],
       },
     ],
   },
