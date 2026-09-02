@@ -234,7 +234,7 @@ export const CONFIG = {
       podcast: {
         company: "National General",
         guestName: "Monica & Dom",
-        headshotUrl: "/assets/partners/monica-and-dom.png",
+        headshotUrl: "/assets/partners/monica-and-dom.png?v=monica-20260902",
         headshotWidth: 2048,
         headshotHeight: 1638,
         vimeoId: "1223165390",
