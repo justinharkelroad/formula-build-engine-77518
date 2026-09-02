@@ -74,7 +74,7 @@ serve(async (req) => {
           continue;
         }
 
-        const replacementRows = lineItems.map((item) => {
+        const replacementRows = lineItems.map((item: Stripe.LineItem) => {
           const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || {
             tier: "unknown",
             passType: "unknown",
