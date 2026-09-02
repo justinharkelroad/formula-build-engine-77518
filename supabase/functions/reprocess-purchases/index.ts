@@ -68,13 +68,13 @@ serve(async (req) => {
     for (const purchase of unknowns) {
       const sessionId = purchase.stripe_session_id;
       try {
-        const lineItems = (await stripe.checkout.sessions.listLineItems(sessionId)).data;
+        const lineItems = ((await stripe.checkout.sessions.listLineItems(sessionId)).data || []) as Stripe.LineItem[];
         if (!lineItems.length) {
           details.push({ sessionId, status: "skipped_no_items" });
           continue;
         }
 
-        const replacementRows = lineItems.map((item) => {
+        const replacementRows = lineItems.map((item: Stripe.LineItem) => {
           const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || {
             tier: "unknown",
             passType: "unknown",
