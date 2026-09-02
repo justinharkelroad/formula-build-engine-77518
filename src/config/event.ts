@@ -253,9 +253,9 @@ export const CONFIG = {
       podcast: {
         company: "LeadMiner",
         guestName: "Scott",
-        headshotUrl: "/assets/partners/scott-leadminer.png",
-        headshotWidth: 512,
-        headshotHeight: 512,
+        headshotUrl: "/assets/partners/scott-leadminer.png?v=scott-20260902",
+        headshotWidth: 200,
+        headshotHeight: 200,
         vimeoId: "1223169978",
         contactLabel: "Book with Scott",
         contactUrl: "https://leadminer.ai",
