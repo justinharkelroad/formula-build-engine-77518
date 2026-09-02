@@ -1,3 +1,13 @@
+import type { PartnerPodcastDetails } from "@/components/PartnerPodcastModal";
+
+type SponsorEntry = {
+  name: string;
+  tier: string;
+  logoUrl: string;
+  linkUrl?: string;
+  podcast?: PartnerPodcastDetails;
+};
+
 // Countdown management functions
 const COUNTDOWN_STORAGE_KEY = 'f3_countdown_data';
 const COUNTDOWN_RESET_DAYS = 7;
@@ -96,7 +106,7 @@ export const CONFIG = {
   OG_IMAGE_1200x630: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
-  LOGO_PARTNERS: [
+  LOGO_PARTNERS: ([
     {
       name: "Agency Toolchest",
       tier: "Platinum",
@@ -152,10 +162,10 @@ export const CONFIG = {
       },
     },
     { name: "Standard", tier: "Platinum", logoUrl: "/assets/sponsors/the-standard.png", linkUrl: "https://standardplaybook.com" }
-  ],
+  ] as SponsorEntry[]),
   // Supporting 2026 sponsors — rendered below the Platinum grid on the homepage.
   // These are deliberately NOT tier: "Platinum"; keep tiers accurate before promoting one.
-  LOGO_SPONSORS: [
+  LOGO_SPONSORS: ([
     { name: "EverQuote", tier: "Sponsor", logoUrl: "/assets/sponsors/everquote.png", linkUrl: "https://www.everquote.com/pro/" },
     {
       name: "Filtered Quotes",
@@ -269,7 +279,7 @@ export const CONFIG = {
     // Only ships a white-on-transparent lockup; recoloured to black for the light tiles.
     { name: "CRC Tapco", tier: "Sponsor", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
     { name: "Ask Fetch", tier: "Sponsor", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
-  ],
+  ] as SponsorEntry[]),
   SPEAKERS: [
     { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
     { name: "Kory [LastName]", title: "Allstate Agent of the Year", company: "Crane Agency", photo: "/assets/speakers/kory.jpg" }

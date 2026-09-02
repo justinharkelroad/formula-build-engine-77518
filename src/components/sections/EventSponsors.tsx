@@ -95,7 +95,7 @@ const EventSponsors = () => {
         <ul className="grid border-l border-t border-black/15 sm:grid-cols-2 lg:grid-cols-3" aria-label="Formula Forum 2026 sponsors">
           {CONFIG.LOGO_SPONSORS.map((sponsor, index) => {
             const tile = DARK_TILES[sponsor.name] ?? "bg-white";
-            const podcast = "podcast" in sponsor ? sponsor.podcast : undefined;
+            const podcast = sponsor.podcast;
             const logo = (
               <img
                 src={sponsor.logoUrl}
