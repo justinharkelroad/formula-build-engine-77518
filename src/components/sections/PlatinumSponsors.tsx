@@ -29,34 +29,37 @@ const PlatinumSponsors = () => {
         </div>
 
         <ul className="grid border-l border-black/15 md:grid-cols-2" aria-label="Formula Forum 2026 Platinum sponsors">
-          {CONFIG.LOGO_PARTNERS.map((partner, index) => (
-            <li
-              key={partner.name}
-              className={`relative border-b border-r border-black/15 reveal-up delay-${index + 1} ${isVisible ? "is-visible" : ""}`}
-            >
-              <a
-                href={partner.linkUrl}
-                target="_blank"
-                rel="sponsored noopener noreferrer"
-                aria-label={`Visit ${partner.name} website (opens in a new tab)`}
-                className={`group relative flex min-h-40 items-center justify-center bg-white px-8 py-12 transition-colors duration-300 hover:bg-[hsl(0,0%,98%)] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-52 md:px-14 ${partner.podcast ? "pb-20 md:pb-20" : ""}`}
+          {CONFIG.LOGO_PARTNERS.map((partner, index) => {
+            const podcast = "podcast" in partner ? partner.podcast : undefined;
+            return (
+              <li
+                key={partner.name}
+                className={`relative border-b border-r border-black/15 reveal-up delay-${index + 1} ${isVisible ? "is-visible" : ""}`}
               >
-                <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.2em] text-black/35 md:left-5 md:top-5">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="absolute right-4 top-4 text-[10px] font-semibold tracking-[0.16em] text-black/35 transition-colors duration-300 group-hover:text-black md:right-5 md:top-5">
-                  VISIT ↗
-                </span>
-                <img
-                  src={partner.logoUrl}
-                  alt={`${partner.name} logo`}
-                  loading="lazy"
-                  className="max-h-16 w-full max-w-[28rem] object-contain transition-transform duration-300 ease-out group-hover:scale-[1.025] md:max-h-24"
-                />
-              </a>
-              {partner.podcast && <PartnerPodcastModal podcast={partner.podcast} />}
-            </li>
-          ))}
+                <a
+                  href={partner.linkUrl}
+                  target="_blank"
+                  rel="sponsored noopener noreferrer"
+                  aria-label={`Visit ${partner.name} website (opens in a new tab)`}
+                  className={`group relative flex min-h-40 items-center justify-center bg-white px-8 py-12 transition-colors duration-300 hover:bg-[hsl(0,0%,98%)] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--secondary))] focus-visible:ring-inset md:min-h-52 md:px-14 ${podcast ? "pb-20 md:pb-20" : ""}`}
+                >
+                  <span className="absolute left-4 top-4 text-[10px] font-semibold tracking-[0.2em] text-black/35 md:left-5 md:top-5">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="absolute right-4 top-4 text-[10px] font-semibold tracking-[0.16em] text-black/35 transition-colors duration-300 group-hover:text-black md:right-5 md:top-5">
+                    VISIT ↗
+                  </span>
+                  <img
+                    src={partner.logoUrl}
+                    alt={`${partner.name} logo`}
+                    loading="lazy"
+                    className="max-h-16 w-full max-w-[28rem] object-contain transition-transform duration-300 ease-out group-hover:scale-[1.025] md:max-h-24"
+                  />
+                </a>
+                {podcast && <PartnerPodcastModal podcast={podcast} />}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>
