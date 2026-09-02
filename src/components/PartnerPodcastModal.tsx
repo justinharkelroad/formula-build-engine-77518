@@ -77,7 +77,7 @@ const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
                 alt={`${podcast.guestName}, ${podcast.company}`}
                 width={podcast.headshotWidth}
                 height={podcast.headshotHeight}
-                className="mb-6 h-24 w-24 rounded-2xl object-cover sm:h-28 sm:w-28"
+                className="mb-6 h-28 w-28 rounded-2xl object-cover ring-1 ring-white/15 sm:h-32 sm:w-32"
               />
               <h2 className="text-3xl font-black tracking-[-0.035em] text-white sm:text-4xl">
                 {podcast.guestName}
