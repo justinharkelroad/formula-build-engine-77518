@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink, Phone, Play } from "lucide-react";
+import { ExternalLink, Mail, Phone, Play } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -28,8 +28,9 @@ interface PartnerPodcastModalProps {
 const PartnerPodcastModal = ({ podcast }: PartnerPodcastModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const isPhoneContact = podcast.contactUrl.startsWith("tel:");
+  const isEmailContact = podcast.contactUrl.startsWith("mailto:");
   const isExternalContact = podcast.contactUrl.startsWith("http");
-  const ContactIcon = isPhoneContact ? Phone : ExternalLink;
+  const ContactIcon = isPhoneContact ? Phone : isEmailContact ? Mail : ExternalLink;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
