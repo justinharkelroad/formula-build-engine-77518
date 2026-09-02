@@ -234,9 +234,9 @@ export const CONFIG = {
       podcast: {
         company: "National General",
         guestName: "Monica & Dom",
-        headshotUrl: "/assets/partners/monica-and-dom.png?v=monica-20260902",
-        headshotWidth: 2048,
-        headshotHeight: 1638,
+        headshotUrl: "/assets/partners/monica-and-dom.png?v=monica-dom-20260902",
+        headshotWidth: 1254,
+        headshotHeight: 1254,
         vimeoId: "1223165390",
         contactLabel: "Call Dom",
         contactUrl: "tel:+12168023959",
