@@ -240,7 +240,7 @@ export const CONFIG = {
         vimeoId: "1223165390",
         contactLabel: "Call Dom",
         contactUrl: "tel:+12168023959",
-        contactDisplay: "I813022@allstate.com · 216-802-3959",
+        contactDisplay: "monica.jenkins1@allstate.com · I813022@allstate.com · 216-802-3959",
         contactDescription: "Monica and Dom invited agents to reach out directly. Dom shared his Allstate email and phone number for follow-up.",
       },
     },
