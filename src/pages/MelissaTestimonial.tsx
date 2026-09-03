@@ -1,160 +1,189 @@
-import { ArrowRight, CheckCircle2, Quote, Sparkles, Users } from "lucide-react";
+import { ArrowUpRight, Quote } from "lucide-react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import BoldHeader from "@/components/BoldHeader";
+import CustomCursor from "@/components/CustomCursor";
+import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
+import PassDialogHost from "@/components/PassDialogHost";
 import SEO from "@/components/SEO";
-import { Button } from "@/components/ui/button";
+import WaveDivider from "@/components/WaveDivider";
+import { PassDialogProvider, usePassDialog } from "@/contexts/PassDialogContext";
 import { trackCTAClick } from "@/hooks/useAnalytics";
 
 const MELISSA_VIDEO_ID = "BbpXNx7Jixo";
 
-const MelissaTestimonial = () => {
+const MelissaStory = () => {
+  const { open: openPassDialog } = usePassDialog();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const trackAccessPassClick = () => {
+  const handleAccessPassClick = () => {
     trackCTAClick("testimonial_melissa_access_pass");
+    openPassDialog("earlyBird");
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-black text-white">
+    <div className="min-h-screen bg-black text-white">
       <SEO
         title="Why Melissa Is Coming Back to Formula Forum"
         description="Hear why Melissa, an insurance professional from Tennessee, plans to return to Formula Forum with more of her team."
         path="/stories/melissa"
       />
-      <Navigation />
+      <CustomCursor />
+      <BoldHeader />
+      <PassDialogHost />
 
-      <main className="relative isolate">
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-10 h-[760px] bg-[radial-gradient(circle_at_18%_12%,hsl(var(--primary)/0.2),transparent_34%),radial-gradient(circle_at_85%_26%,hsl(var(--secondary)/0.2),transparent_30%)]"
-        />
+      <main>
+        <section className="relative overflow-hidden bg-black px-5 pb-28 pt-32 md:px-12 md:pb-36 md:pt-40">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+            <div className="hero-orb hero-orb-secondary absolute -left-48 top-20 h-[620px] w-[620px] animate-flicker" />
+            <div className="hero-orb hero-orb-primary absolute -right-44 bottom-0 h-[620px] w-[620px] animate-flicker-slow" />
+            <div className="hero-orb hero-orb-accent absolute right-1/3 top-1/4 h-[360px] w-[360px] animate-flicker-fast" />
+          </div>
 
-        <section className="container mx-auto px-4 py-12 md:py-16 lg:py-16">
-          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[minmax(320px,0.82fr)_minmax(0,1.18fr)] lg:gap-16">
-            <div className="mx-auto w-full max-w-[430px]">
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-zinc-950 shadow-[0_32px_90px_-34px_hsl(var(--primary)/0.65)]">
-                <div className="pointer-events-none absolute inset-x-6 top-5 z-10 flex items-center justify-between">
-                  <span className="rounded-full border border-white/15 bg-black/65 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur">
-                    Real attendee story
-                  </span>
-                  <span className="rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white">
-                    Tennessee
-                  </span>
+          <div className="container relative z-10 mx-auto max-w-7xl">
+            <div className="eyebrow mb-8">VOICES — REAL OWNERS</div>
+
+            <div className="grid items-center gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
+              <div className="mx-auto w-full max-w-[430px] lg:mx-0">
+                <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-black shadow-2xl shadow-black/60">
+                  <div className="absolute left-4 top-4 z-10 flex gap-2">
+                    <span className="meta-pill bg-black/75">MELISSA</span>
+                    <span className="meta-pill meta-pill-solid">TN</span>
+                  </div>
+                  <div className="aspect-[9/16]">
+                    <iframe
+                      className="h-full w-full"
+                      src={`https://www.youtube.com/embed/${MELISSA_VIDEO_ID}?rel=0&modestbranding=1`}
+                      title="Melissa shares her Formula Forum experience"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
                 </div>
-                <div className="aspect-[9/16] bg-zinc-950">
-                  <iframe
-                    className="h-full w-full"
-                    src={`https://www.youtube.com/embed/${MELISSA_VIDEO_ID}?rel=0&modestbranding=1`}
-                    title="Melissa shares her Formula Forum experience"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-              <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-white/45">
-                Melissa · Tennessee
-              </p>
-            </div>
-
-            <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                <Sparkles className="h-4 w-4" />
-                A Formula Forum story
-              </div>
-
-              <h1 className="max-w-3xl text-4xl font-black leading-[1.04] tracking-[-0.035em] md:text-6xl lg:text-6xl xl:text-7xl">
-                Melissa is coming back—
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  with more of her team.
-                </span>
-              </h1>
-
-              <div className="relative my-8 border-l-2 border-primary pl-6 md:my-8 md:pl-8">
-                <Quote className="absolute -left-4 -top-4 h-8 w-8 fill-primary text-primary" aria-hidden="true" />
-                <blockquote className="text-2xl font-semibold leading-snug text-white md:text-3xl">
-                  “My only regret is that I wish I would have brought more of my team members.”
-                </blockquote>
-              </div>
-
-              <div className="grid gap-3 text-base text-white/72 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                  “I took a ton of notes on processes we definitely plan on implementing.”
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                  “I’ll definitely be back, but this time I’m going to bring a lot more staff.”
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <Button asChild variant="cta" size="xl" className="w-full sm:w-auto">
-                  <Link to="/pricing" onClick={trackAccessPassClick}>
-                    Grab Your Access Pass
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Button>
-                <p className="max-w-xs text-sm leading-relaxed text-white/55">
-                  Join agency owners and teams ready to turn powerful ideas into action.
+                <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-white/45">
+                  Press play to hear Melissa's story
                 </p>
               </div>
+
+              <div>
+                <div className="mb-6 flex flex-wrap gap-3">
+                  <span className="meta-pill">FORMULA FORUM</span>
+                  <span className="meta-pill meta-pill-dot">REAL ATTENDEE</span>
+                  <span className="meta-pill">TENNESSEE</span>
+                </div>
+
+                <h1 className="display-bold text-[clamp(3.25rem,9vw,8rem)] leading-[0.84]">
+                  MY ONLY<br />
+                  REGRET?
+                  <span className="mt-2 block display-outline">NOT BRINGING</span>
+                  MY TEAM.
+                </h1>
+
+                <div className="mt-9 max-w-2xl border-l-2 border-[hsl(var(--primary))] pl-6">
+                  <blockquote className="text-xl font-semibold leading-snug text-white/90 md:text-2xl">
+                    “I took a ton of notes on processes we definitely plan on implementing.”
+                  </blockquote>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAccessPassClick}
+                  className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-bold text-black shadow-lg shadow-black/40 transition-colors hover:bg-[hsl(var(--secondary))] hover:text-white"
+                >
+                  GRAB YOUR ACCESS PASS
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <WaveDivider
+            position="bottom"
+            fill="hsl(var(--secondary))"
+            speed="slow"
+            className="absolute bottom-0 left-0 z-[1]"
+          />
+        </section>
+
+        <section className="bg-[hsl(var(--secondary))] px-5 py-20 text-white md:px-12 md:py-28">
+          <div className="container mx-auto max-w-7xl">
+            <div className="grid gap-10 md:grid-cols-[0.28fr_1fr] md:gap-16">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/30 bg-white/10">
+                <Quote className="h-8 w-8 fill-white text-white" aria-hidden="true" />
+              </div>
+              <blockquote className="display-bold text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.92]">
+                “My only regret is that I wish I would have brought more of my team members.”
+              </blockquote>
             </div>
           </div>
         </section>
 
-        <section className="border-y border-white/10 bg-white/[0.025]">
-          <div className="container mx-auto grid max-w-6xl gap-6 px-4 py-10 md:grid-cols-3 md:py-12">
-            {[
-              {
-                icon: Users,
-                title: "Bring the team",
-                copy: "Shared experiences become shared language when you bring the people who execute with you.",
-              },
-              {
-                icon: CheckCircle2,
-                title: "Leave with action",
-                copy: "Capture practical ideas and processes you can take straight back to the agency.",
-              },
-              {
-                icon: Sparkles,
-                title: "Experience it live",
-                copy: "The connections, breakouts, and energy are designed to be felt in the room.",
-              },
-            ].map(({ icon: Icon, title, copy }) => (
-              <article key={title} className="flex gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <Icon className="h-5 w-5" />
+        <section className="bg-[hsl(0,0%,96%)] px-5 py-20 text-[hsl(0,0%,8%)] md:px-12 md:py-28">
+          <div className="container mx-auto max-w-7xl">
+            <div className="eyebrow mb-10 text-black">WHAT SHE'S TAKING HOME</div>
+
+            <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+              <div>
+                <h2 className="display-bold text-[clamp(3rem,8vw,7rem)] leading-[0.88]">
+                  COME FOR<br />
+                  THE IDEAS.<br />
+                  <span className="text-[hsl(var(--secondary))]">RETURN WITH</span><br />
+                  YOUR TEAM.
+                </h2>
+              </div>
+
+              <div className="flex flex-col justify-center gap-5">
+                <article className="rounded-2xl border border-black/5 bg-white p-7 shadow-sm md:p-9">
+                  <p className="text-xl font-bold leading-snug md:text-2xl">
+                    “I’ll definitely be back, but this time I’m going to bring a lot more staff.”
+                  </p>
+                  <div className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-black/45">
+                    Melissa · Tennessee
+                  </div>
+                </article>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-black/5 bg-white p-6">
+                    <div className="mb-3 text-4xl font-black text-[hsl(var(--primary))]">01</div>
+                    <h3 className="text-lg font-bold">Actionable processes</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-black/60">
+                      Practical ideas worth taking back and installing inside the agency.
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-black/5 bg-white p-6">
+                    <div className="mb-3 text-4xl font-black text-[hsl(var(--secondary))]">02</div>
+                    <h3 className="text-lg font-bold">Built for the team</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-black/60">
+                      A shared experience that creates shared language and momentum.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="mb-1 font-bold text-white">{title}</h2>
-                  <p className="text-sm leading-relaxed text-white/55">{copy}</p>
-                </div>
-              </article>
-            ))}
+
+                <button
+                  type="button"
+                  onClick={handleAccessPassClick}
+                  className="mt-2 inline-flex self-start items-center gap-2 rounded-full bg-black px-7 py-4 font-bold text-white transition-colors hover:bg-[hsl(var(--secondary))]"
+                >
+                  SEE ACCESS PASS OPTIONS
+                  <ArrowUpRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-16 text-center md:py-24">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            Formula Forum 2026
-          </p>
-          <h2 className="mx-auto max-w-3xl text-3xl font-black tracking-tight md:text-5xl">
-            Don’t hear about the room afterward. Be in it.
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-white/60">
-            October 14–16, 2026 · JW Marriott Orlando Bonnet Creek
-          </p>
-          <Button asChild variant="cta" size="xl" className="mt-8">
-            <Link to="/pricing" onClick={trackAccessPassClick}>
-              See Access Pass Options
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-        </section>
+        <GiantTicketFooter />
       </main>
     </div>
   );
 };
+
+const MelissaTestimonial = () => (
+  <PassDialogProvider>
+    <MelissaStory />
+  </PassDialogProvider>
+);
 
 export default MelissaTestimonial;
