@@ -51,6 +51,7 @@ const Balance = lazy(() => import("./pages/resources/Balance"));
 const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
 const PartnerHubGuide = lazy(() => import("./pages/PartnerHubGuide"));
 const FormulaAppGuide = lazy(() => import("./pages/FormulaAppGuide"));
+const MelissaTestimonial = lazy(() => import("./pages/MelissaTestimonial"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -124,6 +125,7 @@ const App = () => (
             <Route path="/resources/body" element={<Body />} />
             <Route path="/resources/balance" element={<Balance />} />
             <Route path="/resources/funding-the-build" element={<FundingTheBuild />} />
+            <Route path="/stories/melissa" element={<MelissaTestimonial />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
            </Routes>

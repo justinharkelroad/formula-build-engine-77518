@@ -26,7 +26,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/98ddc4b5-a053-48ca-989b-0e1cfae3d8dd.png" alt="Formula Forum 2026 logo" className="h-8" width="120" height="32" fetchPriority="high" />
+            <img src="/lovable-uploads/98ddc4b5-a053-48ca-989b-0e1cfae3d8dd.png" alt="Formula Forum 2026 logo" className="h-8" width="120" height="32" />
           </Link>
 
           {/* Desktop Navigation */}
