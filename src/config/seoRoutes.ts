@@ -6,6 +6,7 @@ import { MAKING_IT_RAIN } from "./resources/makingItRain";
 import { BODY, BALANCE, BEING } from "./resources/personalSessions";
 import { FUNDING_THE_BUILD } from "./resources/fundingTheBuild";
 import type { ResourcePageContent } from "./resources/types";
+import { TESTIMONIAL_STORIES } from "./testimonialStories";
 
 /**
  * Every prerenderable route and the metadata its <head> should carry.
@@ -48,6 +49,12 @@ const RESOURCE_ROUTES: SeoRoute[] = [
   BEING,
   FUNDING_THE_BUILD,
 ].map(fromResourcePage);
+
+const TESTIMONIAL_ROUTES: SeoRoute[] = TESTIMONIAL_STORIES.map((story) => ({
+  path: `/stories/${story.slug}`,
+  title: `${story.name}’s Formula Forum Story`,
+  description: `Hear why ${story.name}, an insurance professional from ${story.location}, recommends experiencing Formula Forum in person.`,
+}));
 
 const SITE_ROUTES: SeoRoute[] = [
   {
@@ -167,4 +174,8 @@ const SITE_ROUTES: SeoRoute[] = [
   { path: "/admin/sales", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
 ];
 
-export const SEO_ROUTES: SeoRoute[] = [...SITE_ROUTES, ...RESOURCE_ROUTES];
+export const SEO_ROUTES: SeoRoute[] = [
+  ...SITE_ROUTES,
+  ...RESOURCE_ROUTES,
+  ...TESTIMONIAL_ROUTES,
+];

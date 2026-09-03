@@ -1,34 +1,35 @@
 import { ArrowUpRight, Quote } from "lucide-react";
 import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import BoldHeader from "@/components/BoldHeader";
 import CustomCursor from "@/components/CustomCursor";
-import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 import PassDialogHost from "@/components/PassDialogHost";
 import SEO from "@/components/SEO";
 import WaveDivider from "@/components/WaveDivider";
+import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
+import { getTestimonialStory, type TestimonialStory as TestimonialStoryData } from "@/config/testimonialStories";
 import { PassDialogProvider, usePassDialog } from "@/contexts/PassDialogContext";
 import { trackCTAClick } from "@/hooks/useAnalytics";
+import NotFound from "@/pages/NotFound";
 
-const MELISSA_VIDEO_ID = "BbpXNx7Jixo";
-
-const MelissaStory = () => {
+const StoryContent = ({ story }: { story: TestimonialStoryData }) => {
   const { open: openPassDialog } = usePassDialog();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [story.slug]);
 
   const handleAccessPassClick = () => {
-    trackCTAClick("testimonial_melissa_access_pass");
+    trackCTAClick(`testimonial_${story.slug}_access_pass`);
     openPassDialog("earlyBird");
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
       <SEO
-        title="Why Melissa Is Coming Back to Formula Forum"
-        description="Hear why Melissa, an insurance professional from Tennessee, plans to return to Formula Forum with more of her team."
-        path="/stories/melissa"
+        title={`${story.name}’s Formula Forum Story`}
+        description={`Hear why ${story.name}, an insurance professional from ${story.location}, recommends experiencing Formula Forum in person.`}
+        path={`/stories/${story.slug}`}
       />
       <CustomCursor />
       <BoldHeader />
@@ -49,21 +50,21 @@ const MelissaStory = () => {
               <div className="mx-auto w-full max-w-[430px] lg:mx-0">
                 <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-black shadow-2xl shadow-black/60">
                   <div className="absolute left-4 top-4 z-10 flex gap-2">
-                    <span className="meta-pill bg-black/75">MELISSA</span>
-                    <span className="meta-pill meta-pill-solid">TN</span>
+                    <span className="meta-pill bg-black/75">{story.name.toUpperCase()}</span>
+                    <span className="meta-pill meta-pill-solid">{story.locationCode}</span>
                   </div>
                   <div className="aspect-[9/16]">
                     <iframe
                       className="h-full w-full"
-                      src={`https://www.youtube.com/embed/${MELISSA_VIDEO_ID}?rel=0&modestbranding=1`}
-                      title="Melissa shares her Formula Forum experience"
+                      src={`https://www.youtube.com/embed/${story.videoId}?rel=0&modestbranding=1`}
+                      title={`${story.name} shares their Formula Forum experience`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
                   </div>
                 </div>
                 <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-white/45">
-                  Press play to hear Melissa's story
+                  Press play to hear {story.name}'s story
                 </p>
               </div>
 
@@ -71,19 +72,18 @@ const MelissaStory = () => {
                 <div className="mb-6 flex flex-wrap gap-3">
                   <span className="meta-pill">FORMULA FORUM</span>
                   <span className="meta-pill meta-pill-dot">REAL ATTENDEE</span>
-                  <span className="meta-pill">TENNESSEE</span>
+                  <span className="meta-pill">{story.location.toUpperCase()}</span>
                 </div>
 
-                <h1 className="display-bold text-[clamp(3.25rem,9vw,8rem)] leading-[0.84]">
-                  MY ONLY<br />
-                  REGRET?
-                  <span className="mt-2 block display-outline">NOT BRINGING</span>
-                  MY TEAM.
+                <h1 className="display-bold text-[clamp(3.1rem,8vw,7.5rem)] leading-[0.84]">
+                  {story.headlineLead}
+                  <span className="mt-2 block display-outline">{story.headlineOutline}</span>
+                  <span className="mt-2 block">{story.headlineClose}</span>
                 </h1>
 
                 <div className="mt-9 max-w-2xl border-l-2 border-[hsl(var(--primary))] pl-6">
                   <blockquote className="text-xl font-semibold leading-snug text-white/90 md:text-2xl">
-                    “I took a ton of notes on processes we definitely plan on implementing.”
+                    “{story.secondaryQuote}”
                   </blockquote>
                 </div>
 
@@ -113,8 +113,8 @@ const MelissaStory = () => {
               <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/30 bg-white/10">
                 <Quote className="h-8 w-8 fill-white text-white" aria-hidden="true" />
               </div>
-              <blockquote className="display-bold text-[clamp(2.5rem,7vw,6.5rem)] leading-[0.92]">
-                “My only regret is that I wish I would have brought more of my team members.”
+              <blockquote className="display-bold text-[clamp(2.35rem,6.5vw,6rem)] leading-[0.92]">
+                “{story.primaryQuote}”
               </blockquote>
             </div>
           </div>
@@ -122,41 +122,39 @@ const MelissaStory = () => {
 
         <section className="bg-[hsl(0,0%,96%)] px-5 py-20 text-[hsl(0,0%,8%)] md:px-12 md:py-28">
           <div className="container mx-auto max-w-7xl">
-            <div className="eyebrow mb-10 text-black">WHAT SHE'S TAKING HOME</div>
+            <div className="eyebrow mb-10 text-black">WHY FORMULA FEELS DIFFERENT</div>
 
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-              <div>
-                <h2 className="display-bold text-[clamp(3rem,8vw,7rem)] leading-[0.88]">
-                  COME FOR<br />
-                  THE IDEAS.<br />
-                  <span className="text-[hsl(var(--secondary))]">RETURN WITH</span><br />
-                  YOUR TEAM.
-                </h2>
-              </div>
+              <h2 className="display-bold text-[clamp(3rem,8vw,7rem)] leading-[0.88]">
+                COME FOR<br />
+                THE IDEAS.<br />
+                <span className="text-[hsl(var(--secondary))]">LEAVE READY</span><br />
+                TO EXECUTE.
+              </h2>
 
               <div className="flex flex-col justify-center gap-5">
                 <article className="rounded-2xl border border-black/5 bg-white p-7 shadow-sm md:p-9">
                   <p className="text-xl font-bold leading-snug md:text-2xl">
-                    “I’ll definitely be back, but this time I’m going to bring a lot more staff.”
+                    “{story.secondaryQuote}”
                   </p>
                   <div className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-black/45">
-                    Melissa · Tennessee
+                    {story.name} · {story.location}
                   </div>
                 </article>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="rounded-2xl border border-black/5 bg-white p-6">
                     <div className="mb-3 text-4xl font-black text-[hsl(var(--primary))]">01</div>
-                    <h3 className="text-lg font-bold">Actionable processes</h3>
+                    <h3 className="text-lg font-bold">Actionable takeaways</h3>
                     <p className="mt-2 text-sm leading-relaxed text-black/60">
-                      Practical ideas worth taking back and installing inside the agency.
+                      Practical ideas and operating systems built to move from notes into action.
                     </p>
                   </div>
                   <div className="rounded-2xl border border-black/5 bg-white p-6">
                     <div className="mb-3 text-4xl font-black text-[hsl(var(--secondary))]">02</div>
-                    <h3 className="text-lg font-bold">Built for the team</h3>
+                    <h3 className="text-lg font-bold">Real connections</h3>
                     <p className="mt-2 text-sm leading-relaxed text-black/60">
-                      A shared experience that creates shared language and momentum.
+                      Owners and team members learning together, sharing honestly, and raising the bar.
                     </p>
                   </div>
                 </div>
@@ -180,10 +178,17 @@ const MelissaStory = () => {
   );
 };
 
-const MelissaTestimonial = () => (
-  <PassDialogProvider>
-    <MelissaStory />
-  </PassDialogProvider>
-);
+const TestimonialStory = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const story = getTestimonialStory(slug);
 
-export default MelissaTestimonial;
+  if (!story) return <NotFound />;
+
+  return (
+    <PassDialogProvider>
+      <StoryContent story={story} />
+    </PassDialogProvider>
+  );
+};
+
+export default TestimonialStory;
