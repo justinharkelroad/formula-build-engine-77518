@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import VideoThumbnailCard from './VideoThumbnailCard';
 import VideoModal from './VideoModal';
 
 const VideoTestimonialsGrid = () => {
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
 
   const videoTestimonials = [
-    { videoSrc: 'https://www.youtube.com/embed/BbpXNx7Jixo', posterSrc: 'https://img.youtube.com/vi/BbpXNx7Jixo/hqdefault.jpg', name: 'Melissa', title: 'Tennessee', slug: 'melissa' },
+    { videoSrc: 'https://www.youtube.com/embed/BbpXNx7Jixo', posterSrc: 'https://img.youtube.com/vi/BbpXNx7Jixo/hqdefault.jpg', name: 'Melissa', title: 'Tennessee', slug: 'melissa', storyPath: '/stories/melissa' },
     { videoSrc: 'https://www.youtube.com/embed/qnjwHng6MZ0', posterSrc: 'https://img.youtube.com/vi/qnjwHng6MZ0/hqdefault.jpg', name: 'Kelly', title: 'Pennsylvania', slug: 'kelly' },
     { videoSrc: 'https://www.youtube.com/embed/nxEutmCrBm0', posterSrc: 'https://img.youtube.com/vi/nxEutmCrBm0/hqdefault.jpg', name: 'Anthony', title: 'Virginia', slug: 'anthony' },
     { videoSrc: 'https://www.youtube.com/embed/wvutVhMg-zM', posterSrc: 'https://img.youtube.com/vi/wvutVhMg-zM/hqdefault.jpg', name: 'Jay', title: 'Florida', slug: 'jay' },
@@ -41,6 +43,12 @@ const VideoTestimonialsGrid = () => {
   }, []);
 
   const handleVideoClick = (index: number) => {
+    const storyPath = videoTestimonials[index].storyPath;
+    if (storyPath) {
+      navigate(storyPath);
+      return;
+    }
+
     setSelectedVideo(index);
     window.location.hash = `video=${videoTestimonials[index].slug}`;
   };
