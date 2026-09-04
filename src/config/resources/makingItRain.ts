@@ -59,6 +59,80 @@ const PARTNERS = [
     bestFit: "Your Domino involves buying opportunity that matches a specific appetite or geography.",
     categories: ["source-opportunity"],
   }),
+  partnerFor("quote-nerds", {
+    helpsWith: "Outbound home and auto insurance leads plus inbound insurance calls sold to agents.",
+    bestFit: "Your Domino involves adding quotable opportunity in the lines you actually want to write.",
+    categories: ["source-opportunity"],
+  }),
+  partnerFor("dms", {
+    helpsWith: "Performance marketing and consumer acquisition, including insurance leads, calls and clicks.",
+    bestFit: "Your Domino involves sourcing opportunity through a media partner instead of building the funnel yourself.",
+    categories: ["source-opportunity"],
+  }),
+  partnerFor("filtered-quotes", {
+    helpsWith:
+      "Insurance lead generation alongside sales performance support and phone-number spam remediation.",
+    bestFit: "Your Domino involves buying opportunity and having a partner help you work it.",
+    categories: ["source-opportunity"],
+  }),
+
+  // 02 — Create your own opportunity
+  partnerFor("goal", {
+    helpsWith:
+      "A marketing platform for building your own funnels and capturing insurance prospects under your own brand.",
+    bestFit: "Your Domino involves generating your own in-market prospects instead of buying them from a marketplace.",
+    categories: ["create-opportunity"],
+  }),
+  partnerFor("search-perfect", {
+    helpsWith: "Search engine optimization and organic search visibility for agency websites.",
+    bestFit: "Your Domino involves being found by the shoppers already searching for insurance in your market.",
+    categories: ["create-opportunity"],
+  }),
+  partnerFor("melon-local", {
+    helpsWith:
+      "Local SEO, paid search, social media, review management and live transfer calls for local businesses.",
+    bestFit: "Your Domino involves building local demand and a review presence around your agency.",
+    categories: ["create-opportunity"],
+  }),
+  partnerFor("ypc-media", {
+    helpsWith:
+      "Digital marketing for agencies — SEO, business listings, website design, reputation management and paid advertising.",
+    bestFit: "Your Domino involves the marketing surface around your agency: site, listings, reviews and ads.",
+    categories: ["create-opportunity"],
+  }),
+  partnerFor("post-pros", {
+    helpsWith: "Direct mail campaigns built for insurance agents, including targeting, creative and fulfillment.",
+    bestFit: "Your Domino involves reaching households in your territory through mail rather than digital channels.",
+    categories: ["create-opportunity"],
+  }),
+  partnerFor("smarketingmail", {
+    helpsWith:
+      "Insurance direct mail with exclusive zip codes, list filters and QR-code landing pages, run by a P&C agent.",
+    bestFit: "Your Domino involves owning a mail territory and turning mailed offers into inbound quote requests.",
+    categories: ["create-opportunity"],
+  }),
+
+  // 03 — Work + convert the opportunity
+  partnerFor("ricochet360", {
+    helpsWith: "CRM, dialing, lead workflows, automation, follow-up and sales activity visibility.",
+    bestFit: "Your Domino involves speed-to-lead and working the opportunity you already bought before it goes cold.",
+    categories: ["work-convert"],
+  }),
+  partnerFor("arbeit", {
+    helpsWith: "Calling technology, activity visibility, recorded conversations and outbound sales workflows.",
+    bestFit: "Your Domino involves actually reaching the opportunity sitting in your system.",
+    categories: ["work-convert"],
+  }),
+  partnerFor("mav", {
+    helpsWith: "Automated lead engagement, follow-up and qualification before opportunities reach the producer.",
+    bestFit: "Your Domino involves opportunity going unworked because producers cannot get to all of it.",
+    categories: ["work-convert"],
+  }),
+  partnerFor("leadminer", {
+    helpsWith: "Lead nurture, qualification and moving engaged opportunities toward licensed agents.",
+    bestFit: "Your Domino involves contact rates and getting purchased opportunity into live conversations.",
+    categories: ["work-convert"],
+  }),
 ];
 
 export const MAKING_IT_RAIN: ResourcePageContent = {
