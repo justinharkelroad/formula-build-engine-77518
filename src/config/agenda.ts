@@ -11,9 +11,15 @@
  * implies order. The numbered order lives in src/config/resources/library.ts
  * for the in-room QR pages, and it stays there.
  *
+ * COPY RULE (Justin, 2026-09-04): publish the VALUE of what an attendee takes
+ * away. Never publish what the session focuses on internally, and never the
+ * questions they will be asked. "question" below is a market-truth hook about
+ * the reader's own agency — it is NOT a Mirror question and must never become
+ * one.
+ *
  * Also unpublished: Platinum partner slot placement, transitions and breaks,
  * the Mirror questions, the 1-5 star scoring standard, the Domino exercise,
- * and workbook page numbers.
+ * the per-session target areas themselves, and workbook page numbers.
  *
  * Source: workbook FORMULAv8.pdf p.5, plus Justin's confirmed rhythm items.
  */
@@ -80,10 +86,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "TEAM",
     minutes: 60,
     line: "Building a producer machine, not becoming a better individual salesperson.",
-    outcome: "A sales sequence your producers can run without you in the room.",
+    outcome: "A sales process the agency owns, instead of one your best person owns.",
     question: "If your top producer quit on Friday, does your sales process walk out the door with them?",
     inTheRoom:
-      "We take the sequence out of your best person's head and put it somewhere the whole team can run it. You build the version your producers can execute without you sitting in.",
+      "Sales stops depending on the one person who happens to be good at it. You leave with the machine itself, not a memory of what used to work.",
     bring: "Your top producer, and whoever owns follow-up.",
     targetAreas: 1,
   },
@@ -93,11 +99,11 @@ export const SESSIONS: AgendaSession[] = [
     build: "TEAM",
     minutes: 60,
     line: "Designing service operations that create retention, capacity and growth.",
-    outcome: "A service operation that returns capacity instead of consuming it.",
-    question: "Is your service team protecting the book, or just absorbing the complaints?",
+    outcome: "A service team that grows the book on purpose, not one that just keeps it from shrinking.",
+    question: "Your sales team is measured on growth. What is your service team measured on?",
     inTheRoom:
-      "Service either returns capacity to the agency or quietly eats it. You design the operation that retains, and frees the hours you have been giving away.",
-    bring: "Your service lead.",
+      "Service stops being the department that absorbs problems and becomes a second engine that produces growth — held to the same expectation as sales, and built with the same rigor.",
+    bring: "Your service lead, and whoever owns retention.",
     targetAreas: 1,
   },
   {
@@ -106,10 +112,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "TEAM",
     minutes: 60,
     line: "Removing the owner from the center of the agency.",
-    outcome: "The first system that runs without the owner watching it.",
+    outcome: "An agency that keeps moving on the days you are not in it.",
     question: "How many decisions this week could only have been made by you?",
     inTheRoom:
-      "The agency that needs you in every decision cannot grow past your calendar. You pull yourself out of the center and put a system in your place.",
+      "The agency stops routing everything through the owner. You leave having built the first piece of it that runs without you in the loop.",
     bring: "Your second-in-command.",
     targetAreas: 1,
   },
@@ -119,10 +125,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "TEAM",
     minutes: 60,
     line: "Turning knowledge into repeatable performance.",
-    outcome: "A training cadence with an owner, a measure, and a date.",
+    outcome: "A team that improves on a schedule instead of by accident.",
     question: "Can you name one thing your team got measurably better at last quarter?",
     inTheRoom:
-      "Most agencies buy training and never install it. You leave with a cadence that turns what your team knows into what your team does.",
+      "Training stops being something you buy and becomes something that installs. What your team knows turns into performance you can point at.",
     bring: "Whoever runs your team meetings.",
     targetAreas: 1,
   },
@@ -132,10 +138,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "TEAM",
     minutes: 60,
     line: "Engineering enough opportunity to keep the sales machine fed.",
-    outcome: "An opportunity engine sized to the production you say you want.",
+    outcome: "Enough opportunity in front of your team to make the number you committed to realistic.",
     question: "Is your pipeline sized to the year you are planning, or the year you just had?",
     inTheRoom:
-      "A sales machine with nothing feeding it stalls. You engineer enough opportunity to keep the producers you just built actually busy.",
+      "Opportunity stops being whatever shows up and becomes something you engineer. The machine you just built gets fed deliberately.",
     bring: "Whoever owns your marketing spend.",
     targetAreas: 1,
   },
@@ -145,10 +151,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "PERSONAL",
     minutes: 40,
     line: "The physical standard, plus energy and recovery.",
-    outcome: "A physical standard you can actually hold under a full calendar.",
+    outcome: "The physical capacity to actually run the year you are about to declare.",
     question: "Would your calendar survive a health scare, or would the agency stop when you did?",
     inTheRoom:
-      "The physical standard is not a fitness pitch. It is the energy the rest of this build runs on, and whether it holds in your busiest month.",
+      "This is the energy the rest of the build runs on. Not a fitness pitch — the standard that still holds in your loudest quarter.",
     bring: "Just you.",
     targetAreas: 2,
   },
@@ -158,10 +164,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "PERSONAL",
     minutes: 40,
     line: "The primary relationship, and the people you are responsible to love.",
-    outcome: "A commitment at home that survives your busiest quarter.",
+    outcome: "A home life that stops quietly paying the bill for your growth.",
     question: "Does the person you are building this for feel like a priority or a leftover?",
     inTheRoom:
-      "You name the relationships you are actually responsible to, and set a commitment at home that does not get traded away the next time work gets loud.",
+      "The relationships you are actually responsible to, given the same seriousness you give production numbers.",
     bring: "Just you. Worked in pairs in the room.",
     targetAreas: 2,
   },
@@ -171,10 +177,10 @@ export const SESSIONS: AgendaSession[] = [
     build: "PERSONAL",
     minutes: 40,
     line: "Inner alignment and personal command.",
-    outcome: "Clarity on who you are becoming while the business grows.",
+    outcome: "Certainty about who you are becoming, independent of what the business does that year.",
     question: "Who are you when the production numbers are not there to answer for you?",
     inTheRoom:
-      "The last session of the build. Inner alignment and personal command, so the person running the agency in 2027 is someone you would follow.",
+      "The last session of the build. The person running this agency in 2027 gets built with the same intention as the agency itself.",
     bring: "Just you.",
     targetAreas: 2,
   },
