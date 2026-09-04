@@ -329,7 +329,41 @@ export const SEATS: { role: string; short: string; line: string }[] = [
 ];
 
 export const SEATS_NOTE =
-  "Same frame. Different seat. Each one leaves with its own AI breakdown.";
+  "Same frame. Different seat. Each one builds their own 2027 plan.";
+
+/**
+ * The AI half of the build (Justin, confirmed 2026-09-04: locked and already
+ * built out). Every session's answers compile into the attendee's 2027 plan,
+ * and they leave with a dashboard that turns that plan into tasks they check
+ * off across the year.
+ *
+ * DO NOT conflate this with the Agency AI Install Walkthrough / MY BIZ BRAIN
+ * bonus gift on the homepage. Justin: "completely different than what we're
+ * doing right here." Nothing here may reference that product.
+ *
+ * Everything in this block is Justin's own description. Do not add mechanism,
+ * product names, or delivery details that have not been confirmed.
+ */
+export const AI_BUILD = {
+  eyebrow: "AI IN THE BUILD",
+  heading: "YOU LEAVE WITH THE PLAN, NOT THE NOTES",
+  lead:
+    "Every session feeds the same place. AI builds your 2027 plan with you, in the room, out of your own answers — not a template, and not a notebook you have to go transcribe on the flight home.",
+  points: [
+    {
+      title: "The plan gets built as you go",
+      body: "Each session's work compiles into the plan instead of sitting in a book you close at the end of the day.",
+    },
+    {
+      title: "A dashboard, not a document",
+      body: "You leave with your 2027 plan as tasks you check off through the year, so what you decided in Orlando is still in front of you in March.",
+    },
+    {
+      title: "One per seat",
+      body: "Owner, team and partner each answer from where they sit, so each one walks out with a plan that is theirs to run.",
+    },
+  ],
+} as const;
 
 export const WITHHELD_LINE =
   "Which session lands on which day is revealed in the room.";

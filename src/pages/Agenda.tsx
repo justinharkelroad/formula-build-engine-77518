@@ -5,6 +5,7 @@ import PassDialogHost from "@/components/PassDialogHost";
 import { PassDialogProvider, usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import TheWork from "@/components/agenda/TheWork";
+import TheAIBuild from "@/components/agenda/TheAIBuild";
 import TheRhythm from "@/components/agenda/TheRhythm";
 import { EVENT } from "@/config/agenda";
 
@@ -115,6 +116,7 @@ const Agenda = () => (
       <main>
         <AgendaHero />
         <TheWork />
+        <TheAIBuild />
         <TheRhythm />
         <AgendaCloser />
       </main>
