@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import type { Plugin } from "vite";
 import { SEO_ROUTES, type SeoRoute } from "../src/config/seoRoutes";
@@ -52,8 +52,8 @@ const absolute = (url: string): string =>
 
 const headFor = (route: SeoRoute): string => {
   const canonical = `${CONFIG.SITE_URL}${route.path === "/" ? "" : route.path}`;
-  const ogImage = absolute(CONFIG.OG_IMAGE_1200x630);
-  const twitterImage = absolute(CONFIG.TW_IMAGE_1200x600);
+  const ogImage = absolute(route.ogImage ?? CONFIG.OG_IMAGE_1200x630);
+  const twitterImage = absolute(route.ogImage ?? CONFIG.TW_IMAGE_1200x600);
   const t = escapeAttr(route.title);
   const d = escapeAttr(route.description);
 
@@ -104,6 +104,9 @@ export const prerenderMeta = (): Plugin => ({
 
     let written = 0;
     for (const route of SEO_ROUTES) {
+      if (route.ogImage && !route.ogImage.startsWith("http") && !existsSync(join("public", route.ogImage))) {
+        this.warn(`prerender-meta: ${route.path} ogImage ${route.ogImage} not found under public/ — the share card will 404.`);
+      }
       // "/" is the template itself; leaving it alone keeps the SPA fallback intact.
       if (route.path === "/") continue;
 

@@ -7,6 +7,7 @@ import { BODY, BALANCE, BEING } from "./resources/personalSessions";
 import { FUNDING_THE_BUILD } from "./resources/fundingTheBuild";
 import type { ResourcePageContent } from "./resources/types";
 import { TESTIMONIAL_STORIES } from "./testimonialStories";
+import { ogImageFor } from "./ogImages";
 
 /**
  * Every prerenderable route and the metadata its <head> should carry.
@@ -30,6 +31,8 @@ export interface SeoRoute {
   description: string;
   /** Emits robots="noindex, nofollow" and no canonical, matching SEO.tsx. */
   noindex?: boolean;
+  /** Route-specific share image; omit to use CONFIG.OG_IMAGE_1200x630. Usually set via src/config/ogImages.ts. */
+  ogImage?: string;
 }
 
 const fromResourcePage = (content: ResourcePageContent): SeoRoute => ({
@@ -166,4 +169,4 @@ export const SEO_ROUTES: SeoRoute[] = [
   ...SITE_ROUTES,
   ...RESOURCE_ROUTES,
   ...TESTIMONIAL_ROUTES,
-];
+].map((route) => ({ ...route, ogImage: route.ogImage ?? ogImageFor(route.path) }));
