@@ -65,8 +65,10 @@ export interface RhythmItem {
   time: string | null;
   title: string;
   note?: string;
-  /** Marks the generic block that stands in for the working sessions. */
+  /** Marks the General Session — the block the eight run inside. */
   isWork?: boolean;
+  /** Named moments that happen INSIDE this block, not after it. */
+  within?: { title: string; note?: string }[];
 }
 
 export const EVENT = {
@@ -257,16 +259,16 @@ export const RHYTHM: RhythmItem[] = [
     title: "General Session",
     note: "The whole room, together. Which of the eight land when is revealed on site.",
     isWork: true,
+    within: [
+      { title: "Lunch" },
+      {
+        title: "Partner Connect",
+        note: "45 minutes in the vendor room with the partners who build for this industry.",
+      },
+      { title: "Breathwork", note: "A reset in the middle of the long day." },
+      { title: "Garrett J. White", note: "Main stage, closing the day." },
+    ],
   },
-  { dayId: "thu", time: null, title: "Lunch" },
-  {
-    dayId: "thu",
-    time: null,
-    title: "Partner Connect",
-    note: "45 minutes inside the vendor room with the partners who build for this industry.",
-  },
-  { dayId: "thu", time: null, title: "Breathwork", note: "A reset in the middle of the long day." },
-  { dayId: "thu", time: null, title: "Garrett J. White", note: "Main stage, closing the day." },
   {
     dayId: "thu",
     time: null,
@@ -287,18 +289,16 @@ export const RHYTHM: RhythmItem[] = [
     title: "General Session",
     note: "The whole room again, straight through to the declaration.",
     isWork: true,
-  },
-  {
-    dayId: "fri",
-    time: null,
-    title: "Build My 2027 Maps",
-    note: "Business and Personal, assembled from everything the week produced.",
-  },
-  {
-    dayId: "fri",
-    time: null,
-    title: "This Is Where I'm Going",
-    note: "The final declaration. Signed in the room, in front of a witness.",
+    within: [
+      {
+        title: "Build My 2027 Maps",
+        note: "Business and Personal, assembled from everything the week produced.",
+      },
+      {
+        title: "This Is Where I'm Going",
+        note: "The final declaration. Signed in the room, in front of a witness.",
+      },
+    ],
   },
 ];
 

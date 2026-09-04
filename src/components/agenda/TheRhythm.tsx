@@ -58,6 +58,21 @@ const DayRhythm = ({ day }: { day: AgendaDay }) => {
                 )}
               </div>
               {r.note && <p className="mt-1 text-sm md:text-base text-white/45">{r.note}</p>}
+
+              {r.within && (
+                <ul className="mt-4 border-l border-white/15 pl-5 space-y-3">
+                  {r.within.map((w) => (
+                    <li key={w.title}>
+                      <span className="text-base md:text-lg font-semibold text-white/90">
+                        {w.title}
+                      </span>
+                      {w.note && (
+                        <p className="mt-0.5 text-sm text-white/45">{w.note}</p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         ))}

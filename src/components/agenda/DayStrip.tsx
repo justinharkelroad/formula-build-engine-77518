@@ -49,6 +49,15 @@ const DayStrip = () => {
                     >
                       {r.title}
                     </span>
+                    {r.within && (
+                      <ul className="mt-1.5 border-l border-white/15 pl-3 space-y-1">
+                        {r.within.map((w) => (
+                          <li key={w.title} className="text-sm text-white/55">
+                            {w.title}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
               </ul>
