@@ -1,25 +1,19 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import TheWork from "@/components/agenda/TheWork";
+import DayStrip from "@/components/agenda/DayStrip";
+import { EVENT } from "@/config/agenda";
 
-const sessions = [
-  {
-    day: "DAY 1",
-    title: "Exclusive Welcome Event",
-    time: "6:00 PM - 8:00 PM"
-  },
-  {
-    day: "DAY 2",
-    title: "Formula General Session",
-    time: "9:00 AM - 6:00 PM"
-  },
-  {
-    day: "DAY 3",
-    title: "Formula General Session",
-    time: "9:00 AM - 1:00 PM"
-  }
-];
-
+/**
+ * Homepage agenda section. Condensed: the eight working sessions with their
+ * teaser modals, plus a compact three-day strip. The full rhythm — meals,
+ * workouts, partner time — lives on /agenda, which DayStrip links to.
+ *
+ * Keeps id="schedule" so the BoldHeader nav anchor keeps working.
+ */
 const ScheduleBlock = () => {
   const { ref, isVisible } = useScrollAnimation(0.15);
+  const v = isVisible ? "is-visible" : "";
+
   return (
     <section
       id="schedule"
@@ -27,48 +21,26 @@ const ScheduleBlock = () => {
       className="bg-black text-white py-20 md:py-24 px-5 md:px-12"
     >
       <div className="container mx-auto max-w-7xl">
-        <div className={`eyebrow mb-8 reveal-up ${isVisible ? "is-visible" : ""}`}>AGENDA</div>
+        <div className={`eyebrow mb-8 reveal-up ${v}`}>AGENDA</div>
 
-        {/* Top row: massive headline + date pills */}
         <div className="grid md:grid-cols-2 gap-8 items-end mb-12 md:mb-16">
-          <h2 className={`display-bold text-[clamp(3rem,15vw,9rem)] md:text-[11vw] lg:text-[9vw] whitespace-nowrap reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
-            SCHEDULE
+          <h2
+            className={`display-bold text-[clamp(3rem,15vw,9rem)] md:text-[11vw] lg:text-[9vw] whitespace-nowrap reveal-up delay-1 ${v}`}
+          >
+            THE BUILD
           </h2>
-          <div className={`flex flex-wrap gap-3 justify-end reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
+          <div className={`flex flex-wrap gap-3 justify-end reveal-up delay-2 ${v}`}>
             <span className="meta-pill meta-pill-solid">OCT 14-16</span>
             <span className="meta-pill">2026</span>
           </div>
         </div>
 
-        {/* Header row — desktop only */}
-        <div className="hidden md:grid grid-cols-3 text-xs tracking-widest uppercase text-white/50 mb-2">
-          <div>DAY</div>
-          <div>SESSION</div>
-          <div className="text-right">TIME</div>
-        </div>
+        <TheWork
+          bare
+          intro={`${EVENT.counters[0].value} working sessions across three days. We publish the work, not the running order — the room finds out when it walks in.`}
+        />
 
-        <div>
-          {sessions.map((s, i) => (
-            <div
-              key={i}
-              className={`bold-row grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 py-6 md:py-8 items-start md:items-center reveal-up delay-${i + 2} ${isVisible ? "is-visible" : ""}`}
-            >
-              <div className="display-bold text-2xl md:text-4xl text-[hsl(var(--secondary))]">
-                {s.day}
-              </div>
-              <div className="text-lg md:text-2xl font-semibold">
-                {s.title}
-              </div>
-              <div className="text-sm md:text-lg text-white/70 md:text-right tracking-wide">
-                {s.time}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 text-xs tracking-widest uppercase text-white/40">
-          Full agenda coming soon ◆
-        </div>
+        <DayStrip />
       </div>
     </section>
   );
