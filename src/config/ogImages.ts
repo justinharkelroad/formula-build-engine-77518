@@ -18,7 +18,7 @@
  * in here would inflate the initial chunk.
  */
 export const OG_IMAGES: Record<string, string> = {
-  // "/agenda": "/og/agenda.jpg",
+  "/agenda": "/og/agenda.jpg",
 };
 
 export const ogImageFor = (path: string): string | undefined => OG_IMAGES[path];
