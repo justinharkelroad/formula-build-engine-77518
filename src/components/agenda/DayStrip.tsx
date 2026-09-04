@@ -20,9 +20,6 @@ const DayStrip = () => {
 
       <div className="grid md:grid-cols-3 gap-4 md:gap-6">
         {DAYS.map((day, i) => {
-          const highlights = rhythmForDay(day.id).filter((r) => !r.isWork);
-          const hasWork = rhythmForDay(day.id).some((r) => r.isWork);
-
           return (
             <div
               key={day.id}
@@ -32,17 +29,26 @@ const DayStrip = () => {
                 {day.label} · {day.date}
               </div>
               <h4 className="display-bold text-2xl md:text-3xl leading-[0.95] mb-4">{day.theme}</h4>
-              {day.window && <span className="meta-pill text-xs">{day.window}</span>}
 
-              <ul className="mt-5 space-y-1.5">
-                {hasWork && (
-                  <li className="text-sm md:text-base font-semibold text-[hsl(var(--secondary))]">
-                    Working sessions
-                  </li>
-                )}
-                {highlights.map((r) => (
-                  <li key={r.title} className="text-sm md:text-base text-white/60">
-                    {r.title}
+              <ul className="mt-5 space-y-2.5">
+                {rhythmForDay(day.id).map((r) => (
+                  <li key={r.title} className="flex flex-col">
+                    <span
+                      className={`text-xs tracking-wide ${
+                        r.time ? "text-white/45" : "text-white/25"
+                      }`}
+                    >
+                      {r.time ?? "TIME TBA"}
+                    </span>
+                    <span
+                      className={`text-sm md:text-base ${
+                        r.isWork
+                          ? "font-semibold text-[hsl(var(--secondary))]"
+                          : "text-white/70"
+                      }`}
+                    >
+                      {r.title}
+                    </span>
                   </li>
                 ))}
               </ul>

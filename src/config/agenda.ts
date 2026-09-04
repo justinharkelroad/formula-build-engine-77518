@@ -253,9 +253,9 @@ export const RHYTHM: RhythmItem[] = [
   { dayId: "thu", time: "8:00 – 9:00 AM", title: "Breakfast" },
   {
     dayId: "thu",
-    time: null,
-    title: "Working Sessions",
-    note: "Multiple sessions across the day. Which ones land when is revealed on site.",
+    time: "9:00 AM – 6:00 PM",
+    title: "General Session",
+    note: "The whole room, together. Which of the eight land when is revealed on site.",
     isWork: true,
   },
   { dayId: "thu", time: null, title: "Lunch" },
@@ -283,9 +283,9 @@ export const RHYTHM: RhythmItem[] = [
   { dayId: "fri", time: "8:00 – 9:00 AM", title: "Breakfast" },
   {
     dayId: "fri",
-    time: null,
-    title: "Working Sessions",
-    note: "The rest of the eight. Order stays with the room.",
+    time: "9:00 AM – 1:00 PM",
+    title: "General Session",
+    note: "The whole room again, straight through to the declaration.",
     isWork: true,
   },
   {
