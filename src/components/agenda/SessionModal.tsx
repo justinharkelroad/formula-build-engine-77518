@@ -1,6 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { usePassDialog } from "@/contexts/PassDialogContext";
-import type { AgendaSession, Track } from "@/config/agenda";
+import { BUILD_GROUPS, type AgendaSession, type Track } from "@/config/agenda";
 
 const trackColor = (track: Track) =>
   track === "BUSINESS" ? "hsl(var(--secondary))" : "hsl(var(--primary))";
@@ -39,10 +39,7 @@ const SessionModal = ({ session, onClose }: SessionModalProps) => {
               {session.minutes} min
             </span>
             <span className="text-xs text-white/40 uppercase tracking-widest">
-              {session.build === "TEAM" ? "Team Build" : "Personal Build"}
-            </span>
-            <span className="text-xs text-white/40 uppercase tracking-widest">
-              {session.targetAreas} target {session.targetAreas === 1 ? "area" : "areas"}
+              {BUILD_GROUPS.find((g) => g.id === session.build)?.label}
             </span>
           </div>
 

@@ -87,7 +87,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Building a producer machine, not becoming a better individual salesperson.",
     outcome: "A sales process the agency owns, instead of one your best person owns.",
-    question: "If your top producer quit on Friday, does your sales process walk out the door with them?",
+    question: "Your best producer has a process. Does anyone else on your team run the same one?",
     inTheRoom:
       "Sales stops depending on the one person who happens to be good at it. You leave with the machine itself, not a memory of what used to work.",
     bring: "Your top producer, and whoever owns follow-up.",
@@ -113,7 +113,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Removing the owner from the center of the agency.",
     outcome: "An agency that keeps moving on the days you are not in it.",
-    question: "How many decisions this week could only have been made by you?",
+    question: "Every part of your agency has an owner. How many of them are still you?",
     inTheRoom:
       "The agency stops routing everything through the owner. You leave having built the first piece of it that runs without you in the loop.",
     bring: "Your second-in-command.",
@@ -126,7 +126,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Turning knowledge into repeatable performance.",
     outcome: "A team that improves on a schedule instead of by accident.",
-    question: "Can you name one thing your team got measurably better at last quarter?",
+    question: "You have a process for hiring people. Do you have one for making them better?",
     inTheRoom:
       "Training stops being something you buy and becomes something that installs. What your team knows turns into performance you can point at.",
     bring: "Whoever runs your team meetings.",
@@ -139,7 +139,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Engineering enough opportunity to keep the sales machine fed.",
     outcome: "Enough opportunity in front of your team to make the number you committed to realistic.",
-    question: "Is your pipeline sized to the year you are planning, or the year you just had?",
+    question: "You are about to build a team that can close more. Who is responsible for giving them more to close?",
     inTheRoom:
       "Opportunity stops being whatever shows up and becomes something you engineer. The machine you just built gets fed deliberately.",
     bring: "Whoever owns your marketing spend.",
@@ -152,7 +152,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "The physical standard, plus energy and recovery.",
     outcome: "The physical capacity to actually run the year you are about to declare.",
-    question: "Would your calendar survive a health scare, or would the agency stop when you did?",
+    question: "Your agency has a plan for the next twelve months. Does your body?",
     inTheRoom:
       "This is the energy the rest of the build runs on. Not a fitness pitch — the standard that still holds in your loudest quarter.",
     bring: "Just you.",
@@ -165,7 +165,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "The primary relationship, and the people you are responsible to love.",
     outcome: "A home life that stops quietly paying the bill for your growth.",
-    question: "Does the person you are building this for feel like a priority or a leftover?",
+    question: "Your calendar protects your best clients. What protects the people you are doing all this for?",
     inTheRoom:
       "The relationships you are actually responsible to, given the same seriousness you give production numbers.",
     bring: "Just you. Worked in pairs in the room.",
@@ -178,7 +178,7 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "Inner alignment and personal command.",
     outcome: "Certainty about who you are becoming, independent of what the business does that year.",
-    question: "Who are you when the production numbers are not there to answer for you?",
+    question: "You came here to build the agency. Who is building the person who has to run it?",
     inTheRoom:
       "The last session of the build. The person running this agency in 2027 gets built with the same intention as the agency itself.",
     bring: "Just you.",
@@ -189,15 +189,15 @@ export const SESSIONS: AgendaSession[] = [
 export const BUILD_GROUPS: { id: Build; label: string; blurb: string }[] = [
   {
     id: "TEAM",
-    label: "Team Build",
+    label: "Build the Agency",
     blurb:
-      "Five business sessions. What you decide here goes back to the agency and gets an owner, a measure and a cadence.",
+      "Five sessions. What you decide here goes back to the agency and gets an owner, a measure and a cadence.",
   },
   {
     id: "PERSONAL",
-    label: "Personal Build",
+    label: "Build the Person",
     blurb:
-      "Three sessions — Body, Balance, Being. Six target areas, worked in pairs. Private unless you choose to share it.",
+      "Three sessions — Body, Balance, Being. The half of the build nobody else can do for you. Private unless you choose to share it.",
   },
 ];
 
