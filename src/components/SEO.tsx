@@ -1,17 +1,23 @@
 import { Helmet } from "react-helmet-async";
 import { CONFIG } from "@/config/event";
+import { ogImageFor } from "@/config/ogImages";
 
 interface SEOProps {
   title: string;
   description: string;
   path?: string; // e.g., "/pricing"
   noindex?: boolean;
+  /** Route-specific 1200x630 share image. Falls back to src/config/ogImages.ts, then CONFIG.OG_IMAGE_1200x630. */
+  ogImage?: string;
 }
 
-const SEO = ({ title, description, path = "/", noindex = false }: SEOProps) => {
+const absolute = (url: string): string => (url.startsWith("http") ? url : `${CONFIG.SITE_URL}${url}`);
+
+const SEO = ({ title, description, path = "/", noindex = false, ogImage: ogImageProp }: SEOProps) => {
   const canonical = `${CONFIG.SITE_URL}${path === "/" ? "" : path}`;
-  const ogImage = CONFIG.OG_IMAGE_1200x630.startsWith("http") ? CONFIG.OG_IMAGE_1200x630 : `${CONFIG.SITE_URL}${CONFIG.OG_IMAGE_1200x630}`;
-  const twitterImage = CONFIG.TW_IMAGE_1200x600.startsWith("http") ? CONFIG.TW_IMAGE_1200x600 : `${CONFIG.SITE_URL}${CONFIG.TW_IMAGE_1200x600}`;
+  const routeImage = ogImageProp || ogImageFor(path);
+  const ogImage = absolute(routeImage ?? CONFIG.OG_IMAGE_1200x630);
+  const twitterImage = absolute(routeImage ?? CONFIG.TW_IMAGE_1200x600);
 
   return (
     <Helmet>
