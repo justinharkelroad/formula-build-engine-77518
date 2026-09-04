@@ -421,6 +421,13 @@ All colors MUST be HSL.
   .delay-5 { transition-delay: 400ms; }
   .delay-6 { transition-delay: 480ms; }
 
+  /* Workbook idle float — lives on a WRAPPER of the 3D-rotated element, never on
+     it: a transform animation would override the rAF-written rotation outright. */
+  @keyframes workbook-float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50%      { transform: translate3d(0, -14px, 0); }
+  }
+
   /* Tide-shift — slow background gradient drift, used on hero/footer */
   @keyframes tide-shift {
     0% { background-position: 0% 50%; }
