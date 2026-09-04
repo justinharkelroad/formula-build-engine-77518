@@ -22,6 +22,12 @@
  * the per-session target areas themselves, and workbook page numbers.
  *
  * Source: workbook FORMULAv8.pdf p.5, plus Justin's confirmed rhythm items.
+ *
+ * NOTE: "line" no longer matches the workbook p.5 wording verbatim. Those were
+ * written as internal contents-page descriptions and several read defensively
+ * (Growth Through Service was "retention, capacity and growth", which sells
+ * service as protection rather than as a growth engine). Rewritten for the
+ * public page, Justin approved 2026-09-04. Do not "restore" them from the PDF.
  */
 
 export type Track = "BUSINESS" | "BODY" | "BALANCE" | "BEING";
@@ -85,7 +91,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Building a producer machine, not becoming a better individual salesperson.",
+    line: "Building a producer machine, not a better individual salesperson.",
     outcome: "A sales process the agency owns, instead of one your best person owns.",
     question: "Your best producer has a process. Does anyone else on your team run the same one?",
     inTheRoom:
@@ -98,7 +104,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Designing service operations that create retention, capacity and growth.",
+    line: "Turning service into a second growth engine, not a safety net.",
     outcome: "A service team that grows the book on purpose, not one that just keeps it from shrinking.",
     question: "Your sales team is measured on growth. What is your service team measured on?",
     inTheRoom:
@@ -111,7 +117,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Removing the owner from the center of the agency.",
+    line: "Building an agency that runs, instead of one you run.",
     outcome: "An agency that keeps moving on the days you are not in it.",
     question: "Every part of your agency has an owner. How many of them are still you?",
     inTheRoom:
@@ -124,7 +130,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Turning knowledge into repeatable performance.",
+    line: "Turning what your team knows into what your team actually does.",
     outcome: "A team that improves on a schedule instead of by accident.",
     question: "You have a process for hiring people. Do you have one for making them better?",
     inTheRoom:
@@ -137,7 +143,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Engineering enough opportunity to keep the sales machine fed.",
+    line: "Manufacturing opportunity instead of waiting on it.",
     outcome: "Enough opportunity in front of your team to make the number you committed to realistic.",
     question: "You are about to build a team that can close more. Who is responsible for giving them more to close?",
     inTheRoom:
@@ -150,7 +156,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BODY",
     build: "PERSONAL",
     minutes: 40,
-    line: "The physical standard, plus energy and recovery.",
+    line: "Treating your capacity as infrastructure, not willpower.",
     outcome: "The physical capacity to actually run the year you are about to declare.",
     question: "Your agency has a plan for the next twelve months. Does your body?",
     inTheRoom:
@@ -163,7 +169,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BALANCE",
     build: "PERSONAL",
     minutes: 40,
-    line: "The primary relationship, and the people you are responsible to love.",
+    line: "Giving the people you are doing this for more than what is left over.",
     outcome: "A home life that stops quietly paying the bill for your growth.",
     question: "Your calendar protects your best clients. What protects the people you are doing all this for?",
     inTheRoom:
@@ -176,7 +182,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BEING",
     build: "PERSONAL",
     minutes: 40,
-    line: "Inner alignment and personal command.",
+    line: "Building the operator, not just the operation.",
     outcome: "Certainty about who you are becoming, independent of what the business does that year.",
     question: "You came here to build the agency. Who is building the person who has to run it?",
     inTheRoom:
