@@ -39,20 +39,25 @@ Every attendee leaves with a printed "Book of Formulas" playbook containing acti
 - EOS (Entrepreneurial Operating System) for agencies
 - Community building and networking
 
-## Speakers
+## Program
 
-1. Garrett J. White — Keynote Speaker, Founder of Wake Up Warrior
-2. Gregg Blanchard — Allstate Insurance
-3. Vlad Cherchenko — Insurance Sales Lab
-4. Kelly Spicer — Allstate Insurance
-5. Nicholas Sakha — Allstate Insurance
-6. Joe Marranucci — Walk on Ventures
-7. David Williams — Team Hired
-8. Jeremy Fitzsimmons — Allstate Insurance
-9. Ben Berman — EOS
-10. Yandi Eirea — Allstate Insurance
-11. Justin Harkelroad — Standard Playbook
-12. Rob McAfee — Farmers Insurance
+Eight working sessions across three days, plus Garrett J. White on the main stage.
+Which session lands on which day is revealed on site.
+
+Build the Agency (five sessions)
+- The Sales Sequence
+- Growth Through Service
+- The Operating System
+- Commitment to Training
+- Making It Rain
+
+Build the Person (three sessions)
+- The Body Session
+- The Balance Session
+- The Being Session
+
+Every session compiles into Your 2027 Build: the attendee's plan for the year,
+live the moment the event ends and connected to their Formula app.
 
 ## Partners
 
@@ -66,7 +71,6 @@ Charitable Partner: Destiny Rescue
 
 - Homepage: https://theformulaforum.com/
 - Agenda: https://theformulaforum.com/agenda
-- Speakers: https://theformulaforum.com/speakers
 - Pricing: https://theformulaforum.com/pricing
 - Format: https://theformulaforum.com/format
 - Venue: https://theformulaforum.com/venue

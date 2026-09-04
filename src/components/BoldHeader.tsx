@@ -6,7 +6,7 @@ import { usePassDialog } from "@/contexts/PassDialogContext";
 
 const navItems = [
   { label: "about", sectionId: "about", path: "/" },
-  { label: "schedule", sectionId: "schedule", path: "/" },
+  { label: "agenda", sectionId: null, path: "/agenda" },
   { label: "venue", sectionId: "venue", path: "/" },
   { label: "partners", sectionId: null, path: "/partners" },
   { label: "app", sectionId: null, path: "/formula-app-guide" },

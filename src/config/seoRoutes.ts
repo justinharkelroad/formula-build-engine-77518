@@ -76,12 +76,6 @@ const SITE_ROUTES: SeoRoute[] = [
       "Formula Forum 2026 tickets: Agency Owner Pass $647, Team Member Pass $347. Includes all sessions, Book of Formulas playbook, meals, and networking events.",
   },
   {
-    path: "/speakers",
-    title: "Speaker Lineup | Formula Forum 2026 — Operators, Builders & Experts",
-    description:
-      "Meet the 12 speakers at Formula Forum 2026: keynote by Garrett J. White, plus sessions on VA systems, referral marketing, producer scaling, AI, EOS, and agency growth.",
-  },
-  {
     path: "/format",
     title: "The Format Framework | Formula Forum 2026 — How Sessions Work",
     description:
@@ -104,12 +98,6 @@ const SITE_ROUTES: SeoRoute[] = [
     title: "Partner with Formula Forum 2026 | Platinum, Gold, Silver, Bronze",
     description:
       "Become a 2026 Formula Forum partner. Four tiers from $5,000 to $15,000 — stage time, 1-on-1 podcast interviews, booth placement, attendee lead lists, and mobile-app exposure.",
-  },
-  {
-    path: "/2025partners",
-    title: "2025 Partner Podcast Episodes | Formula Forum 2026",
-    description:
-      "Hear from our 2025 Formula Partners - exclusive podcast episodes featuring RICOCHET, Media Alpha, Disruptur, and more.",
   },
   {
     path: "/gallery",

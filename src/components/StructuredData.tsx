@@ -3,7 +3,7 @@ import { CONFIG } from "@/config/event";
 import { PRICING } from "@/config/pricing";
 
 interface StructuredDataProps {
-  page?: "home" | "venue" | "faq" | "speakers" | "pricing" | "format" | "contact" | "general";
+  page?: "home" | "venue" | "faq" | "pricing" | "format" | "contact" | "general";
 }
 
 const StructuredData = ({ page = "general" }: StructuredDataProps) => {
@@ -72,19 +72,12 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
   });
 
   // --- Event schema (home/venue) ---
+  // Only confirmed 2026 speakers. Justin, 2026-09-04: "The only speaker coming
+  // back is Garrett right now." The other eleven were the 2025 lineup and were
+  // still being published to search as this event's performers. Add names here
+  // only once they are confirmed for 2026.
   const allSpeakers = [
-    { name: "Garrett J. White", company: "Wake Up Warrior" },
-    { name: "Gregg Blanchard", company: "Allstate Insurance" },
-    { name: "Vlad Cherchenko", company: "Insurance Sales Lab" },
-    { name: "Kelly Spicer", company: "Allstate Insurance" },
-    { name: "Nicholas Sakha", company: "Allstate Insurance" },
-    { name: "Joe Marranucci", company: "Walk on Ventures" },
-    { name: "David Williams", company: "Team Hired" },
-    { name: "Jeremy Fitzsimmons", company: "Allstate Insurance" },
-    { name: "Ben Berman", company: "EOS" },
-    { name: "Yandi Eirea", company: "Allstate Insurance" },
-    { name: "Justin Harkelroad", company: "Standard Playbook" },
-    { name: "Rob McAfee", company: "Farmers Insurance" }
+    { name: "Garrett J. White", company: "Wake Up Warrior" }
   ];
 
   const eventSchema = {
@@ -254,24 +247,6 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     ]
   };
 
-  // --- Person/ItemList schema (speakers) ---
-  const speakersSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Formula Forum 2026 Speakers",
-    "numberOfItems": allSpeakers.length,
-    "itemListElement": allSpeakers.map((s, i) => ({
-      "@type": "ListItem",
-      "position": i + 1,
-      "item": {
-        "@type": "Person",
-        "name": s.name,
-        "worksFor": { "@type": "Organization", "name": s.company },
-        "url": `${siteUrl}/speakers`
-      }
-    }))
-  };
-
   // --- AggregateOffer schema (pricing) ---
   const pricingSchema = {
     "@context": "https://schema.org",
@@ -346,7 +321,6 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
   const breadcrumbMap: Record<string, { name: string; path: string }> = {
     venue: { name: "Venue", path: "/venue" },
     faq: { name: "FAQ", path: "/faq" },
-    speakers: { name: "Speakers", path: "/speakers" },
     pricing: { name: "Pricing", path: "/pricing" },
     format: { name: "Format", path: "/format" },
     contact: { name: "Contact", path: "/contact" },
@@ -382,13 +356,6 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       {page === "faq" && (
         <script type="application/ld+json">
           {JSON.stringify(faqSchema)}
-        </script>
-      )}
-
-      {/* Speakers ItemList schema */}
-      {page === "speakers" && (
-        <script type="application/ld+json">
-          {JSON.stringify(speakersSchema)}
         </script>
       )}
 

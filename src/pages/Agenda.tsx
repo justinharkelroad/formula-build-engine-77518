@@ -1,84 +1,127 @@
-import Navigation from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import { Calendar } from "lucide-react";
+import BoldHeader from "@/components/BoldHeader";
+import PassDialogHost from "@/components/PassDialogHost";
+import { PassDialogProvider, usePassDialog } from "@/contexts/PassDialogContext";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import TheWork from "@/components/agenda/TheWork";
+import TheAIBuild from "@/components/agenda/TheAIBuild";
+import TheRhythm from "@/components/agenda/TheRhythm";
+import { EVENT } from "@/config/agenda";
 
-const Agenda = () => {
-  const title = "Event Agenda | Formula Forum 2026 — Three Days of Agency Growth";
-  const description = "Formula Forum 2026 three-day agenda: Oct 14 welcome reception, Oct 15 full conference day with breakouts, Oct 16 implementation and action planning.";
+/* ─────────────────────────── Hero ─────────────────────────── */
+
+const AgendaHero = () => {
+  const { ref, isVisible } = useScrollAnimation(0.1);
+  const v = isVisible ? "is-visible" : "";
 
   return (
-    <div className="min-h-screen bg-background">
-      <SEO title={title} description={description} path="/agenda" />
-      <StructuredData page="general" />
-      <Navigation />
+    <section ref={ref} className="bg-black text-white pt-32 pb-16 md:pt-40 md:pb-20 px-5 md:px-12">
+      <div className="container mx-auto max-w-7xl">
+        <div className={`eyebrow mb-8 reveal-up ${v}`}>AGENDA</div>
 
-      {/* Background Elements */}
-      <div className="fixed inset-0 bg-gradient-to-br from-background via-accent/5 to-background pointer-events-none" />
-      <div className="fixed top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-20 pointer-events-none" />
-      <div className="fixed bottom-0 left-0 w-72 h-72 bg-accent/10 rounded-full blur-2xl opacity-30 pointer-events-none" />
-
-      <main className="container mx-auto px-4 py-12 relative z-10">
-        <section id="agenda">
-          <header className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Agenda — Formula Forum 2026
-            </h1>
-            <h2 className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Three days of insurance agency growth strategies with industry-leading speakers
-            </h2>
-          </header>
-
-          <div className="max-w-4xl mx-auto">
-            {/* 3-Day Date Overview */}
-            <div className="grid md:grid-cols-3 gap-6 mb-16">
-              <div className="text-center p-8 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-sm">
-                <Calendar className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-primary mb-2">Day 1</h3>
-                <p className="text-lg font-semibold text-foreground">October 14, 2026</p>
-                <p className="text-muted-foreground mt-2">Welcome & Networking</p>
-              </div>
-              <div className="text-center p-8 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-sm">
-                <Calendar className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-primary mb-2">Day 2</h3>
-                <p className="text-lg font-semibold text-foreground">October 15, 2026</p>
-                <p className="text-muted-foreground mt-2">Main Conference Day</p>
-              </div>
-              <div className="text-center p-8 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-sm">
-                <Calendar className="w-8 h-8 text-primary mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-primary mb-2">Day 3</h3>
-                <p className="text-lg font-semibold text-foreground">October 16, 2026</p>
-                <p className="text-muted-foreground mt-2">Implementation & Action Planning</p>
-              </div>
-            </div>
-
-            {/* Coming Soon Notice */}
-            <div className="text-center p-12 rounded-2xl border border-primary/20 bg-card/80 backdrop-blur-sm mb-16">
-              <h3 className="text-3xl font-bold text-foreground mb-4">Full Agenda Coming Soon</h3>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                The detailed session schedule for Formula Forum 2026 is being finalized. Check back soon for speaker sessions, breakout times, and networking events.
-              </p>
-            </div>
+        <div className="grid md:grid-cols-2 gap-8 items-end mb-10 md:mb-14">
+          <h1
+            className={`display-bold text-[clamp(3.5rem,17vw,10rem)] md:text-[12vw] lg:text-[10vw] whitespace-nowrap reveal-up delay-1 ${v}`}
+          >
+            THE BUILD
+          </h1>
+          <div className={`flex flex-wrap gap-3 md:justify-end reveal-up delay-2 ${v}`}>
+            <span className="meta-pill meta-pill-solid">OCT 14–16</span>
+            <span className="meta-pill">2026</span>
+            <span className="meta-pill">ORLANDO</span>
           </div>
+        </div>
 
-          <div className="text-center mt-16">
-            <div className="max-w-2xl mx-auto mb-8">
-              <h3 className="text-2xl font-bold mb-4 text-foreground">Ready to Transform Your Agency?</h3>
-              <p className="text-lg text-muted-foreground">
-                Join us for three days of actionable strategies, proven systems, and industry-leading expertise.
-              </p>
-            </div>
-            <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/pricing">Register Now — Limited Seats Available</Link>
-            </Button>
+        <p className={`max-w-3xl text-2xl md:text-4xl font-semibold leading-tight reveal-up delay-2 ${v}`}>
+          {EVENT.headline}
+        </p>
+        <p className={`mt-4 text-lg md:text-xl text-white/60 reveal-up delay-3 ${v}`}>
+          {EVENT.subhead} · {EVENT.venue}
+        </p>
+
+        <div className={`mt-14 md:mt-20 reveal-up delay-3 ${v}`}>
+          <div className="eyebrow mb-5">THE ARC</div>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
+            {EVENT.arc.map((step, i) => (
+              <span key={step} className="flex items-center gap-3">
+                <span className="display-bold text-lg md:text-2xl tracking-tight">{step}</span>
+                {i < EVENT.arc.length - 1 && (
+                  <span className="text-[hsl(var(--secondary))] text-lg md:text-2xl">→</span>
+                )}
+              </span>
+            ))}
           </div>
-        </section>
-      </main>
-      <div className="h-20 md:h-0"></div>
-    </div>
+        </div>
+
+        <div className={`mt-14 grid grid-cols-3 gap-4 md:gap-8 reveal-up delay-4 ${v}`}>
+          {EVENT.counters.map((c) => (
+            <div key={c.label} className="border-t border-white/15 pt-5">
+              <div className="display-bold text-4xl md:text-6xl text-[hsl(var(--secondary))]">
+                {c.value}
+              </div>
+              <div className="mt-2 text-xs md:text-sm uppercase tracking-widest text-white/50">
+                {c.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
+
+/* ─────────────────────────── Closer ─────────────────────────── */
+
+const AgendaCloser = () => {
+  const { ref, isVisible } = useScrollAnimation(0.15);
+  const { open } = usePassDialog();
+  const v = isVisible ? "is-visible" : "";
+
+  return (
+    <section
+      ref={ref}
+      className="bg-black text-white border-t border-white/10 py-20 md:py-28 px-5 md:px-12"
+    >
+      <div className="container mx-auto max-w-7xl">
+        <h2
+          className={`display-bold text-[clamp(2.5rem,10vw,7rem)] leading-[0.9] max-w-4xl reveal-up ${v}`}
+        >
+          {EVENT.closingLine}
+        </h2>
+        <button
+          onClick={() => open("earlyBird")}
+          className={`mt-10 inline-flex items-center gap-3 bg-[hsl(var(--secondary))] text-white px-8 py-5 rounded-full text-base md:text-lg font-bold uppercase tracking-widest hover:opacity-90 transition-opacity reveal-up delay-2 ${v}`}
+        >
+          Claim your seat →
+        </button>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────── Page ─────────────────────────── */
+
+const Agenda = () => (
+  <PassDialogProvider>
+    <div className="min-h-screen bg-black">
+      <SEO
+        title="Agenda | Formula Forum 2026 — Eight Working Sessions, One Map You Leave With"
+        description="The Formula Forum 2026 agenda: three days in Orlando, eight working sessions across Business, Body, Balance and Being, plus rooftop workouts, partner connect and the map you build and declare in the room."
+        path="/agenda"
+      />
+      <StructuredData page="general" />
+      <BoldHeader />
+      <PassDialogHost />
+      <main>
+        <AgendaHero />
+        <TheWork />
+        <TheAIBuild />
+        <TheRhythm />
+        <AgendaCloser />
+      </main>
+    </div>
+  </PassDialogProvider>
+);
 
 export default Agenda;
