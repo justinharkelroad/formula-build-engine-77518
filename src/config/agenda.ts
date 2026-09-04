@@ -108,7 +108,7 @@ export const SESSIONS: AgendaSession[] = [
     outcome: "A service team that grows the book on purpose, not one that just keeps it from shrinking.",
     question: "Your sales team is measured on growth. What is your service team measured on?",
     inTheRoom:
-      "Service stops being the department that absorbs problems and becomes a second engine that produces growth — held to the same expectation as sales, and built with the same rigor.",
+      "Service stops absorbing problems and starts producing growth — held to the same standard as sales, and built with the same rigor.",
     bring: "Your service lead, and whoever owns retention.",
     targetAreas: 1,
   },
@@ -301,6 +301,35 @@ export const RHYTHM: RhythmItem[] = [
     note: "The final declaration. Signed in the room, in front of a witness.",
   },
 ];
+
+/**
+ * The three seats, from workbook p.3 "READ FROM YOUR SEAT". The same session is
+ * answered differently depending on who is sitting in it, and each seat ends in
+ * its own AI breakdown — the last step of both patterns on that page.
+ *
+ * This is the multi-seat argument: a team member is not there to support the
+ * owner, and a partner is not there to watch. Both are doing their own build.
+ */
+export const SEATS: { role: string; short: string; line: string }[] = [
+  {
+    role: "Owner",
+    short: "answers for the agency.",
+    line: "Answers for the whole agency.",
+  },
+  {
+    role: "Team",
+    short: "for the role they actually play.",
+    line: "Answers from the role they actually play, and the reality they live every day.",
+  },
+  {
+    role: "Partner",
+    short: "for their own company.",
+    line: "Works the frame on the agencies they serve, then on their own company.",
+  },
+];
+
+export const SEATS_NOTE =
+  "Same frame. Different seat. Each one leaves with its own AI breakdown.";
 
 export const WITHHELD_LINE =
   "Which session lands on which day is revealed in the room.";
