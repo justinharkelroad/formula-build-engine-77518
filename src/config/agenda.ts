@@ -28,6 +28,14 @@ export interface AgendaSession {
   minutes: number;
   line: string;
   outcome: string;
+  /** Teaser hook. The question the session forces you to answer. DRAFT COPY — Justin rewrites. */
+  question: string;
+  /** What happens, outcome-shaped. Never the mechanics. */
+  inTheRoom: string;
+  /** Who from the agency should be sitting in it. Drives multi-seat purchases. */
+  bring: string;
+  /** Workbook target areas: 1 per business session, 2 per personal session = 11. */
+  targetAreas: number;
 }
 
 export interface AgendaDay {
@@ -73,6 +81,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Building a producer machine, not becoming a better individual salesperson.",
     outcome: "A sales sequence your producers can run without you in the room.",
+    question: "If your top producer quit on Friday, does your sales process walk out the door with them?",
+    inTheRoom:
+      "We take the sequence out of your best person's head and put it somewhere the whole team can run it. You build the version your producers can execute without you sitting in.",
+    bring: "Your top producer, and whoever owns follow-up.",
+    targetAreas: 1,
   },
   {
     title: "Growth Through Service",
@@ -81,6 +94,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Designing service operations that create retention, capacity and growth.",
     outcome: "A service operation that returns capacity instead of consuming it.",
+    question: "Is your service team protecting the book, or just absorbing the complaints?",
+    inTheRoom:
+      "Service either returns capacity to the agency or quietly eats it. You design the operation that retains, and frees the hours you have been giving away.",
+    bring: "Your service lead.",
+    targetAreas: 1,
   },
   {
     title: "The Operating System",
@@ -89,6 +107,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Removing the owner from the center of the agency.",
     outcome: "The first system that runs without the owner watching it.",
+    question: "How many decisions this week could only have been made by you?",
+    inTheRoom:
+      "The agency that needs you in every decision cannot grow past your calendar. You pull yourself out of the center and put a system in your place.",
+    bring: "Your second-in-command.",
+    targetAreas: 1,
   },
   {
     title: "Commitment to Training",
@@ -97,6 +120,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Turning knowledge into repeatable performance.",
     outcome: "A training cadence with an owner, a measure, and a date.",
+    question: "Can you name one thing your team got measurably better at last quarter?",
+    inTheRoom:
+      "Most agencies buy training and never install it. You leave with a cadence that turns what your team knows into what your team does.",
+    bring: "Whoever runs your team meetings.",
+    targetAreas: 1,
   },
   {
     title: "Making It Rain",
@@ -105,6 +133,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 60,
     line: "Engineering enough opportunity to keep the sales machine fed.",
     outcome: "An opportunity engine sized to the production you say you want.",
+    question: "Is your pipeline sized to the year you are planning, or the year you just had?",
+    inTheRoom:
+      "A sales machine with nothing feeding it stalls. You engineer enough opportunity to keep the producers you just built actually busy.",
+    bring: "Whoever owns your marketing spend.",
+    targetAreas: 1,
   },
   {
     title: "The Body Session",
@@ -113,6 +146,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "The physical standard, plus energy and recovery.",
     outcome: "A physical standard you can actually hold under a full calendar.",
+    question: "Would your calendar survive a health scare, or would the agency stop when you did?",
+    inTheRoom:
+      "The physical standard is not a fitness pitch. It is the energy the rest of this build runs on, and whether it holds in your busiest month.",
+    bring: "Just you.",
+    targetAreas: 2,
   },
   {
     title: "The Balance Session",
@@ -121,6 +159,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "The primary relationship, and the people you are responsible to love.",
     outcome: "A commitment at home that survives your busiest quarter.",
+    question: "Does the person you are building this for feel like a priority or a leftover?",
+    inTheRoom:
+      "You name the relationships you are actually responsible to, and set a commitment at home that does not get traded away the next time work gets loud.",
+    bring: "Just you. Worked in pairs in the room.",
+    targetAreas: 2,
   },
   {
     title: "The Being Session",
@@ -129,6 +172,11 @@ export const SESSIONS: AgendaSession[] = [
     minutes: 40,
     line: "Inner alignment and personal command.",
     outcome: "Clarity on who you are becoming while the business grows.",
+    question: "Who are you when the production numbers are not there to answer for you?",
+    inTheRoom:
+      "The last session of the build. Inner alignment and personal command, so the person running the agency in 2027 is someone you would follow.",
+    bring: "Just you.",
+    targetAreas: 2,
   },
 ];
 

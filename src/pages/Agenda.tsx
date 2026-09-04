@@ -1,9 +1,11 @@
+import { useState } from "react";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import BoldHeader from "@/components/BoldHeader";
 import PassDialogHost from "@/components/PassDialogHost";
 import { PassDialogProvider, usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import SessionModal from "@/components/agenda/SessionModal";
 import {
   EVENT,
   DAYS,
@@ -12,6 +14,7 @@ import {
   sessionsForBuild,
   rhythmForDay,
   type AgendaDay,
+  type AgendaSession,
   type Track,
 } from "@/config/agenda";
 
@@ -84,6 +87,7 @@ const AgendaHero = () => {
 
 const TheWork = () => {
   const { ref, isVisible } = useScrollAnimation(0.05);
+  const [active, setActive] = useState<AgendaSession | null>(null);
   const v = isVisible ? "is-visible" : "";
 
   return (
@@ -117,9 +121,12 @@ const TheWork = () => {
 
             <div className="grid md:grid-cols-2 gap-4 md:gap-6">
               {sessionsForBuild(group.id).map((s, i) => (
-                <div
+                <button
                   key={s.title}
-                  className={`border border-white/15 rounded-lg p-6 md:p-7 hover:border-white/35 transition-colors reveal-up delay-${Math.min(i + 1, 4)} ${v}`}
+                  type="button"
+                  onClick={() => setActive(s)}
+                  aria-label={`${s.title} — read the teaser`}
+                  className={`group text-left w-full border border-white/15 rounded-lg p-6 md:p-7 hover:border-white/40 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 transition-colors reveal-up delay-${Math.min(i + 1, 4)} ${v}`}
                 >
                   <div className="flex flex-wrap items-center gap-3 mb-3">
                     <span
@@ -142,7 +149,14 @@ const TheWork = () => {
                     </div>
                     <p className="text-base md:text-lg font-medium text-white/90">{s.outcome}</p>
                   </div>
-                </div>
+
+                  <div
+                    className="mt-4 text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity"
+                    style={{ color: trackColor(s.track) }}
+                  >
+                    The question →
+                  </div>
+                </button>
               ))}
             </div>
           </div>
@@ -152,6 +166,8 @@ const TheWork = () => {
           ◆ {WITHHELD_LINE}
         </div>
       </div>
+
+      <SessionModal session={active} onClose={() => setActive(null)} />
     </section>
   );
 };
