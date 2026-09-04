@@ -34,7 +34,6 @@ const AdminRegistrations = lazy(() => import("./pages/AdminRegistrations"));
 const AdminSales = lazy(() => import("./pages/AdminSales"));
 const AdminFormulaAttendees = lazy(() => import("./pages/AdminFormulaAttendees"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
-const PartnerPodcasts = lazy(() => import("./pages/PartnerPodcasts"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -87,7 +86,7 @@ const App = () => (
             <Route path="/partners" element={<Partners />} />
             <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
             <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
-            <Route path="/2025partners" element={<PartnerPodcasts />} />
+            <Route path="/2025partners" element={<Navigate to="/partners" replace />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />

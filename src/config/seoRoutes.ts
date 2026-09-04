@@ -100,12 +100,6 @@ const SITE_ROUTES: SeoRoute[] = [
       "Become a 2026 Formula Forum partner. Four tiers from $5,000 to $15,000 — stage time, 1-on-1 podcast interviews, booth placement, attendee lead lists, and mobile-app exposure.",
   },
   {
-    path: "/2025partners",
-    title: "2025 Partner Podcast Episodes | Formula Forum 2026",
-    description:
-      "Hear from our 2025 Formula Partners - exclusive podcast episodes featuring RICOCHET, Media Alpha, Disruptur, and more.",
-  },
-  {
     path: "/gallery",
     title: "Photo Gallery | Formula Forum 2025 Highlights",
     description:
