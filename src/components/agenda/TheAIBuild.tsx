@@ -2,8 +2,9 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { AI_BUILD } from "@/config/agenda";
 
 /**
- * The AI half of the build: every session compiles into the attendee's 2027
- * plan, delivered as a dashboard they work against all year.
+ * "Your 2027 Build": every session compiles into it, the attendee has it the
+ * moment the event ends, it connects to their app, and it keeps building as
+ * they work through the year.
  *
  * This is NOT the Agency AI Install Walkthrough bonus gift. Do not reference
  * that product here — they are different things.
@@ -29,7 +30,7 @@ const TheAIBuild = () => {
           {AI_BUILD.lead}
         </p>
 
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {AI_BUILD.points.map((pt, i) => (
             <div
               key={pt.title}
@@ -43,6 +44,12 @@ const TheAIBuild = () => {
             </div>
           ))}
         </div>
+
+        <p
+          className={`mt-12 display-bold text-2xl md:text-4xl leading-tight reveal-up delay-4 ${v}`}
+        >
+          {AI_BUILD.kicker}
+        </p>
       </div>
     </section>
   );

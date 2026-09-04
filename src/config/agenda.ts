@@ -333,9 +333,12 @@ export const SEATS_NOTE =
 
 /**
  * The AI half of the build (Justin, confirmed 2026-09-04: locked and already
- * built out). Every session's answers compile into the attendee's 2027 plan,
- * and they leave with a dashboard that turns that plan into tasks they check
- * off across the year.
+ * built out). Named "Your 2027 Build". Every session's answers compile into it;
+ * the attendee has it immediately after the event, connected to their Formula
+ * app, and it keeps building as they work through the year.
+ *
+ * Justin: it lives on the Flow site, but the page must NOT specify that. Say it
+ * connects to their app and stop there.
  *
  * DO NOT conflate this with the Agency AI Install Walkthrough / MY BIZ BRAIN
  * bonus gift on the homepage. Justin: "completely different than what we're
@@ -346,23 +349,28 @@ export const SEATS_NOTE =
  */
 export const AI_BUILD = {
   eyebrow: "AI IN THE BUILD",
-  heading: "YOU LEAVE WITH THE PLAN, NOT THE NOTES",
+  heading: "YOUR 2027 BUILD",
   lead:
-    "Every session feeds the same place. AI builds your 2027 plan with you, in the room, out of your own answers — not a template, and not a notebook you have to go transcribe on the flight home.",
+    "Every session feeds the same place. AI builds your 2027 plan with you, in the room, out of your own answers — not a template, and not a notebook you have to transcribe on the flight home.",
   points: [
     {
-      title: "The plan gets built as you go",
-      body: "Each session's work compiles into the plan instead of sitting in a book you close at the end of the day.",
+      title: "Built as you go",
+      body: "Each session's work compiles into it, instead of sitting in a book you close at the end of the day.",
     },
     {
-      title: "A dashboard, not a document",
-      body: "You leave with your 2027 plan as tasks you check off through the year, so what you decided in Orlando is still in front of you in March.",
+      title: "Yours the moment you leave",
+      body: "No waiting on a follow-up email. It is live when Orlando ends, and it connects to your Formula app.",
+    },
+    {
+      title: "It keeps building",
+      body: "The plan becomes tasks you check off through the year. As you build, it builds with you.",
     },
     {
       title: "One per seat",
-      body: "Owner, team and partner each answer from where they sit, so each one walks out with a plan that is theirs to run.",
+      body: "Owner, team and partner each answer from where they sit, so each one runs their own.",
     },
   ],
+  kicker: "You leave with the plan, not the notes.",
 } as const;
 
 export const WITHHELD_LINE =
