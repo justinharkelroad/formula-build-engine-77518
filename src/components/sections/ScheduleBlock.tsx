@@ -1,14 +1,16 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import TheWork from "@/components/agenda/TheWork";
 import DayStrip from "@/components/agenda/DayStrip";
 import { EVENT } from "@/config/agenda";
 
 /**
- * Homepage agenda section. Condensed: the eight working sessions with their
- * teaser modals, plus a compact three-day strip. The full rhythm — meals,
- * workouts, partner time — lives on /agenda, which DayStrip links to.
+ * Homepage agenda teaser. Deliberately small: the arc, the counters, and the
+ * three day themes — then out to /agenda, which owns the eight sessions, their
+ * teaser modals, and the full rhythm.
  *
- * Keeps id="schedule" so the BoldHeader nav anchor keeps working.
+ * Do not put the session cards back here. The homepage links to the agenda;
+ * it does not contain it.
+ *
+ * Keeps id="schedule" — ValuePropsGrid still anchors to it.
  */
 const ScheduleBlock = () => {
   const { ref, isVisible } = useScrollAnimation(0.15);
@@ -23,22 +25,35 @@ const ScheduleBlock = () => {
       <div className="container mx-auto max-w-7xl">
         <div className={`eyebrow mb-8 reveal-up ${v}`}>AGENDA</div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-end mb-12 md:mb-16">
+        <div className="grid md:grid-cols-2 gap-8 items-end mb-10 md:mb-12">
           <h2
             className={`display-bold text-[clamp(3rem,15vw,9rem)] md:text-[11vw] lg:text-[9vw] whitespace-nowrap reveal-up delay-1 ${v}`}
           >
             THE BUILD
           </h2>
-          <div className={`flex flex-wrap gap-3 justify-end reveal-up delay-2 ${v}`}>
+          <div className={`flex flex-wrap gap-3 md:justify-end reveal-up delay-2 ${v}`}>
             <span className="meta-pill meta-pill-solid">OCT 14-16</span>
             <span className="meta-pill">2026</span>
           </div>
         </div>
 
-        <TheWork
-          bare
-          intro={`${EVENT.counters[0].value} working sessions across three days. We publish the work, not the running order — the room finds out when it walks in.`}
-        />
+        <p className={`max-w-2xl text-lg md:text-2xl text-white/70 mb-10 reveal-up delay-2 ${v}`}>
+          Eight working sessions across three days, ending in the 2027 map you build and declare in
+          the room.
+        </p>
+
+        <div className={`grid grid-cols-3 gap-4 md:gap-8 mb-4 reveal-up delay-3 ${v}`}>
+          {EVENT.counters.map((c) => (
+            <div key={c.label} className="border-t border-white/15 pt-5">
+              <div className="display-bold text-4xl md:text-6xl text-[hsl(var(--secondary))]">
+                {c.value}
+              </div>
+              <div className="mt-2 text-xs md:text-sm uppercase tracking-widest text-white/50">
+                {c.label}
+              </div>
+            </div>
+          ))}
+        </div>
 
         <DayStrip />
       </div>
