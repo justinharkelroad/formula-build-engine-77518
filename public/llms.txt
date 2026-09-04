@@ -66,7 +66,6 @@ Charitable Partner: Destiny Rescue
 
 - Homepage: https://theformulaforum.com/
 - Agenda: https://theformulaforum.com/agenda
-- Speakers: https://theformulaforum.com/speakers
 - Pricing: https://theformulaforum.com/pricing
 - Format: https://theformulaforum.com/format
 - Venue: https://theformulaforum.com/venue

@@ -286,9 +286,5 @@ export const CONFIG = {
     // Only ships a white-on-transparent lockup; recoloured to black for the light tiles.
     { name: "CRC Tapco", tier: "Sponsor", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
     { name: "Ask Fetch", tier: "Sponsor", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
-  ],
-  SPEAKERS: [
-    { name: "Garrett J. White", title: "Founder, Warrior", company: "Warrior Empire", photo: "/assets/speakers/garrett.jpg" },
-    { name: "Kory [LastName]", title: "Allstate Agent of the Year", company: "Crane Agency", photo: "/assets/speakers/kory.jpg" }
   ]
 } as const;

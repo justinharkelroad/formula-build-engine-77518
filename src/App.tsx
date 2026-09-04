@@ -20,7 +20,6 @@ const Partners = lazy(() => import("./pages/Partners"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Pricing = lazy(() => import("./pages/Pricing"));
-const SpeakersPage = lazy(() => import("./pages/SpeakersPage"));
 const Agenda = lazy(() => import("./pages/Agenda"));
 const Format = lazy(() => import("./pages/Format"));
 const Venue = lazy(() => import("./pages/Venue"));
@@ -80,7 +79,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/speakers" element={<SpeakersPage />} />
+            <Route path="/speakers" element={<Navigate to="/agenda" replace />} />
             <Route path="/format" element={<Format />} />
             <Route path="/venue" element={<Venue />} />
             <Route path="/survey" element={<Survey />} />
