@@ -17,11 +17,11 @@
  * the reader's own agency — it is NOT a Mirror question and must never become
  * one.
  *
- * Also unpublished: Platinum partner slot placement, transitions and breaks,
+ * Also unpublished on the agenda page: Platinum partner slot placement, transitions and breaks,
  * the Mirror questions, the 1-5 star scoring standard, the Domino exercise,
  * the per-session target areas themselves, and workbook page numbers.
  *
- * Source: workbook FORMULAv8.pdf p.5, plus Justin's confirmed rhythm items.
+ * Source: workbook The Formula Process v7.pdf p.5, plus Justin's confirmed rhythm items.
  *
  * NOTE: "line" no longer matches the workbook p.5 wording verbatim. Those were
  * written as internal contents-page descriptions and several read defensively

@@ -115,7 +115,7 @@ function attendeeEmail(name: string | null) {
       <tr><td style="padding:0 0 12px">${button(FACEBOOK_GROUP_URL, "Join the attendee Facebook group", "#27272a")}</td></tr>
       <tr><td style="padding:0 0 24px">${button(WEBSITE_URL, "View event details")}</td></tr>
     </table>
-    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">Each attendee's plan is private to their account. Team members can download or copy business actions for an agency owner; personal Body, Balance and Being work stays private.</p>
+    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration. Each attendee's plan is private to their account. Team members can download or copy business actions for an agency owner; personal Body, Balance and Being work stays private.</p>
     <p style="margin:0 0 6px;font-size:15px;line-height:1.6">Questions? Reply to this email or contact <a href="mailto:info@f3florida.com" style="color:#f53214">info@f3florida.com</a>.</p>
     <p style="margin:22px 0 0;font-size:17px;font-weight:700;color:#f53214">We will see you in Orlando.</p>`;
 
@@ -139,6 +139,8 @@ Join the attendee Facebook group: ${FACEBOOK_GROUP_URL}
 Event details: ${WEBSITE_URL}
 
 Each named owner or team attendee uses the email assigned to their own seat and creates their own FORMULA account. Verify the email before a first ticket claim, then use the same account credentials in Formula Flow.
+
+After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
 
 Each attendee's plan is private to their account. Team members can download or copy business actions for an agency owner; personal Body, Balance and Being work stays private.
 
@@ -175,7 +177,7 @@ function partnerEmail(name: string | null, tier: string | null, sessionId: strin
       <tr><td style="padding:0 0 12px">${button(PARTNER_HUB_GUIDE_URL, "Complete Partner Hub setup", "#27272a")}</td></tr>
       <tr><td style="padding:0 0 24px">${button(FORMULA_FLOW_URL, "Open Formula Flow", "#27272a")}</td></tr>
     </table>
-    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">Partner owners and staff each receive a private plan in their own account. Organization page and lead work belongs in Partner Hub; personal Body, Balance and Being work stays private.</p>
+    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration. Partner owners and staff each receive a private plan in their own account. Organization page and lead work belongs in Partner Hub; personal Body, Balance and Being work stays private.</p>
     <p style="margin:0;font-size:15px;line-height:1.6">Questions? Reply to this email or contact <a href="mailto:info@f3florida.com" style="color:#f53214">info@f3florida.com</a>.</p>`;
 
   return {
@@ -194,6 +196,8 @@ Partner Hub setup guide: ${PARTNER_HUB_GUIDE_URL}
 Formula Flow: ${FORMULA_FLOW_URL}
 
 Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Complete any verification prompt shown by the app. Do not share the partner owner's password.
+
+After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
 
 Partner owners and staff each receive a private plan in their own account. Organization page and lead work belongs in Partner Hub; personal Body, Balance and Being work stays private.
 

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const Pricing = () => {
   const { agencyOwner, team } = PRICING.earlyBird;
   const title = "Ticket Pricing | Formula Forum 2026 - Agency Owner & Team Passes";
-  const description = `Formula Forum 2026 tickets: Agency Owner Pass $${agencyOwner.price}, Team Member Pass $${team.price}. Includes sessions, the Book of Formulas, meals, networking, and the final-day Agency AI Install attendee gift.`;
+  const description = `Formula Forum 2026 tickets: Agency Owner Pass $${agencyOwner.price}, Team Member Pass $${team.price}. Includes sessions, the Formula workbook, meals, networking, and the final-day Agency AI Install attendee gift.`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -29,7 +29,7 @@ const Pricing = () => {
         <section className="max-w-4xl mx-auto space-y-8">
           <article className="text-center space-y-4">
             <p data-speakable="true">
-              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include all sessions, the printed Book of Formulas, networking events, meals, and the Agency AI Install Walkthrough when final-day attendance is confirmed. Limited to 250 attendees.
+              Formula Forum 2026 offers two pass tiers: the Agency Owner Pass at ${agencyOwner.price} for agency owners and senior producers, and the Team Member Pass at ${team.price} for team members and junior producers. Both passes include all sessions, the printed Formula workbook, networking events, meals, and the Agency AI Install Walkthrough when final-day attendance is confirmed. Limited to 250 attendees.
             </p>
           </article>
 
@@ -49,7 +49,7 @@ const Pricing = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30" aria-hidden="true"></div>
                    <img
                      src="/lovable-uploads/13190d3e-be9d-4836-9991-e7cee56f7509.png"
-                     alt="Formula Forum 2026 Book of Formulas Playbook, a guide for insurance agency growth"
+                     alt="Formula Forum 2026 workbook for the eight working sessions"
                      className="relative z-10 max-w-sm w-full h-auto rounded-2xl shadow-2xl"
                      loading="lazy"
                      width="400"

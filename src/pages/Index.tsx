@@ -24,7 +24,7 @@ const HOMEPAGE_VIMEO_ID = "1168470992";
 
 const Index = () => {
   const title = "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16";
-  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek, with operator-led workshops, peer breakouts, the Book of Formulas, and a final-day Agency AI Install attendee gift.";
+  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek, with eight working sessions, the Formula workbook, and a final-day Agency AI Install attendee gift.";
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,7 +82,7 @@ const Index = () => {
         <div className="container mx-auto max-w-7xl mb-10 md:mb-12">
           <div className="eyebrow mb-4">VOICES - REAL OWNERS</div>
           <h2 className="text-2xl md:text-5xl font-bold leading-tight max-w-3xl">
-            Hear from agency owners and team members who installed the Formula playbook, in their words.
+            Hear from agency owners and team members who put the Formula work into practice, in their words.
           </h2>
         </div>
         <VideoTestimonialsGrid />

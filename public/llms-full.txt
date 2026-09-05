@@ -21,7 +21,7 @@
 - Dates: October 14–16, 2026
 - Day 1 (Oct 14): Welcome & Networking — check-in, welcome reception, meet the trainers
 - Day 2 (Oct 15): Main Conference Day — full day of speaker sessions, breakouts, meals, rooftop party
-- Day 3 (Oct 16): Implementation & Action Planning — final sessions, Book of Formulas playbook distribution
+- Day 3 (Oct 16): Final working sessions and declaration
 - Location: JW Marriott Orlando Bonnet Creek Resort & Spa
 - Address: 14900 Chelonia Parkway, Orlando, FL 32821
 - GPS Coordinates: 28.3569, -81.5300
@@ -42,43 +42,40 @@
 
 ## Ticket Pricing
 
-- Agency Owner Pass: $647 (for agency owners and senior producers)
-  - Price: $647
-- Team Member Pass: $347 (for team members and junior producers)
-  - Price: $347
-- Discount code: F3100OFF (saves $100)
+- Agency Owner Pass: $697 (for agency owners and senior producers)
+  - Price: $697
+- Team Member Pass: $397 (for team members and junior producers)
+  - Price: $397
 - Group discount: Teams of 5+ save 20% (email Gregg@theformulaforum.com)
 - Refund policy: No refunds, all sales are final
 - Transfer policy: Tickets transferable up to 7 days before the event
 - Payment: Secure checkout via Stripe with Apple Pay & Google Pay support
-- Early bird cutoff: September 15, 2026
 
 ## What's Included in Registration
 
 - Access to all speaker sessions and general sessions
 - Small-group breakout sessions
-- Printed "Book of Formulas" playbook with action maps from every speaker
+- Printed Formula workbook for the eight working sessions
 - Networking events including welcome reception and rooftop party
 - Meals during the conference (breakfast and lunch)
 - Optional morning group workout
 
-## The Format Framework
+## How Formula Sessions Work
 
-Formula Forum uses a proprietary four-step session format designed for implementation, not passive listening:
+Formula Forum has five 60-minute Business sessions and three 40-minute Personal sessions. Each follows one repeated pattern in the Formula workbook:
 
-1. **Speaker** (15–20 minutes): Focused training sessions delivering actionable insights from real operators who have built and scaled insurance agencies.
-2. **Takeaways** (2–3 minutes): Attendees type out their key takeaways and specific action items while the content is fresh.
-3. **Breakouts** (10 minutes): Small groups share their takeaways and listen to what others captured, creating peer accountability and diverse perspectives.
-4. **Speaker Close** (3 minutes): The speaker returns to solidify the training, answer rapid-fire questions, and outline the next steps.
+1. **Learn:** Keep the workbook closed and listen to operators who have already solved it.
+2. **Assess:** Score the three Mirror questions honestly against the five-star standard.
+3. **Reflect:** Write privately about what is actually true.
+4. **Discuss:** Work in quads for Business sessions and pairs for Body, Balance, and Being.
+5. **Choose the Domino:** Select the one move that starts the rest of the change.
+6. **Build 2027:** Define the target, owner, support, measure, cadence, and first 30 days.
+7. **Align:** Stress-test the build in the Walk & Talk.
+8. **Declare:** Sign the commitment in the room in front of a witness.
 
-This format ensures attendees leave with written, actionable plans — not just inspiration.
+## The Formula Workbook
 
-## The Book of Formulas
-
-Every attendee receives a printed "Book of Formulas" playbook. This physical guide contains:
-- Action maps from every speaker session
-- Implementation frameworks and templates
-- Contact information for speakers and partners
+Every attendee receives a printed Formula workbook. Each working session runs across three pages: assessment and Mirror scores; reflection and discussion; and Domino through declaration. After the session, attendees photograph or upload all three completed pages so their scores, written reflections, and final commitment stay together.
 
 ## Program
 
@@ -97,31 +94,24 @@ Build the Person (three sessions)
 - The Balance Session
 - The Being Session
 
-Every session compiles into Your 2027 Build: the attendee's plan for the year,
-live the moment the event ends and connected to their Formula app.
+The attendee's private Formula plan can organize the decisions from all eight sessions and stays connected to their Formula app.
 
 ## Partners
 
 ### Platinum Partners
-- Ricochet360 (https://ricochet360.com)
-- The Standard / Standard Playbook (https://standardplaybook.com)
-- MediaAlpha (https://mediaalpha.com)
+- Agency Toolchest
+- MediaAlpha
+- SecureEVAs
+- The Standard / Standard Playbook
 
-### Gold Partners
-- DART Direct Mail
-- American Integrity Insurance Group
-- Performology
+### Silver Partner
+- Post Pros
 
-### Silver Partners
-- Filtered Quotes
-- Wintrust
-- Embrace Pet Insurance
+### Bronze Partners
+EverQuote, Filtered Quotes, Hagerty, QuoteWizard by LendingTree, Wintrust Agent Finance, Search Perfect, Ricochet360, Arbeit, National General, DMS, LeadMiner, ServiceMaster Restore, Melon Local, Slide Insurance, CRC Tapco, NW Preferred Federal Credit Union, Performology, GOAL, Mav, SmartFinancial, SmarketingMail, Quote Nerds, Ivantage, YPC Media
 
-### Additional Partners
-Smart Financial, EOS, Smarketing, Search Perfect, Team Hired, Slide, Braishfield, Evergreen, Agency Tool Chest, Ivantage, Quote Nerds, Cover Desk, Hagerty, Disruptr, TopSphere Media, Fl Penn / Edison / Ovation, Filtered Leads
-
-### Charitable Partner
-- Destiny Rescue — A global organization dedicated to rescuing children from sexual exploitation and human trafficking.
+### Additional Participating Partner
+- Ask Fetch — 2026 sponsor tier to confirm
 
 ## FAQ
 
@@ -141,13 +131,13 @@ Q: Is there a group discount?
 A: Yes. Teams of five or more save 20% on registration. Email Gregg@theformulaforum.com for a custom group discount code.
 
 Q: What's included in the registration fee?
-A: Registration includes access to all speaker sessions, the printed Book of Formulas playbook, networking events (welcome reception and rooftop party), meals during the conference (breakfast and lunch), and an optional morning group workout.
+A: Registration includes access to all sessions, the printed Formula workbook, networking events (welcome reception and rooftop party), meals during the conference (breakfast and lunch), and an optional morning group workout.
 
 Q: Will sessions be recorded?
 A: No. For the privacy and engagement of attendees, sessions are not recorded. This ensures open, honest discussions and protects the confidential strategies shared by speakers and attendees.
 
 Q: What should I bring?
-A: Bring business cards and a laptop for workshop sessions. All materials, tools, and the Book of Formulas playbook will be provided.
+A: Bring business cards and a laptop for workshop sessions. All materials, tools, and the Formula workbook will be provided.
 
 ## All Public Pages
 

@@ -320,7 +320,7 @@ const FormulaAppGuide = () => {
             <SectionTitle number="06" eyebrow="Bring It Home" title="TURN THE BEST INSIGHT INTO AN INSTALLED ACTION" copy="Build and Action Packs help you capture the work, confirm what matters, and leave with a clear artifact your team can use after the event." darkText />
             <div className="mt-16 grid border-l border-t border-black/20 md:grid-cols-4">
               {[
-                ["01", Camera, "Capture", "Photograph a workbook page or add the input."],
+                ["01", Camera, "Capture All Three", "For each session, photograph or upload the scores page, the reflection and discussion page, and the Domino through declaration page."],
                 ["02", Sparkles, "Extract", "Let the app organize the important signal."],
                 ["03", CheckCircle2, "Confirm", "Review and edit before anything is final."],
                 ["04", FileCheck2, "Install", "Create a usable plan, scorecard, or next step."],
@@ -331,7 +331,7 @@ const FormulaAppGuide = () => {
             </div>
             <div className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-4">
               <AppScreenshot src="/assets/formula-app-guide/build.png" alt="Build action pack selection screen" onOpen={openImage} label="CHOOSE" />
-              <AppScreenshot src="/assets/formula-app-guide/capture.png" alt="Capture a completed Formula Forum workbook page" onOpen={openImage} label="CAPTURE" />
+              <AppScreenshot src="/assets/formula-app-guide/capture.png" alt="Capture all three completed Formula workbook session pages" onOpen={openImage} label="CAPTURE" />
               <AppScreenshot src="/assets/formula-app-guide/confirm.png" alt="Confirm extracted action details" onOpen={openImage} label="CONFIRM" />
               <AppScreenshot src="/assets/formula-app-guide/artifact.png" alt="Completed action artifact ready to use" onOpen={openImage} label="USE IT" />
             </div>
@@ -347,7 +347,7 @@ const FormulaAppGuide = () => {
                 "Complete your profile so every connection has context.",
                 "Open Agenda and favorite the sessions that matter most.",
                 "Use your QR when a conversation is worth continuing.",
-                "Run one Flow, then turn the clearest insight into an action.",
+                "After each session, upload all three completed workbook pages so the scores, written reflections, and final commitment stay together.",
               ].map((item, index) => <li key={item} className="grid grid-cols-[3rem_1fr] gap-4 border-b border-white/20 py-5 text-sm leading-relaxed text-white/70"><span className="font-black text-[hsl(var(--secondary))]">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}
             </ol>
           </div>

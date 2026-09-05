@@ -80,7 +80,7 @@ const PassDialogHost = () => {
               </span>
             </div>
             <div className="flex items-center justify-between text-sm opacity-70 group-hover:opacity-100">
-              <span>Full access, Book of Formulas, networking</span>
+              <span>Full access, Formula workbook, networking</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </button>

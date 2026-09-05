@@ -35,7 +35,7 @@ const PricingBlock = () => {
           <div>
             <div className="text-xs tracking-widest uppercase text-white/50 mb-3">CONFERENCE</div>
             <p className="text-white/85 leading-relaxed max-w-md">
-              A systems workshop bridging foundation, operator routines, and AI installs. 1.5 days in Orlando dedicated to agency owners and team members building a real business on real fundamentals.
+              A systems workshop spanning October 14–16 in Orlando, dedicated to agency owners and team members building a real business on real fundamentals through eight working sessions.
             </p>
           </div>
           <div>
@@ -74,7 +74,7 @@ const PricingBlock = () => {
               <span className="text-xs uppercase tracking-widest bg-black text-white group-hover:bg-white group-hover:text-black px-2 py-1 rounded-full">SAVE ${prices.agencyOwner.fullPrice - prices.agencyOwner.price}</span>
             </div>
             <p className="text-sm opacity-80 leading-relaxed mb-6">
-              For agency owners and senior producers. Full access to all sessions, printed Book of Formulas playbook, networking events, and meals.
+              For agency owners and senior producers. Full access to all sessions, the printed Formula workbook, networking events, and meals.
             </p>
             <div className="mt-auto flex items-center justify-between text-sm font-bold">
               <span>SECURE THIS PASS</span>
@@ -96,7 +96,7 @@ const PricingBlock = () => {
               <span className="text-xs uppercase tracking-widest bg-white text-[hsl(var(--secondary))] px-2 py-1 rounded-full">SAVE ${prices.team.fullPrice - prices.team.price}</span>
             </div>
             <p className="text-sm text-white/85 leading-relaxed mb-6">
-              For team members and junior producers. Bring your producer or service lead. They get the same access, same playbook, same room.
+              For team members and junior producers. Bring your producer or service lead. They get the same access, same Formula workbook, same room.
             </p>
             <div className="mt-auto flex items-center justify-between text-sm font-bold">
               <span>SECURE THIS PASS</span>

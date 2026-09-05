@@ -20,7 +20,7 @@ const props = [
   {
     icon: Wrench,
     title: "Tools you'll deploy in October",
-    body: "The Book of Formulas playbook. Action maps from every session. The agency's running it by Monday."
+    body: "The Formula workbook. Decisions from every session. A build the agency can use after Orlando."
   }
 ];
 
@@ -33,7 +33,7 @@ const ValuePropsGrid = () => {
 
         <div className="grid md:grid-cols-2 gap-16 mb-16">
           <p className={`text-base md:text-lg leading-relaxed text-black/70 max-w-md reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
-            A 1.5-day conference for insurance agency owners and team members who want future-facing systems they can actually install.
+            Eight working sessions across October 14–16 for insurance agency owners and team members who want future-facing systems they can actually install.
           </p>
           <h2 className={`text-3xl md:text-4xl font-bold leading-tight reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             Gain valuable knowledge. Take<br />

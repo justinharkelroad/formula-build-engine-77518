@@ -116,6 +116,7 @@ const ThankYouEnhanced = () => {
 
             <section className="bg-card p-6 rounded-lg border mb-8 text-left text-sm text-muted-foreground space-y-3">
               <h2 className="text-lg font-bold text-foreground">How plans work</h2>
+              <p>After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.</p>
               <p>Owners, team members and partners each build a private plan in their own account.</p>
               <p>Team members can download or copy business actions to hand to an agency owner. Personal Body, Balance and Being work stays private to the attendee.</p>
               <p>Approved partner owners and staff should also complete the <Link className="text-primary underline" to="/partners/partner-hub-guide">Partner Hub guide</Link> with separate accounts instead of sharing a password.</p>

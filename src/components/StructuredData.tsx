@@ -111,7 +111,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       }
     },
     "image": [CONFIG.OG_IMAGE_1200x630.startsWith("http") ? CONFIG.OG_IMAGE_1200x630 : `${siteUrl}${CONFIG.OG_IMAGE_1200x630}`],
-    "description": "1.5-day insurance agency growth conference in Orlando with workshops, breakouts, and a printed Book of Formulas playbook.",
+    "description": "Insurance agency growth conference in Orlando from October 14–16, 2026, with eight working sessions and a printed Formula workbook.",
     "organizer": {
       "@type": "Organization",
       "name": "Formula Forum",
@@ -185,7 +185,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "What's included in the registration fee?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Registration includes access to all sessions, the printed Book of Formulas playbook, networking events, meals during the conference, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
+          "text": "Registration includes access to all sessions, the printed Formula workbook, networking events, meals during the conference, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
         }
       },
       {
@@ -241,7 +241,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "What should I bring?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Bring business cards and a laptop for workshop sessions. All materials, tools, and the Book of Formulas playbook will be provided."
+          "text": "Bring business cards and a laptop for workshop sessions. All materials, tools, and the Formula workbook will be provided."
         }
       }
     ]
@@ -252,7 +252,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "@context": "https://schema.org",
     "@type": "AggregateOffer",
     "name": `${CONFIG.EVENT_NAME} Passes`,
-    "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, printed playbook, and networking events.`,
+    "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, the printed Formula workbook, and networking events.`,
     "priceCurrency": "USD",
     "lowPrice": String(PRICING.earlyBird.team.price),
     "highPrice": String(PRICING.earlyBird.agencyOwner.price),
@@ -287,32 +287,56 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
   const formatSchema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": "The Formula Forum Format Framework",
-    "description": "A proprietary four-step session format designed for implementation, not passive listening. Each session follows this cycle to ensure attendees leave with actionable plans.",
+    "name": "How Formula Forum Sessions Work",
+    "description": "Five 60-minute Business sessions and three 40-minute Personal sessions follow the same eight-step Formula workbook pattern.",
     "step": [
       {
         "@type": "HowToStep",
         "position": 1,
-        "name": "Speaker",
-        "text": "Focused 15-20 minute training sessions delivering actionable insights from real operators who have built and scaled insurance agencies."
+        "name": "Learn",
+        "text": "Keep the Formula workbook closed and listen to operators who have already solved it."
       },
       {
         "@type": "HowToStep",
         "position": 2,
-        "name": "Takeaways",
-        "text": "Attendees spend 2-3 minutes typing out their key takeaways and specific action items while the content is fresh."
+        "name": "Assess",
+        "text": "Score the three Mirror questions honestly against the five-star standard."
       },
       {
         "@type": "HowToStep",
         "position": 3,
-        "name": "Breakouts",
-        "text": "Small groups spend 10 minutes sharing their takeaways and listening to what others captured, creating peer accountability and diverse perspectives."
+        "name": "Reflect",
+        "text": "Write privately about what is actually true."
       },
       {
         "@type": "HowToStep",
         "position": 4,
-        "name": "Speaker Close",
-        "text": "The speaker returns for 3 minutes to solidify the training, answer rapid-fire questions, and outline next steps."
+        "name": "Discuss",
+        "text": "Work in quads for Business sessions and pairs for Body, Balance, and Being."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 5,
+        "name": "Choose the Domino",
+        "text": "Choose the one move that starts the rest of the change."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 6,
+        "name": "Build 2027",
+        "text": "Define the target, owner, support, measure, cadence, and first 30 days."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 7,
+        "name": "Align",
+        "text": "Stress-test the build in the Walk & Talk and decide who needs to know and hold you to it."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 8,
+        "name": "Declare",
+        "text": "Sign the commitment in the room in front of a witness."
       }
     ]
   };

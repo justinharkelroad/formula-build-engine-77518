@@ -64,7 +64,7 @@ const SITE_ROUTES: SeoRoute[] = [
     path: "/",
     title: "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16",
     description:
-      "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek. Operator-led workshops, peer breakouts, and the Book of Formulas playbook.",
+      "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek. Eight working sessions and the Formula workbook.",
   },
   {
     path: "/agenda",
@@ -76,13 +76,13 @@ const SITE_ROUTES: SeoRoute[] = [
     path: "/pricing",
     title: "Ticket Pricing | Formula Forum 2026 — Agency Owner & Team Passes",
     description:
-      "Formula Forum 2026 tickets: Agency Owner Pass $697, Team Member Pass $397. Includes all sessions, Book of Formulas playbook, meals, and networking events.",
+      "Formula Forum 2026 tickets: Agency Owner Pass $697, Team Member Pass $397. Includes all sessions, the Formula workbook, meals, and networking events.",
   },
   {
     path: "/format",
     title: "The Format Framework | Formula Forum 2026 — How Sessions Work",
     description:
-      "The Format Framework: Formula Forum's proprietary four-step session cycle — speaker training, takeaway capture, peer breakouts, and speaker close. Designed for implementation.",
+      "Five 60-minute Business sessions and three 40-minute Personal sessions follow one eight-step Formula workbook pattern.",
   },
   {
     path: "/venue",
