@@ -4,7 +4,6 @@ import SEO from "@/components/SEO";
 import { PRICING } from "@/config/pricing";
 import { ACCESS_PASS_BENEFITS } from "@/config/benefits";
 import { Check } from "lucide-react";
-import CountdownTimer from "@/components/CountdownTimer";
 import StructuredData from "@/components/StructuredData";
 import { Link } from "react-router-dom";
 
@@ -22,13 +21,9 @@ const Pricing = () => {
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">Pricing</h1>
           <h2 className="text-xl text-muted-foreground">Choose your pass</h2>
-          <div className="mt-6">
-            <CountdownTimer
-              fallbackDeadline="2026-03-31T23:59:59"
-              label="Price increases after March 31. Lock in your rate:"
-              className="text-center"
-            />
-          </div>
+          <p className="mt-6 text-sm font-medium text-muted-foreground">
+            Registration is open. The current prices below are the prices charged by the linked checkout pages.
+          </p>
         </header>
 
         <section className="max-w-4xl mx-auto space-y-8">

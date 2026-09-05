@@ -39,7 +39,7 @@ const PricingBlock = () => {
             </p>
           </div>
           <div>
-            <div className="text-xs tracking-widest uppercase text-white/50 mb-3">EARLY BIRD ACTIVE</div>
+            <div className="text-xs tracking-widest uppercase text-white/50 mb-3">CURRENT TICKET PRICING</div>
             <h2 className="display-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.9]">
               CHOOSE<br />YOUR PASS
             </h2>

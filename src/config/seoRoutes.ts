@@ -76,7 +76,7 @@ const SITE_ROUTES: SeoRoute[] = [
     path: "/pricing",
     title: "Ticket Pricing | Formula Forum 2026 — Agency Owner & Team Passes",
     description:
-      "Formula Forum 2026 tickets: Agency Owner Pass $647, Team Member Pass $347. Includes all sessions, Book of Formulas playbook, meals, and networking events.",
+      "Formula Forum 2026 tickets: Agency Owner Pass $697, Team Member Pass $397. Includes all sessions, Book of Formulas playbook, meals, and networking events.",
   },
   {
     path: "/format",
@@ -143,15 +143,15 @@ const SITE_ROUTES: SeoRoute[] = [
   },
   {
     path: "/payment-success",
-    title: "Payment Successful - Formula Forum 2026",
+    title: "Checkout Next Steps - Formula Forum 2026",
     description:
-      "Thank you for registering for Formula Forum 2026. Your payment has been processed successfully.",
+      "Formula Forum 2026 checkout return page with registration support and event details.",
     noindex: true,
   },
   {
     path: "/thank-you",
-    title: "Registration Confirmed | Formula Forum 2026",
-    description: "Your registration is confirmed for the Formula Forum 2026",
+    title: "Checkout Next Steps | Formula Forum 2026",
+    description: "Formula Forum 2026 checkout return page with attendee setup links and registration support.",
     noindex: true,
   },
   {

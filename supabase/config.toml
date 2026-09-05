@@ -32,3 +32,7 @@ verify_jwt = false
 # Same header gate; called by pg_cron via pg_net, which sends no JWT.
 [functions.snapshot-stats]
 verify_jwt = false
+
+# Public checkout-return verifier. It returns only coarse status and no PII.
+[functions.verify-formula-registration]
+verify_jwt = false

@@ -335,7 +335,8 @@ export const SEATS_NOTE =
  * The AI half of the build (Justin, confirmed 2026-09-04: locked and already
  * built out). Named "Your 2027 Build". Every session's answers compile into it;
  * the attendee has it immediately after the event, connected to their Formula
- * app, and it keeps building as they work through the year.
+ * app. The implemented library renders, downloads and copies generated plans;
+ * it does not track task completion or provide a shared agency editor.
  *
  * Justin: it lives on the Flow site, but the page must NOT specify that. Say it
  * connects to their app and stop there.
@@ -358,16 +359,16 @@ export const AI_BUILD = {
       body: "Each session's work compiles into it, instead of sitting in a book you close at the end of the day.",
     },
     {
-      title: "Yours the moment you leave",
-      body: "No waiting on a follow-up email. It is live when Orlando ends, and it connects to your Formula app.",
+      title: "Saved to your private library",
+      body: "After your plan is generated, review it in your private library and download or copy it for your own records.",
     },
     {
-      title: "It keeps building",
-      body: "The plan becomes tasks you check off through the year. As you build, it builds with you.",
+      title: "Ready for the handoff",
+      body: "Take the plan with you. Team members can export or copy business actions to the agency owner without exposing personal session work.",
     },
     {
       title: "One per seat",
-      body: "Owner, team and partner each answer from where they sit, so each one runs their own.",
+      body: "Owner, team member and partner each answer from where they sit and receive their own private plan.",
     },
   ],
   kicker: "You leave with the plan, not the notes.",

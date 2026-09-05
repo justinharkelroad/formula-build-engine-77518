@@ -254,14 +254,14 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
     "name": `${CONFIG.EVENT_NAME} Passes`,
     "description": `Access to the complete ${CONFIG.EVENT_NAME} insurance agency growth conference, including all sessions, printed playbook, and networking events.`,
     "priceCurrency": "USD",
-    "lowPrice": "347",
-    "highPrice": "647",
+    "lowPrice": String(PRICING.earlyBird.team.price),
+    "highPrice": String(PRICING.earlyBird.agencyOwner.price),
     "offerCount": 2,
     "offers": [
       {
         "@type": "Offer",
         "name": "Agency Owner Pass",
-        "price": "647",
+        "price": String(PRICING.earlyBird.agencyOwner.price),
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
         "url": `${siteUrl}/pricing`,
@@ -270,7 +270,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       {
         "@type": "Offer",
         "name": "Team Member Pass",
-        "price": "347",
+        "price": String(PRICING.earlyBird.team.price),
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
         "url": `${siteUrl}/pricing`,

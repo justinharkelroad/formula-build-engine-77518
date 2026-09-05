@@ -46,13 +46,13 @@ const PassDialogHost = () => {
             FORMULA<br />FORUM 26
           </DialogPrimitive.Title>
           <DialogPrimitive.Description className="text-white/60 text-sm mb-8">
-            Complete checkout securely with Stripe. Confirmation is sent instantly.
+            Complete checkout securely with Stripe. A purchase confirmation is emailed after checkout is recorded.
           </DialogPrimitive.Description>
 
           {/* Tier pills */}
           <div className="flex items-center gap-2 mb-8">
             <span className={`meta-pill ${tier === "earlyBird" ? "meta-pill-solid" : ""}`}>
-              EARLY BIRD
+              CURRENT PRICING
             </span>
             {tier === "vip" && <span className="meta-pill meta-pill-solid">VIP DISCOUNT</span>}
           </div>

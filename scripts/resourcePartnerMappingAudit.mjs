@@ -5,6 +5,7 @@ import ts from "typescript";
 
 const ROOT = process.cwd();
 const CONFIG_ROOT = path.join(ROOT, "src/config/resources");
+const READINESS_INVENTORY = path.join(ROOT, "FORMULA-PARTNER-RESOURCE-READINESS.md");
 
 const EXPECTED = [
   ["salesSequence.ts", "SALES_SEQUENCE", [
@@ -164,8 +165,28 @@ if (!registry || !ts.isSatisfiesExpression(registry) || !ts.isObjectLiteralExpre
   for (const required of ["ask-fetch", "ivantage"]) {
     if (!registryIds.includes(required)) fail(`PARTNER_REGISTRY is missing ${required}`);
   }
+
+  if (!fs.existsSync(READINESS_INVENTORY)) {
+    fail("FORMULA-PARTNER-RESOURCE-READINESS.md is missing");
+  } else {
+    const inventory = fs.readFileSync(READINESS_INVENTORY, "utf8");
+    for (const id of registryIds) {
+      if (!inventory.includes(`| \`${id}\` |`)) {
+        fail(`readiness inventory is missing partner ${id}`);
+      }
+    }
+  }
 }
 
 if (!process.exitCode) {
-  console.log("Resource partner audit passed: S1-S8, Funding the Build, and 30-partner registry.");
+  const resourcePageFiles = [...new Set(EXPECTED.map(([fileName]) => fileName))];
+  const configuredResourceUrls = resourcePageFiles
+    .reduce((count, fileName) => {
+      const source = fs.readFileSync(path.join(CONFIG_ROOT, fileName), "utf8");
+      return count + (source.match(/formulaResourceUrl\s*:/g) || []).length;
+    }, 0);
+
+  console.log("Resource partner mapping passed: S1-S8, Funding the Build, and 30-partner registry.");
+  console.log(`Readiness inventory covers all 30 partners; ${configuredResourceUrls} Formula resource URLs are currently configured.`);
+  console.log("Mapping is not delivery evidence. Review FORMULA-PARTNER-RESOURCE-READINESS.md before release.");
 }

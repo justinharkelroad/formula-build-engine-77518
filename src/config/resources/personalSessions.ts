@@ -52,7 +52,7 @@ export const BODY: ResourcePageContent = {
       bestFit:
         "Your Body Domino requires more structure, accountability or consistency rather than another burst of motivation.",
       categories: [],
-      formulaResourceTitle: "Formula-exclusive Body resource coming soon.",
+      formulaResourceTitle: "No Formula-exclusive Body resource is available yet.",
     }),
   ],
   partnerList: {
@@ -107,7 +107,7 @@ export const BALANCE: ResourcePageContent = {
       bestFit:
         "Your Balance Domino requires a repeatable rhythm that makes the people you value visible in your actual calendar and behavior.",
       categories: [],
-      formulaResourceTitle: "Formula-exclusive Balance resource coming soon.",
+      formulaResourceTitle: "No Formula-exclusive Balance resource is available yet.",
     }),
   ],
   partnerList: {
@@ -162,7 +162,7 @@ export const BEING: ResourcePageContent = {
       bestFit:
         "Your Being Domino requires a repeatable practice that brings you back to truth, alignment and intentional action.",
       categories: [],
-      formulaResourceTitle: "Formula-exclusive Being resource coming soon.",
+      formulaResourceTitle: "No Formula-exclusive Being resource is available yet.",
     }),
   ],
   partnerList: {

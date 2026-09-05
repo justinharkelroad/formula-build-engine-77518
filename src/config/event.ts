@@ -1,70 +1,3 @@
-// Countdown management functions
-const COUNTDOWN_STORAGE_KEY = 'f3_countdown_data';
-const COUNTDOWN_RESET_DAYS = 7;
-
-interface CountdownData {
-  currentDeadline: string;
-  resetCount: number;
-  originalDeadline: string;
-}
-
-export const getCountdownDeadline = (): { deadline: string; resetCount: number; isOriginal: boolean } => {
-  const now = new Date();
-  const initialDeadline = new Date(now.getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000)).toISOString();
-  
-  try {
-    const stored = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
-    let countdownData: CountdownData;
-    
-    if (stored) {
-      countdownData = JSON.parse(stored);
-    } else {
-      countdownData = {
-        currentDeadline: initialDeadline,
-        resetCount: 0,
-        originalDeadline: initialDeadline
-      };
-    }
-    
-    const now = new Date();
-    const currentTarget = new Date(countdownData.currentDeadline);
-    
-    // If deadline has passed, calculate next reset
-    if (now >= currentTarget) {
-      const nextDeadline = new Date(now.getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000));
-      countdownData = {
-        ...countdownData,
-        currentDeadline: nextDeadline.toISOString(),
-        resetCount: countdownData.resetCount + 1
-      };
-      
-      localStorage.setItem(COUNTDOWN_STORAGE_KEY, JSON.stringify(countdownData));
-      
-      // Track reset event for analytics
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'countdown_reset', {
-          reset_count: countdownData.resetCount,
-          new_deadline: countdownData.currentDeadline
-        });
-      }
-    }
-    
-    return {
-      deadline: countdownData.currentDeadline,
-      resetCount: countdownData.resetCount,
-      isOriginal: countdownData.resetCount === 0
-    };
-  } catch (error) {
-    console.error('Error managing countdown:', error);
-    const fallbackDeadline = new Date(new Date().getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000)).toISOString();
-    return {
-      deadline: fallbackDeadline,
-      resetCount: 0,
-      isOriginal: true
-    };
-  }
-};
-
 export const CONFIG = {
   EVENT_NAME: "Formula Forum 2026",
   BRAND_SHORT: "Formula",
@@ -86,7 +19,7 @@ export const CONFIG = {
   ORGANIZER_EMAIL: "info@f3florida.com",
   ORGANIZER_PHONE: "260-515-1349",
   CURRENCY: "USD",
-  BASE_TICKET_PRICE: "347",
+  BASE_TICKET_PRICE: "397",
   // Physical room capacity, counting attendee tickets AND partner passes.
   // Public copy quotes "250 attendees" — that is the attendee-facing figure and
   // is deliberately a different number from this one. Partner passes (8/6/4/2 by

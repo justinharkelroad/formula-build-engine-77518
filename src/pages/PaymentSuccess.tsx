@@ -1,42 +1,21 @@
-import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Calendar, MapPin, Mail, Phone } from "lucide-react";
+import { CircleHelp, Calendar, MapPin, Mail, Phone } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import SEO from "@/components/SEO";
 import { CONFIG } from "@/config/event";
 import { formatEventDates } from "@/lib/dateUtils";
+import CheckoutVerificationNotice from "@/components/CheckoutVerificationNotice";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading for better UX
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Processing your payment...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>
       <SEO 
-        title="Payment Successful - Formula Forum 2026"
-        description="Thank you for registering for Formula Forum 2026. Your payment has been processed successfully."
+        title="Checkout Next Steps - Formula Forum 2026"
+        description="Formula Forum 2026 checkout return page with registration support and event details."
         noindex={true}
       />
       <Navigation />
@@ -44,19 +23,22 @@ const PaymentSuccess = () => {
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <CheckCircle className="h-20 w-20 text-green-500 mx-auto mb-6" />
+            <CircleHelp className="h-20 w-20 text-primary mx-auto mb-6" />
             
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Payment Successful!
+              Your FORMULA 2026 next steps
             </h1>
             
             <p className="text-xl text-muted-foreground mb-8">
-              Congratulations! You've successfully registered for the Formula Forum 2026.
+              Check your registration status below, save the event details, and set up each attendee.
             </p>
+
+            <CheckoutVerificationNotice key={sessionId ?? "no-session"} sessionId={sessionId} />
 
             {sessionId && (
               <div className="bg-card border rounded-lg p-4 mb-8 text-sm text-muted-foreground">
-                <strong>Transaction ID:</strong> {sessionId}
+                <strong>Checkout reference:</strong> {sessionId}
+                <span className="block mt-1">Keep this reference if you need support.</span>
               </div>
             )}
 
@@ -99,12 +81,12 @@ const PaymentSuccess = () => {
             </div>
 
             <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-8">
-              <h3 className="text-lg font-semibold mb-2">What's Next?</h3>
+              <h3 className="text-lg font-semibold mb-2">What to do next</h3>
               <ul className="text-left space-y-2 text-sm">
-                <li>✅ You'll receive a confirmation email shortly</li>
-                <li>✅ Detailed event information will be sent 2 weeks before</li>
-                <li>✅ Don't forget to book your discounted hotel rate</li>
-                <li>✅ Follow up communications will include venue details and schedule</li>
+                <li>Check the inbox and spam folder for the email used at checkout.</li>
+                <li>Owners and team members use their named seat email; approved partners use their organization email.</li>
+                <li>Contact the FORMULA team with the checkout reference if confirmation is missing.</li>
+                <li>Use the setup guide for iPhone, Android and Formula Flow after confirmation.</li>
               </ul>
             </div>
 
@@ -115,14 +97,9 @@ const PaymentSuccess = () => {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a 
-                  href="https://book.passkey.com/go/FloridaFormulaForumATTENDEE" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto"
-                >
-                  Book Hotel Room
-                </a>
+                <Link to="/formula-app-guide" className="w-full sm:w-auto">
+                  Open setup guide
+                </Link>
               </Button>
             </div>
           </div>
