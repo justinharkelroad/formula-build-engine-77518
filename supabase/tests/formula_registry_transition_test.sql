@@ -59,7 +59,7 @@ select is(
 
 select is(
   (select registry_hash from public.formula_events where id = 'formula-2026'),
-  'e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa',
+  'bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1',
   'event contract advances to the current registry hash'
 );
 
@@ -81,7 +81,7 @@ select results_eq(
      order by projection_version$$,
   $$values
       (1::bigint, 'e848e7a952badb1e1c072fc81050cafafca597ea45189f91cf30645fcfc5e404'::text),
-      (2::bigint, 'e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa'::text)$$,
+      (2::bigint, 'bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1'::text)$$,
   'new monotonic outbox row carries the current registry hash'
 );
 
@@ -97,6 +97,34 @@ select is(
     where target_path = 'formulaEvents/formula-2026/access/firebase-registry-transition'),
   2::bigint,
   'idempotent replay creates no additional projection'
+);
+
+update public.formula_events
+   set registry_hash = 'e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa'
+ where id = 'formula-2026';
+
+select is(
+  formula_private.transition_formula_2026_registry(),
+  1,
+  'transition accepts the known intermediate registry hash'
+);
+
+select results_eq(
+  $$select projection_version, payload ->> 'registryHash'
+      from formula_private.projection_outbox
+     where target_path = 'formulaEvents/formula-2026/access/firebase-registry-transition'
+     order by projection_version$$,
+  $$values
+      (1::bigint, 'e848e7a952badb1e1c072fc81050cafafca597ea45189f91cf30645fcfc5e404'::text),
+      (2::bigint, 'bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1'::text),
+      (3::bigint, 'bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1'::text)$$,
+  'known intermediate transition creates a monotonic current-hash projection'
+);
+
+select is(
+  formula_private.transition_formula_2026_registry(),
+  0,
+  'current-hash replay remains idempotent after either predecessor'
 );
 
 update public.formula_events set registry_hash = repeat('f', 64) where id = 'formula-2026';

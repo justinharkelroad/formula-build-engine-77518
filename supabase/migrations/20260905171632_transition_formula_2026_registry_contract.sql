@@ -8,8 +8,11 @@ volatile
 set search_path = ''
 as $function$
 declare
-  old_registry_hash constant text := 'e848e7a952badb1e1c072fc81050cafafca597ea45189f91cf30645fcfc5e404';
-  new_registry_hash constant text := 'e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa';
+  accepted_source_registry_hashes constant text[] := array[
+    'e848e7a952badb1e1c072fc81050cafafca597ea45189f91cf30645fcfc5e404',
+    'e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa'
+  ];
+  new_registry_hash constant text := 'bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1';
   event_record record;
   registration_record record;
   reprojected_count integer := 0;
@@ -31,7 +34,7 @@ begin
   if event_record.registry_hash = new_registry_hash then
     return 0;
   end if;
-  if event_record.registry_hash is distinct from old_registry_hash then
+  if not (event_record.registry_hash = any (accepted_source_registry_hashes)) then
     raise exception using errcode = '23514', message = 'formula_2026_registry_hash_unexpected';
   end if;
 
