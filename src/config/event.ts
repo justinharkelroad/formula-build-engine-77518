@@ -1,70 +1,3 @@
-// Countdown management functions
-const COUNTDOWN_STORAGE_KEY = 'f3_countdown_data';
-const COUNTDOWN_RESET_DAYS = 7;
-
-interface CountdownData {
-  currentDeadline: string;
-  resetCount: number;
-  originalDeadline: string;
-}
-
-export const getCountdownDeadline = (): { deadline: string; resetCount: number; isOriginal: boolean } => {
-  const now = new Date();
-  const initialDeadline = new Date(now.getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000)).toISOString();
-  
-  try {
-    const stored = localStorage.getItem(COUNTDOWN_STORAGE_KEY);
-    let countdownData: CountdownData;
-    
-    if (stored) {
-      countdownData = JSON.parse(stored);
-    } else {
-      countdownData = {
-        currentDeadline: initialDeadline,
-        resetCount: 0,
-        originalDeadline: initialDeadline
-      };
-    }
-    
-    const now = new Date();
-    const currentTarget = new Date(countdownData.currentDeadline);
-    
-    // If deadline has passed, calculate next reset
-    if (now >= currentTarget) {
-      const nextDeadline = new Date(now.getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000));
-      countdownData = {
-        ...countdownData,
-        currentDeadline: nextDeadline.toISOString(),
-        resetCount: countdownData.resetCount + 1
-      };
-      
-      localStorage.setItem(COUNTDOWN_STORAGE_KEY, JSON.stringify(countdownData));
-      
-      // Track reset event for analytics
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'countdown_reset', {
-          reset_count: countdownData.resetCount,
-          new_deadline: countdownData.currentDeadline
-        });
-      }
-    }
-    
-    return {
-      deadline: countdownData.currentDeadline,
-      resetCount: countdownData.resetCount,
-      isOriginal: countdownData.resetCount === 0
-    };
-  } catch (error) {
-    console.error('Error managing countdown:', error);
-    const fallbackDeadline = new Date(new Date().getTime() + (COUNTDOWN_RESET_DAYS * 24 * 60 * 60 * 1000)).toISOString();
-    return {
-      deadline: fallbackDeadline,
-      resetCount: 0,
-      isOriginal: true
-    };
-  }
-};
-
 export const CONFIG = {
   EVENT_NAME: "Formula Forum 2026",
   BRAND_SHORT: "Formula",
@@ -86,7 +19,7 @@ export const CONFIG = {
   ORGANIZER_EMAIL: "info@f3florida.com",
   ORGANIZER_PHONE: "260-515-1349",
   CURRENCY: "USD",
-  BASE_TICKET_PRICE: "347",
+  BASE_TICKET_PRICE: "397",
   // Physical room capacity, counting attendee tickets AND partner passes.
   // Public copy quotes "250 attendees" — that is the attendee-facing figure and
   // is deliberately a different number from this one. Partner passes (8/6/4/2 by
@@ -156,10 +89,10 @@ export const CONFIG = {
   // Supporting 2026 sponsors — rendered below the Platinum grid on the homepage.
   // These are deliberately NOT tier: "Platinum"; keep tiers accurate before promoting one.
   LOGO_SPONSORS: [
-    { name: "EverQuote", tier: "Sponsor", logoUrl: "/assets/sponsors/everquote.png", linkUrl: "https://www.everquote.com/pro/" },
+    { name: "EverQuote", tier: "Bronze", logoUrl: "/assets/sponsors/everquote.png", linkUrl: "https://www.everquote.com/pro/" },
     {
       name: "Filtered Quotes",
-      tier: "Sponsor",
+      tier: "Bronze",
       logoUrl: "/assets/sponsors/filtered-quotes.png",
       linkUrl: "https://filteredquotes.com",
       podcast: {
@@ -175,14 +108,14 @@ export const CONFIG = {
         contactDescription: "Jared shared Filtered Quotes as the place to sign up and get taken care of.",
       },
     },
-    { name: "Hagerty", tier: "Sponsor", logoUrl: "/assets/sponsors/hagerty.png", linkUrl: "https://www.hagerty.com" },
-    { name: "QuoteWizard by LendingTree", tier: "Sponsor", logoUrl: "/assets/sponsors/quotewizard.png", linkUrl: "https://agents.quotewizard.com" },
-    { name: "Wintrust Agent Finance", tier: "Sponsor", logoUrl: "/assets/sponsors/wintrust-agent-finance.png", linkUrl: "https://www.agentfinance.com" },
-    { name: "Search Perfect", tier: "Sponsor", logoUrl: "/assets/sponsors/search-perfect.png", linkUrl: "https://searchperfect.ca" },
-    { name: "Ricochet360", tier: "Sponsor", logoUrl: "/assets/sponsors/ricochet360.png", linkUrl: "https://ricochet360.com" },
+    { name: "Hagerty", tier: "Bronze", logoUrl: "/assets/sponsors/hagerty.png", linkUrl: "https://www.hagerty.com" },
+    { name: "QuoteWizard by LendingTree", tier: "Bronze", logoUrl: "/assets/sponsors/quotewizard.png", linkUrl: "https://agents.quotewizard.com" },
+    { name: "Wintrust Agent Finance", tier: "Bronze", logoUrl: "/assets/sponsors/wintrust-agent-finance.png", linkUrl: "https://www.agentfinance.com" },
+    { name: "Search Perfect", tier: "Bronze", logoUrl: "/assets/sponsors/search-perfect.png", linkUrl: "https://searchperfect.ca" },
+    { name: "Ricochet360", tier: "Bronze", logoUrl: "/assets/sponsors/ricochet360.png", linkUrl: "https://ricochet360.com" },
     {
       name: "Arbeit",
-      tier: "Sponsor",
+      tier: "Bronze",
       logoUrl: "/assets/sponsors/arbeit.png",
       linkUrl: "https://arbeitsoftware.com",
       podcast: {
@@ -198,10 +131,10 @@ export const CONFIG = {
         contactDescription: "Matt invited agencies to email him or request a meeting through Arbeit. He can also run a free report showing how their phone numbers are labeled.",
       },
     },
-    { name: "Post Pros", tier: "Sponsor", logoUrl: "/assets/sponsors/post-pros.svg", linkUrl: "https://postpros.com/insurance" },
+    { name: "Post Pros", tier: "Silver", logoUrl: "/assets/sponsors/post-pros.svg", linkUrl: "https://postpros.com/insurance" },
     {
       name: "NW Preferred Federal Credit Union",
-      tier: "Sponsor",
+      tier: "Bronze",
       logoUrl: "/assets/sponsors/nw-preferred.png",
       linkUrl: "https://nwpreferredfcu.com",
       podcast: {
@@ -217,8 +150,8 @@ export const CONFIG = {
         contactDescription: "Fred shared his phone number as the best way to connect with NW Preferred FCU.",
       },
     },
-    { name: "Performology", tier: "Sponsor", logoUrl: "/assets/sponsors/performology.svg", linkUrl: "https://performology.com" },
-    { name: "GOAL", tier: "Sponsor", logoUrl: "/assets/sponsors/goal.svg", linkUrl: "https://checkoutgoal.com" },
+    { name: "Performology", tier: "Bronze", logoUrl: "/assets/sponsors/performology.svg", linkUrl: "https://performology.com" },
+    { name: "GOAL", tier: "Bronze", logoUrl: "/assets/sponsors/goal.svg", linkUrl: "https://checkoutgoal.com" },
     {
       name: "Mav",
       tier: "Bronze",
@@ -237,15 +170,15 @@ export const CONFIG = {
         contactDescription: "Visit Mav to learn more and get started with Matthew and the team.",
       },
     },
-    { name: "SmartFinancial", tier: "Sponsor", logoUrl: "/assets/sponsors/smart-financial.png", linkUrl: "https://smartfinancial.com" },
-    { name: "SmarketingMail", tier: "Sponsor", logoUrl: "/assets/sponsors/smarketing-mail.png", linkUrl: "https://smarketingmail.com" },
-    { name: "Quote Nerds", tier: "Sponsor", logoUrl: "/assets/sponsors/quote-nerds.png", linkUrl: "https://quotenerds.com" },
+    { name: "SmartFinancial", tier: "Bronze", logoUrl: "/assets/sponsors/smart-financial.png", linkUrl: "https://smartfinancial.com" },
+    { name: "SmarketingMail", tier: "Bronze", logoUrl: "/assets/sponsors/smarketing-mail.png", linkUrl: "https://smarketingmail.com" },
+    { name: "Quote Nerds", tier: "Bronze", logoUrl: "/assets/sponsors/quote-nerds.png", linkUrl: "https://quotenerds.com" },
     // No customer-facing site — renders as a logo tile with no link.
-    { name: "Ivantage", tier: "Sponsor", logoUrl: "/assets/sponsors/ivantage.png", linkUrl: "" },
-    { name: "YPC Media", tier: "Sponsor", logoUrl: "/assets/sponsors/ypc-media.png", linkUrl: "https://www.ypcmedia.com" },
+    { name: "Ivantage", tier: "Bronze", logoUrl: "/assets/sponsors/ivantage.png", linkUrl: "" },
+    { name: "YPC Media", tier: "Bronze", logoUrl: "/assets/sponsors/ypc-media.png", linkUrl: "https://www.ypcmedia.com" },
     {
       name: "National General",
-      tier: "Sponsor",
+      tier: "Bronze",
       logoUrl: "/assets/sponsors/national-general.png",
       linkUrl: "https://nationalgeneral.com",
       podcast: {
@@ -261,10 +194,10 @@ export const CONFIG = {
         contactDescription: "Monica and Dom invited agents to reach out directly. Dom shared his Allstate email and phone number for follow-up.",
       },
     },
-    { name: "DMS", tier: "Sponsor", logoUrl: "/assets/sponsors/dms.png", linkUrl: "https://digitalmediasolutions.com" },
+    { name: "DMS", tier: "Bronze", logoUrl: "/assets/sponsors/dms.png", linkUrl: "https://digitalmediasolutions.com" },
     {
       name: "LeadMiner",
-      tier: "Sponsor",
+      tier: "Bronze",
       logoUrl: "/assets/sponsors/leadminer.png",
       linkUrl: "https://leadminer.ai",
       podcast: {
@@ -280,11 +213,11 @@ export const CONFIG = {
         contactDescription: "Scott invited agents to email him directly or book a call through LeadMiner's website.",
       },
     },
-    { name: "ServiceMaster Restore", tier: "Sponsor", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" },
-    { name: "Melon Local", tier: "Sponsor", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" },
-    { name: "Slide Insurance", tier: "Sponsor", logoUrl: "/assets/sponsors/slide-insurance.svg", linkUrl: "https://slideinsurance.com" },
+    { name: "ServiceMaster Restore", tier: "Bronze", logoUrl: "/assets/sponsors/servicemaster-restore.svg", linkUrl: "https://www.servicemasterrestore.com" },
+    { name: "Melon Local", tier: "Bronze", logoUrl: "/assets/sponsors/melon-local.png", linkUrl: "https://melonlocal.com" },
+    { name: "Slide Insurance", tier: "Bronze", logoUrl: "/assets/sponsors/slide-insurance.svg", linkUrl: "https://slideinsurance.com" },
     // Only ships a white-on-transparent lockup; recoloured to black for the light tiles.
-    { name: "CRC Tapco", tier: "Sponsor", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
-    { name: "Ask Fetch", tier: "Sponsor", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
+    { name: "CRC Tapco", tier: "Bronze", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
+    { name: "Ask Fetch", tier: "Additional", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
   ]
 } as const;

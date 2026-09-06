@@ -348,7 +348,7 @@ const AdminSales = () => {
 
   const formatTier = (tier: string) => {
     switch (tier) {
-      case 'earlyBird': return 'Early Bird';
+      case 'earlyBird': return 'Current Pricing';
       case 'regular': return 'Regular';
       case 'vip': return 'VIP';
       case 'platinum': return 'Platinum';

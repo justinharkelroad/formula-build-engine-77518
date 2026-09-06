@@ -19,7 +19,16 @@ insert into public.formula_events (
   'formula-2026', 'formula-service-test', 'Formula service test',
   '2026-10-14T12:00:00Z', '2026-10-16T22:00:00Z', 'America/New_York',
   'active', 4, repeat('a', 64)
-);
+)
+on conflict (id) do update set
+  slug = excluded.slug,
+  display_name = excluded.display_name,
+  starts_at = excluded.starts_at,
+  ends_at = excluded.ends_at,
+  timezone = excluded.timezone,
+  state = excluded.state,
+  registry_version = excluded.registry_version,
+  registry_hash = excluded.registry_hash;
 
 insert into public.formula_registration_sources (
   id, event_id, source_type, source_id, source_ordinal,

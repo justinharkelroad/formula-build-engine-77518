@@ -11,7 +11,7 @@ interface FormulaResourcePlaceholderProps {
 
 /**
  * The blue-tinted Formula resource panel. Holds the same footprint whether the
- * resource is live or still pending, so populating a URL never reflows the card.
+ * resource is live or unavailable, so populating a URL never reflows the card.
  */
 const FormulaResourcePlaceholder = ({
   title,

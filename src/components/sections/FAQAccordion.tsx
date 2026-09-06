@@ -25,7 +25,7 @@ const FAQAccordion = () => {
     },
     {
       q: "What's included in the registration fee?",
-      a: "Your Formula Forum registration includes access to all speaker sessions and general sessions, small-group breakout sessions, the printed Book of Formulas playbook with action maps from every speaker, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), an optional morning group workout, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
+      a: "Your Formula Forum registration includes access to all sessions, the printed Formula workbook, networking events including the welcome reception and rooftop party, meals during the conference (breakfast and lunch), an optional morning group workout, and the Agency AI Install Walkthrough when final-day attendance is confirmed."
     },
     {
       q: "Is the Agency AI Install Walkthrough included with my Formula ticket?",
@@ -53,7 +53,7 @@ const FAQAccordion = () => {
     },
     {
       q: "What should I bring?",
-      a: "Bring business cards for networking and a laptop for the interactive workshop sessions. All conference materials, tools, and the printed Book of Formulas playbook will be provided. A positive attitude and readiness to take action are also encouraged."
+      a: "Bring business cards for networking and a laptop for the interactive workshop sessions. All conference materials, tools, and the printed Formula workbook will be provided. A positive attitude and readiness to take action are also encouraged."
     }
   ];
 

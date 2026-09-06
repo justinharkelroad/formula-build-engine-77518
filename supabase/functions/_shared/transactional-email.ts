@@ -19,6 +19,10 @@ const WEBSITE_URL = "https://theformulaforum.com";
 const HOTEL_BOOK_URL = "https://book.passkey.com/event/51189838/owner/49980248/home";
 const FACEBOOK_GROUP_URL = "https://www.facebook.com/groups/1637602806874362";
 const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
+const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
+const APP_GUIDE_URL = `${WEBSITE_URL}/formula-app-guide`;
+const FORMULA_FLOW_URL = "https://flow.theformulaforum.com/";
+const PARTNER_HUB_GUIDE_URL = `${WEBSITE_URL}/partners/partner-hub-guide`;
 const LOGO_URL = "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images//FORMULA%20GRADIENT%20WORD.png";
 
 const PARTNER_TIER_NAMES: Record<string, string> = {
@@ -97,13 +101,21 @@ function attendeeEmail(name: string | null) {
         14900 Chelonia Parkway, Orlando, FL 32821
       </td></tr>
     </table>
+    <div style="margin:0 0 24px;padding:20px 22px;background:#eff6ff;border:1px solid #48b4d1;border-radius:8px">
+      <p style="margin:0 0 8px;font-size:16px;font-weight:700">Set up every named attendee</p>
+      <p style="margin:0;font-size:14px;line-height:1.6">Each owner or team member uses the email assigned to their own named attendee seat and creates their own FORMULA account. Verify the email before a first ticket claim. Use the same account credentials in Formula Flow.</p>
+    </div>
     <p style="margin:0 0 12px;font-size:16px;line-height:1.6"><strong>Do these next:</strong></p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td style="padding:0 0 12px">${button(HOTEL_BOOK_URL, "Reserve your hotel room", "#fa9c27")}</td></tr>
       <tr><td style="padding:0 0 12px">${button(IOS_APP_URL, "Download the FORMULA iPhone app", "#48b4d1")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(ANDROID_APP_URL, "Download the FORMULA Android app", "#48b4d1")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(APP_GUIDE_URL, "Follow the app setup guide", "#27272a")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(FORMULA_FLOW_URL, "Open Formula Flow", "#27272a")}</td></tr>
       <tr><td style="padding:0 0 12px">${button(FACEBOOK_GROUP_URL, "Join the attendee Facebook group", "#27272a")}</td></tr>
       <tr><td style="padding:0 0 24px">${button(WEBSITE_URL, "View event details")}</td></tr>
     </table>
+    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration. Each attendee's plan is private to their account. Team members can download or copy business actions for an agency owner; personal Body, Balance and Being work stays private.</p>
     <p style="margin:0 0 6px;font-size:15px;line-height:1.6">Questions? Reply to this email or contact <a href="mailto:info@f3florida.com" style="color:#f53214">info@f3florida.com</a>.</p>
     <p style="margin:22px 0 0;font-size:17px;font-weight:700;color:#f53214">We will see you in Orlando.</p>`;
 
@@ -120,8 +132,17 @@ JW Marriott Orlando Bonnet Creek
 
 Reserve your room: ${HOTEL_BOOK_URL}
 Download the iPhone app: ${IOS_APP_URL}
+Download the Android app: ${ANDROID_APP_URL}
+App setup guide: ${APP_GUIDE_URL}
+Formula Flow: ${FORMULA_FLOW_URL}
 Join the attendee Facebook group: ${FACEBOOK_GROUP_URL}
 Event details: ${WEBSITE_URL}
+
+Each named owner or team attendee uses the email assigned to their own seat and creates their own FORMULA account. Verify the email before a first ticket claim, then use the same account credentials in Formula Flow.
+
+After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
+
+Each attendee's plan is private to their account. Team members can download or copy business actions for an agency owner; personal Body, Balance and Being work stays private.
 
 Questions? Reply to this email or contact info@f3florida.com.
 
@@ -144,10 +165,19 @@ function partnerEmail(name: string | null, tier: string | null, sessionId: strin
       <p style="margin:0 0 14px;font-size:16px;font-weight:700">Complete your partner onboarding</p>
       ${button(onboardingUrl, "Set up my partner profile")}
     </div>
+    <div style="margin:0 0 24px;padding:20px 22px;background:#eff6ff;border:1px solid #48b4d1;border-radius:8px">
+      <p style="margin:0 0 8px;font-size:16px;font-weight:700">Set up your sponsor team</p>
+      <p style="margin:0;font-size:14px;line-height:1.6">Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Complete any verification prompt shown by the app. Do not share the partner owner's password.</p>
+    </div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td style="padding:0 0 12px">${button(HOTEL_BOOK_URL, "Reserve your hotel room", "#fa9c27")}</td></tr>
-      <tr><td style="padding:0 0 24px">${button(IOS_APP_URL, "Download the FORMULA iPhone app", "#48b4d1")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(IOS_APP_URL, "Download the FORMULA iPhone app", "#48b4d1")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(ANDROID_APP_URL, "Download the FORMULA Android app", "#48b4d1")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(APP_GUIDE_URL, "Follow the app setup guide", "#27272a")}</td></tr>
+      <tr><td style="padding:0 0 12px">${button(PARTNER_HUB_GUIDE_URL, "Complete Partner Hub setup", "#27272a")}</td></tr>
+      <tr><td style="padding:0 0 24px">${button(FORMULA_FLOW_URL, "Open Formula Flow", "#27272a")}</td></tr>
     </table>
+    <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#52525b">After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration. Partner owners and staff each receive a private plan in their own account. Organization page and lead work belongs in Partner Hub; personal Body, Balance and Being work stays private.</p>
     <p style="margin:0;font-size:15px;line-height:1.6">Questions? Reply to this email or contact <a href="mailto:info@f3florida.com" style="color:#f53214">info@f3florida.com</a>.</p>`;
 
   return {
@@ -160,6 +190,16 @@ Your ${tierName} partnership payment is confirmed. Your partnership includes ${p
 Complete partner onboarding: ${onboardingUrl}
 Reserve your room: ${HOTEL_BOOK_URL}
 Download the iPhone app: ${IOS_APP_URL}
+Download the Android app: ${ANDROID_APP_URL}
+App setup guide: ${APP_GUIDE_URL}
+Partner Hub setup guide: ${PARTNER_HUB_GUIDE_URL}
+Formula Flow: ${FORMULA_FLOW_URL}
+
+Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Complete any verification prompt shown by the app. Do not share the partner owner's password.
+
+After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
+
+Partner owners and staff each receive a private plan in their own account. Organization page and lead work belongs in Partner Hub; personal Body, Balance and Being work stays private.
 
 October 14 to 16, 2026
 JW Marriott Orlando Bonnet Creek

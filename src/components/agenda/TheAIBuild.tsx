@@ -3,8 +3,8 @@ import { AI_BUILD } from "@/config/agenda";
 
 /**
  * "Your 2027 Build": every session compiles into it, the attendee has it the
- * moment the event ends, it connects to their app, and it keeps building as
- * they work through the year.
+ * generated work is stored in a private per-attendee library and can be
+ * downloaded or copied for a practical business handoff.
  *
  * This is NOT the Agency AI Install Walkthrough bonus gift. Do not reference
  * that product here — they are different things.

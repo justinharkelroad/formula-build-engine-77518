@@ -82,7 +82,19 @@ insert into public.formula_events (
   'formula-2026', 'w26', 'Formula fixture',
   '2026-10-14T12:00:00Z', '2026-10-16T22:00:00Z', 'America/New_York', 'active',
   4, repeat('a', 64), '2026-10-14T10:00:00Z', '2026-10-17T00:00:00Z', '2026-11-16T00:00:00Z'
-);
+)
+on conflict (id) do update set
+  slug = excluded.slug,
+  display_name = excluded.display_name,
+  starts_at = excluded.starts_at,
+  ends_at = excluded.ends_at,
+  timezone = excluded.timezone,
+  state = excluded.state,
+  registry_version = excluded.registry_version,
+  registry_hash = excluded.registry_hash,
+  capture_write_from = excluded.capture_write_from,
+  capture_write_until = excluded.capture_write_until,
+  dashboard_read_until = excluded.dashboard_read_until;
 
 insert into public.formula_registration_sources (
   id, event_id, source_type, source_id, source_ordinal, source_payload_hash,
