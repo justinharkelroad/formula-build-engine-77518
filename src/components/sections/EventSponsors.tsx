@@ -96,11 +96,6 @@ const EventSponsors = () => {
           {([
             { tier: "Silver", heading: "Silver Sponsor", note: null },
             { tier: "Bronze", heading: "Bronze Sponsors", note: null },
-            {
-              tier: "Additional",
-              heading: "Additional Partner",
-              note: "Ask Fetch is included as a participating partner; its 2026 sponsor tier is still to be confirmed.",
-            },
           ] as const).map((group) => {
             const sponsors = CONFIG.LOGO_SPONSORS.filter((sponsor) => sponsor.tier === group.tier);
             if (sponsors.length === 0) return null;
