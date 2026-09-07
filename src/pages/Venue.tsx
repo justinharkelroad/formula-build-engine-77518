@@ -5,7 +5,7 @@ import StructuredData from "@/components/StructuredData";
 
 const Venue = () => {
   const title = "Venue | JW Marriott Orlando Bonnet Creek — Formula Forum 2026";
-  const description = "Formula Forum 2026 venue: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Pkwy, Orlando FL 32821. Room block $239/night, code F3-2026.";
+  const description = "Formula Forum 2026 venue: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Pkwy, Orlando FL 32821. Room block $299/night, code F3-2026.";
 
   return (
     <div className="min-h-screen bg-background">
@@ -26,7 +26,7 @@ const Venue = () => {
         <div className="max-w-4xl mx-auto space-y-12">
           {/* Speakable venue summary */}
           <p className="text-lg text-muted-foreground" data-speakable="true">
-            Formula Forum 2026 takes place at the JW Marriott Orlando Bonnet Creek Resort & Spa, located at 14900 Chelonia Parkway, Orlando, FL 32821. The venue is approximately 21 miles from Orlando International Airport (MCO) and offers a discounted room block at $239 per night for attendees.
+            Formula Forum 2026 takes place at the JW Marriott Orlando Bonnet Creek Resort & Spa, located at 14900 Chelonia Parkway, Orlando, FL 32821. The venue is approximately 21 miles from Orlando International Airport (MCO) and offers a discounted room block at $299 per night for attendees.
           </p>
 
           {/* Address Block */}
@@ -86,7 +86,7 @@ const Venue = () => {
           <section id="room-block">
             <h2 className="text-2xl font-semibold mb-4">Room block</h2>
             <p className="text-lg mb-4">
-              JW Marriott Orlando Bonnet Creek • Group rate: $239/night • Cut-off: Sep 15, 2026
+              JW Marriott Orlando Bonnet Creek • Group rate: $299/night • Available through the event
             </p>
             <p className="text-lg mb-4">
               Book online with our group link or call the hotel and mention code <strong>F3-2026</strong>.

@@ -153,7 +153,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "How do I book the hotel room block?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use the room-block link on the Venue page or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2026. The group rate is $239 per night. The cut-off date is September 15, 2026."
+          "text": "Use the room-block link on the Venue page or call the JW Marriott Orlando Bonnet Creek at +1 (407) 390-5000 and mention code F3-2026. The group rate is $299 per night. The block is available through the event."
         }
       },
       {

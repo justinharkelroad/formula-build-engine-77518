@@ -88,7 +88,7 @@ const SITE_ROUTES: SeoRoute[] = [
     path: "/venue",
     title: "Venue | JW Marriott Orlando Bonnet Creek — Formula Forum 2026",
     description:
-      "Formula Forum 2026 venue: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Pkwy, Orlando FL 32821. Room block $239/night, code F3-2026.",
+      "Formula Forum 2026 venue: JW Marriott Orlando Bonnet Creek Resort & Spa, 14900 Chelonia Pkwy, Orlando FL 32821. Room block $299/night, code F3-2026.",
   },
   {
     path: "/survey",
@@ -118,7 +118,7 @@ const SITE_ROUTES: SeoRoute[] = [
     path: "/faq",
     title: "FAQ | Formula Forum 2026 — Tickets, Hotel, Refunds & More",
     description:
-      "Frequently asked questions about Formula Forum 2026: refund policy, hotel room block at JW Marriott ($239/night), group discounts, dress code, and what's included.",
+      "Frequently asked questions about Formula Forum 2026: refund policy, hotel room block at JW Marriott ($299/night), group discounts, dress code, and what's included.",
   },
   {
     path: "/privacy",
