@@ -25,6 +25,15 @@ const ThankYou = () => {
       });
     }
 
+    // Fire Meta Pixel purchase event (base pixel loads from index.html)
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'Purchase', {
+        value: 697, // Placeholder, same as GA4 above; ticket value is not available client-side
+        currency: 'USD',
+        content_name: 'Formula 2 ticket',
+      });
+    }
+
     return () => clearTimeout(timer);
   }, [sessionId]);
 
