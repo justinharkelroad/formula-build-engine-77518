@@ -25,6 +25,15 @@ const ThankYou = () => {
       });
     }
 
+    // Fire Meta Pixel purchase event (base pixel loads from index.html)
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'Purchase', {
+        value: 697, // Placeholder, same as GA4 above; ticket value is not available client-side
+        currency: 'USD',
+        content_name: 'Formula 2 ticket',
+      });
+    }
+
     return () => clearTimeout(timer);
   }, [sessionId]);
 
@@ -92,7 +101,7 @@ const ThankYou = () => {
             <h3 className="text-lg font-semibold mb-4">What's Next?</h3>
             <ol className="text-left space-y-3 text-sm">
               <li><strong>1. Check Your Email:</strong> You'll receive a confirmation email with event details within 5 minutes. If you do not, please reach out to us directly as firewalls can cause delivery.</li>
-              <li><strong>2. Book Your Room:</strong> Secure your spot in our room block (see below) - rates expire September 15th.</li>
+              <li><strong>2. Book Your Room:</strong> Secure your spot in our room block (see below) at the $299 group rate.</li>
               <li><strong>3. Join the Community:</strong> <a href="https://www.facebook.com/groups/1637602806874362" target="_blank" rel="noopener noreferrer" className="text-primary underline">https://www.facebook.com/groups/1637602806874362</a></li>
               <li><strong>4. Reach out to us directly</strong> with any questions via <a href="mailto:Ashleeb@f3florida.com" className="text-primary underline">Ashleeb@f3florida.com</a></li>
             </ol>
