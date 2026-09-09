@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   Mail,
   MapPin,
+  Monitor,
   PlayCircle,
   Smartphone,
   Users,
@@ -21,6 +22,8 @@ import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
 
 const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
+const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
+const WEB_HUB_URL = "https://flow.theformulaforum.com/partnerhub";
 const GUIDE_PATH = "/partners/partner-hub-guide";
 
 const checklistItems = [
@@ -103,6 +106,26 @@ const AppButton = ({ compact = false, inverse = false }: { compact?: boolean; in
   </a>
 );
 
+const WebButton = ({ compact = false, inverse = false }: { compact?: boolean; inverse?: boolean }) => (
+  <a
+    href={WEB_HUB_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={`inline-flex items-center justify-center gap-2 rounded-full border-2 font-black uppercase transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 ${inverse ? "border-black text-black hover:bg-black hover:text-white focus-visible:ring-black" : "border-white text-white hover:bg-white hover:text-black focus-visible:ring-white"} ${compact ? "px-4 py-2.5 text-xs" : "w-full max-w-[24rem] px-6 py-4 text-sm sm:w-auto sm:max-w-none"}`}
+  >
+    <Monitor className="h-4 w-4" />
+    Open on Your Computer
+    <ArrowUpRight className="h-4 w-4" />
+  </a>
+);
+
+const RouteButtons = ({ inverse = false }: { inverse?: boolean }) => (
+  <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+    <WebButton inverse={inverse} />
+    <AppButton inverse={inverse} />
+  </div>
+);
+
 const PartnerHubGuide = () => {
   const [activeImage, setActiveImage] = useState<Screenshot | null>(null);
 
@@ -126,7 +149,7 @@ const PartnerHubGuide = () => {
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
       <SEO
         title="Create Your Formula Forum Partner Hub | Partner Walkthrough"
-        description="Follow this step-by-step Formula Forum partner walkthrough to add your logo, banner, company details, video, booking link, and event offer."
+        description="Build your Formula Forum Partner Hub on your computer or in the Formula App. Step-by-step walkthrough for your logo, banner, company details, video, booking link, and event offer."
         path={GUIDE_PATH}
       />
 
@@ -159,17 +182,58 @@ const PartnerHubGuide = () => {
                 <div className="flex flex-wrap gap-3">
                   <span className="meta-pill meta-pill-solid">10–15 MIN SETUP</span>
                   <span className="meta-pill">10 ASSETS</span>
+                  <span className="meta-pill">2 WAYS TO BUILD IT</span>
                 </div>
-                <AppButton />
+                <RouteButtons />
               </div>
               <div>
                 <h2 className="text-2xl font-bold leading-tight md:text-4xl">Give attendees one clear place to understand your company and take the next step.</h2>
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">Add your logo, booth details, product video, event offer, and booking link before the event begins October 14, 2026.</p>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">Add your logo, booth details, product video, event offer, and booking link before the event begins October 14, 2026. Build it on your computer or in the Formula App — both save to the same page.</p>
                 <a href="#before-you-start" className="mt-7 inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">
                   See what you need <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section id="two-ways" className="scroll-mt-20 border-t border-white/15 px-5 py-20 md:px-12 md:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="eyebrow mb-8">Pick Your Route</div>
+            <h2 className="display-bold max-w-5xl text-[clamp(2.8rem,9vw,6.5rem)] leading-[0.88]">TWO WAYS TO<br />BUILD IT</h2>
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/65">Both routes edit the same partner page and save to the same place. Start on one, finish on the other, and sign in with the same email that received your partner invitation.</p>
+
+            <div className="mt-14 grid gap-6 md:grid-cols-2">
+              <div className="flex flex-col border-2 border-white p-7 md:p-9">
+                <div className="flex items-center gap-3">
+                  <Monitor className="h-6 w-6 text-[hsl(var(--secondary))]" />
+                  <span className="eyebrow">On Your Computer</span>
+                </div>
+                <h3 className="mt-6 text-3xl font-black uppercase leading-tight">Open the web Partner Hub</h3>
+                <p className="mt-4 flex-1 leading-relaxed text-white/70">Easiest for uploading your logo, banner, and PDF handouts, and for pasting long links without typing them on a phone. Nothing to install.</p>
+                <p className="mt-6 break-all border-t border-white/20 pt-5 font-mono text-sm text-white/50">flow.theformulaforum.com/partnerhub</p>
+                <div className="mt-6"><WebButton /></div>
+              </div>
+
+              <div className="flex flex-col border-2 border-white/25 p-7 md:p-9">
+                <div className="flex items-center gap-3">
+                  <Smartphone className="h-6 w-6 text-[hsl(var(--secondary))]" />
+                  <span className="eyebrow">On Your Phone</span>
+                </div>
+                <h3 className="mt-6 text-3xl font-black uppercase leading-tight">Use the Formula App</h3>
+                <p className="mt-4 flex-1 leading-relaxed text-white/70">Best if your logo and banner already live in your camera roll. The app is also where you will scan leads, message attendees, and follow the agenda during the event.</p>
+                <p className="mt-6 border-t border-white/20 pt-5 text-sm text-white/50">Sign in, then tap <strong className="text-white">Partner Hub</strong> in the bottom menu.</p>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <AppButton />
+                  <a href={ANDROID_APP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white/40 px-6 py-4 text-sm font-black uppercase text-white transition-all hover:-translate-y-0.5 hover:border-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                    Android
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <p className="mt-10 text-sm text-white/45">The screenshots throughout this guide are from the app. The web Partner Hub asks for the same information in the same order.</p>
           </div>
         </section>
 
@@ -200,8 +264,9 @@ const PartnerHubGuide = () => {
         <section className="px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2 lg:gap-24">
             <div>
-              <StepHeader number="01" eyebrow="Open Partner Hub" title="START INSIDE THE FORMULA APP" />
-              <p className="max-w-xl text-lg leading-relaxed text-white/65">After signing in, tap <strong className="text-white">Partner Hub</strong> in the bottom navigation. If your organization does not have a page yet, tap <strong className="text-white">Create partner page</strong>.</p>
+              <StepHeader number="01" eyebrow="Open Partner Hub" title="SIGN IN AND OPEN YOUR HUB" />
+              <p className="max-w-xl text-lg leading-relaxed text-white/65">On the web, open <strong className="text-white">flow.theformulaforum.com/partnerhub</strong> and sign in. In the app, sign in and tap <strong className="text-white">Partner Hub</strong> in the bottom navigation.</p>
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/65">Either way, if your organization does not have a page yet, choose <strong className="text-white">Create partner page</strong>.</p>
               <p className="mt-8 border-t border-white/20 pt-5 text-sm text-white/50">Use the same email address that received your Formula Forum partner invitation.</p>
             </div>
             <GuideScreenshot src="/assets/partner-hub-guide/01-partner-start.png" alt="Partner Hub starting screen" onOpen={openImage} label="START" />
@@ -331,7 +396,15 @@ const PartnerHubGuide = () => {
             </div>
             <div>
               <p className="max-w-xl text-lg leading-relaxed text-white/80">Complete your Partner Hub before October 14 so attendees can learn about your company, find your booth, and connect with your team.</p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  href={WEB_HUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-4 text-sm font-black uppercase text-white transition-all hover:-translate-y-0.5 hover:bg-white hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
+                >
+                  <Monitor className="h-4 w-4" /> Open on Your Computer <ArrowUpRight className="h-4 w-4" />
+                </a>
                 <AppButton inverse />
                 <a href={`mailto:${CONFIG.ORGANIZER_EMAIL}`} className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white px-6 py-4 text-sm font-black uppercase transition hover:bg-white hover:text-black">
                   <Mail className="h-4 w-4" /> Get Help
