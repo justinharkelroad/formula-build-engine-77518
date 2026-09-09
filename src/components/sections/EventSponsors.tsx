@@ -12,7 +12,7 @@ const DARK_TILES: Record<string, string> = {};
 // AREA: height = sqrt(AREA / aspect), read from the file itself on load so it
 // stays correct when a logo is swapped. Capped so tall marks can't blow out the row.
 const LOGO_AREA = 11500;
-const MAX_LOGO_HEIGHT = 80;
+const MAX_LOGO_HEIGHT = 96;
 // Equal area on a very wide wordmark (CRC Tapco is 7.45:1) cashes out almost
 // entirely as width, so it spans the cell edge-to-edge and reads as oversized
 // next to neighbours that sit with margin. Cap the width too.

@@ -235,6 +235,7 @@ export const CONFIG = {
         contactDisplay: "trace@askfetch.com · askfetch.com",
         contactDescription: "Trace invited agents to start a seven-day trial at Ask Fetch or email him directly for help getting started.",
       },
-    }
+    },
+    { name: "Elite Travel Hackers", tier: "Bronze", logoUrl: "/assets/sponsors/elite-travel-hackers.svg", linkUrl: "https://elitetravelhackers.com" }
   ]
 } as const;
