@@ -7,7 +7,8 @@ import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import PartnerHero from "@/components/sections/PartnerHero";
 import PartnerLevels from "@/components/sections/PartnerLevels";
 import PartnerMarquee from "@/components/sections/PartnerMarquee";
-import PartnerVideos from "@/components/sections/PartnerVideos";
+import PlatinumSponsors from "@/components/sections/PlatinumSponsors";
+import EventSponsors from "@/components/sections/EventSponsors";
 import PartnerCTA from "@/components/sections/PartnerCTA";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 
@@ -27,7 +28,11 @@ const Partners = () => {
         <PartnerHero />
         <PartnerLevels />
         <PartnerMarquee />
-        <PartnerVideos />
+        {/* Same 2026 sponsor walls the homepage runs — one source of truth in CONFIG,
+            so a roster change lands on both pages at once. Replaced the 2025 partner
+            podcast grid that used to sit here. */}
+        <PlatinumSponsors />
+        <EventSponsors />
         <PartnerCTA />
         <GiantTicketFooter />
       </div>
