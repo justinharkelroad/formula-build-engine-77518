@@ -26,6 +26,15 @@ const MAX_LOGO_WIDTH = 272;
 const TARGET_INK_DENSITY = 0.5;
 const MAX_INK_BOOST = 1.5;
 
+// Stacked lockups are the one case the measurements above can't see. Elite Travel
+// Hackers splits its height across ELITE / TRAVEL / HACKERS, so its main word is
+// ~47% of the block — matching neighbours on area still leaves the lettering
+// visibly smaller. Allow a named, bounded lift above the height cap. Remove the
+// entry if the sponsor ever supplies a single-line horizontal lockup.
+const STACKED_LOGO_LIFT: Record<string, number> = {
+  "Elite Travel Hackers": 1.2
+};
+
 const inkDensity = (img: HTMLImageElement): number | null => {
   try {
     const width = 120;
@@ -49,7 +58,7 @@ const inkDensity = (img: HTMLImageElement): number | null => {
   }
 };
 
-const fitByArea = (img: HTMLImageElement) => {
+const fitByArea = (img: HTMLImageElement, name: string) => {
   if (!img.naturalWidth || !img.naturalHeight) return;
   const aspect = img.naturalWidth / img.naturalHeight;
 
@@ -58,10 +67,11 @@ const fitByArea = (img: HTMLImageElement) => {
     ? Math.min(MAX_INK_BOOST, Math.max(1, Math.sqrt(TARGET_INK_DENSITY / density)))
     : 1;
 
+  const lift = STACKED_LOGO_LIFT[name] ?? 1;
   const height = Math.min(
-    MAX_LOGO_HEIGHT,
+    MAX_LOGO_HEIGHT * lift,
     MAX_LOGO_WIDTH / aspect,
-    Math.round(Math.sqrt((LOGO_AREA * boost) / aspect))
+    Math.round(Math.sqrt((LOGO_AREA * boost * lift) / aspect))
   );
   img.style.maxHeight = `${Math.round(height)}px`;
 };
@@ -117,8 +127,8 @@ const EventSponsors = () => {
                         src={sponsor.logoUrl}
                         alt={`${sponsor.name} logo`}
                         loading="lazy"
-                        onLoad={(event) => fitByArea(event.currentTarget)}
-                        ref={(node) => { if (node?.complete) fitByArea(node); }}
+                        onLoad={(event) => fitByArea(event.currentTarget, sponsor.name)}
+                        ref={(node) => { if (node?.complete) fitByArea(node, sponsor.name); }}
                         style={{ maxHeight: "3.5rem" }}
                         className="max-w-full object-contain transition-transform duration-300 ease-out group-hover:scale-[1.025]"
                       />
