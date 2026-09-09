@@ -218,6 +218,23 @@ export const CONFIG = {
     { name: "Slide Insurance", tier: "Bronze", logoUrl: "/assets/sponsors/slide-insurance.svg", linkUrl: "https://slideinsurance.com" },
     // Only ships a white-on-transparent lockup; recoloured to black for the light tiles.
     { name: "CRC Tapco", tier: "Bronze", logoUrl: "/assets/sponsors/crc-tapco.png", linkUrl: "https://www.crctapco.com" },
-    { name: "Ask Fetch", tier: "Bronze", logoUrl: "/assets/sponsors/ask-fetch.png", linkUrl: "https://askfetch.com" }
+    {
+      name: "Ask Fetch",
+      tier: "Bronze",
+      logoUrl: "/assets/sponsors/ask-fetch.png",
+      linkUrl: "https://askfetch.com",
+      podcast: {
+        company: "Ask Fetch",
+        guestName: "Trace Meek",
+        headshotUrl: "/assets/partners/trace-meek.jpg?v=20260909",
+        headshotWidth: 800,
+        headshotHeight: 800,
+        vimeoId: "1223988859",
+        contactLabel: "Email Trace",
+        contactUrl: "mailto:trace@askfetch.com",
+        contactDisplay: "trace@askfetch.com · askfetch.com",
+        contactDescription: "Trace invited agents to start a seven-day trial at Ask Fetch or email him directly for help getting started.",
+      },
+    }
   ]
 } as const;
