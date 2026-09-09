@@ -77,7 +77,7 @@ export const CONFIG = {
         headshotUrl: "/assets/partners/chris-cole.png",
         headshotWidth: 906,
         headshotHeight: 898,
-        vimeoId: "1222215006",
+        vimeoId: "1225291754",
         contactLabel: "Call Chris",
         contactUrl: "tel:+15713732206",
         contactDisplay: "571-373-2206",
