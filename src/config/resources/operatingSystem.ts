@@ -75,6 +75,55 @@ const PARTNERS = [
       "Your Domino involves getting underwriting knowledge out of one person's head and shortening a repeatable quoting process.",
     categories: ["delegate-create-capacity", "knowledge-out-of-head"],
   }),
+
+  // Carriers, a wholesaler and one finance-side vendor. None of them delegate work
+  // or create visibility, so they carry a single category: their published rules are
+  // raw material for a written Agency Bible entry that someone here still has to author.
+  partnerFor("national-general", {
+    helpsWith:
+      "Market placement rules for a carrier whose coverages, discounts and pay plans vary by state.",
+    bestFit:
+      "Your Domino involves writing down which risks go to which market, instead of asking the one veteran who knows.",
+    categories: ["knowledge-out-of-head"],
+  }),
+  partnerFor("hagerty", {
+    helpsWith:
+      "Collector-vehicle submission, billing and commission mechanics you can turn into a written standard.",
+    bestFit:
+      "Your Domino involves a carrier process that only one person on the team knows how to run.",
+    categories: ["knowledge-out-of-head"],
+  }),
+  partnerFor("slide-insurance", {
+    helpsWith:
+      "Agent platform routing: which system handles which state and product, across Violet and the legacy and commercial platforms.",
+    bestFit:
+      "Your Domino involves a new hire placing business in the right system without asking anyone.",
+    categories: ["knowledge-out-of-head"],
+  }),
+  partnerFor("crc-tapco", {
+    helpsWith:
+      "Surplus-lines submission mechanics: who requests the quote, who is allowed to bind, and the binder clock that runs out at twelve days.",
+    bestFit:
+      "Your Domino involves a deadline that only gets missed because the procedure was never written down.",
+    categories: ["knowledge-out-of-head"],
+  }),
+  partnerFor("elite-travel-hackers", {
+    helpsWith:
+      "A deliberate card and points strategy for the business spend you are already making. Finance-side policy, not an operating change.",
+    bestFit:
+      "Your Domino involves deciding which card each recurring expense runs on and why, rather than living with whatever was set up first.",
+    categories: ["knowledge-out-of-head"],
+  }),
+  // Canadian brokerage. Included as a worked example of published agency policy —
+  // compensation ranges, contingent commission, privacy, accessibility — not as a
+  // vendor an American agency buys from, and no US regulatory equivalence is implied.
+  partnerFor("ivantage", {
+    helpsWith:
+      "A working example of agency policy written down in public: compensation ranges, contingent commission, privacy and accessibility.",
+    bestFit:
+      "Your Domino involves moving core policy out of your head and into writing you would be comfortable publishing.",
+    categories: ["knowledge-out-of-head"],
+  }),
 ];
 
 export const OPERATING_SYSTEM: ResourcePageContent = {
@@ -126,7 +175,20 @@ export const OPERATING_SYSTEM: ResourcePageContent = {
       },
       {
         problem: "Too much knowledge lives in people's heads",
-        partnerIds: ["standard", "secure-evas", "ask-fetch"],
+        partnerIds: [
+          "standard",
+          "secure-evas",
+          "ask-fetch",
+          "national-general",
+          "hagerty",
+          "slide-insurance",
+          "crc-tapco",
+          "ivantage",
+        ],
+      },
+      {
+        problem: "Business spend runs on whatever card was set up first",
+        partnerIds: ["elite-travel-hackers"],
       },
     ],
   },
