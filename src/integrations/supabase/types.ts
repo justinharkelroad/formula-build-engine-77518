@@ -717,6 +717,54 @@ export type Database = {
         }
         Relationships: []
       }
+      coupon_redemptions: {
+        Row: {
+          coupon_name: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string | null
+          discount_amount: number
+          promotion_code: string | null
+          quantity: number
+          redeemed_at: string
+          stripe_coupon_id: string
+          stripe_promotion_code_id: string | null
+          stripe_session_id: string
+          updated_at: string
+        }
+        Insert: {
+          coupon_name?: string | null
+          created_at?: string
+          currency?: string
+          customer_email: string
+          customer_name?: string | null
+          discount_amount?: number
+          promotion_code?: string | null
+          quantity?: number
+          redeemed_at: string
+          stripe_coupon_id: string
+          stripe_promotion_code_id?: string | null
+          stripe_session_id: string
+          updated_at?: string
+        }
+        Update: {
+          coupon_name?: string | null
+          created_at?: string
+          currency?: string
+          customer_email?: string
+          customer_name?: string | null
+          discount_amount?: number
+          promotion_code?: string | null
+          quantity?: number
+          redeemed_at?: string
+          stripe_coupon_id?: string
+          stripe_promotion_code_id?: string | null
+          stripe_session_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       purchases: {
         Row: {
           amount: number
@@ -726,6 +774,7 @@ export type Database = {
           id: string
           name: string | null
           pass_type: string
+          purchased_at: string
           quantity: number
           stripe_payment_link_id: string | null
           stripe_session_id: string
@@ -739,6 +788,7 @@ export type Database = {
           id?: string
           name?: string | null
           pass_type: string
+          purchased_at?: string
           quantity?: number
           stripe_payment_link_id?: string | null
           stripe_session_id: string
@@ -752,6 +802,7 @@ export type Database = {
           id?: string
           name?: string | null
           pass_type?: string
+          purchased_at?: string
           quantity?: number
           stripe_payment_link_id?: string | null
           stripe_session_id?: string
