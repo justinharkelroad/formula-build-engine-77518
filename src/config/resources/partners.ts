@@ -28,7 +28,7 @@ export const PARTNER_REGISTRY = {
   standard: identity("standard", "Standard", "the-standard.png", "https://standardplaybook.com/"),
   "agency-toolchest": identity("agency-toolchest", "Agency Toolchest", "agency-toolchest.png", "https://agencytoolchest.com/"),
   performology: identity("performology", "Performology", "performology.svg", "https://performology.com/"),
-  "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://buyfiltered.com/"),
+  "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://filteredquotes.com/"),
   ricochet360: identity("ricochet360", "Ricochet360", "ricochet360.png", "https://ricochet360.com/"),
   "ask-fetch": identity("ask-fetch", "Ask Fetch", "ask-fetch.png", "https://askfetch.com/"),
   arbeit: identity("arbeit", "Arbeit", "arbeit.png", "https://arbeitsoftware.com/"),

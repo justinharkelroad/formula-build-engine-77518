@@ -13,7 +13,7 @@
 | 3 | SecureEVAs | Platinum | https://secureevas.com | `/assets/sponsors/secure-evas.png` | yes |
 | 4 | Standard | Platinum | https://standardplaybook.com | `/assets/sponsors/the-standard.png` | — |
 | 5 | EverQuote | Bronze | https://www.everquote.com/pro/ | `/assets/sponsors/everquote.png` | — |
-| 6 | Filtered Quotes | Bronze | https://buyfiltered.com | `/assets/sponsors/filtered-quotes.png` | yes |
+| 6 | Filtered Quotes | Bronze | https://filteredquotes.com | `/assets/sponsors/filtered-quotes.png` | yes |
 | 7 | Hagerty | Bronze | https://www.hagerty.com | `/assets/sponsors/hagerty.png` | — |
 | 8 | QuoteWizard by LendingTree | Bronze | https://agents.quotewizard.com | `/assets/sponsors/quotewizard.png` | — |
 | 9 | Wintrust Agent Finance | Bronze | https://www.agentfinance.com | `/assets/sponsors/wintrust-agent-finance.png` | — |
@@ -79,8 +79,8 @@
 - **Roster name:** Filtered Quotes (Bronze)
 - **Guest:** Jared Phillips
 - **Vimeo id:** 1222214833
-- **Contact button:** Sign up → https://buyfiltered.com
-- **Contact shown:** buyfiltered.com
+- **Contact button:** Sign up → https://filteredquotes.com
+- **Contact shown:** filteredquotes.com
 - **Headshot:** `/assets/partners/jared-phillips.png` (782×796)
 - **Note:** Jared shared Filtered Quotes as the place to sign up and get taken care of.
 
@@ -224,7 +224,7 @@ Identities used by the resource pages. The id is the stable key; the website her
 | `standard` | Standard | https://standardplaybook.com/ | `/assets/sponsors/the-standard.png` |
 | `agency-toolchest` | Agency Toolchest | https://agencytoolchest.com/ | `/assets/sponsors/agency-toolchest.png` |
 | `performology` | Performology | https://performology.com/ | `/assets/sponsors/performology.svg` |
-| `filtered-quotes` | Filtered Quotes | https://buyfiltered.com/ | `/assets/sponsors/filtered-quotes.png` |
+| `filtered-quotes` | Filtered Quotes | https://filteredquotes.com/ | `/assets/sponsors/filtered-quotes.png` |
 | `ricochet360` | Ricochet360 | https://ricochet360.com/ | `/assets/sponsors/ricochet360.png` |
 | `ask-fetch` | Ask Fetch | https://askfetch.com/ | `/assets/sponsors/ask-fetch.png` |
 | `arbeit` | Arbeit | https://arbeitsoftware.com/ | `/assets/sponsors/arbeit.png` |
