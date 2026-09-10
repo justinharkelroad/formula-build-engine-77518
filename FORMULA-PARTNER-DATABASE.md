@@ -28,7 +28,7 @@
 | 18 | SmartFinancial | Bronze | https://smartfinancial.com | `/assets/sponsors/smart-financial.png` | — |
 | 19 | SmarketingMail | Bronze | https://smarketingmail.com | `/assets/sponsors/smarketing-mail.png` | — |
 | 20 | Quote Nerds | Bronze | https://quotenerds.com | `/assets/sponsors/quote-nerds.png` | — |
-| 21 | Ivantage | Bronze | _none_ | `/assets/sponsors/ivantage.png` | — |
+| 21 | Ivantage | Bronze | https://www.ivantageinsurance.ca | `/assets/sponsors/ivantage.png` | — |
 | 22 | YPC Media | Bronze | https://www.ypcmedia.com | `/assets/sponsors/ypc-media.png` | — |
 | 23 | National General | Bronze | https://nationalgeneral.com | `/assets/sponsors/national-general.png` | yes |
 | 24 | DMS | Bronze | https://digitalmediasolutions.com | `/assets/sponsors/dms.png` | — |
@@ -250,11 +250,12 @@ Identities used by the resource pages. The id is the stable key; the website her
 | `smarketingmail` | SmarketingMail | https://smarketingmail.com/ | `/assets/sponsors/smarketing-mail.png` |
 | `wintrust-agent-finance` | Wintrust Agent Finance | https://www.agentfinance.com/ | `/assets/sponsors/wintrust-agent-finance.png` |
 | `nw-preferred` | NW Preferred Federal Credit Union | https://nwpreferredfcu.com/ | `/assets/sponsors/nw-preferred.png` |
-| `ivantage` | Ivantage | _none_ | `/assets/sponsors/ivantage.png` |
+| `ivantage` | Ivantage | https://www.ivantageinsurance.ca/ | `/assets/sponsors/ivantage.png` |
+| `elite-travel-hackers` | Elite Travel Hackers | https://elitetravelhackers.com/ | `/assets/sponsors/elite-travel-hackers.svg` |
 
 ## Data notes
 
-- Roster entries not in the resource registry: Elite Travel Hackers.
+- Roster entries not in the resource registry: none.
 - Registry entries not on the roster: none.
-- Ivantage has no customer-facing site, so it renders as an unlinked logo tile.
+- Ivantage is the Canadian brokerage ivantageinsurance.ca, confirmed by Justin. It is a different company from the US Allstate-affiliated Ivantage Select Agency and the two must never be merged.
 
