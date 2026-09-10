@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2, Search, X } from 'lucide-react';
+import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2, Search, X, TicketPercent } from 'lucide-react';
 import { CONFIG } from '@/config/event';
 import { PARTNER_TIERS } from '@/config/partners';
 import { useToast } from '@/hooks/use-toast';
@@ -27,6 +27,21 @@ interface Purchase {
   tier: string;
   quantity: number;
   created_at: string;
+  purchased_at: string;
+}
+
+interface CouponRedemption {
+  stripe_session_id: string;
+  stripe_promotion_code_id: string | null;
+  promotion_code: string | null;
+  stripe_coupon_id: string;
+  coupon_name: string | null;
+  customer_email: string;
+  customer_name: string | null;
+  discount_amount: number;
+  currency: string;
+  quantity: number;
+  redeemed_at: string;
 }
 
 interface PartnerProfile {
@@ -44,7 +59,7 @@ interface PartnerProfile {
   primary_contact_phone: string | null;
   marketing_contact_name: string | null;
   marketing_contact_email: string | null;
-  attendees: any;
+  attendees: unknown;
   social_linkedin: string | null;
   social_facebook: string | null;
   social_instagram: string | null;
@@ -71,6 +86,15 @@ interface ReprocessPurchasesResult {
   failed?: number;
 }
 
+interface ReconcileStripeResult {
+  message?: string;
+  scanned?: number;
+  formulaSessions?: number;
+  purchasesAdded?: number;
+  redemptionsSynced?: number;
+  failed?: number;
+}
+
 const SEAT_CAP = CONFIG.SEAT_CAP;
 
 // Passes included with each partner tier. These people occupy seats in the room
@@ -86,31 +110,38 @@ const AdminSales = () => {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [partnerProfiles, setPartnerProfiles] = useState<PartnerProfile[]>([]);
   const [emailDeliveries, setEmailDeliveries] = useState<EmailDelivery[]>([]);
+  const [couponRedemptions, setCouponRedemptions] = useState<CouponRedemption[]>([]);
   const [loading, setLoading] = useState(true);
   const [fixing, setFixing] = useState(false);
+  const [syncingStripe, setSyncingStripe] = useState(false);
   const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
   const [attendeeSearch, setAttendeeSearch] = useState('');
   const [passTypeFilter, setPassTypeFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
   const [partnerTierFilter, setPartnerTierFilter] = useState('all');
+  const [couponSearch, setCouponSearch] = useState('');
+  const [couponCodeFilter, setCouponCodeFilter] = useState('all');
   const { toast } = useToast();
   const { signOut, user } = useAuth();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [purchasesRes, partnersRes, deliveriesRes] = await Promise.all([
-        supabase.from('purchases').select('*').order('created_at', { ascending: false }),
-        supabase.from('partner_profiles' as any).select('*').order('created_at', { ascending: false }),
+      const [purchasesRes, partnersRes, deliveriesRes, couponsRes] = await Promise.all([
+        supabase.from('purchases').select('*').order('purchased_at', { ascending: false }),
+        supabase.from('partner_profiles').select('*').order('created_at', { ascending: false }),
         supabase.from('purchase_email_deliveries').select('*').order('updated_at', { ascending: false }),
+        supabase.from('coupon_redemptions').select('*').order('redeemed_at', { ascending: false }),
       ]);
 
       if (purchasesRes.error) throw purchasesRes.error;
       if (partnersRes.error) throw partnersRes.error;
       if (deliveriesRes.error) throw deliveriesRes.error;
+      if (couponsRes.error) throw couponsRes.error;
       setPurchases(purchasesRes.data || []);
       setPartnerProfiles((partnersRes.data || []) as unknown as PartnerProfile[]);
       setEmailDeliveries((deliveriesRes.data || []) as unknown as EmailDelivery[]);
+      setCouponRedemptions(couponsRes.data || []);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
@@ -121,11 +152,11 @@ const AdminSales = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   // Revenue calculations
   const attendeePurchases = purchases.filter(p => p.pass_type !== 'partner');
@@ -168,6 +199,30 @@ const AdminSales = () => {
       ]),
     ),
     [emailDeliveries],
+  );
+  const couponBySession = useMemo(
+    () => new Map(couponRedemptions.map(redemption => [redemption.stripe_session_id, redemption])),
+    [couponRedemptions],
+  );
+
+  const couponLabel = (redemption: CouponRedemption) =>
+    redemption.promotion_code || redemption.coupon_name || redemption.stripe_coupon_id;
+  const couponCodes = Array.from(new Set(couponRedemptions.map(couponLabel))).sort();
+  const filteredCouponRedemptions = couponRedemptions.filter(redemption => {
+    const q = couponSearch.trim().toLowerCase();
+    const matchesCouponSearch = !q || [
+      redemption.customer_name,
+      redemption.customer_email,
+      redemption.promotion_code,
+      redemption.coupon_name,
+    ].some(value => value?.toLowerCase().includes(q));
+    return matchesCouponSearch &&
+      (couponCodeFilter === 'all' || couponLabel(redemption) === couponCodeFilter);
+  });
+  const couponSeats = couponRedemptions.reduce((sum, redemption) => sum + redemption.quantity, 0);
+  const couponDiscountTotal = couponRedemptions.reduce(
+    (sum, redemption) => sum + redemption.discount_amount,
+    0,
   );
 
   // --- Filtering -----------------------------------------------------------
@@ -241,6 +296,35 @@ const AdminSales = () => {
       });
     } finally {
       setFixing(false);
+    }
+  };
+
+  const syncStripePurchases = async () => {
+    setSyncingStripe(true);
+    try {
+      const { data, error } = await supabase.functions.invoke<ReconcileStripeResult>(
+        'reconcile-stripe-purchases',
+        { body: { from: '2026-01-01T00:00:00Z' } },
+      );
+      if (error) throw error;
+      const added = data?.purchasesAdded ?? 0;
+      const synced = data?.redemptionsSynced ?? 0;
+      const failed = data?.failed ?? 0;
+      toast({
+        title: failed > 0 ? 'Stripe Sync Finished with Warnings' : 'Stripe Sync Complete',
+        description: `${synced} coupon redemption${synced === 1 ? '' : 's'} synced; ${added} missing purchase row${added === 1 ? '' : 's'} added${failed > 0 ? `; ${failed} session${failed === 1 ? '' : 's'} need review` : ''}.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchData();
+    } catch (error) {
+      console.error('Error reconciling Stripe purchases:', error);
+      toast({
+        title: 'Stripe Sync Failed',
+        description: 'Formula could not reconcile Stripe purchases. Check the Edge Function logs and try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setSyncingStripe(false);
     }
   };
 
@@ -359,26 +443,56 @@ const AdminSales = () => {
     }
   };
 
+  const csvCell = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
+
   const exportCSV = () => {
     const csvContent = [
-      ['Email', 'Name', 'Pass Type', 'Tier', 'Amount', 'Currency', 'Quantity', 'Date'],
+      ['Email', 'Name', 'Pass Type', 'Tier', 'Amount', 'Currency', 'Quantity', 'Coupon Code', 'Coupon Name', 'Discount', 'Purchase Date'],
       ...purchases.map(p => [
         p.email,
-        `"${p.name || ''}"`,
+        p.name || '',
         formatPassType(p.pass_type),
         formatTier(p.tier),
         (p.amount / 100).toFixed(2),
         p.currency.toUpperCase(),
         p.quantity.toString(),
-        new Date(p.created_at).toLocaleDateString(),
+        couponBySession.get(p.stripe_session_id)?.promotion_code || '',
+        couponBySession.get(p.stripe_session_id)?.coupon_name || '',
+        ((couponBySession.get(p.stripe_session_id)?.discount_amount || 0) / 100).toFixed(2),
+        new Date(p.purchased_at).toLocaleString(),
       ])
-    ].map(row => row.join(',')).join('\n');
+    ].map(row => row.map(csvCell).join(',')).join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `sales-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const exportCouponCSV = () => {
+    const csvContent = [
+      ['Code', 'Coupon Name', 'Customer Name', 'Customer Email', 'Seats', 'Discount', 'Currency', 'Used On', 'Stripe Session ID'],
+      ...filteredCouponRedemptions.map(redemption => [
+        redemption.promotion_code || '',
+        redemption.coupon_name || '',
+        redemption.customer_name || '',
+        redemption.customer_email,
+        redemption.quantity,
+        (redemption.discount_amount / 100).toFixed(2),
+        redemption.currency.toUpperCase(),
+        new Date(redemption.redeemed_at).toLocaleString(),
+        redemption.stripe_session_id,
+      ]),
+    ].map(row => row.map(csvCell).join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `coupon-redemptions-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -432,6 +546,15 @@ const AdminSales = () => {
               </Link>
             </div>
             <div className="flex gap-2 flex-wrap">
+              <Button
+                onClick={syncStripePurchases}
+                disabled={syncingStripe || loading}
+                variant="outline"
+                size="sm"
+              >
+                <TicketPercent className={`w-4 h-4 mr-2 ${syncingStripe ? 'animate-pulse' : ''}`} />
+                {syncingStripe ? 'Syncing Stripe...' : 'Sync Stripe Coupons'}
+              </Button>
               {unknownCount > 0 && (
                 <Button
                   onClick={identifyUnknownPurchases}
@@ -500,6 +623,7 @@ const AdminSales = () => {
           <Tabs defaultValue="attendees" className="space-y-4">
             <TabsList>
               <TabsTrigger value="attendees">Attendees ({attendeePurchases.length})</TabsTrigger>
+              <TabsTrigger value="coupons">Coupons ({couponRedemptions.length})</TabsTrigger>
               <TabsTrigger value="partners">Partners ({partnerPurchases.length})</TabsTrigger>
             </TabsList>
 
@@ -666,6 +790,7 @@ const AdminSales = () => {
                             <th className="text-left p-3">Tier</th>
                             <th className="text-left p-3">Amount</th>
                             <th className="text-left p-3">Qty</th>
+                            <th className="text-left p-3">Coupon</th>
                             <th className="text-left p-3">Date</th>
                             <th className="text-left p-3">Email Status</th>
                             <th className="text-left p-3">Action</th>
@@ -681,7 +806,14 @@ const AdminSales = () => {
                               <td className="p-3">${(purchase.amount / 100).toFixed(2)}</td>
                               <td className="p-3">{purchase.quantity}</td>
                               <td className="p-3">
-                                {new Date(purchase.created_at).toLocaleDateString()}
+                                {couponBySession.get(purchase.stripe_session_id) ? (
+                                  <span className="inline-flex rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">
+                                    {couponLabel(couponBySession.get(purchase.stripe_session_id)!)}
+                                  </span>
+                                ) : '-'}
+                              </td>
+                              <td className="p-3">
+                                {new Date(purchase.purchased_at).toLocaleDateString()}
                               </td>
                               <td className="p-3">
                                 {renderEmailStatus(findDelivery(
@@ -703,6 +835,151 @@ const AdminSales = () => {
                                   )}
                                   Resend
                                 </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Coupons Tab */}
+            <TabsContent value="coupons">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium">Code Uses</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{couponRedemptions.length}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium">Codes Used</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{couponCodes.length}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium">Seats Filled</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{couponSeats}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-medium">Total Discounts</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      ${(couponDiscountTotal / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-row items-center justify-between gap-4">
+                    <div>
+                      <CardTitle>Coupon Redemptions</CardTitle>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        One row per Stripe checkout, using the date and time the code was redeemed.
+                      </p>
+                    </div>
+                    <Button onClick={exportCouponCSV} disabled={filteredCouponRedemptions.length === 0} size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Export CSV
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <div className="relative flex-1 min-w-[220px]">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                      <Input
+                        value={couponSearch}
+                        onChange={event => setCouponSearch(event.target.value)}
+                        placeholder="Search customer, email, or code…"
+                        className="pl-9"
+                      />
+                    </div>
+                    <Select value={couponCodeFilter} onValueChange={setCouponCodeFilter}>
+                      <SelectTrigger className="w-full sm:w-[220px]">
+                        <SelectValue placeholder="Coupon code" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All codes ({couponRedemptions.length})</SelectItem>
+                        {couponCodes.map(code => (
+                          <SelectItem key={code} value={code}>
+                            {code} ({couponRedemptions.filter(r => couponLabel(r) === code).length})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {(couponSearch || couponCodeFilter !== 'all') && (
+                      <Button
+                        onClick={() => {
+                          setCouponSearch('');
+                          setCouponCodeFilter('all');
+                        }}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {loading ? (
+                    <div className="text-center py-8">Loading coupon redemptions...</div>
+                  ) : couponRedemptions.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No coupon redemptions have been synced yet. Use “Sync Stripe Coupons” above.
+                    </div>
+                  ) : filteredCouponRedemptions.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No coupon redemptions match these filters.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-3">Code</th>
+                            <th className="text-left p-3">Coupon</th>
+                            <th className="text-left p-3">Customer</th>
+                            <th className="text-left p-3">Email</th>
+                            <th className="text-left p-3">Seats</th>
+                            <th className="text-left p-3">Discount</th>
+                            <th className="text-left p-3">Used On</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredCouponRedemptions.map(redemption => (
+                            <tr key={redemption.stripe_session_id} className="border-b hover:bg-muted/50">
+                              <td className="p-3">
+                                <span className="inline-flex rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">
+                                  {couponLabel(redemption)}
+                                </span>
+                              </td>
+                              <td className="p-3">{redemption.coupon_name || '-'}</td>
+                              <td className="p-3">{redemption.customer_name || '-'}</td>
+                              <td className="p-3">{redemption.customer_email}</td>
+                              <td className="p-3">{redemption.quantity}</td>
+                              <td className="p-3">
+                                ${(redemption.discount_amount / 100).toFixed(2)} {redemption.currency.toUpperCase()}
+                              </td>
+                              <td className="p-3 whitespace-nowrap">
+                                {new Date(redemption.redeemed_at).toLocaleString()}
                               </td>
                             </tr>
                           ))}
@@ -830,7 +1107,7 @@ const AdminSales = () => {
                                 </span>
                               </td>
                               <td className="p-3">${(purchase.amount / 100).toLocaleString()}</td>
-                              <td className="p-3">{new Date(purchase.created_at).toLocaleDateString()}</td>
+                              <td className="p-3">{new Date(purchase.purchased_at).toLocaleDateString()}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -874,7 +1151,11 @@ const AdminSales = () => {
                         <tbody>
                           {partnerProfiles.map((profile) => {
                             const attendeeCount = Array.isArray(profile.attendees)
-                              ? (profile.attendees as any[]).filter((a: any) => a.name || a.email).length
+                              ? profile.attendees.filter((value: unknown) => {
+                                  if (!value || typeof value !== 'object') return false;
+                                  const attendee = value as Record<string, unknown>;
+                                  return Boolean(attendee.name || attendee.email);
+                                }).length
                               : 0;
                             return (
                               <tr key={profile.id} className="border-b hover:bg-muted/50">

@@ -6,6 +6,7 @@ import {
   queuePurchaseEmail,
   type EmailType,
 } from "../_shared/transactional-email.ts";
+import { getCouponRedemption } from "../_shared/stripe-coupons.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -34,7 +35,7 @@ type RuntimeGlobal = typeof globalThis & {
 };
 
 async function startEmailDelivery(
-  supabase: ReturnType<typeof createClient>,
+  supabase: Parameters<typeof processPurchaseEmail>[0],
   deliveryId: string,
 ): Promise<void> {
   const job = processPurchaseEmail(supabase, deliveryId).catch((error) => {
@@ -89,7 +90,7 @@ serve(async (req) => {
     }
 
     const session = event.data.object as Stripe.Checkout.Session;
-    if (session.payment_status !== "paid") {
+    if (session.payment_status !== "paid" && session.payment_status !== "no_payment_required") {
       return new Response(JSON.stringify({ received: true, awaitingPayment: true }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -105,6 +106,7 @@ serve(async (req) => {
     const name = session.customer_details?.name || null;
     const paymentLinkId = typeof session.payment_link === "string" ? session.payment_link : null;
     const currency = session.currency || "usd";
+    const purchasedAt = new Date(session.created * 1000).toISOString();
     const { data: existingPurchases, error: existingError } = await supabase
       .from("purchases")
       .select("id, pass_type, tier")
@@ -145,6 +147,7 @@ serve(async (req) => {
               pass_type: info.passType,
               tier: info.tier,
               quantity: item.quantity || 1,
+              purchased_at: purchasedAt,
             };
           })
         : [{
@@ -157,6 +160,7 @@ serve(async (req) => {
             pass_type: fallbackInfo.passType,
             tier: fallbackInfo.tier,
             quantity: 1,
+            purchased_at: purchasedAt,
           }];
 
       const { error: purchaseError } = await supabase.from("purchases").insert(items);
@@ -180,6 +184,19 @@ serve(async (req) => {
         page_location: "stripe_webhook",
       });
       if (analyticsError) console.error("Could not write purchase analytics:", analyticsError);
+    }
+
+    const couponRedemption = await getCouponRedemption(
+      stripe,
+      session,
+      { email, name },
+      lineItems.reduce((sum, item) => sum + (item.quantity || 1), 0) || 1,
+    );
+    if (couponRedemption) {
+      const { error: couponError } = await supabase
+        .from("coupon_redemptions")
+        .upsert(couponRedemption, { onConflict: "stripe_session_id" });
+      if (couponError) throw couponError;
     }
 
     if (detected.passType === "partner") {
