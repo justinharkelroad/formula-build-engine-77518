@@ -28,7 +28,7 @@ export const PARTNER_REGISTRY = {
   standard: identity("standard", "Standard", "the-standard.png", "https://standardplaybook.com/"),
   "agency-toolchest": identity("agency-toolchest", "Agency Toolchest", "agency-toolchest.png", "https://agencytoolchest.com/"),
   performology: identity("performology", "Performology", "performology.svg", "https://performology.com/"),
-  "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://buyfiltered.com/"),
+  "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://filteredquotes.com/"),
   ricochet360: identity("ricochet360", "Ricochet360", "ricochet360.png", "https://ricochet360.com/"),
   "ask-fetch": identity("ask-fetch", "Ask Fetch", "ask-fetch.png", "https://askfetch.com/"),
   arbeit: identity("arbeit", "Arbeit", "arbeit.png", "https://arbeitsoftware.com/"),
@@ -58,7 +58,12 @@ export const PARTNER_REGISTRY = {
 
   "wintrust-agent-finance": identity("wintrust-agent-finance", "Wintrust Agent Finance", "wintrust-agent-finance.png", "https://www.agentfinance.com/"),
   "nw-preferred": identity("nw-preferred", "NW Preferred Federal Credit Union", "nw-preferred.png", "https://nwpreferredfcu.com/"),
-  ivantage: identity("ivantage", "Ivantage", "ivantage.png", ""),
+  // The Canadian brokerage, confirmed by Justin 2026-09-09. NOT the US Allstate-affiliated
+  // Ivantage Select Agency, which is a different company with no public site.
+  ivantage: identity("ivantage", "Ivantage", "ivantage.png", "https://www.ivantageinsurance.ca/"),
+  // Added to the registry 2026-09-10. The sponsor was added to the roster as a logo
+  // only; nothing could reference them from a resource page until they had an id.
+  "elite-travel-hackers": identity("elite-travel-hackers", "Elite Travel Hackers", "elite-travel-hackers.svg", "https://elitetravelhackers.com/"),
 } satisfies Record<string, PartnerIdentity>;
 
 export type PartnerId = keyof typeof PARTNER_REGISTRY;

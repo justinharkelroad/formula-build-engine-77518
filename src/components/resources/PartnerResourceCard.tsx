@@ -111,16 +111,29 @@ const PartnerResourceCard = ({
           </button>
         )}
 
-        <a
-          href={partner.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => onVisitCompany(partner)}
-          aria-label={`Visit ${partner.name} (opens in a new tab)`}
-          className={`${CTA_BASE} border border-white bg-white text-black hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))] hover:text-white`}
-        >
-          Visit Company ↗
-        </a>
+        {/* An empty url used to render href="", which reopens this same page in a new
+            tab rather than visiting the partner. Show the state instead of a dead link. */}
+        {partner.url ? (
+          <a
+            href={partner.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => onVisitCompany(partner)}
+            aria-label={`Visit ${partner.name} (opens in a new tab)`}
+            className={`${CTA_BASE} border border-white bg-white text-black hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))] hover:text-white`}
+          >
+            Visit Company ↗
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            aria-disabled="true"
+            className={`${CTA_BASE} cursor-not-allowed border border-white/10 bg-white/[0.06] text-white/40`}
+          >
+            No company site on file
+          </button>
+        )}
       </div>
     </article>
   );
