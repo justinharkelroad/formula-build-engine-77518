@@ -1,6 +1,7 @@
 import { ArrowUpRight, Check, FileText, Folder, ShieldCheck } from "lucide-react";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import AIInstallTestimonial from "./AIInstallTestimonial";
 
 const includedOutcomes = [
   "A local MY BIZ BRAIN workspace you control",
@@ -47,6 +48,9 @@ const AgencyAIInstallGift = () => {
         >
           Purchase a Formula ticket and attend the final day to unlock the Agency AI Install Walkthrough, a guided build for Claude or Codex.
         </p>
+
+        {/* Social proof: Kevin C on the gift, portrait Vimeo, click-to-play */}
+        <AIInstallTestimonial isVisible={isVisible} />
 
         <div
           className={`mt-12 grid overflow-hidden rounded-2xl border border-white/14 bg-[hsl(0,0%,5%)] md:rounded-3xl lg:grid-cols-[1.15fr_0.85fr] reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}
