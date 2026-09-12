@@ -12,9 +12,9 @@ All colors MUST be HSL.
     /* Shared Formula roles. The marketing page keeps its black-first
        composition, while action foregrounds use the same contrast-safe ink
        pairs as the native app and Flow workspace. */
-    --formula-orange: 20 100% 55%; /* #FF6A1A */
+    --formula-orange: 20.9607 100% 55.098%; /* #FF6A1A */
     --formula-orange-ink: 21 76% 5%; /* #160A03 */
-    --formula-blue: 214 73% 58%; /* #4A90E2 */
+    --formula-blue: 212.3684 72.381% 58.8235%; /* #4A90E2 */
     --formula-blue-ink: 213 67% 7%; /* #06111E */
 
     /* Marketing surface composition - intentionally black-first in Step 1. */
@@ -28,7 +28,7 @@ All colors MUST be HSL.
     --popover-foreground: 0 0% 100%;
 
     /* Formula Brand Colors - Orange & Blue */
-    --primary: 20 100% 63%; /* #FF8C42 - Orange from logo */
+    --primary: 20 100% 63%; /* #FF8142 - existing marketing orange */
     --primary-foreground: var(--formula-orange-ink);
 
     --secondary: var(--formula-blue); /* #4A90E2 - Blue from logo */
