@@ -9,21 +9,19 @@
     <link rel="preload" as="image" href="/assets/hero-background-new.webp" type="image/webp" imagesrcset="/assets/hero-background-new.webp 1920w" imagesizes="100vw" fetchpriority="high">
 
     <!-- Preconnect to performance-critical origins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://koubtooblwjcwubcuhml.supabase.co">
     <link rel="preconnect" href="https://fast.wistia.com">
     <link rel="preconnect" href="https://img.youtube.com">
 
     <!-- Critical inline CSS for above-the-fold content -->
     <style>
-      /* Inter font with font-display: swap */
+      /* Self-hosted Inter variable font; no network font dependency. */
       @font-face {
         font-family: 'Inter';
         font-style: normal;
-        font-weight: 400 700;
+        font-weight: 100 900;
         font-display: swap;
-        src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyeMZs.woff2') format('woff2');
+        src: url('/fonts/Inter-latin-wght-normal.woff2') format('woff2');
       }
 
       /* Critical above-the-fold styles — matches src/index.css dark theme */

@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Formula typography is self-hosted so first paint and offline builds use the
+   same Inter weights as the native app and Flow workspace. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin-wght-normal.woff2') format('woff2');
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -16,6 +26,9 @@ All colors MUST be HSL.
     --formula-orange-ink: 21 76% 5%; /* #160A03 */
     --formula-blue: 212.3684 72.381% 58.8235%; /* #4A90E2 */
     --formula-blue-ink: 213 67% 7%; /* #06111E */
+
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Inter', system-ui, -apple-system, sans-serif;
 
     /* Marketing surface composition - intentionally black-first in Step 1. */
     --background: 0 0% 0%; /* Pure black #000000 */
@@ -119,9 +132,20 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-display: swap;
+    font-family: var(--font-body);
     overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -312,7 +336,7 @@ All colors MUST be HSL.
   /* Display headline — used for FORMULA, SCHEDULE, BUY TICKET massive titles.
      Hard-bold, tight tracking, all caps, scales fluidly. */
   .display-bold {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: var(--font-display);
     font-weight: 900;
     letter-spacing: -0.04em;
     line-height: 0.85;
@@ -336,8 +360,9 @@ All colors MUST be HSL.
     border: 1px solid hsl(0 0% 100% / 0.25);
     background: hsl(0 0% 100% / 0.04);
     font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
     color: hsl(0 0% 100%);
     backdrop-filter: blur(8px);
   }
@@ -387,8 +412,9 @@ All colors MUST be HSL.
   /* Section eyebrow label — small uppercase tracked text */
   .eyebrow {
     font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
     text-transform: uppercase;
     opacity: 0.55;
   }
