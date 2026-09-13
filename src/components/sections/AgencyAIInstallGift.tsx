@@ -114,9 +114,10 @@ const AgencyAIInstallGift = () => {
             </p>
 
             <div className="mt-auto pt-10">
+              {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
               <button
                 onClick={() => open("earlyBird")}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-bold text-black transition-transform hover:-translate-y-0.5 active:translate-y-px"
+                className="inline-flex items-center gap-2 rounded-radius-pill bg-white px-7 py-4 font-bold text-black transition-transform hover:-translate-y-0.5 active:translate-y-px"
               >
                 BUY TICKET
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

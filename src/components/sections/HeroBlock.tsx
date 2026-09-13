@@ -54,9 +54,10 @@ const HeroBlock = () => {
               <span className="meta-pill">JW MARRIOTT BONNET CREEK</span>
             </div>
 
+            {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
             <button
               onClick={() => open("earlyBird")}
-              className={`mt-4 self-start inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-full font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40 reveal-up delay-3 ${isVisible ? "is-visible" : ""}`}
+              className={`mt-4 self-start inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-radius-pill font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40 reveal-up delay-3 ${isVisible ? "is-visible" : ""}`}
             >
               BUY TICKET
               <ArrowUpRight className="w-4 h-4" />

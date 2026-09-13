@@ -72,6 +72,10 @@ All colors MUST be HSL.
     --warning-foreground: 0 0% 100%;
 
     --destructive: 8 91% 53%;
+    /* BRAND_CONTRACT.md Step 4 status roles — marketing/native hex, not Flow's dark-surface set */
+    --status-error: 4.23 76.47% 40%;
+    --status-success: 145.06 46.2% 33.53%;
+    --status-warning: 36.87 100% 32.55%;
     --destructive-foreground: 0 0% 100%;
 
     --muted: 0 0% 10%;

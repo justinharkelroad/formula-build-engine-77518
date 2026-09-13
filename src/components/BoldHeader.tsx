@@ -82,11 +82,11 @@ const BoldHeader = () => {
         </nav>
       </header>
 
-      {/* TOP-RIGHT FLOATING BUY TICKET PILL */}
+      {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
       <button
         onClick={() => openPassDialog("earlyBird")}
         className="fixed top-6 right-6 z-40 inline-flex items-center gap-2
-          bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold
+          bg-white text-black px-5 py-2.5 rounded-radius-pill text-sm font-semibold
           hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors
           shadow-lg shadow-black/40"
       >
