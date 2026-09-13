@@ -8,6 +8,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "check:components": "node scripts/checkSharedComponents.mjs",
+    "typecheck": "tsc -b --noEmit",
     "formula:resources:audit": "node scripts/resourcePartnerMappingAudit.mjs",
     "formula:roster:audit": "node scripts/formulaRosterReconciliation.mjs",
     "lint": "eslint .",

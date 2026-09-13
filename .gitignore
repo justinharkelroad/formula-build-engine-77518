@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# TypeScript project-reference build state produced by `npm run typecheck`
+*.tsbuildinfo
