@@ -18,6 +18,14 @@ export default {
 			}
 		},
 		extend: {
+			spacing: {
+				'space-xs': 'var(--space-xs)',
+				'space-sm': 'var(--space-sm)',
+				'space-md': 'var(--space-md)',
+				'space-lg': 'var(--space-lg)',
+				'space-xl': 'var(--space-xl)',
+				'space-xxl': 'var(--space-xxl)',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -56,6 +64,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'surface-raised': 'hsl(var(--surface-raised))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -83,7 +92,11 @@ export default {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				'radius-sm': 'var(--radius-sm)',
+				'radius-md': 'var(--radius-md)',
+				'radius-lg': 'var(--radius-lg)',
+				'radius-pill': 'var(--radius-pill)',
 			},
 			keyframes: {
 				'accordion-down': {

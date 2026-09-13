@@ -2,19 +2,36 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+type CardSurface = "base" | "raised" | "interactive"
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  surface?: CardSurface
+}
+
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
+  CardProps
+>(({ className, surface = "base", tabIndex, ...props }, ref) => {
+  const surfaceClass = {
+    base: "bg-card",
+    raised: "bg-surface-raised",
+    interactive:
+      "bg-card cursor-pointer transition-colors hover:border-primary/40 active:bg-surface-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  }[surface]
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-radius-md border text-card-foreground shadow-sm",
+        surfaceClass,
+        className
+      )}
+      tabIndex={surface === "interactive" ? tabIndex ?? 0 : tabIndex}
+      {...props}
+    />
+  )
+})
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<

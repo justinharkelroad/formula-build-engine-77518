@@ -37,6 +37,24 @@ All colors MUST be HSL.
     --card: 0 0% 0%;
     --card-foreground: 0 0% 100%;
 
+    /* BRAND_CONTRACT.md Step 4 — Shared spacing scale. */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 0.75rem;
+    --space-lg: 1rem;
+    --space-xl: 1.5rem;
+    --space-xxl: 2rem;
+
+    /* BRAND_CONTRACT.md Step 4 — Shared radius scale. radius.md is the new
+       card corner value (12px); this call also updates Card to use it. */
+    --radius-sm: var(--radius);
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-pill: 9999px;
+
+    /* Step 4 raised-surface role for the marketing family. */
+    --surface-raised: 0 0% 8%;
+
     --popover: 0 0% 0%;
     --popover-foreground: 0 0% 100%;
 
@@ -88,6 +106,8 @@ All colors MUST be HSL.
 
     --card: 204 24% 11%;
     --card-foreground: 150 14% 96%;
+
+    --surface-raised: 204 22% 15%;
 
     --popover: 204 24% 11%;
     --popover-foreground: 150 14% 96%;
