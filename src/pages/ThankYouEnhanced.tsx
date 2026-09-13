@@ -6,10 +6,8 @@ import { CircleHelp, ArrowLeft, Download, Hotel, Users, Monitor, BookOpen } from
 import { CONFIG } from "@/config/event";
 import { formatEventDates } from "@/lib/dateUtils";
 import CheckoutVerificationNotice from "@/components/CheckoutVerificationNotice";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ATTENDEE_WORKSPACE_URL as FORMULA_FLOW_URL } from "@/config/appLinks";
 
-const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
-const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
-const FORMULA_FLOW_URL = "https://flow.theformulaforum.com/";
 const FACEBOOK_GROUP_URL = "https://www.facebook.com/groups/1637602806874362";
 
 const ThankYouEnhanced = () => {
@@ -70,7 +68,7 @@ const ThankYouEnhanced = () => {
               <p className="mb-6 text-white/90">
                 Owners and team members use the email assigned to their named attendee seat.
                 Approved partner owners and staff use the email connected to their approved partner
-                organization. Everyone uses their own account and signs in to Formula Flow with the
+                organization. Everyone uses their own account and signs in to the attendee workspace (flow.theformulaforum.com) with the
                 same Formula credentials. Owners and team members complete email verification before
                 a first ticket claim.
               </p>
@@ -102,7 +100,7 @@ const ThankYouEnhanced = () => {
                 <Button asChild variant="secondary" className="h-auto py-3">
                   <a href={FORMULA_FLOW_URL} target="_blank" rel="noopener noreferrer">
                     <Monitor className="w-4 h-4 mr-2" />
-                    Open Formula Flow
+                    Open the attendee workspace
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="h-auto py-3 sm:col-span-2">

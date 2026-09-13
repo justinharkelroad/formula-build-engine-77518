@@ -26,14 +26,13 @@ import {
 import SEO from "@/components/SEO";
 import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL } from "@/config/appLinks";
 
-const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
-const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
 const GUIDE_PATH = "/formula-app-guide";
 
 const featureNav = [
   ["01", "Profile", "#profile"],
-  ["02", "Plan", "#plan"],
+  ["02", "Schedule", "#plan"],
   ["03", "Connect", "#connect"],
   ["04", "Partners", "#partners"],
   ["05", "Flows", "#flows"],
@@ -233,7 +232,7 @@ const FormulaAppGuide = () => {
         <section id="plan" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="grid items-end gap-12 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
-              <SectionTitle number="02" eyebrow="Own The Day" title="KNOW WHERE TO BE—AND WHY" copy="Today turns the event into a focused next-action list. Agenda lets you scan the full schedule, save the sessions that matter, and keep your personal plan close." />
+              <SectionTitle number="02" eyebrow="Own The Day" title="KNOW WHERE TO BE—AND WHY" copy="Today turns the event into a focused next-action list. Agenda lets you scan the full schedule, save the sessions that matter, and keep your personal schedule close." />
               <div className="border-t border-white/20">
                 {[
                   [CalendarDays, "Favorite Sessions", "Build My Schedule before doors open."],
@@ -253,9 +252,9 @@ const FormulaAppGuide = () => {
 
         <section id="connect" className="scroll-mt-20 border-y border-white/15 px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
-            <SectionTitle number="03" eyebrow="Make The Room Smaller" title="TURN A GOOD CONVERSATION INTO A REAL CONNECTION" copy="Use QR networking when you meet, then keep the conversation moving through the feed, direct messages, and timely notifications." />
+            <SectionTitle number="03" eyebrow="Make The Room Smaller" title="TURN A GOOD CONVERSATION INTO A REAL CONNECTION" copy="Use Networking / QR when you meet, then keep the conversation moving through the feed, direct messages, and timely notifications." />
             <div className="mt-16 grid items-start gap-10 lg:grid-cols-3">
-              <AppScreenshot src="/assets/formula-app-guide/networking.png" alt="QR networking and lead capture screen" onOpen={openImage} label="CONNECT" />
+              <AppScreenshot src="/assets/formula-app-guide/networking.png" alt="Networking / QR and lead capture screen" onOpen={openImage} label="CONNECT" />
               <AppScreenshot src="/assets/formula-app-guide/messages.png" alt="Formula App direct messages screen" onOpen={openImage} label="MESSAGE" />
               <AppScreenshot src="/assets/formula-app-guide/notifications.png" alt="Formula App notifications screen" onOpen={openImage} label="STAY CURRENT" />
             </div>
@@ -317,7 +316,7 @@ const FormulaAppGuide = () => {
 
         <section id="build" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
-            <SectionTitle number="06" eyebrow="Bring It Home" title="TURN THE BEST INSIGHT INTO AN INSTALLED ACTION" copy="Build and Action Packs help you capture the work, confirm what matters, and leave with a clear artifact your team can use after the event." darkText />
+            <SectionTitle number="06" eyebrow="Bring It Home" title="TURN THE BEST INSIGHT INTO AN INSTALLED ACTION" copy="Build 2027 helps you capture the work, confirm what matters, and leave with a clear plan your team can use after the event." darkText />
             <div className="mt-16 grid border-l border-t border-black/20 md:grid-cols-4">
               {[
                 ["01", Camera, "Capture All Three", "For each session, photograph or upload the scores page, the reflection and discussion page, and the Domino through declaration page."],

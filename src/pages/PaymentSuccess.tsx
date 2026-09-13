@@ -86,7 +86,7 @@ const PaymentSuccess = () => {
                 <li>Check the inbox and spam folder for the email used at checkout.</li>
                 <li>Owners and team members use their named seat email; approved partners use their organization email.</li>
                 <li>Contact the FORMULA team with the checkout reference if confirmation is missing.</li>
-                <li>Use the setup guide for iPhone, Android and Formula Flow after confirmation.</li>
+                <li>Use the setup guide for iPhone, Android and the web attendee workspace after confirmation.</li>
                 <li>At the event, upload all three completed Formula workbook pages from each session so your scores, written reflections, and final commitment stay together.</li>
               </ul>
             </div>

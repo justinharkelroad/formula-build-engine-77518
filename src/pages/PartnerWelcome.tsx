@@ -28,13 +28,13 @@ import {
   FileVideo,
   X,
 } from "lucide-react";
+import { FORMULA_IOS_APP_URL as IOS_APP_LINK, FORMULA_ANDROID_APP_URL } from "@/config/appLinks";
 
 interface Attendee {
   name: string;
   email: string;
 }
 
-const IOS_APP_LINK = "https://apps.apple.com/us/app/formula-forum/id6759879318";
 const HOTEL_BOOK_URL = "https://book.passkey.com/event/51189838/owner/49980248/home";
 
 const PartnerWelcome = () => {
@@ -962,8 +962,15 @@ const PartnerWelcome = () => {
                         className="text-primary hover:underline"
                       >
                         Download on iOS
-                      </a>{" "}
-                      — Android coming soon.
+                      </a>{" "}and{" "}
+                      <a
+                        href={FORMULA_ANDROID_APP_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        Download on Android
+                      </a>.
                     </p>
                   </div>
                 </div>

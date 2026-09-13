@@ -20,10 +20,8 @@ import {
 import SEO from "@/components/SEO";
 import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_PARTNER_HUB_WEB_URL as WEB_HUB_URL } from "@/config/appLinks";
 
-const IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
-const ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
-const WEB_HUB_URL = "https://flow.theformulaforum.com/partnerhub";
 const GUIDE_PATH = "/partners/partner-hub-guide";
 
 const checklistItems = [
