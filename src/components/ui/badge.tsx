@@ -18,11 +18,11 @@ const badgeVariants = cva(
           "rounded-full px-2.5 py-0.5 text-xs border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "rounded-full px-2.5 py-0.5 text-xs text-foreground",
         error:
-          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-[hsl(var(--status-error)/0.5)] bg-[hsl(var(--status-error)/0.16)] text-[hsl(var(--status-error))]",
+          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-transparent bg-[hsl(var(--status-error))] text-white",
         success:
-          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-[hsl(var(--status-success)/0.5)] bg-[hsl(var(--status-success)/0.16)] text-[hsl(var(--status-success))]",
+          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-transparent bg-[hsl(var(--status-success))] text-white",
         warning:
-          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-[hsl(var(--status-warning)/0.5)] bg-[hsl(var(--status-warning)/0.16)] text-[hsl(var(--status-warning))]",
+          "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-transparent bg-[hsl(var(--status-warning))] text-white",
         neutral:
           "rounded-radius-sm px-space-xs py-space-xs text-[10px] uppercase tracking-wide border-transparent bg-surface-raised text-muted-foreground",
       },

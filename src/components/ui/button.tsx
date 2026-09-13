@@ -61,32 +61,78 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     disabled,
     children,
     "aria-busy": ariaBusy,
+    onClick,
     ...props
   }, ref) => {
     const Comp = asChild ? Slot : "button"
-    const isDisabled = disabled || loading
-    const spinner = loading ? (
-      <span
-        aria-hidden="true"
-        className="animate-spin rounded-full h-4 w-4 border-b-2 border-current shrink-0"
-      />
-    ) : null
-    const content =
-      asChild && loading && React.isValidElement(children)
-        ? React.cloneElement(
-            children as React.ReactElement<{ children?: React.ReactNode }>,
-            undefined,
-            <>
-              {spinner}
-              {(children as React.ReactElement<{ children?: React.ReactNode }>).props.children}
-            </>
-          )
-        : (
-            <>
-              {spinner}
-              {children}
-            </>
-          )
+    const isGuarded = loading || disabled
+    // Loading overlay: the label keeps its box (opacity-0, still in the
+    // accessibility tree) and the spinner shares the same grid cell, so the
+    // control's footprint and accessible name do not change while loading.
+    // `inner` is the label content — the Button's own children for a native
+    // button, or the slotted element's children when asChild — never the
+    // slotted element itself.
+    const loadingOverlay = (inner: React.ReactNode) => (
+      <span className="relative inline-grid place-items-center">
+        <span className="col-start-1 row-start-1 inline-flex items-center gap-2 opacity-0">
+          {inner}
+        </span>
+        <span
+          aria-hidden="true"
+          className="col-start-1 row-start-1 animate-spin rounded-full h-4 w-4 border-b-2 border-current"
+        />
+      </span>
+    )
+
+    if (asChild && isGuarded) {
+      const child = React.Children.only(
+        children
+      ) as React.ReactElement<{ children?: React.ReactNode }>
+      const guard = (event: React.SyntheticEvent) => {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      const injectedProps: React.HTMLAttributes<HTMLElement> & {
+        disabled?: boolean
+        "aria-busy"?: boolean
+        "aria-disabled": true
+        "data-loading"?: true
+      } = {
+        "aria-disabled": true,
+        "aria-busy": loading || undefined,
+        onClick: guard,
+        onKeyDown: guard,
+      }
+
+      if (loading) {
+        injectedProps["data-loading"] = true
+      }
+      if (child.type === "button") {
+        injectedProps.disabled = true
+      }
+
+      const guardedChild = React.cloneElement(
+        child,
+        injectedProps,
+        loading ? loadingOverlay(child.props.children) : child.props.children
+      )
+
+      return (
+        <Comp
+          className={cn(
+            buttonVariants({ variant, size, className }),
+            loading && "pointer-events-none"
+          )}
+          ref={ref}
+          aria-busy={ariaBusy}
+          {...props}
+        >
+          {guardedChild}
+        </Comp>
+      )
+    }
+
+    const content = loading ? loadingOverlay(children) : children
 
     return (
       <Comp
@@ -95,9 +141,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           loading && "pointer-events-none"
         )}
         ref={ref}
-        disabled={isDisabled}
+        disabled={asChild ? undefined : disabled || loading}
         aria-busy={loading ? true : ariaBusy}
         {...props}
+        {...(onClick ? { onClick } : {})}
       >
         {content}
       </Comp>

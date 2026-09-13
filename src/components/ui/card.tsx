@@ -8,10 +8,14 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   surface?: CardSurface
 }
 
+/**
+ * Interactive cards need an accessible name from visible text or aria-label/aria-labelledby.
+ * Nested interactive controls are safe because keyboard activation only fires from the card itself.
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   CardProps
->(({ className, surface = "base", tabIndex, ...props }, ref) => {
+>(({ className, surface = "base", role, tabIndex, onClick, onKeyDown, onKeyUp, ...props }, ref) => {
   const surfaceClass = {
     base: "bg-card",
     raised: "bg-surface-raised",
@@ -27,7 +31,66 @@ const Card = React.forwardRef<
         surfaceClass,
         className
       )}
+      role={surface === "interactive" ? role ?? "button" : role}
       tabIndex={surface === "interactive" ? tabIndex ?? 0 : tabIndex}
+      onClick={
+        surface === "interactive"
+          ? (event) => {
+              // Nested controls own their own clicks: a click that lands on
+              // (or inside) a nested link/button/field must not also activate
+              // the card.
+              if (
+                (event.target as HTMLElement).closest(
+                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
+                ) !== event.currentTarget
+              ) {
+                return
+              }
+              onClick?.(event)
+            }
+          : onClick
+      }
+      onKeyDown={
+        surface === "interactive"
+          ? (event) => {
+              onKeyDown?.(event)
+              if (
+                event.key === "Enter" &&
+                event.target === event.currentTarget &&
+                (event.target as HTMLElement).closest(
+                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
+                ) === event.currentTarget
+              ) {
+                onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>)
+              }
+              if (
+                event.key === " " &&
+                event.target === event.currentTarget &&
+                (event.target as HTMLElement).closest(
+                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
+                ) === event.currentTarget
+              ) {
+                event.preventDefault()
+              }
+            }
+          : onKeyDown
+      }
+      onKeyUp={
+        surface === "interactive"
+          ? (event) => {
+              onKeyUp?.(event)
+              if (
+                event.key === " " &&
+                event.target === event.currentTarget &&
+                (event.target as HTMLElement).closest(
+                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
+                ) === event.currentTarget
+              ) {
+                onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>)
+              }
+            }
+          : onKeyUp
+      }
       {...props}
     />
   )
