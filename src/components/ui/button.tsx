@@ -101,6 +101,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         "aria-disabled": true,
         "aria-busy": loading || undefined,
         onClick: guard,
+        onAuxClick: guard,
         onKeyDown: guard,
       }
 

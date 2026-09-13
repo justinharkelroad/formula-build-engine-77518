@@ -12,6 +12,19 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Interactive cards need an accessible name from visible text or aria-label/aria-labelledby.
  * Nested interactive controls are safe because keyboard activation only fires from the card itself.
  */
+const NESTED_INTERACTIVE = 'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
+
+/**
+ * True when an event originated on the card itself (or on non-interactive
+ * content inside it). A null closest() means no interactive element sits
+ * between the target and the document — the card may carry a role outside the
+ * list, so null is treated as card-originated, never as "suppress".
+ */
+function originatesOnCard(event: React.SyntheticEvent<HTMLDivElement>): boolean {
+  const nearest = (event.target as HTMLElement).closest(NESTED_INTERACTIVE)
+  return nearest === null || nearest === event.currentTarget
+}
+
 const Card = React.forwardRef<
   HTMLDivElement,
   CardProps
@@ -40,9 +53,7 @@ const Card = React.forwardRef<
               // (or inside) a nested link/button/field must not also activate
               // the card.
               if (
-                (event.target as HTMLElement).closest(
-                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
-                ) !== event.currentTarget
+                !originatesOnCard(event)
               ) {
                 return
               }
@@ -57,18 +68,14 @@ const Card = React.forwardRef<
               if (
                 event.key === "Enter" &&
                 event.target === event.currentTarget &&
-                (event.target as HTMLElement).closest(
-                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
-                ) === event.currentTarget
+                originatesOnCard(event)
               ) {
                 onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>)
               }
               if (
                 event.key === " " &&
                 event.target === event.currentTarget &&
-                (event.target as HTMLElement).closest(
-                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
-                ) === event.currentTarget
+                originatesOnCard(event)
               ) {
                 event.preventDefault()
               }
@@ -82,9 +89,7 @@ const Card = React.forwardRef<
               if (
                 event.key === " " &&
                 event.target === event.currentTarget &&
-                (event.target as HTMLElement).closest(
-                  'a,button,input,select,textarea,summary,[role="button"],[role="link"],[role="menuitem"]'
-                ) === event.currentTarget
+                originatesOnCard(event)
               ) {
                 onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>)
               }
