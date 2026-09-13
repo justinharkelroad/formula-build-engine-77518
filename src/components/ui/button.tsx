@@ -62,10 +62,41 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     children,
     "aria-busy": ariaBusy,
     onClick,
+    onAuxClick,
+    onDoubleClick,
+    onKeyDown,
+    onKeyUp,
+    onMouseDown,
+    onMouseUp,
+    onPointerDown,
+    onPointerUp,
+    onTouchStart,
+    onTouchEnd,
     ...props
   }, ref) => {
     const Comp = asChild ? Slot : "button"
     const isGuarded = loading || disabled
+    // Every Button-level handler that can start or complete an activation.
+    // Radix Slot composes these with the slotted child's handlers by calling
+    // the child's first and then the Slot's — even after the child handler
+    // has cancelled the event — so while inert they are withheld from Slot
+    // entirely instead of relying on preventDefault/stopPropagation.
+    const activationHandlers = {
+      onClick,
+      onAuxClick,
+      onDoubleClick,
+      onKeyDown,
+      onKeyUp,
+      onMouseDown,
+      onMouseUp,
+      onPointerDown,
+      onPointerUp,
+      onTouchStart,
+      onTouchEnd,
+    }
+    const enabledHandlers = Object.fromEntries(
+      Object.entries(activationHandlers).filter(([, value]) => value !== undefined)
+    )
     // Loading overlay: the label keeps its box (opacity-0, still in the
     // accessibility tree) and the spinner shares the same grid cell, so the
     // control's footprint and accessible name do not change while loading.
@@ -92,6 +123,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         event.preventDefault()
         event.stopPropagation()
       }
+      // Keyboard: cancel only the keys that activate the control. Tab,
+      // Shift+Tab, arrows and Escape must keep working — an inert slotted
+      // link stays focusable (aria-disabled), so cancelling every key would
+      // trap keyboard focus on it. Space only activates a slotted <button>;
+      // on an anchor it scrolls the page and is left alone.
+      const isActivationKey = (event: React.KeyboardEvent) =>
+        event.key === "Enter" || (event.key === " " && child.type === "button")
+      const keyGuard = (event: React.KeyboardEvent) => {
+        if (isActivationKey(event)) guard(event)
+      }
       const injectedProps: React.HTMLAttributes<HTMLElement> & {
         disabled?: boolean
         "aria-busy"?: boolean
@@ -100,9 +141,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       } = {
         "aria-disabled": true,
         "aria-busy": loading || undefined,
+        // These REPLACE the slotted child's own handlers (cloneElement props
+        // win); the Button's own activation handlers are withheld from Slot
+        // below, so neither side can run while inert.
         onClick: guard,
         onAuxClick: guard,
-        onKeyDown: guard,
+        onDoubleClick: guard,
+        onKeyDown: keyGuard,
+        onKeyUp: keyGuard,
       }
 
       if (loading) {
@@ -145,7 +191,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={asChild ? undefined : disabled || loading}
         aria-busy={loading ? true : ariaBusy}
         {...props}
-        {...(onClick ? { onClick } : {})}
+        {...enabledHandlers}
       >
         {content}
       </Comp>
