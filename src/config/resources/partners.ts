@@ -64,6 +64,8 @@ export const PARTNER_REGISTRY = {
   // Added to the registry 2026-09-10. The sponsor was added to the roster as a logo
   // only; nothing could reference them from a resource page until they had an id.
   "elite-travel-hackers": identity("elite-travel-hackers", "Elite Travel Hackers", "elite-travel-hackers.svg", "https://elitetravelhackers.com/"),
+  disruptur: identity("disruptur", "Disruptur", "disruptur.png", "https://disruptur.com/"),
+  agencybrain: identity("agencybrain", "AgencyBrain", "agencybrain.png", "https://myagencybrain.com/info"),
 } satisfies Record<string, PartnerIdentity>;
 
 export type PartnerId = keyof typeof PARTNER_REGISTRY;

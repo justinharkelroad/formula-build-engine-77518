@@ -45,6 +45,13 @@ const PARTNERS = [
       "knowledge-out-of-head",
     ],
   }),
+  partnerFor("agencybrain", {
+    helpsWith:
+      "An external operating system for the agency: daily KPI tracking, team rings, a process vault and coach-assigned focus targets.",
+    bestFit:
+      "Your Domino involves seeing the whole agency every morning without asking anyone, with the playbook stored somewhere other than your head.",
+    categories: ["know-what-team-is-doing", "management-rhythms", "knowledge-out-of-head"],
+  }),
   partnerFor("secure-evas", {
     helpsWith:
       "Trained virtual assistants who take on recurring administrative and operational workload.",
@@ -167,16 +174,17 @@ export const OPERATING_SYSTEM: ResourcePageContent = {
       },
       {
         problem: "I don't know if the team is executing",
-        partnerIds: ["agency-toolchest", "performology", "standard", "ricochet360"],
+        partnerIds: ["agencybrain", "agency-toolchest", "performology", "standard", "ricochet360"],
       },
       {
         problem: "We need stronger team leads / accountability",
-        partnerIds: ["standard", "performology", "agency-toolchest", "ricochet360"],
+        partnerIds: ["standard", "agencybrain", "performology", "agency-toolchest", "ricochet360"],
       },
       {
         problem: "Too much knowledge lives in people's heads",
         partnerIds: [
           "standard",
+          "agencybrain",
           "secure-evas",
           "ask-fetch",
           "national-general",
