@@ -70,15 +70,15 @@ const FAQAccordion = () => {
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="bg-white rounded-lg px-6"
+                className="bg-white text-black rounded-lg px-6"
               >
                 <AccordionTrigger
-                  className="text-left font-semibold text-foreground hover:text-primary"
+                  className="text-left font-semibold text-black hover:text-primary"
                   onClick={() => trackFAQExpand(faq.q)}
                 >
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed" data-speakable="true">
+                <AccordionContent className="text-neutral-700 leading-relaxed" data-speakable="true">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>
