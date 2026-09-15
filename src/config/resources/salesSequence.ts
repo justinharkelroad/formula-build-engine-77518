@@ -40,6 +40,11 @@ const PARTNERS = [
     bestFit: "Your Domino involves producer consistency, sales standards, management rhythm or coaching.",
     categories: ["build-the-sales-system", "coach-hold-the-standard"],
   }),
+  partnerFor("agencybrain", {
+    helpsWith: "Daily KPI scorecards, staff portal, call scoring and AI roleplay practice for producers.",
+    bestFit: "Your Domino involves producers knowing their number every day and practicing the call before they make it.",
+    categories: ["build-the-sales-system", "coach-hold-the-standard"],
+  }),
   partnerFor("agency-toolchest", {
     helpsWith: "Sales performance visibility, scoreboards, accountability and targeted coaching.",
     bestFit: "Your Domino involves knowing whether producers are executing the standard and where coaching is needed.",
@@ -109,11 +114,11 @@ export const SALES_SEQUENCE: ResourcePageContent = {
     rows: [
       {
         problem: "Recruiting / role clarity / sales structure",
-        partnerIds: ["standard", "agency-toolchest", "performology"],
+        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology"],
       },
       {
         problem: "Accountability / coaching / producer performance",
-        partnerIds: ["standard", "agency-toolchest", "performology"],
+        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology"],
       },
       {
         problem: "Speed-to-lead / calling / follow-up",
