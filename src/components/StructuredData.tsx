@@ -145,7 +145,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "Are tickets refundable?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. All sales are final. Tickets may be transferred to another person up to 7 days before the event at no additional cost."
+          "text": "September 1, 2026 was the last date to receive a full refund on a Formula Forum ticket. After that date all sales are final. Tickets may still be transferred to another person up to 7 days before the event at no additional cost."
         }
       },
       {

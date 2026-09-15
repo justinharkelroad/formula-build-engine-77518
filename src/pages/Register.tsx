@@ -95,7 +95,7 @@ const Register = () => {
           <div className="bg-muted/50 border border-border rounded-lg p-6 mb-8">
             <p className="text-sm font-semibold mb-2">Policy:</p>
             <div className="text-xs text-muted-foreground">
-              <p>• No refunds, transfers allowed up to 7 days before event</p>
+              <p>• September 1, 2026 was the last date for a full refund; transfers allowed up to 7 days before event</p>
               <p>• Hotel room block link provided after purchase</p>
             </div>
           </div>

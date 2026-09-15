@@ -24,7 +24,7 @@ const FAQ = () => {
         <div className="bg-muted/50 border border-border rounded-lg p-6 mt-8">
           <h3 className="text-lg font-semibold mb-4">Refund & Transfer Policy</h3>
           <div className="text-sm text-muted-foreground space-y-2">
-            <p>• <strong>No refunds:</strong> All sales are final</p>
+            <p>• <strong>Refunds:</strong> September 1, 2026 was the last date for a full refund — all sales are final after that date</p>
             <p>• <strong>Transfers allowed:</strong> You can transfer your ticket to another person up to 7 days before the event</p>
             <p>• <strong>Room block:</strong> Discounted hotel rates at JW Marriott Orlando Bonnet Creek - <Link to="/venue#room-block" className="text-primary underline">use our room block link</Link> or call with code F3-2026. Available through the event.</p>
           </div>
