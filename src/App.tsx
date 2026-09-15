@@ -35,6 +35,7 @@ const AdminSales = lazy(() => import("./pages/AdminSales"));
 const AdminFormulaAttendees = lazy(() => import("./pages/AdminFormulaAttendees"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
 const Gallery = lazy(() => import("./pages/Gallery"));
+const GiveBack = lazy(() => import("./pages/GiveBack"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PartnerWelcome = lazy(() => import("./pages/PartnerWelcome"));
@@ -88,6 +89,9 @@ const App = () => (
             <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
             <Route path="/2025partners" element={<Navigate to="/partners" replace />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/give-back" element={<GiveBack />} />
+            <Route path="/giveback" element={<Navigate to="/give-back" replace />} />
+            <Route path="/destiny-rescue" element={<Navigate to="/give-back" replace />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />

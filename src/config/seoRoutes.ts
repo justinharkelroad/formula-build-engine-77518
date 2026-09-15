@@ -109,6 +109,12 @@ const SITE_ROUTES: SeoRoute[] = [
       "Browse photos from Formula Forum 2025: networking events, breakout sessions, speaker presentations, and attendee experiences at JW Marriott Orlando.",
   },
   {
+    path: "/give-back",
+    title: "The Room Gives Back | Formula Forum 2026 x Destiny Rescue",
+    description:
+      "Formula Forum 2026 partners with Destiny Rescue to rescue children from sexual exploitation. This room raised $31,000 in 2025. Give now and help us beat the number in Orlando.",
+  },
+  {
     path: "/contact",
     title: "Contact Us | Formula Forum 2026",
     description:
