@@ -139,9 +139,9 @@ export const CONFIG = {
       podcast: {
         company: "Post Pros",
         guestName: "Ryan Francis",
-        headshotUrl: "/assets/partners/ryan-francis-post-pros.png?v=20260915",
-        headshotWidth: 1080,
-        headshotHeight: 1080,
+        headshotUrl: "/assets/partners/ryan-francis-post-pros.png?v=20260915-2",
+        headshotWidth: 506,
+        headshotHeight: 607,
         vimeoId: "1227067766",
         contactLabel: "Visit Post Pros",
         contactUrl: "https://postpros.com/insurance",
