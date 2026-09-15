@@ -91,7 +91,7 @@ const Pricing = () => {
           <div className="bg-muted/50 border border-border rounded-lg p-6 mt-8 mb-8">
             <h3 className="text-lg font-semibold mb-4">Refund & Transfer Policy</h3>
             <div className="text-sm text-muted-foreground space-y-2">
-              <p>• <strong>Refunds:</strong> September 1, 2026 was the last date for a full refund — all sales are final after that date</p>
+              <p>• <strong>Full refunds:</strong> Available through September 1, 2026 — the last date for a full refund; all sales are final after that date</p>
               <p>• <strong>Transfers allowed:</strong> You can transfer your ticket to another person up to 7 days before the event</p>
               <p>• <strong>Room block:</strong> Discounted hotel rates available - link provided after purchase</p>
             </div>

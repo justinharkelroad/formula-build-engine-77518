@@ -5,7 +5,7 @@ const FAQAccordion = () => {
   const faqs = [
     {
       q: "Are tickets refundable?",
-      a: "September 1, 2026 was the last date to receive a full refund on a Formula Forum ticket. After that date all ticket sales are final. You can still transfer your ticket to another person up to 7 days before the event at no additional cost by contacting the Formula Forum team."
+      a: "Yes, through September 1, 2026. Full refunds are available on any Formula Forum ticket up to and including September 1, 2026 — that is the last date to receive a full refund. After that date all ticket sales are final. You can still transfer your ticket to another person up to 7 days before the event at no additional cost by contacting the Formula Forum team."
     },
     {
       q: "How do I book the hotel room block?",
