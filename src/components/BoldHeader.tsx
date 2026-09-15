@@ -10,7 +10,8 @@ const navItems = [
   { label: "venue", sectionId: "venue", path: "/" },
   { label: "partners", sectionId: null, path: "/partners" },
   { label: "app", sectionId: null, path: "/formula-app-guide" },
-  { label: "photos", sectionId: null, path: "/gallery" }
+  { label: "photos", sectionId: null, path: "/gallery" },
+  { label: "give back", sectionId: null, path: "/give-back" }
 ];
 
 const BoldHeader = () => {

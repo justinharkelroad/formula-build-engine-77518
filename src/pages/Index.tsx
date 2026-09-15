@@ -15,6 +15,7 @@ import AboutSection from "@/components/sections/AboutSection";
 import ScheduleBlock from "@/components/sections/ScheduleBlock";
 import VenueBlock from "@/components/sections/VenueBlock";
 import AgencyAIInstallGift from "@/components/sections/AgencyAIInstallGift";
+import GiveBackBlurb from "@/components/sections/GiveBackBlurb";
 import PricingBlock from "@/components/sections/PricingBlock";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 import { useEffect, useState } from "react";
@@ -96,6 +97,9 @@ const Index = () => {
 
       {/* 6. Venue */}
       <VenueBlock />
+
+      {/* 6b. The room gives back — slim band linking to /give-back */}
+      <GiveBackBlurb />
 
       {/* 7. Final-day attendee gift */}
       <AgencyAIInstallGift />

@@ -15,6 +15,7 @@ const Navigation = () => {
     { href: "/venue", label: "Venue" },
     { href: "/partners", label: "Partners" },
     { href: "/gallery", label: "Photos" },
+    { href: "/give-back", label: "Give Back" },
     { href: "/faq", label: "FAQ" },
     { href: "/contact", label: "Contact" },
   ];
