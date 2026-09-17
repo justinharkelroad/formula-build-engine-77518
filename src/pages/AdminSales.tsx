@@ -13,6 +13,7 @@ import { CONFIG } from '@/config/event';
 import { PARTNER_TIERS } from '@/config/partners';
 import {
   PARTNER_ROSTER,
+  emailDomain,
   normalizePartnerName,
   rosterLookupKeys,
   rosterPassCount,
@@ -223,7 +224,24 @@ const AdminSales = () => {
     const claimedSessions = new Set<string>();
     const claimedProfileIds = new Set<string>();
 
-    const rows = PARTNER_ROSTER.map(entry => {
+    // Purchases are tied to a partner by two independent signals, because
+    // neither alone reaches everyone: the onboarding profile carries a company
+    // name but only 26 of 32 partners have one, and a purchase row carries only
+    // the buyer's email — whose domain is usually the company itself.
+    const purchasesByDomain = new Map<string, Purchase[]>();
+    partnerPurchases.forEach(purchase => {
+      const domain = emailDomain(purchase.email);
+      if (!domain) return;
+      const bucket = purchasesByDomain.get(domain);
+      if (bucket) bucket.push(purchase);
+      else purchasesByDomain.set(domain, [purchase]);
+    });
+
+    // Two passes, not one. Profile matches are exact, so they are all assigned
+    // first; only then are leftovers matched by domain. In a single pass an
+    // early partner could claim by domain a payment that a later partner's
+    // profile legitimately owns.
+    const withProfiles = PARTNER_ROSTER.map(entry => {
       const profile = rosterLookupKeys(entry)
         .map(key => profilesByName.get(key))
         .find(Boolean);
@@ -233,6 +251,19 @@ const AdminSales = () => {
       if (profile) claimedProfileIds.add(profile.id);
       if (purchase) claimedSessions.add(purchase.stripe_session_id);
       return { entry, profile, purchase };
+    });
+
+    const rows = withProfiles.map(row => {
+      if (row.purchase) return row;
+      for (const domain of row.entry.emailDomains) {
+        const candidate = (purchasesByDomain.get(domain) ?? [])
+          .find(p => !claimedSessions.has(p.stripe_session_id));
+        if (candidate) {
+          claimedSessions.add(candidate.stripe_session_id);
+          return { ...row, purchase: candidate };
+        }
+      }
+      return row;
     });
 
     // The reverse gap: a paid partner nobody added to the roster. Without this
