@@ -98,6 +98,8 @@ interface ReconcileStripeResult {
   formulaSessions?: number;
   purchasesAdded?: number;
   redemptionsSynced?: number;
+  invoicesScanned?: number;
+  invoicePurchasesAdded?: number;
   failed?: number;
 }
 
@@ -390,10 +392,11 @@ const AdminSales = () => {
       if (error) throw error;
       const added = data?.purchasesAdded ?? 0;
       const synced = data?.redemptionsSynced ?? 0;
+      const invoiced = data?.invoicePurchasesAdded ?? 0;
       const failed = data?.failed ?? 0;
       toast({
         title: failed > 0 ? 'Stripe Sync Finished with Warnings' : 'Stripe Sync Complete',
-        description: `${synced} coupon redemption${synced === 1 ? '' : 's'} synced; ${added} missing purchase row${added === 1 ? '' : 's'} added${failed > 0 ? `; ${failed} session${failed === 1 ? '' : 's'} need review` : ''}.`,
+        description: `${synced} coupon redemption${synced === 1 ? '' : 's'} synced; ${added} missing purchase row${added === 1 ? '' : 's'} added; ${invoiced} invoiced partner${invoiced === 1 ? '' : 's'} recorded${failed > 0 ? `; ${failed} record${failed === 1 ? '' : 's'} need review` : ''}.`,
         variant: failed > 0 ? 'destructive' : 'default',
       });
       await fetchData();

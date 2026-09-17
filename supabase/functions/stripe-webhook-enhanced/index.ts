@@ -7,28 +7,14 @@ import {
   type EmailType,
 } from "../_shared/transactional-email.ts";
 import { getCouponRedemption } from "../_shared/stripe-coupons.ts";
+import { PRICE_TIER_MAP, UNKNOWN_PASS } from "../_shared/price-tier-map.ts";
+import { invoiceToPurchase } from "../_shared/invoice-purchases.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, stripe-signature",
 };
 
-const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  69700: { tier: "earlyBird", passType: "agencyOwner" },
-  39700: { tier: "earlyBird", passType: "team" },
-  64700: { tier: "earlyBird", passType: "agencyOwner" },
-  34700: { tier: "earlyBird", passType: "team" },
-  89700: { tier: "regular", passType: "agencyOwner" },
-  59700: { tier: "regular", passType: "team" },
-  53800: { tier: "vip", passType: "agencyOwner" },
-  35800: { tier: "vip", passType: "team" },
-  44800: { tier: "vip", passType: "agencyOwner" },
-  29800: { tier: "vip", passType: "team" },
-  1500000: { tier: "platinum", passType: "partner" },
-  1000000: { tier: "gold", passType: "partner" },
-  750000: { tier: "silver", passType: "partner" },
-  500000: { tier: "bronze", passType: "partner" },
-};
 
 type RuntimeGlobal = typeof globalThis & {
   EdgeRuntime?: { waitUntil(promise: Promise<unknown>): void };
@@ -79,6 +65,39 @@ serve(async (req) => {
       return new Response("Invalid signature", { status: 400 });
     }
 
+    // Invoiced partner sponsorships never produce a checkout session, so they
+    // are handled here before the Checkout path below. Paying by check is the
+    // normal way a $5,000 Bronze sponsorship arrives; without this the partner
+    // is recorded nowhere and their revenue goes uncounted.
+    if (event.type === "invoice.paid") {
+      const invoice = event.data.object as Stripe.Invoice;
+      const row = invoiceToPurchase(invoice);
+      if (!row) {
+        return new Response(JSON.stringify({ received: true, ignored: true }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const { data: existingInvoice, error: existingInvoiceError } = await supabase
+        .from("purchases")
+        .select("id")
+        .eq("stripe_session_id", row.stripe_session_id);
+      if (existingInvoiceError) throw existingInvoiceError;
+
+      // Stripe retries webhooks, so an already-recorded invoice is a success,
+      // not a duplicate insert.
+      if (!existingInvoice?.length) {
+        const { error: invoiceInsertError } = await supabase.from("purchases").insert([row]);
+        if (invoiceInsertError) throw invoiceInsertError;
+      }
+
+      return new Response(
+        JSON.stringify({ received: true, invoiceRecorded: !existingInvoice?.length }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     if (
       event.type !== "checkout.session.completed" &&
       event.type !== "checkout.session.async_payment_succeeded"
@@ -120,10 +139,7 @@ serve(async (req) => {
       console.error("Could not load Stripe line items. Using session total:", error);
     }
 
-    const fallbackInfo = PRICE_TIER_MAP[session.amount_total || 0] || {
-      tier: "unknown",
-      passType: "unknown",
-    };
+    const fallbackInfo = PRICE_TIER_MAP[session.amount_total || 0] || UNKNOWN_PASS;
     const firstUnitAmount = lineItems[0]?.price?.unit_amount || 0;
     const detected = PRICE_TIER_MAP[firstUnitAmount] ||
       (existingPurchases?.[0]
@@ -133,10 +149,7 @@ serve(async (req) => {
     if (!existingPurchases || existingPurchases.length === 0) {
       const items = lineItems.length > 0
         ? lineItems.map((item) => {
-            const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || {
-              tier: "unknown",
-              passType: "unknown",
-            };
+            const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || UNKNOWN_PASS;
             return {
               email,
               name,
