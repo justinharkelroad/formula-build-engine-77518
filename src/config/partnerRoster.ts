@@ -53,6 +53,11 @@ export interface PartnerRosterEntry {
    */
   comped?: string;
   /**
+   * The person who represents this partner, where the onboarding form does not
+   * say so correctly. Overrides the contact on the profile for display.
+   */
+  contactName?: string;
+  /**
    * Whether this partner's tier passes occupy chairs in the room. False for
    * partners who work the floor instead of attending — they still appear on the
    * roster and still owe deliverables, they just do not eat into the seat cap.
@@ -193,7 +198,23 @@ const PARTNER_PAYER_EMAILS: Record<string, string[]> = {
 };
 
 /** Extra representatives beyond the podcast guest already in the site config. */
-const PARTNER_CONTACT_NAMES: Record<string, string[]> = {};
+const PARTNER_CONTACT_NAMES: Record<string, string[]> = {
+  "SmarketingMail": ["Brittany Barrere"],
+};
+
+/**
+ * Corrected contact names, where the onboarding form's own contact field is
+ * wrong. Agency Toolchest's holds the company name rather than a person;
+ * SmarketingMail's holds Todd McLain, who paid for their sponsorship on his own
+ * card but is Agency Toolchest's contact, not theirs.
+ *
+ * These are display corrections over bad data. Fixing the profiles themselves
+ * in Supabase is the real repair — remove an entry here once its row is right.
+ */
+const PARTNER_CONTACTS: Record<string, string> = {
+  "Agency Toolchest": "Todd McLain",
+  "SmarketingMail": "Brittany Barrere",
+};
 
 const SITE_PARTNER_ALIASES: Record<string, string[]> = {
   "Agency Toolchest": ["Agency Tool Chest"],
@@ -280,6 +301,7 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
       payerEmails: (PARTNER_PAYER_EMAILS[sponsor.name] ?? []).map(e => e.toLowerCase()),
       recordedPayment: RECORDED_PAYMENTS[sponsor.name],
       comped: COMPED_PARTNERS[sponsor.name],
+      contactName: PARTNER_CONTACTS[sponsor.name],
       emailDomains: [
         ...(registrableDomain(sponsor.linkUrl) ? [registrableDomain(sponsor.linkUrl)!] : []),
         ...(PARTNER_EMAIL_DOMAINS[sponsor.name] ?? []),
