@@ -39,9 +39,10 @@ export const invoiceToPurchase = (
 
   // Match on the line item first: a multi-line invoice's total would not equal
   // any single tier price, but each sponsorship line still does.
-  const lineAmounts = (invoice.lines?.data ?? [])
-    .map((line) => line.amount ?? 0)
-    .filter((value) => value > 0);
+  const lines: Stripe.InvoiceLineItem[] = invoice.lines?.data ?? [];
+  const lineAmounts: number[] = lines
+    .map((line: Stripe.InvoiceLineItem) => line.amount ?? 0)
+    .filter((value: number) => value > 0);
   const info = partnerPassForAmount(amount) ??
     lineAmounts.map(partnerPassForAmount).find(Boolean) ??
     null;
