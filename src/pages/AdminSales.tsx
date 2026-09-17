@@ -410,7 +410,13 @@ const AdminSales = () => {
     return matchesQuery && matchesStatus;
   });
 
-  const onboardedCount = partnerProfiles.filter(p => p.onboarding_completed).length;
+  // Counted against the roster, not against the profiles table. Measuring
+  // completed forms as a fraction of submitted forms cannot see a partner who
+  // never started one, so the six partners without a profile were missing from
+  // the figure entirely — the number could only ever flatter itself.
+  const onboardedCount = partnerRecords.rows.filter(
+    r => r.profile?.onboarding_completed,
+  ).length;
   const deliveryByKey = useMemo(
     () => new Map(
       emailDeliveries.map(delivery => [
@@ -866,7 +872,7 @@ const AdminSales = () => {
                 <CardTitle className="text-sm font-medium">Partners Onboarded</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{onboardedCount} / {partnerProfiles.length}</div>
+                <div className="text-2xl font-bold">{onboardedCount} / {PARTNER_ROSTER.length}</div>
               </CardContent>
             </Card>
           </div>
