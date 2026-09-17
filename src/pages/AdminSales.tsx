@@ -711,9 +711,10 @@ const AdminSales = () => {
                 disabled={syncingStripe || loading}
                 variant="outline"
                 size="sm"
+                title="Pulls Stripe checkouts, coupon redemptions and paid invoices into Formula. This is what records partners who paid by invoice or check."
               >
                 <TicketPercent className={`w-4 h-4 mr-2 ${syncingStripe ? 'animate-pulse' : ''}`} />
-                {syncingStripe ? 'Syncing Stripe...' : 'Sync Stripe Coupons'}
+                {syncingStripe ? 'Syncing Stripe...' : 'Sync Stripe Payments'}
               </Button>
               {unknownCount > 0 && (
                 <Button
@@ -1108,7 +1109,7 @@ const AdminSales = () => {
                     <div className="text-center py-8">Loading coupon redemptions...</div>
                   ) : couponRedemptions.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
-                      No coupon redemptions have been synced yet. Use “Sync Stripe Coupons” above.
+                      No coupon redemptions have been synced yet. Use “Sync Stripe Payments” above.
                     </div>
                   ) : filteredCouponRedemptions.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
@@ -1210,10 +1211,14 @@ const AdminSales = () => {
                 <CardHeader className="space-y-4">
                   <div className="flex flex-row items-center justify-between gap-4">
                     <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">
+                        Start here &middot; Overview
+                      </span>
                       <CardTitle>Partner Roster ({PARTNER_ROSTER.length})</CardTitle>
                       <p className="text-sm text-muted-foreground mt-1">
                         Everyone we owe partner deliverables to, whether or not they paid
                         through Stripe. {rosterSeats} partner passes across the roster.
+                        The two tables below are the raw records this is built from.
                       </p>
                     </div>
                     <Button onClick={exportRosterCSV} size="sm">
@@ -1388,7 +1393,10 @@ const AdminSales = () => {
                 <CardHeader className="space-y-4">
                   <div className="flex flex-row items-center justify-between gap-4">
                     <CardTitle>
-                      Partner Payments
+                      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">
+                        Source data &middot; Stripe
+                      </span>
+                      Partner Payments ({partnerPurchases.length})
                       {partnerTierFilter !== 'all' && (
                         <span className="ml-2 text-sm font-normal text-muted-foreground">
                           {filteredPartnerPurchases.length} of {partnerPurchases.length}
@@ -1475,7 +1483,15 @@ const AdminSales = () => {
               {/* Partner Onboarding Profiles */}
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Partner Onboarding</CardTitle>
+                  <CardTitle>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block mb-1">
+                      Source data &middot; Onboarding forms
+                    </span>
+                    Partner Onboarding ({partnerProfiles.length})
+                    <p className="text-sm font-normal text-muted-foreground mt-1">
+                      What each partner submitted: contacts, logo, bio and their attendee list.
+                    </p>
+                  </CardTitle>
                   <Button onClick={exportPartnerCSV} disabled={partnerProfiles.length === 0} size="sm">
                     <Download className="w-4 h-4 mr-2" />
                     Export Partners CSV
