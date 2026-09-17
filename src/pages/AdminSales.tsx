@@ -681,12 +681,14 @@ const AdminSales = () => {
       case 'agencyOwner': return 'Agency Owner';
       case 'team': return 'Team Member';
       case 'partner': return 'Partner';
+      case 'partnerExtra': return 'Partner Extra Pass';
       default: return passType;
     }
   };
 
   const formatTier = (tier: string) => {
     switch (tier) {
+      case 'extraPass': return 'Extra Access';
       case 'earlyBird': return 'Current Pricing';
       case 'regular': return 'Regular';
       case 'vip': return 'VIP';
