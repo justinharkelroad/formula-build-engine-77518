@@ -6,28 +6,13 @@ import {
   processPurchaseEmail,
   queuePurchaseEmail,
 } from "../_shared/transactional-email.ts";
+import { PRICE_TIER_MAP, UNKNOWN_PASS } from "../_shared/price-tier-map.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  69700: { tier: "earlyBird", passType: "agencyOwner" },
-  39700: { tier: "earlyBird", passType: "team" },
-  64700: { tier: "earlyBird", passType: "agencyOwner" },
-  34700: { tier: "earlyBird", passType: "team" },
-  89700: { tier: "regular", passType: "agencyOwner" },
-  59700: { tier: "regular", passType: "team" },
-  53800: { tier: "vip", passType: "agencyOwner" },
-  35800: { tier: "vip", passType: "team" },
-  44800: { tier: "vip", passType: "agencyOwner" },
-  29800: { tier: "vip", passType: "team" },
-  1500000: { tier: "platinum", passType: "partner" },
-  1000000: { tier: "gold", passType: "partner" },
-  750000: { tier: "silver", passType: "partner" },
-  500000: { tier: "bronze", passType: "partner" },
-};
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -60,6 +45,7 @@ serve(async (req) => {
     if (!unknowns?.length) return json({ message: "No unknown purchases to fix", fixed: 0 });
 
     let fixed = 0;
+    let unresolved = 0;
     let failed = 0;
     let partnersCreated = 0;
     let emailsQueued = 0;
@@ -68,17 +54,15 @@ serve(async (req) => {
     for (const purchase of unknowns) {
       const sessionId = purchase.stripe_session_id;
       try {
-        const lineItems = (await stripe.checkout.sessions.listLineItems(sessionId)).data;
+        const lineItems: Stripe.LineItem[] =
+          (await stripe.checkout.sessions.listLineItems(sessionId)).data;
         if (!lineItems.length) {
           details.push({ sessionId, status: "skipped_no_items" });
           continue;
         }
 
-        const replacementRows = lineItems.map((item) => {
-          const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || {
-            tier: "unknown",
-            passType: "unknown",
-          };
+        const replacementRows = lineItems.map((item: Stripe.LineItem) => {
+          const info = PRICE_TIER_MAP[item.price?.unit_amount || 0] || UNKNOWN_PASS;
           return {
             amount: item.amount_total,
             pass_type: info.passType,
@@ -94,7 +78,7 @@ serve(async (req) => {
         if (updateError) throw updateError;
 
         if (replacementRows.length > 1) {
-          const additionalRows = replacementRows.slice(1).map((row) => ({
+          const additionalRows = replacementRows.slice(1).map((row: typeof first) => ({
             ...row,
             email: purchase.email,
             name: purchase.name,
@@ -133,13 +117,26 @@ serve(async (req) => {
           emailsQueued++;
         }
 
-        fixed++;
-        details.push({
-          sessionId,
-          status: "fixed",
-          items: replacementRows.length,
-          partner: first.pass_type === "partner",
-        });
+        // Rewriting "unknown" as "unknown" is not a fix. Reporting it as one is
+        // how this button could say "2 purchases identified" every time while
+        // the counter beside it never moved.
+        if (first.pass_type === UNKNOWN_PASS.passType) {
+          unresolved++;
+          details.push({
+            sessionId,
+            status: "unresolved_price",
+            amount: first.amount,
+            items: replacementRows.length,
+          });
+        } else {
+          fixed++;
+          details.push({
+            sessionId,
+            status: "fixed",
+            items: replacementRows.length,
+            partner: first.pass_type === "partner",
+          });
+        }
       } catch (itemError) {
         failed++;
         console.error("Purchase reprocessing failed:", sessionId, itemError);
@@ -148,8 +145,11 @@ serve(async (req) => {
     }
 
     return json({
-      message: `Reprocessed ${unknowns.length} unknown purchases`,
+      message: unresolved > 0
+        ? `Identified ${fixed} of ${unknowns.length}; ${unresolved} had a price that matches no known pass`
+        : `Reprocessed ${unknowns.length} unknown purchases`,
       fixed,
+      unresolved,
       failed,
       partnersCreated,
       emailsQueued,

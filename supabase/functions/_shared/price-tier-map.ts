@@ -24,6 +24,12 @@ export const PRICE_TIER_MAP: Record<number, PassInfo> = {
   35800: { tier: "vip", passType: "team" },
   44800: { tier: "vip", passType: "agencyOwner" },
   29800: { tier: "vip", passType: "team" },
+  // An extra seat a partner buys on top of the passes their tier includes.
+  // Priced well below a ticket, so it must not be mistaken for one — and it is
+  // an attendee pass, not a sponsorship, so its passType is deliberately not
+  // "partner": that would add these to the partner totals and let the roster
+  // try to match them to a sponsorship.
+  20000: { tier: "extraPass", passType: "partnerExtra" },
   1500000: { tier: "platinum", passType: "partner" },
   1000000: { tier: "gold", passType: "partner" },
   750000: { tier: "silver", passType: "partner" },
