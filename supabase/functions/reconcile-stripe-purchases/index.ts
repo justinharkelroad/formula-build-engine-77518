@@ -3,28 +3,14 @@ import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAdmin } from "../_shared/admin-auth.ts";
 import { getCouponRedemption } from "../_shared/stripe-coupons.ts";
+import { PRICE_TIER_MAP } from "../_shared/price-tier-map.ts";
+import { invoiceToPurchase } from "../_shared/invoice-purchases.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const PRICE_TIER_MAP: Record<number, { tier: string; passType: string }> = {
-  69700: { tier: "earlyBird", passType: "agencyOwner" },
-  39700: { tier: "earlyBird", passType: "team" },
-  64700: { tier: "earlyBird", passType: "agencyOwner" },
-  34700: { tier: "earlyBird", passType: "team" },
-  89700: { tier: "regular", passType: "agencyOwner" },
-  59700: { tier: "regular", passType: "team" },
-  53800: { tier: "vip", passType: "agencyOwner" },
-  35800: { tier: "vip", passType: "team" },
-  44800: { tier: "vip", passType: "agencyOwner" },
-  29800: { tier: "vip", passType: "team" },
-  1500000: { tier: "platinum", passType: "partner" },
-  1000000: { tier: "gold", passType: "partner" },
-  750000: { tier: "silver", passType: "partner" },
-  500000: { tier: "bronze", passType: "partner" },
-};
 
 type RecognizedLineItem = {
   item: Stripe.LineItem;
@@ -162,12 +148,59 @@ serve(async (req) => {
       startingAfter = sessions.data[sessions.data.length - 1].id;
     }
 
+    // Second pass: invoiced sponsorships. These never appear in the checkout
+    // session list above, so partners who paid by check or bank transfer were
+    // invisible to this reconciler and to the dashboard. Backfilling them here
+    // is what repairs the existing records; the webhook keeps new ones current.
+    let invoicesScanned = 0;
+    let invoicePurchasesAdded = 0;
+    let invoiceStartingAfter: string | undefined;
+
+    for (let page = 0; page < 20; page++) {
+      const invoices = await stripe.invoices.list({
+        created: { gte: fromTimestamp },
+        limit: 100,
+        status: "paid",
+        ...(invoiceStartingAfter ? { starting_after: invoiceStartingAfter } : {}),
+      });
+
+      for (const invoice of invoices.data) {
+        invoicesScanned++;
+        try {
+          const row = invoiceToPurchase(invoice);
+          if (!row) continue;
+
+          const { data: existing, error: existingError } = await supabase
+            .from("purchases")
+            .select("id")
+            .eq("stripe_session_id", row.stripe_session_id);
+          if (existingError) throw existingError;
+          if (existing?.length) continue;
+
+          const { error: insertError } = await supabase.from("purchases").insert([row]);
+          if (insertError) throw insertError;
+          invoicePurchasesAdded++;
+        } catch (error) {
+          failed++;
+          const message = error instanceof Error ? error.message : "Unknown reconciliation error";
+          console.error("Stripe invoice reconciliation failed:", invoice.id, error);
+          if (errors.length < 20) errors.push({ sessionId: invoice.id, message });
+        }
+      }
+
+      if (!invoices.has_more || invoices.data.length === 0) break;
+      invoiceStartingAfter = invoices.data[invoices.data.length - 1].id;
+    }
+
     return json({
-      message: `Synced ${redemptionsSynced} coupon redemption${redemptionsSynced === 1 ? "" : "s"}`,
+      message: `Synced ${redemptionsSynced} coupon redemption${redemptionsSynced === 1 ? "" : "s"}` +
+        `; added ${invoicePurchasesAdded} invoiced partner purchase${invoicePurchasesAdded === 1 ? "" : "s"}`,
       scanned,
       formulaSessions,
       purchasesAdded,
       redemptionsSynced,
+      invoicesScanned,
+      invoicePurchasesAdded,
       failed,
       errors,
     });

@@ -25,6 +25,21 @@ export interface PartnerRosterEntry {
   /** Other names this partner is known by, used to match database records. */
   aliases?: string[];
   /**
+   * Email domains that identify this partner. A purchase row carries only the
+   * buyer's address, so the domain is often the only thing tying a payment to
+   * a company when no onboarding profile exists yet.
+   */
+  emailDomains: string[];
+  /**
+   * People known to represent this partner — the podcast guest from the site
+   * config, plus any explicit additions. Sponsorships are often bought on a
+   * personal card, so the buyer's name is sometimes the only link back to the
+   * company: Agency Toolchest paid from a gmail address under "Todd Mclain".
+   */
+  contactNames: string[];
+  /** Exact buyer addresses that belong to this partner but match nothing else. */
+  payerEmails: string[];
+  /**
    * Whether this partner's tier passes occupy chairs in the room. False for
    * partners who work the floor instead of attending — they still appear on the
    * roster and still owe deliverables, they just do not eat into the seat cap.
@@ -51,6 +66,58 @@ const NO_SEAT_PARTNERS = new Map<string, string>([
  * would quietly pair "Mav" with the wrong company the moment a similarly named
  * partner signs. Add a line here when a new spelling shows up.
  */
+/**
+ * Email domains that do not follow from the partner's website. National General
+ * bills through NGIC and its people are on Allstate addresses, so neither
+ * matches nationalgeneral.com. Add an entry when a payment arrives from a
+ * domain the site URL would never predict.
+ */
+const PARTNER_EMAIL_DOMAINS: Record<string, string[]> = {
+  "National General": ["ngic.com", "allstate.com"],
+};
+
+/**
+ * The registrable domain of a partner's website — "agents.quotewizard.com"
+ * becomes "quotewizard.com" — so a subdomain in the sponsor link still matches
+ * company email. Every partner here is on a two-label public suffix (.com, .ca,
+ * .ai), so trimming to the last two labels is safe.
+ */
+/**
+ * The podcast guest on a sponsor entry, for the sponsors that have one. The
+ * sponsor lists are heterogeneous literals — some entries carry a podcast block
+ * and some do not — so this narrows rather than assuming the property exists.
+ */
+const guestNameOf = (sponsor: unknown): string | null => {
+  if (typeof sponsor !== "object" || sponsor === null) return null;
+  const podcast = (sponsor as { podcast?: unknown }).podcast;
+  if (typeof podcast !== "object" || podcast === null) return null;
+  const guestName = (podcast as { guestName?: unknown }).guestName;
+  return typeof guestName === "string" ? guestName : null;
+};
+
+const registrableDomain = (url: string): string | null => {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+    const labels = host.split(".");
+    return labels.length > 2 ? labels.slice(-2).join(".") : host;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Buyer email addresses that identify a partner but could never be derived.
+ * A sponsorship bought on a personal Gmail has no company domain to match, so
+ * the address has to be recorded by hand. Add a line when a payment cannot be
+ * traced any other way.
+ */
+const PARTNER_PAYER_EMAILS: Record<string, string[]> = {
+  "Agency Toolchest": ["toddmclain02@gmail.com"],
+};
+
+/** Extra representatives beyond the podcast guest already in the site config. */
+const PARTNER_CONTACT_NAMES: Record<string, string[]> = {};
+
 const SITE_PARTNER_ALIASES: Record<string, string[]> = {
   "Agency Toolchest": ["Agency Tool Chest"],
   "MediaAlpha": ["Media Alpha"],
@@ -126,6 +193,15 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
       logoUrl: sponsor.logoUrl,
       linkUrl: sponsor.linkUrl,
       aliases: SITE_PARTNER_ALIASES[sponsor.name],
+      contactNames: [
+        ...(guestNameOf(sponsor) ? [guestNameOf(sponsor)!] : []),
+        ...(PARTNER_CONTACT_NAMES[sponsor.name] ?? []),
+      ],
+      payerEmails: (PARTNER_PAYER_EMAILS[sponsor.name] ?? []).map(e => e.toLowerCase()),
+      emailDomains: [
+        ...(registrableDomain(sponsor.linkUrl) ? [registrableDomain(sponsor.linkUrl)!] : []),
+        ...(PARTNER_EMAIL_DOMAINS[sponsor.name] ?? []),
+      ],
       occupiesSeats: !NO_SEAT_PARTNERS.has(sponsor.name),
       note: NO_SEAT_PARTNERS.get(sponsor.name),
     }];
@@ -162,3 +238,9 @@ export const rosterPassCount = (): number =>
  */
 export const rosterLookupKeys = (entry: PartnerRosterEntry): string[] =>
   [entry.name, ...(entry.aliases ?? [])].map(normalizePartnerName);
+
+/** The domain part of an email address, lowercased. */
+export const emailDomain = (email: string): string | null => {
+  const at = email.lastIndexOf("@");
+  return at === -1 ? null : email.slice(at + 1).trim().toLowerCase();
+};

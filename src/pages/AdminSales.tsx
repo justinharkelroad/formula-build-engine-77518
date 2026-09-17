@@ -13,6 +13,7 @@ import { CONFIG } from '@/config/event';
 import { PARTNER_TIERS } from '@/config/partners';
 import {
   PARTNER_ROSTER,
+  emailDomain,
   normalizePartnerName,
   rosterLookupKeys,
   rosterPassCount,
@@ -98,6 +99,8 @@ interface ReconcileStripeResult {
   formulaSessions?: number;
   purchasesAdded?: number;
   redemptionsSynced?: number;
+  invoicesScanned?: number;
+  invoicePurchasesAdded?: number;
   failed?: number;
 }
 
@@ -221,16 +224,67 @@ const AdminSales = () => {
     const claimedSessions = new Set<string>();
     const claimedProfileIds = new Set<string>();
 
-    const rows = PARTNER_ROSTER.map(entry => {
+    // Identifying which partner a payment belongs to takes several signals,
+    // because none of them reaches everyone. A purchase row holds the buyer's
+    // personal name and email and nothing about the company. Only 26 of 32
+    // partners have an onboarding profile. Sponsorships are frequently bought
+    // on a personal card, so the email domain is often gmail.com rather than
+    // the company. The signals are tried strongest first.
+    const purchasesByEmail = new Map<string, Purchase[]>();
+    const purchasesByDomain = new Map<string, Purchase[]>();
+    const purchasesByName = new Map<string, Purchase[]>();
+    const push = (map: Map<string, Purchase[]>, key: string | null, purchase: Purchase) => {
+      if (!key) return;
+      const bucket = map.get(key);
+      if (bucket) bucket.push(purchase);
+      else map.set(key, [purchase]);
+    };
+    partnerPurchases.forEach(purchase => {
+      const address = purchase.email.trim().toLowerCase();
+      push(purchasesByEmail, address, purchase);
+      push(purchasesByDomain, emailDomain(address), purchase);
+      push(purchasesByName, purchase.name ? normalizePartnerName(purchase.name) : null, purchase);
+    });
+
+    const firstUnclaimed = (map: Map<string, Purchase[]>, keys: (string | null)[]) => {
+      for (const key of keys) {
+        if (!key) continue;
+        const candidate = (map.get(key) ?? [])
+          .find(p => !claimedSessions.has(p.stripe_session_id));
+        if (candidate) return candidate;
+      }
+      return undefined;
+    };
+
+    // Pass one: exact links only — the profile's own checkout session, then the
+    // addresses that profile recorded at purchase time.
+    const withProfiles = PARTNER_ROSTER.map(entry => {
       const profile = rosterLookupKeys(entry)
         .map(key => profilesByName.get(key))
         .find(Boolean);
-      const purchase = profile?.stripe_session_id
+      const purchase = (profile?.stripe_session_id
         ? purchaseBySession.get(profile.stripe_session_id)
-        : undefined;
+        : undefined) ?? firstUnclaimed(purchasesByEmail, [
+          profile?.purchase_email?.trim().toLowerCase() ?? null,
+          profile?.primary_contact_email?.trim().toLowerCase() ?? null,
+        ]);
       if (profile) claimedProfileIds.add(profile.id);
       if (purchase) claimedSessions.add(purchase.stripe_session_id);
       return { entry, profile, purchase };
+    });
+
+    // Pass two: inferred links, for partners an exact record never covered.
+    // Running these only after every exact match is assigned stops an early
+    // partner claiming a payment a later partner's profile legitimately owns.
+    const rows = withProfiles.map(row => {
+      if (row.purchase) return row;
+      const { entry } = row;
+      const purchase =
+        firstUnclaimed(purchasesByEmail, entry.payerEmails) ??
+        firstUnclaimed(purchasesByDomain, entry.emailDomains) ??
+        firstUnclaimed(purchasesByName, entry.contactNames.map(normalizePartnerName));
+      if (purchase) claimedSessions.add(purchase.stripe_session_id);
+      return purchase ? { ...row, purchase } : row;
     });
 
     // The reverse gap: a paid partner nobody added to the roster. Without this
@@ -390,10 +444,11 @@ const AdminSales = () => {
       if (error) throw error;
       const added = data?.purchasesAdded ?? 0;
       const synced = data?.redemptionsSynced ?? 0;
+      const invoiced = data?.invoicePurchasesAdded ?? 0;
       const failed = data?.failed ?? 0;
       toast({
         title: failed > 0 ? 'Stripe Sync Finished with Warnings' : 'Stripe Sync Complete',
-        description: `${synced} coupon redemption${synced === 1 ? '' : 's'} synced; ${added} missing purchase row${added === 1 ? '' : 's'} added${failed > 0 ? `; ${failed} session${failed === 1 ? '' : 's'} need review` : ''}.`,
+        description: `${synced} coupon redemption${synced === 1 ? '' : 's'} synced; ${added} missing purchase row${added === 1 ? '' : 's'} added; ${invoiced} invoiced partner${invoiced === 1 ? '' : 's'} recorded${failed > 0 ? `; ${failed} record${failed === 1 ? '' : 's'} need review` : ''}.`,
         variant: failed > 0 ? 'destructive' : 'default',
       });
       await fetchData();
