@@ -11,6 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Download, RefreshCw, LogOut, AlertTriangle, CheckCircle, Clock, ExternalLink, Mail, Copy, Loader2, Search, X, TicketPercent } from 'lucide-react';
 import { CONFIG } from '@/config/event';
 import { PARTNER_TIERS } from '@/config/partners';
+import {
+  PARTNER_ROSTER,
+  normalizePartnerName,
+  rosterLookupKeys,
+  rosterPassCount,
+} from '@/config/partnerRoster';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
@@ -119,6 +125,8 @@ const AdminSales = () => {
   const [passTypeFilter, setPassTypeFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
   const [partnerTierFilter, setPartnerTierFilter] = useState('all');
+  const [rosterSearch, setRosterSearch] = useState('');
+  const [rosterStatusFilter, setRosterStatusFilter] = useState('all');
   const [couponSearch, setCouponSearch] = useState('');
   const [couponCodeFilter, setCouponCodeFilter] = useState('all');
   const { toast } = useToast();
@@ -173,22 +181,95 @@ const AdminSales = () => {
 
   // Partner passes occupy seats but are never sold as attendee tickets, so they
   // have to be subtracted from the cap too. Otherwise the room reads emptier
-  // than it is. Unrecognised tiers contribute 0 rather than silently guessing.
-  const partnerSeats = partnerPurchases.reduce(
-    (sum, p) => sum + (PARTNER_SEATS_BY_TIER[p.tier] ?? 0) * p.quantity,
-    0,
-  );
+  // than it is.
+  //
+  // This counts the ROSTER, not the Stripe rows. A comped partner takes up just
+  // as much of the room as one who paid, and counting payments meant Disruptur,
+  // Standard, AgencyBrain and the other unbilled partners were holding seats
+  // the cap never knew about. One partner is one tier's worth of passes; a
+  // partner who somehow bought two sponsorships still occupies one allocation.
+  const partnerSeats = rosterPassCount();
   const seatsUsed = totalQuantity + partnerSeats;
   const remainingSeats = SEAT_CAP - seatsUsed;
+  const seatsOverCap = Math.max(0, -remainingSeats);
   const capacityPct = SEAT_CAP > 0 ? Math.min(100, Math.round((seatsUsed / SEAT_CAP) * 100)) : 0;
 
-  // Partner tier breakdown
+  // --- Partner roster reconciliation ---------------------------------------
+  // The roster (who IS a partner) and the ledger (who PAID through Stripe) are
+  // different sets: comped, traded and invoiced partners never produce a
+  // purchase row, so counting only the ledger hid them entirely. The roster now
+  // drives the totals and the ledger is joined onto it.
+  //
+  // A purchase is tied to a roster entry through its onboarding profile, since
+  // that is the only record carrying a company name — a purchase row has just
+  // the buyer's personal name and email. A partner who paid but has not
+  // onboarded therefore cannot be matched, and lands in the unmatched list
+  // below rather than being silently dropped.
+  const partnerRecords = useMemo(() => {
+    const profilesByName = new Map<string, PartnerProfile>();
+    partnerProfiles.forEach(profile => {
+      if (profile.company_name) {
+        profilesByName.set(normalizePartnerName(profile.company_name), profile);
+      }
+    });
+
+    const purchaseBySession = new Map<string, Purchase>();
+    partnerPurchases.forEach(purchase => {
+      purchaseBySession.set(purchase.stripe_session_id, purchase);
+    });
+
+    const claimedSessions = new Set<string>();
+    const claimedProfileIds = new Set<string>();
+
+    const rows = PARTNER_ROSTER.map(entry => {
+      const profile = rosterLookupKeys(entry)
+        .map(key => profilesByName.get(key))
+        .find(Boolean);
+      const purchase = profile?.stripe_session_id
+        ? purchaseBySession.get(profile.stripe_session_id)
+        : undefined;
+      if (profile) claimedProfileIds.add(profile.id);
+      if (purchase) claimedSessions.add(purchase.stripe_session_id);
+      return { entry, profile, purchase };
+    });
+
+    // The reverse gap: a paid partner nobody added to the roster. Without this
+    // the page would still be able to hide someone, just in the other direction.
+    const unrostered = partnerPurchases.filter(
+      purchase => !claimedSessions.has(purchase.stripe_session_id),
+    );
+    const unrosteredProfiles = partnerProfiles.filter(
+      profile => !claimedProfileIds.has(profile.id),
+    );
+
+    return { rows, unrostered, unrosteredProfiles };
+  }, [partnerProfiles, partnerPurchases]);
+
+  // Partner tier breakdown — roster totals, with the paid subset alongside.
   const partnersByTier = {
+    platinum: PARTNER_ROSTER.filter(e => e.tier === 'platinum').length,
+    gold: PARTNER_ROSTER.filter(e => e.tier === 'gold').length,
+    silver: PARTNER_ROSTER.filter(e => e.tier === 'silver').length,
+    bronze: PARTNER_ROSTER.filter(e => e.tier === 'bronze').length,
+  };
+  const paidByTier = {
     platinum: partnerPurchases.filter(p => p.tier === 'platinum').length,
     gold: partnerPurchases.filter(p => p.tier === 'gold').length,
     silver: partnerPurchases.filter(p => p.tier === 'silver').length,
     bronze: partnerPurchases.filter(p => p.tier === 'bronze').length,
   };
+  const rosterUnbilled = partnerRecords.rows.filter(r => !r.purchase).length;
+  const rosterSeats = rosterPassCount();
+
+  const filteredRoster = partnerRecords.rows.filter(({ entry, purchase }) => {
+    const q = rosterSearch.trim().toLowerCase();
+    const matchesQuery = !q || [entry.name, ...(entry.aliases ?? [])]
+      .some(name => name.toLowerCase().includes(q));
+    const matchesStatus =
+      rosterStatusFilter === 'all' ||
+      (rosterStatusFilter === 'paid' ? Boolean(purchase) : !purchase);
+    return matchesQuery && matchesStatus;
+  });
 
   const onboardedCount = partnerProfiles.filter(p => p.onboarding_completed).length;
   const deliveryByKey = useMemo(
@@ -472,6 +553,30 @@ const AdminSales = () => {
     window.URL.revokeObjectURL(url);
   };
 
+  const exportRosterCSV = () => {
+    const csvContent = [
+      ['Partner', 'Tier', 'Passes', 'Billing', 'Amount Paid', 'Onboarding', 'Listed On Site', 'Contact Email'],
+      ...filteredRoster.map(({ entry, profile, purchase }) => [
+        entry.name,
+        formatTier(entry.tier),
+        entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0,
+        purchase ? 'Paid' : 'No Stripe record',
+        purchase ? (purchase.amount / 100).toFixed(2) : '',
+        profile?.onboarding_completed ? 'Complete' : profile ? 'Started' : 'Not started',
+        entry.source === 'site' ? 'Yes' : 'No',
+        profile?.primary_contact_email || profile?.purchase_email || purchase?.email || '',
+      ]),
+    ].map(row => row.map(csvCell).join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `partner-roster-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   const exportCouponCSV = () => {
     const csvContent = [
       ['Code', 'Coupon Name', 'Customer Name', 'Customer Email', 'Seats', 'Discount', 'Currency', 'Used On', 'Stripe Session ID'],
@@ -624,7 +729,7 @@ const AdminSales = () => {
             <TabsList>
               <TabsTrigger value="attendees">Attendees ({attendeePurchases.length})</TabsTrigger>
               <TabsTrigger value="coupons">Coupons ({couponRedemptions.length})</TabsTrigger>
-              <TabsTrigger value="partners">Partners ({partnerPurchases.length})</TabsTrigger>
+              <TabsTrigger value="partners">Partners ({PARTNER_ROSTER.length})</TabsTrigger>
             </TabsList>
 
             {/* Attendees Tab */}
@@ -659,8 +764,12 @@ const AdminSales = () => {
                     <CardTitle className="text-sm font-medium">Remaining Seats</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{remainingSeats}</div>
-                    <p className="text-xs text-muted-foreground mt-1">of {SEAT_CAP} total</p>
+                    <div className={`text-2xl font-bold ${seatsOverCap > 0 ? 'text-red-600' : ''}`}>
+                      {seatsOverCap > 0 ? `+${seatsOverCap}` : remainingSeats}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {seatsOverCap > 0 ? `over the ${SEAT_CAP} cap` : `of ${SEAT_CAP} total`}
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -679,7 +788,8 @@ const AdminSales = () => {
                       <span className="text-muted-foreground text-lg"> / {SEAT_CAP} seats</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {capacityPct}% full &middot; {remainingSeats} open
+                      {capacityPct}% full &middot;{' '}
+                      {seatsOverCap > 0 ? `${seatsOverCap} over capacity` : `${remainingSeats} open`}
                     </div>
                   </div>
                   <Progress value={capacityPct} className="h-2" />
@@ -689,7 +799,7 @@ const AdminSales = () => {
                     </span>
                     <span>
                       <strong className="text-foreground">{partnerSeats}</strong> partner passes
-                      {partnerPurchases.length > 0 && ` (${partnerPurchases.length} partners)`}
+                      {` (${PARTNER_ROSTER.length} partners, ${rosterUnbilled} unbilled)`}
                     </span>
                   </div>
                 </CardContent>
@@ -1000,6 +1110,9 @@ const AdminSales = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.platinum}</div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {paidByTier.platinum} paid · {partnersByTier.platinum - paidByTier.platinum} unbilled
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -1008,6 +1121,9 @@ const AdminSales = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.gold}</div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {paidByTier.gold} paid · {partnersByTier.gold - paidByTier.gold} unbilled
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -1016,6 +1132,9 @@ const AdminSales = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.silver}</div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {paidByTier.silver} paid · {partnersByTier.silver - paidByTier.silver} unbilled
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -1024,9 +1143,190 @@ const AdminSales = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.bronze}</div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {paidByTier.bronze} paid · {partnersByTier.bronze - paidByTier.bronze} unbilled
+                    </p>
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Partner Roster — every partner, paid or not */}
+              <Card className="mb-6">
+                <CardHeader className="space-y-4">
+                  <div className="flex flex-row items-center justify-between gap-4">
+                    <div>
+                      <CardTitle>Partner Roster ({PARTNER_ROSTER.length})</CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Everyone we owe partner deliverables to, whether or not they paid
+                        through Stripe. {rosterSeats} partner passes across the roster.
+                      </p>
+                    </div>
+                    <Button onClick={exportRosterCSV} size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Export CSV
+                    </Button>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <div className="relative w-full sm:w-[260px]">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search partners"
+                        value={rosterSearch}
+                        onChange={event => setRosterSearch(event.target.value)}
+                        className="pl-9"
+                      />
+                    </div>
+                    <Select value={rosterStatusFilter} onValueChange={setRosterStatusFilter}>
+                      <SelectTrigger className="w-full sm:w-[220px]">
+                        <SelectValue placeholder="Billing status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All partners ({PARTNER_ROSTER.length})</SelectItem>
+                        <SelectItem value="paid">
+                          Paid ({partnerRecords.rows.length - rosterUnbilled})
+                        </SelectItem>
+                        <SelectItem value="unbilled">Unbilled ({rosterUnbilled})</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {(rosterSearch || rosterStatusFilter !== 'all') && (
+                      <Button
+                        onClick={() => { setRosterSearch(''); setRosterStatusFilter('all'); }}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {filteredRoster.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No partners match these filters.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-3">Partner</th>
+                            <th className="text-left p-3">Tier</th>
+                            <th className="text-left p-3">Passes</th>
+                            <th className="text-left p-3">Billing</th>
+                            <th className="text-left p-3">Onboarding</th>
+                            <th className="text-left p-3">Listed</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredRoster.map(({ entry, profile, purchase }) => (
+                            <tr key={`${entry.source}:${entry.name}`} className="border-b hover:bg-muted/50">
+                              <td className="p-3 font-medium">
+                                {entry.linkUrl ? (
+                                  <a
+                                    href={entry.linkUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1 hover:underline"
+                                  >
+                                    {entry.name}
+                                    <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                ) : entry.name}
+                                {entry.note && (
+                                  <p className="text-xs text-muted-foreground font-normal mt-0.5">
+                                    {entry.note}
+                                  </p>
+                                )}
+                              </td>
+                              <td className="p-3">
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                  entry.tier === 'platinum' ? 'bg-slate-200 text-slate-800' :
+                                  entry.tier === 'gold' ? 'bg-amber-100 text-amber-800' :
+                                  entry.tier === 'silver' ? 'bg-gray-200 text-gray-700' :
+                                  'bg-orange-100 text-orange-800'
+                                }`}>
+                                  {formatTier(entry.tier)}
+                                </span>
+                              </td>
+                              <td className="p-3">
+                                {entry.occupiesSeats ? (
+                                  PARTNER_TIERS[entry.tier].passes
+                                ) : (
+                                  <span className="text-muted-foreground" title="Does not count against room capacity">
+                                    &mdash;
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-3">
+                                {purchase ? (
+                                  <span className="inline-flex items-center gap-1 text-green-700">
+                                    <CheckCircle className="w-4 h-4" />
+                                    ${(purchase.amount / 100).toLocaleString()}
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 text-amber-700">
+                                    <AlertTriangle className="w-4 h-4" />
+                                    No Stripe record
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-3">
+                                {profile?.onboarding_completed ? (
+                                  <span className="inline-flex items-center gap-1 text-green-700">
+                                    <CheckCircle className="w-4 h-4" />
+                                    Complete
+                                  </span>
+                                ) : profile ? (
+                                  <span className="inline-flex items-center gap-1 text-muted-foreground">
+                                    <Clock className="w-4 h-4" />
+                                    Started
+                                  </span>
+                                ) : (
+                                  <span className="text-muted-foreground">Not started</span>
+                                )}
+                              </td>
+                              <td className="p-3 text-muted-foreground">
+                                {entry.source === 'site' ? 'On site' : 'Admin only'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                  {(partnerRecords.unrostered.length > 0 || partnerRecords.unrosteredProfiles.length > 0) && (
+                    <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                      <div className="flex items-center gap-2 font-semibold text-amber-900">
+                        <AlertTriangle className="w-4 h-4" />
+                        Unmatched partner records ({partnerRecords.unrostered.length + partnerRecords.unrosteredProfiles.length})
+                      </div>
+                      <p className="text-sm text-amber-800 mt-1">
+                        Database records that could not be tied to a roster entry. A payment
+                        lands here when the buyer has not completed onboarding yet, so there
+                        is no company name to match on. A profile lands here when its company
+                        name differs from the site config — add the spelling to
+                        SITE_PARTNER_ALIASES in partnerRoster.ts.
+                      </p>
+                      <ul className="mt-2 space-y-1 text-sm text-amber-900">
+                        {partnerRecords.unrostered.map(purchase => (
+                          <li key={purchase.id}>
+                            {purchase.name || purchase.email} — {formatTier(purchase.tier)}, paid $
+                            {(purchase.amount / 100).toLocaleString()} · no onboarding profile
+                          </li>
+                        ))}
+                        {partnerRecords.unrosteredProfiles.map(profile => (
+                          <li key={profile.id}>
+                            {profile.company_name || profile.purchase_email || 'Unnamed profile'} — {formatTier(profile.tier)} · name not in roster
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
               {/* Partner Payments */}
               <Card className="mb-6">
