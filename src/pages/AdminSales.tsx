@@ -209,20 +209,58 @@ const AdminSales = () => {
   // onboarded therefore cannot be matched, and lands in the unmatched list
   // below rather than being silently dropped.
   const partnerRecords = useMemo(() => {
-    const profilesByName = new Map<string, PartnerProfile>();
+    const claimedSessions = new Set<string>();
+    const claimedProfileIds = new Set<string>();
+
+    // Onboarding profiles are matched the same several ways payments are, and
+    // for the same reason: the company-name field is optional and six partners
+    // left it blank, so a name-only lookup can never attach their form. Their
+    // email is the identifier that survived.
+    const profilesByName = new Map<string, PartnerProfile[]>();
+    const profilesByEmail = new Map<string, PartnerProfile[]>();
+    const profilesByDomain = new Map<string, PartnerProfile[]>();
+    const pushProfile = (
+      map: Map<string, PartnerProfile[]>,
+      key: string | null,
+      profile: PartnerProfile,
+    ) => {
+      if (!key) return;
+      const bucket = map.get(key);
+      if (bucket) bucket.push(profile);
+      else map.set(key, [profile]);
+    };
     partnerProfiles.forEach(profile => {
       if (profile.company_name) {
-        profilesByName.set(normalizePartnerName(profile.company_name), profile);
+        pushProfile(profilesByName, normalizePartnerName(profile.company_name), profile);
       }
+      [
+        profile.purchase_email,
+        profile.primary_contact_email,
+        profile.marketing_contact_email,
+      ].forEach(raw => {
+        const address = raw?.trim().toLowerCase();
+        if (!address) return;
+        pushProfile(profilesByEmail, address, profile);
+        pushProfile(profilesByDomain, emailDomain(address), profile);
+      });
     });
+
+    const firstUnclaimedProfile = (
+      map: Map<string, PartnerProfile[]>,
+      keys: (string | null)[],
+    ) => {
+      for (const key of keys) {
+        if (!key) continue;
+        const candidate = (map.get(key) ?? []).find(p => !claimedProfileIds.has(p.id));
+        if (candidate) return candidate;
+      }
+      return undefined;
+    };
 
     const purchaseBySession = new Map<string, Purchase>();
     partnerPurchases.forEach(purchase => {
       purchaseBySession.set(purchase.stripe_session_id, purchase);
     });
-
-    const claimedSessions = new Set<string>();
-    const claimedProfileIds = new Set<string>();
 
     // Identifying which partner a payment belongs to takes several signals,
     // because none of them reaches everyone. A purchase row holds the buyer's
@@ -259,9 +297,7 @@ const AdminSales = () => {
     // Pass one: exact links only — the profile's own checkout session, then the
     // addresses that profile recorded at purchase time.
     const withProfiles = PARTNER_ROSTER.map(entry => {
-      const profile = rosterLookupKeys(entry)
-        .map(key => profilesByName.get(key))
-        .find(Boolean);
+      const profile = firstUnclaimedProfile(profilesByName, rosterLookupKeys(entry));
       const purchase = (profile?.stripe_session_id
         ? purchaseBySession.get(profile.stripe_session_id)
         : undefined) ?? firstUnclaimed(purchasesByEmail, [
@@ -277,14 +313,25 @@ const AdminSales = () => {
     // Running these only after every exact match is assigned stops an early
     // partner claiming a payment a later partner's profile legitimately owns.
     const rows = withProfiles.map(row => {
-      if (row.purchase) return row;
       const { entry } = row;
-      const purchase =
+
+      const profile = row.profile ?? firstUnclaimedProfile(profilesByEmail, [
+        ...entry.payerEmails,
+      ]) ?? firstUnclaimedProfile(profilesByDomain, entry.emailDomains);
+      if (profile && !row.profile) claimedProfileIds.add(profile.id);
+
+      const purchase = row.purchase ??
+        (profile?.stripe_session_id ? purchaseBySession.get(profile.stripe_session_id) : undefined) ??
+        firstUnclaimed(purchasesByEmail, [
+          profile?.purchase_email?.trim().toLowerCase() ?? null,
+          profile?.primary_contact_email?.trim().toLowerCase() ?? null,
+        ]) ??
         firstUnclaimed(purchasesByEmail, entry.payerEmails) ??
         firstUnclaimed(purchasesByDomain, entry.emailDomains) ??
         firstUnclaimed(purchasesByName, entry.contactNames.map(normalizePartnerName));
       if (purchase) claimedSessions.add(purchase.stripe_session_id);
-      return purchase ? { ...row, purchase } : row;
+
+      return { ...row, profile, purchase };
     });
 
     // The reverse gap: a paid partner nobody added to the roster. Without this
@@ -1396,22 +1443,27 @@ const AdminSales = () => {
                         Unmatched partner records ({partnerRecords.unrostered.length + partnerRecords.unrosteredProfiles.length})
                       </div>
                       <p className="text-sm text-amber-800 mt-1">
-                        Database records that could not be tied to a roster entry. A payment
-                        lands here when the buyer has not completed onboarding yet, so there
-                        is no company name to match on. A profile lands here when its company
-                        name differs from the site config — add the spelling to
-                        SITE_PARTNER_ALIASES in partnerRoster.ts.
+                        Stripe payments and onboarding forms that could not be tied to a
+                        partner by company name, email address, email domain or contact
+                        name. These are records without a home — not partners without a
+                        payment, so nothing here means someone has not paid. Anything
+                        listed needs a spelling or address added to partnerRoster.ts.
                       </p>
                       <ul className="mt-2 space-y-1 text-sm text-amber-900">
                         {partnerRecords.unrostered.map(purchase => (
                           <li key={purchase.id}>
                             {purchase.name || purchase.email} — {formatTier(purchase.tier)}, paid $
-                            {(purchase.amount / 100).toLocaleString()} · no onboarding profile
+                            {(purchase.amount / 100).toLocaleString()} · payment
                           </li>
                         ))}
                         {partnerRecords.unrosteredProfiles.map(profile => (
                           <li key={profile.id}>
-                            {profile.company_name || profile.purchase_email || 'Unnamed profile'} — {formatTier(profile.tier)} · name not in roster
+                            {profile.company_name
+                              || profile.purchase_email
+                              || profile.primary_contact_email
+                              || 'Unnamed profile'}
+                            {' — '}{formatTier(profile.tier)} · onboarding form
+                            {!profile.company_name && ', no company name given'}
                           </li>
                         ))}
                       </ul>
