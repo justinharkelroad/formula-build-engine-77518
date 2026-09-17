@@ -30,19 +30,26 @@ const CATEGORIES = [
     label: "Use real conversations to coach",
     sub: "Calling · recordings · sales activity · call visibility",
   },
+  {
+    id: "train-the-transfer",
+    tag: "Life",
+    label: "Move P&C conversations into life",
+    sub: "Transition language · weekly coached reps · live-call observation · life appointments",
+  },
 ];
 
 const PARTNERS = [
   partnerFor("standard", {
     helpsWith:
-      "Onboarding structure, role standards, coaching rhythm and repeatable team development.",
+      "Onboarding structure, role standards, coaching rhythm, repeatable team development, and the weekly coached reps that move a P&C conversation into life insurance interest.",
     bestFit:
-      "Your Domino involves how people are trained, what standard they are trained to, and who holds it.",
+      "Your Domino involves how people are trained, what standard they are trained to, who holds it, or how your team turns P&C conversations into life appointments.",
     categories: [
       "build-training-system",
       "coach-real-performance",
       "measure-training",
       "coach-from-conversations",
+      "train-the-transfer",
     ],
   }),
 ];
@@ -52,7 +59,7 @@ export const TRAINING: ResourcePageContent = {
   seo: {
     title: "Training Resources | Formula Forum 2026",
     description:
-      "Resources from Formula Forum partners to help insurance agencies build onboarding and role training, coach from real conversations, and measure whether training changed performance.",
+      "Resources from Formula Forum partners to help insurance agencies build onboarding and role training, coach from real conversations, move P&C conversations into life insurance, and measure whether training changed performance.",
     path: "/resources/training",
   },
   hero: {
@@ -96,6 +103,10 @@ export const TRAINING: ResourcePageContent = {
       },
       {
         problem: "We need more visibility into performance",
+        partnerIds: ["standard"],
+      },
+      {
+        problem: "Our P&C conversations never turn into life insurance appointments",
         partnerIds: ["standard"],
       },
     ],
