@@ -132,7 +132,7 @@ export const SESSIONS: AgendaSession[] = [
     track: "BUSINESS",
     build: "TEAM",
     minutes: 60,
-    line: "Turning what your team knows into what your team actually does.",
+    line: "Turning knowledge into repeatable performance.",
     outcome: "A team that improves on a schedule instead of by accident.",
     question: "You have a process for hiring people. Do you have one for making them better?",
     inTheRoom:
