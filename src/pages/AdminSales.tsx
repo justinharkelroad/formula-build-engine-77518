@@ -353,17 +353,26 @@ const AdminSales = () => {
     silver: PARTNER_ROSTER.filter(e => e.tier === 'silver').length,
     bronze: PARTNER_ROSTER.filter(e => e.tier === 'bronze').length,
   };
-  const paidByTier = {
-    platinum: partnerPurchases.filter(p => p.tier === 'platinum').length,
-    gold: partnerPurchases.filter(p => p.tier === 'gold').length,
-    silver: partnerPurchases.filter(p => p.tier === 'silver').length,
-    bronze: partnerPurchases.filter(p => p.tier === 'bronze').length,
+  // Counted off the roster rather than off Stripe rows, so a tier card agrees
+  // with the table beneath it: a recorded payment counts as paid, and a comped
+  // partner is reported as comped rather than as a shortfall.
+  const isPaid = (row: { purchase?: Purchase; entry: { recordedPayment?: unknown } }) =>
+    Boolean(row.purchase) || Boolean(row.entry.recordedPayment);
+  const tierStatus = (tier: string) => {
+    const rows = partnerRecords.rows.filter(r => r.entry.tier === tier);
+    const paid = rows.filter(isPaid).length;
+    const comped = rows.filter(r => !isPaid(r) && r.entry.comped).length;
+    return { paid, comped, open: rows.length - paid - comped };
   };
-  // "Unbilled" means no money received, so a sponsorship settled by invoice is
-  // not unbilled just because Stripe never produced a row for it.
+
+  const rosterPaid = partnerRecords.rows.filter(isPaid).length;
+  // "Unbilled" is money still owed. A recorded payment is paid, and a comped
+  // partner was never going to pay — counting either trains everyone to ignore
+  // the number.
   const rosterUnbilled = partnerRecords.rows.filter(
-    r => !r.purchase && !r.entry.recordedPayment,
+    r => !r.purchase && !r.entry.recordedPayment && !r.entry.comped,
   ).length;
+  const rosterComped = partnerRecords.rows.filter(r => r.entry.comped).length;
 
   // Invoiced sponsorships count toward revenue too, but only while no real
   // payment has been matched — otherwise deploying the reconciler would make
@@ -387,7 +396,9 @@ const AdminSales = () => {
       rosterStatusFilter === 'all' ||
       (rosterStatusFilter === 'paid'
         ? Boolean(purchase) || Boolean(entry.recordedPayment)
-        : !purchase && !entry.recordedPayment);
+        : rosterStatusFilter === 'comped'
+          ? !purchase && !entry.recordedPayment && Boolean(entry.comped)
+          : !purchase && !entry.recordedPayment && !entry.comped);
     return matchesQuery && matchesStatus;
   });
 
@@ -925,7 +936,7 @@ const AdminSales = () => {
                     </span>
                     <span>
                       <strong className="text-foreground">{partnerSeats}</strong> partner passes
-                      {` (${PARTNER_ROSTER.length} partners, ${rosterUnbilled} unbilled)`}
+                      {` (${PARTNER_ROSTER.length} partners, ${rosterComped} comped)`}
                     </span>
                   </div>
                 </CardContent>
@@ -1237,7 +1248,9 @@ const AdminSales = () => {
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.platinum}</div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {paidByTier.platinum} paid · {partnersByTier.platinum - paidByTier.platinum} unbilled
+                      {tierStatus('platinum').paid} paid
+                      {tierStatus('platinum').comped > 0 && ` · ${tierStatus('platinum').comped} comped`}
+                      {tierStatus('platinum').open > 0 && ` · ${tierStatus('platinum').open} owed`}
                     </p>
                   </CardContent>
                 </Card>
@@ -1248,7 +1261,9 @@ const AdminSales = () => {
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.gold}</div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {paidByTier.gold} paid · {partnersByTier.gold - paidByTier.gold} unbilled
+                      {tierStatus('gold').paid} paid
+                      {tierStatus('gold').comped > 0 && ` · ${tierStatus('gold').comped} comped`}
+                      {tierStatus('gold').open > 0 && ` · ${tierStatus('gold').open} owed`}
                     </p>
                   </CardContent>
                 </Card>
@@ -1259,7 +1274,9 @@ const AdminSales = () => {
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.silver}</div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {paidByTier.silver} paid · {partnersByTier.silver - paidByTier.silver} unbilled
+                      {tierStatus('silver').paid} paid
+                      {tierStatus('silver').comped > 0 && ` · ${tierStatus('silver').comped} comped`}
+                      {tierStatus('silver').open > 0 && ` · ${tierStatus('silver').open} owed`}
                     </p>
                   </CardContent>
                 </Card>
@@ -1270,7 +1287,9 @@ const AdminSales = () => {
                   <CardContent>
                     <div className="text-2xl font-bold">{partnersByTier.bronze}</div>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {paidByTier.bronze} paid · {partnersByTier.bronze - paidByTier.bronze} unbilled
+                      {tierStatus('bronze').paid} paid
+                      {tierStatus('bronze').comped > 0 && ` · ${tierStatus('bronze').comped} comped`}
+                      {tierStatus('bronze').open > 0 && ` · ${tierStatus('bronze').open} owed`}
                     </p>
                   </CardContent>
                 </Card>
@@ -1314,9 +1333,10 @@ const AdminSales = () => {
                       <SelectContent>
                         <SelectItem value="all">All partners ({PARTNER_ROSTER.length})</SelectItem>
                         <SelectItem value="paid">
-                          Paid ({partnerRecords.rows.length - rosterUnbilled})
+                          Paid ({rosterPaid})
                         </SelectItem>
-                        <SelectItem value="unbilled">Unbilled ({rosterUnbilled})</SelectItem>
+                        <SelectItem value="comped">Comped ({rosterComped})</SelectItem>
+                        <SelectItem value="unbilled">Owed ({rosterUnbilled})</SelectItem>
                       </SelectContent>
                     </Select>
                     {(rosterSearch || rosterStatusFilter !== 'all') && (
@@ -1398,17 +1418,29 @@ const AdminSales = () => {
                                 ) : entry.recordedPayment ? (
                                   <span
                                     className="inline-flex items-center gap-1 text-green-700"
-                                    title={`${entry.recordedPayment.method}${entry.recordedPayment.paidOn ? `, ${new Date(entry.recordedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this payment.`}
+                                    title={`Paid by ${entry.recordedPayment.method}${entry.recordedPayment.paidOn ? ` on ${new Date(entry.recordedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this payment.`}
                                   >
                                     <CheckCircle className="w-4 h-4" />
                                     ${(entry.recordedPayment.amountInCents / 100).toLocaleString()}
-                                    <span className="text-xs text-muted-foreground">recorded</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {entry.recordedPayment.method}
+                                    </span>
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-1 text-amber-700">
-                                    <AlertTriangle className="w-4 h-4" />
-                                    No Stripe record
-                                  </span>
+                                  <div>
+                                    <span className="inline-flex items-center gap-1 text-amber-700">
+                                      <AlertTriangle className="w-4 h-4" />
+                                      No Stripe record
+                                    </span>
+                                    {entry.comped && (
+                                      <p
+                                        className="text-xs text-muted-foreground mt-0.5"
+                                        title={`${entry.comped} Not counted in revenue.`}
+                                      >
+                                        Comped
+                                      </p>
+                                    )}
+                                  </div>
                                 )}
                               </td>
                               <td className="p-3">
