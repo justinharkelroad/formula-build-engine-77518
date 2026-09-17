@@ -181,13 +181,17 @@ const AdminSales = () => {
 
   // Partner passes occupy seats but are never sold as attendee tickets, so they
   // have to be subtracted from the cap too. Otherwise the room reads emptier
-  // than it is. Unrecognised tiers contribute 0 rather than silently guessing.
-  const partnerSeats = partnerPurchases.reduce(
-    (sum, p) => sum + (PARTNER_SEATS_BY_TIER[p.tier] ?? 0) * p.quantity,
-    0,
-  );
+  // than it is.
+  //
+  // This counts the ROSTER, not the Stripe rows. A comped partner takes up just
+  // as much of the room as one who paid, and counting payments meant Disruptur,
+  // Standard, AgencyBrain and the other unbilled partners were holding seats
+  // the cap never knew about. One partner is one tier's worth of passes; a
+  // partner who somehow bought two sponsorships still occupies one allocation.
+  const partnerSeats = rosterPassCount();
   const seatsUsed = totalQuantity + partnerSeats;
   const remainingSeats = SEAT_CAP - seatsUsed;
+  const seatsOverCap = Math.max(0, -remainingSeats);
   const capacityPct = SEAT_CAP > 0 ? Math.min(100, Math.round((seatsUsed / SEAT_CAP) * 100)) : 0;
 
   // --- Partner roster reconciliation ---------------------------------------
@@ -760,8 +764,12 @@ const AdminSales = () => {
                     <CardTitle className="text-sm font-medium">Remaining Seats</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{remainingSeats}</div>
-                    <p className="text-xs text-muted-foreground mt-1">of {SEAT_CAP} total</p>
+                    <div className={`text-2xl font-bold ${seatsOverCap > 0 ? 'text-red-600' : ''}`}>
+                      {seatsOverCap > 0 ? `+${seatsOverCap}` : remainingSeats}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {seatsOverCap > 0 ? `over the ${SEAT_CAP} cap` : `of ${SEAT_CAP} total`}
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -780,7 +788,8 @@ const AdminSales = () => {
                       <span className="text-muted-foreground text-lg"> / {SEAT_CAP} seats</span>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {capacityPct}% full &middot; {remainingSeats} open
+                      {capacityPct}% full &middot;{' '}
+                      {seatsOverCap > 0 ? `${seatsOverCap} over capacity` : `${remainingSeats} open`}
                     </div>
                   </div>
                   <Progress value={capacityPct} className="h-2" />
@@ -790,7 +799,7 @@ const AdminSales = () => {
                     </span>
                     <span>
                       <strong className="text-foreground">{partnerSeats}</strong> partner passes
-                      {partnerPurchases.length > 0 && ` (${partnerPurchases.length} partners)`}
+                      {` (${PARTNER_ROSTER.length} partners, ${rosterUnbilled} unbilled)`}
                     </span>
                   </div>
                 </CardContent>
