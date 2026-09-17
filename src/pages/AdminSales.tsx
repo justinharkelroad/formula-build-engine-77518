@@ -420,6 +420,15 @@ const AdminSales = () => {
   // partner the form resolved to leads the row; what was typed is kept beside
   // it, and only when the two differ, so a mistyped field stays visible
   // without being the thing you read first.
+  // The roster carries a corrected contact where the onboarding form's own
+  // contact field is wrong — Agency Toolchest's holds the company name, and
+  // SmarketingMail's holds the person who paid rather than their own contact.
+  const contactFor = (profile: PartnerProfile) => {
+    const partner = partnerRecords.rosterByProfileId.get(profile.id);
+    const corrected = PARTNER_ROSTER.find(e => e.name === partner)?.contactName;
+    return corrected || profile.primary_contact_name || profile.purchase_name || '-';
+  };
+
   const submittedName = (profile: PartnerProfile) => {
     const typed = profile.company_name || profile.purchase_name;
     if (!typed) return null;
@@ -778,7 +787,7 @@ const AdminSales = () => {
         partnerRecords.rosterByProfileId.get(p.id) || 'Unmatched',
         `"${submittedName(p) ?? ''}"`,
         formatTier(p.tier),
-        `"${p.primary_contact_name || p.purchase_name || ''}"`,
+        `"${contactFor(p)}"`,
         p.primary_contact_email || p.purchase_email || '',
         p.primary_contact_phone || '',
         p.website_url || '',
@@ -1714,7 +1723,7 @@ const AdminSales = () => {
                                     {formatTier(profile.tier)}
                                   </span>
                                 </td>
-                                <td className="p-3">{profile.primary_contact_name || profile.purchase_name || '-'}</td>
+                                <td className="p-3">{contactFor(profile)}</td>
                                 <td className="p-3">{profile.primary_contact_email || profile.purchase_email || '-'}</td>
                                 <td className="p-3">
                                   {profile.onboarding_completed ? (
