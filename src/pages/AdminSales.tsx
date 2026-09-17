@@ -343,7 +343,15 @@ const AdminSales = () => {
       profile => !claimedProfileIds.has(profile.id),
     );
 
-    return { rows, unrostered, unrosteredProfiles };
+    // Which partner each onboarding form actually belongs to. The form's own
+    // company field is free text and is sometimes a person's name, so the raw
+    // profiles table cannot be read on its own.
+    const rosterByProfileId = new Map<string, string>();
+    rows.forEach(row => {
+      if (row.profile) rosterByProfileId.set(row.profile.id, row.entry.name);
+    });
+
+    return { rows, unrostered, unrosteredProfiles, rosterByProfileId };
   }, [partnerProfiles, partnerPurchases]);
 
   // Partner tier breakdown — roster totals, with the paid subset alongside.
@@ -740,9 +748,10 @@ const AdminSales = () => {
 
   const exportPartnerCSV = () => {
     const csvContent = [
-      ['Company', 'Tier', 'Contact Name', 'Contact Email', 'Phone', 'Website', 'Onboarded', 'Date'],
+      ['Company', 'Partner', 'Tier', 'Contact Name', 'Contact Email', 'Phone', 'Website', 'Onboarded', 'Date'],
       ...partnerProfiles.map(p => [
         `"${p.company_name || p.purchase_name || ''}"`,
+        partnerRecords.rosterByProfileId.get(p.id) || 'Unmatched',
         formatTier(p.tier),
         `"${p.primary_contact_name || p.purchase_name || ''}"`,
         p.primary_contact_email || p.purchase_email || '',
@@ -1624,6 +1633,7 @@ const AdminSales = () => {
                         <thead>
                           <tr className="border-b">
                             <th className="text-left p-3">Company</th>
+                            <th className="text-left p-3">Partner</th>
                             <th className="text-left p-3">Tier</th>
                             <th className="text-left p-3">Contact</th>
                             <th className="text-left p-3">Email</th>
@@ -1652,6 +1662,21 @@ const AdminSales = () => {
                                     <a href={profile.website_url} target="_blank" rel="noopener noreferrer" className="ml-1 inline-block">
                                       <ExternalLink className="w-3 h-3 inline text-muted-foreground" />
                                     </a>
+                                  )}
+                                </td>
+                                <td className="p-3">
+                                  {partnerRecords.rosterByProfileId.get(profile.id) ? (
+                                    <span className="text-foreground">
+                                      {partnerRecords.rosterByProfileId.get(profile.id)}
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="inline-flex items-center gap-1 text-amber-700"
+                                      title="This form could not be tied to any partner by company name, email address or domain."
+                                    >
+                                      <AlertTriangle className="w-4 h-4" />
+                                      Unmatched
+                                    </span>
                                   )}
                                 </td>
                                 <td className="p-3">
