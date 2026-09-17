@@ -31,6 +31,15 @@ export interface PartnerRosterEntry {
    */
   emailDomains: string[];
   /**
+   * People known to represent this partner — the podcast guest from the site
+   * config, plus any explicit additions. Sponsorships are often bought on a
+   * personal card, so the buyer's name is sometimes the only link back to the
+   * company: Agency Toolchest paid from a gmail address under "Todd Mclain".
+   */
+  contactNames: string[];
+  /** Exact buyer addresses that belong to this partner but match nothing else. */
+  payerEmails: string[];
+  /**
    * Whether this partner's tier passes occupy chairs in the room. False for
    * partners who work the floor instead of attending — they still appear on the
    * roster and still owe deliverables, they just do not eat into the seat cap.
@@ -73,6 +82,19 @@ const PARTNER_EMAIL_DOMAINS: Record<string, string[]> = {
  * company email. Every partner here is on a two-label public suffix (.com, .ca,
  * .ai), so trimming to the last two labels is safe.
  */
+/**
+ * The podcast guest on a sponsor entry, for the sponsors that have one. The
+ * sponsor lists are heterogeneous literals — some entries carry a podcast block
+ * and some do not — so this narrows rather than assuming the property exists.
+ */
+const guestNameOf = (sponsor: unknown): string | null => {
+  if (typeof sponsor !== "object" || sponsor === null) return null;
+  const podcast = (sponsor as { podcast?: unknown }).podcast;
+  if (typeof podcast !== "object" || podcast === null) return null;
+  const guestName = (podcast as { guestName?: unknown }).guestName;
+  return typeof guestName === "string" ? guestName : null;
+};
+
 const registrableDomain = (url: string): string | null => {
   try {
     const host = new URL(url).hostname.replace(/^www\./, "").toLowerCase();
@@ -82,6 +104,19 @@ const registrableDomain = (url: string): string | null => {
     return null;
   }
 };
+
+/**
+ * Buyer email addresses that identify a partner but could never be derived.
+ * A sponsorship bought on a personal Gmail has no company domain to match, so
+ * the address has to be recorded by hand. Add a line when a payment cannot be
+ * traced any other way.
+ */
+const PARTNER_PAYER_EMAILS: Record<string, string[]> = {
+  "Agency Toolchest": ["toddmclain02@gmail.com"],
+};
+
+/** Extra representatives beyond the podcast guest already in the site config. */
+const PARTNER_CONTACT_NAMES: Record<string, string[]> = {};
 
 const SITE_PARTNER_ALIASES: Record<string, string[]> = {
   "Agency Toolchest": ["Agency Tool Chest"],
@@ -158,6 +193,11 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
       logoUrl: sponsor.logoUrl,
       linkUrl: sponsor.linkUrl,
       aliases: SITE_PARTNER_ALIASES[sponsor.name],
+      contactNames: [
+        ...(guestNameOf(sponsor) ? [guestNameOf(sponsor)!] : []),
+        ...(PARTNER_CONTACT_NAMES[sponsor.name] ?? []),
+      ],
+      payerEmails: (PARTNER_PAYER_EMAILS[sponsor.name] ?? []).map(e => e.toLowerCase()),
       emailDomains: [
         ...(registrableDomain(sponsor.linkUrl) ? [registrableDomain(sponsor.linkUrl)!] : []),
         ...(PARTNER_EMAIL_DOMAINS[sponsor.name] ?? []),

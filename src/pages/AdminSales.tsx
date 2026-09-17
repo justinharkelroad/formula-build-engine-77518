@@ -224,46 +224,67 @@ const AdminSales = () => {
     const claimedSessions = new Set<string>();
     const claimedProfileIds = new Set<string>();
 
-    // Purchases are tied to a partner by two independent signals, because
-    // neither alone reaches everyone: the onboarding profile carries a company
-    // name but only 26 of 32 partners have one, and a purchase row carries only
-    // the buyer's email — whose domain is usually the company itself.
+    // Identifying which partner a payment belongs to takes several signals,
+    // because none of them reaches everyone. A purchase row holds the buyer's
+    // personal name and email and nothing about the company. Only 26 of 32
+    // partners have an onboarding profile. Sponsorships are frequently bought
+    // on a personal card, so the email domain is often gmail.com rather than
+    // the company. The signals are tried strongest first.
+    const purchasesByEmail = new Map<string, Purchase[]>();
     const purchasesByDomain = new Map<string, Purchase[]>();
-    partnerPurchases.forEach(purchase => {
-      const domain = emailDomain(purchase.email);
-      if (!domain) return;
-      const bucket = purchasesByDomain.get(domain);
+    const purchasesByName = new Map<string, Purchase[]>();
+    const push = (map: Map<string, Purchase[]>, key: string | null, purchase: Purchase) => {
+      if (!key) return;
+      const bucket = map.get(key);
       if (bucket) bucket.push(purchase);
-      else purchasesByDomain.set(domain, [purchase]);
+      else map.set(key, [purchase]);
+    };
+    partnerPurchases.forEach(purchase => {
+      const address = purchase.email.trim().toLowerCase();
+      push(purchasesByEmail, address, purchase);
+      push(purchasesByDomain, emailDomain(address), purchase);
+      push(purchasesByName, purchase.name ? normalizePartnerName(purchase.name) : null, purchase);
     });
 
-    // Two passes, not one. Profile matches are exact, so they are all assigned
-    // first; only then are leftovers matched by domain. In a single pass an
-    // early partner could claim by domain a payment that a later partner's
-    // profile legitimately owns.
+    const firstUnclaimed = (map: Map<string, Purchase[]>, keys: (string | null)[]) => {
+      for (const key of keys) {
+        if (!key) continue;
+        const candidate = (map.get(key) ?? [])
+          .find(p => !claimedSessions.has(p.stripe_session_id));
+        if (candidate) return candidate;
+      }
+      return undefined;
+    };
+
+    // Pass one: exact links only — the profile's own checkout session, then the
+    // addresses that profile recorded at purchase time.
     const withProfiles = PARTNER_ROSTER.map(entry => {
       const profile = rosterLookupKeys(entry)
         .map(key => profilesByName.get(key))
         .find(Boolean);
-      const purchase = profile?.stripe_session_id
+      const purchase = (profile?.stripe_session_id
         ? purchaseBySession.get(profile.stripe_session_id)
-        : undefined;
+        : undefined) ?? firstUnclaimed(purchasesByEmail, [
+          profile?.purchase_email?.trim().toLowerCase() ?? null,
+          profile?.primary_contact_email?.trim().toLowerCase() ?? null,
+        ]);
       if (profile) claimedProfileIds.add(profile.id);
       if (purchase) claimedSessions.add(purchase.stripe_session_id);
       return { entry, profile, purchase };
     });
 
+    // Pass two: inferred links, for partners an exact record never covered.
+    // Running these only after every exact match is assigned stops an early
+    // partner claiming a payment a later partner's profile legitimately owns.
     const rows = withProfiles.map(row => {
       if (row.purchase) return row;
-      for (const domain of row.entry.emailDomains) {
-        const candidate = (purchasesByDomain.get(domain) ?? [])
-          .find(p => !claimedSessions.has(p.stripe_session_id));
-        if (candidate) {
-          claimedSessions.add(candidate.stripe_session_id);
-          return { ...row, purchase: candidate };
-        }
-      }
-      return row;
+      const { entry } = row;
+      const purchase =
+        firstUnclaimed(purchasesByEmail, entry.payerEmails) ??
+        firstUnclaimed(purchasesByDomain, entry.emailDomains) ??
+        firstUnclaimed(purchasesByName, entry.contactNames.map(normalizePartnerName));
+      if (purchase) claimedSessions.add(purchase.stripe_session_id);
+      return purchase ? { ...row, purchase } : row;
     });
 
     // The reverse gap: a paid partner nobody added to the roster. Without this
