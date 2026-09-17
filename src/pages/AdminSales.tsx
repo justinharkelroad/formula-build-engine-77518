@@ -1426,18 +1426,21 @@ const AdminSales = () => {
                                       {entry.recordedPayment.method}
                                     </span>
                                   </span>
-                                ) : entry.comped ? (
-                                  <span
-                                    className="inline-flex items-center gap-1 text-muted-foreground"
-                                    title={`${entry.comped} Not counted in revenue.`}
-                                  >
-                                    Comped
-                                  </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-1 text-amber-700">
-                                    <AlertTriangle className="w-4 h-4" />
-                                    No Stripe record
-                                  </span>
+                                  <div>
+                                    <span className="inline-flex items-center gap-1 text-amber-700">
+                                      <AlertTriangle className="w-4 h-4" />
+                                      No Stripe record
+                                    </span>
+                                    {entry.comped && (
+                                      <p
+                                        className="text-xs text-muted-foreground mt-0.5"
+                                        title={`${entry.comped} Not counted in revenue.`}
+                                      >
+                                        Comped
+                                      </p>
+                                    )}
+                                  </div>
                                 )}
                               </td>
                               <td className="p-3">
