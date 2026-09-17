@@ -60,6 +60,17 @@ const SITE_PARTNER_ALIASES: Record<string, string[]> = {
  * the admin (tier totals, roster table, pass math) WITHOUT publishing a logo to
  * the homepage. To publish one, move it into CONFIG.LOGO_SPONSORS instead.
  */
+/**
+ * Sponsors whose logo runs on the public site but who are NOT tracked as
+ * partners in the admin: no deliverables to chase, no passes, no seats in the
+ * room. The homepage lists are therefore a superset of the roster, and this is
+ * the only place that difference is recorded — removing a name here puts them
+ * straight back into the partner totals and the seat math.
+ */
+const LOGO_ONLY_SPONSORS = new Set<string>([
+  "AgencyBrain",
+]);
+
 export const OFF_SITE_PARTNERS: PartnerRosterEntry[] = [
   // Empty by design. Everyone currently partnered is in CONFIG.LOGO_PARTNERS /
   // CONFIG.LOGO_SPONSORS, including comped ones like Disruptur — being on the
@@ -86,6 +97,7 @@ const toTierKey = (tier: string): PartnerTierKey | null => {
 
 const fromSiteConfig = (): PartnerRosterEntry[] =>
   [...CONFIG.LOGO_PARTNERS, ...CONFIG.LOGO_SPONSORS].flatMap(sponsor => {
+    if (LOGO_ONLY_SPONSORS.has(sponsor.name)) return [];
     const tier = toTierKey(sponsor.tier);
     // An unrecognised tier is dropped rather than guessed at — a wrong tier here
     // would silently corrupt the pass count below.
