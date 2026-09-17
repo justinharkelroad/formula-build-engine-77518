@@ -159,7 +159,7 @@ const RECORDED_PAYMENTS: Record<string, RecordedPayment> = {
   "NW Preferred Federal Credit Union": {
     amountInCents: 500000,
     paidOn: "2026-07-30",
-    method: "Paid by check",
+    method: "Paid by invoice",
   },
   "CRC Tapco": {
     amountInCents: 500000,
