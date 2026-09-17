@@ -173,9 +173,9 @@ const AdminSales = () => {
   const attendeePurchases = purchases.filter(p => p.pass_type !== 'partner');
   const partnerPurchases = purchases.filter(p => p.pass_type === 'partner');
 
-  const totalRevenue = purchases.reduce((sum, p) => sum + p.amount, 0);
+  const purchaseRevenue = purchases.reduce((sum, p) => sum + p.amount, 0);
   const attendeeRevenue = attendeePurchases.reduce((sum, p) => sum + p.amount, 0);
-  const partnerRevenue = partnerPurchases.reduce((sum, p) => sum + p.amount, 0);
+  const partnerPurchaseRevenue = partnerPurchases.reduce((sum, p) => sum + p.amount, 0);
 
   const totalQuantity = attendeePurchases.reduce((sum, p) => sum + p.quantity, 0);
   const agencyOwnerCount = purchases.filter(p => p.pass_type === 'agencyOwner').reduce((sum, p) => sum + p.quantity, 0);
@@ -312,8 +312,25 @@ const AdminSales = () => {
     silver: partnerPurchases.filter(p => p.tier === 'silver').length,
     bronze: partnerPurchases.filter(p => p.tier === 'bronze').length,
   };
-  const rosterUnbilled = partnerRecords.rows.filter(r => !r.purchase).length;
+  // "Unbilled" means no money received, so a sponsorship settled by invoice is
+  // not unbilled just because Stripe never produced a row for it.
+  const rosterUnbilled = partnerRecords.rows.filter(
+    r => !r.purchase && !r.entry.invoicedPayment,
+  ).length;
+
+  // Invoiced sponsorships count toward revenue too, but only while no real
+  // payment has been matched — otherwise deploying the reconciler would make
+  // every one of them count twice.
+  const invoicedRevenue = partnerRecords.rows.reduce(
+    (sum, r) => sum + (!r.purchase && r.entry.invoicedPayment
+      ? r.entry.invoicedPayment.amountInCents
+      : 0),
+    0,
+  );
   const rosterSeats = rosterPassCount();
+
+  const partnerRevenue = partnerPurchaseRevenue + invoicedRevenue;
+  const totalRevenue = purchaseRevenue + invoicedRevenue;
 
   const filteredRoster = partnerRecords.rows.filter(({ entry, purchase }) => {
     const q = rosterSearch.trim().toLowerCase();
@@ -321,7 +338,9 @@ const AdminSales = () => {
       .some(name => name.toLowerCase().includes(q));
     const matchesStatus =
       rosterStatusFilter === 'all' ||
-      (rosterStatusFilter === 'paid' ? Boolean(purchase) : !purchase);
+      (rosterStatusFilter === 'paid'
+        ? Boolean(purchase) || Boolean(entry.invoicedPayment)
+        : !purchase && !entry.invoicedPayment);
     return matchesQuery && matchesStatus;
   });
 
@@ -615,8 +634,12 @@ const AdminSales = () => {
         entry.name,
         formatTier(entry.tier),
         entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0,
-        purchase ? 'Paid' : 'No Stripe record',
-        purchase ? (purchase.amount / 100).toFixed(2) : '',
+        purchase ? 'Paid' : entry.invoicedPayment ? 'Paid by invoice' : 'No Stripe record',
+        purchase
+          ? (purchase.amount / 100).toFixed(2)
+          : entry.invoicedPayment
+            ? (entry.invoicedPayment.amountInCents / 100).toFixed(2)
+            : '',
         profile?.onboarding_completed ? 'Complete' : profile ? 'Started' : 'Not started',
         entry.source === 'site' ? 'Yes' : 'No',
         profile?.primary_contact_email || profile?.purchase_email || purchase?.email || '',
@@ -1324,6 +1347,15 @@ const AdminSales = () => {
                                   <span className="inline-flex items-center gap-1 text-green-700">
                                     <CheckCircle className="w-4 h-4" />
                                     ${(purchase.amount / 100).toLocaleString()}
+                                  </span>
+                                ) : entry.invoicedPayment ? (
+                                  <span
+                                    className="inline-flex items-center gap-1 text-green-700"
+                                    title={`${entry.invoicedPayment.method}, ${new Date(entry.invoicedPayment.paidOn).toLocaleDateString()}. Recorded manually — Stripe never created a purchase row for this invoice.`}
+                                  >
+                                    <CheckCircle className="w-4 h-4" />
+                                    ${(entry.invoicedPayment.amountInCents / 100).toLocaleString()}
+                                    <span className="text-xs text-muted-foreground">by invoice</span>
                                   </span>
                                 ) : (
                                   <span className="inline-flex items-center gap-1 text-amber-700">
