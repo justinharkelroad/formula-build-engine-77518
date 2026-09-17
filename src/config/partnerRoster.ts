@@ -47,6 +47,12 @@ export interface PartnerRosterEntry {
    */
   recordedPayment?: RecordedPayment;
   /**
+   * Why no payment is expected. A comped partner is not an unpaid one: there is
+   * nothing to chase and nothing to add to revenue, so the dashboard should say
+   * so rather than flagging them every time somebody reads it.
+   */
+  comped?: string;
+  /**
    * Whether this partner's tier passes occupy chairs in the room. False for
    * partners who work the floor instead of attending — they still appear on the
    * roster and still owe deliverables, they just do not eat into the seat cap.
@@ -126,6 +132,17 @@ const registrableDomain = (url: string): string | null => {
  * the address has to be recorded by hand. Add a line when a payment cannot be
  * traced any other way.
  */
+/**
+ * Partners we are not billing. They hold their tier's passes and are owed the
+ * same deliverables, but contribute nothing to revenue — which is already true
+ * of the totals, since those are summed from payments that exist.
+ */
+const COMPED_PARTNERS: Record<string, string> = {
+  "Standard": "Partner arrangement — no invoice raised.",
+  "Disruptur": "Comped — event photographer.",
+  "LeadMiner": "Comped — no invoice raised.",
+};
+
 export interface RecordedPayment {
   amountInCents: number;
   /** ISO date the invoice was settled, where it is known. */
@@ -258,6 +275,7 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
       ],
       payerEmails: (PARTNER_PAYER_EMAILS[sponsor.name] ?? []).map(e => e.toLowerCase()),
       recordedPayment: RECORDED_PAYMENTS[sponsor.name],
+      comped: COMPED_PARTNERS[sponsor.name],
       emailDomains: [
         ...(registrableDomain(sponsor.linkUrl) ? [registrableDomain(sponsor.linkUrl)!] : []),
         ...(PARTNER_EMAIL_DOMAINS[sponsor.name] ?? []),
