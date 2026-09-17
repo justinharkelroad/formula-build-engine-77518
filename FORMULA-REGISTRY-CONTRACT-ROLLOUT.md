@@ -5,7 +5,9 @@ This runbook coordinates the workbook registry contract across Firebase backend,
 - Known predecessor hashes:
   - `e848e7a952badb1e1c072fc81050cafafca597ea45189f91cf30645fcfc5e404`
   - `e6d64ba4b9b13f1d577d7ace6a8e406e67cdccc6cf03af8290caee21c1b49faa`
-- Current hash: `bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1`
+  - `bcbb5db2c7e4234400cfeb63aa3ea2043e4bc7985d028b109b968226b946f9b1` (workbook-v7 sweep, 2026-09-01)
+  - `a6963663935e408c8692cf8857fdf040716150bb79d8d8734999100c8b2208de` (print-ready workbook, 2026-09-11)
+- Current hash: `3b3e39f570fc4be72145738de7577ce8e6223bc03840b58cb6ded95e17fd4ea7` (Training the Transfer, 2026-09-17; migration `20260917150000_transition_formula_2026_registry_training_the_transfer.sql`)
 - Registry version: `1`
 
 Do not run the transition while an old Flow client is open to ordinary attendees. Every one-sided rollout order creates a temporary mismatch. Keep the event in `pre_event` or `paused` for the coordinated change.
