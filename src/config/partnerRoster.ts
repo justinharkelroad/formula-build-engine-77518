@@ -73,7 +73,15 @@ const NO_SEAT_PARTNERS = new Map<string, string>([
  * domain the site URL would never predict.
  */
 const PARTNER_EMAIL_DOMAINS: Record<string, string[]> = {
-  "National General": ["ngic.com", "allstate.com"],
+  // National General bills through NGIC, which nationalgeneral.com would never
+  // predict. allstate.com is deliberately NOT listed: National General is an
+  // Allstate company, but so is Ivantage, whose contact pays from an Allstate
+  // address. Claiming the domain here would let whichever partner is reached
+  // first take the other's payment.
+  "National General": ["ngic.com"],
+  // The franchise trades as ServiceMaster Restoration by Royalty and pays from
+  // its own domains, neither of which follows from servicemasterrestore.com.
+  "ServiceMaster Restore": ["smrbyroyalty.com", "amrbyroyalty.com"],
 };
 
 /**
@@ -132,7 +140,10 @@ const SITE_PARTNER_ALIASES: Record<string, string[]> = {
   "DMS": ["DMS Group", "Digital Media Solutions"],
   "LeadMiner": ["Lead Miner"],
   "Arbeit": ["Arbeit Software"],
-  "ServiceMaster Restore": ["Service Master Restore"],
+  "ServiceMaster Restore": [
+    "Service Master Restore",
+    "ServiceMaster Restoration by Royalty",
+  ],
   "SecureEVAs": ["Secure EVAs"],
   "Disruptur": ["Disruptor"],
   "AgencyBrain": ["Agency Brain"],
