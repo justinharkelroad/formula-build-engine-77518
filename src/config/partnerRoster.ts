@@ -261,11 +261,22 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
     }];
   });
 
-/** Every partner, public roster first, then the admin-only additions. */
+/** Highest tier first, so the roster groups by tier instead of by config order. */
+const TIER_RANK: Record<PartnerTierKey, number> = {
+  platinum: 0,
+  gold: 1,
+  silver: 2,
+  bronze: 3,
+};
+
+/**
+ * Every partner, ordered by tier descending. Within a tier the sponsor lists'
+ * own order is preserved, which keeps the roster stable as partners are added.
+ */
 export const PARTNER_ROSTER: PartnerRosterEntry[] = [
   ...fromSiteConfig(),
   ...OFF_SITE_PARTNERS,
-];
+].sort((a, b) => TIER_RANK[a.tier] - TIER_RANK[b.tier]);
 
 export const rosterByTier = (): Record<PartnerTierKey, PartnerRosterEntry[]> => {
   const grouped: Record<PartnerTierKey, PartnerRosterEntry[]> = {
