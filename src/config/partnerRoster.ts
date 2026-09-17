@@ -127,8 +127,8 @@ const registrableDomain = (url: string): string | null => {
  */
 export interface InvoicedPayment {
   amountInCents: number;
-  /** ISO date the invoice was settled. */
-  paidOn: string;
+  /** ISO date the invoice was settled, where it is known. */
+  paidOn?: string;
   /** How it was paid, for whoever reconciles this against Stripe. */
   method: string;
 }
@@ -158,6 +158,10 @@ const INVOICED_PAYMENTS: Record<string, InvoicedPayment> = {
     amountInCents: 500000,
     paidOn: "2026-07-30",
     method: "Check against invoice",
+  },
+  "CRC Tapco": {
+    amountInCents: 500000,
+    method: "Paid by invoice",
   },
 };
 

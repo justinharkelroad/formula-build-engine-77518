@@ -1398,7 +1398,7 @@ const AdminSales = () => {
                                 ) : entry.invoicedPayment ? (
                                   <span
                                     className="inline-flex items-center gap-1 text-green-700"
-                                    title={`${entry.invoicedPayment.method}, ${new Date(entry.invoicedPayment.paidOn).toLocaleDateString()}. Recorded manually — Stripe never created a purchase row for this invoice.`}
+                                    title={`${entry.invoicedPayment.method}${entry.invoicedPayment.paidOn ? `, ${new Date(entry.invoicedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this invoice.`}
                                   >
                                     <CheckCircle className="w-4 h-4" />
                                     ${(entry.invoicedPayment.amountInCents / 100).toLocaleString()}
