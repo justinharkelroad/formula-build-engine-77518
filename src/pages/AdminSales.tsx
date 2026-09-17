@@ -362,22 +362,22 @@ const AdminSales = () => {
   // "Unbilled" means no money received, so a sponsorship settled by invoice is
   // not unbilled just because Stripe never produced a row for it.
   const rosterUnbilled = partnerRecords.rows.filter(
-    r => !r.purchase && !r.entry.invoicedPayment,
+    r => !r.purchase && !r.entry.recordedPayment,
   ).length;
 
   // Invoiced sponsorships count toward revenue too, but only while no real
   // payment has been matched — otherwise deploying the reconciler would make
   // every one of them count twice.
-  const invoicedRevenue = partnerRecords.rows.reduce(
-    (sum, r) => sum + (!r.purchase && r.entry.invoicedPayment
-      ? r.entry.invoicedPayment.amountInCents
+  const recordedRevenue = partnerRecords.rows.reduce(
+    (sum, r) => sum + (!r.purchase && r.entry.recordedPayment
+      ? r.entry.recordedPayment.amountInCents
       : 0),
     0,
   );
   const rosterSeats = rosterPassCount();
 
-  const partnerRevenue = partnerPurchaseRevenue + invoicedRevenue;
-  const totalRevenue = purchaseRevenue + invoicedRevenue;
+  const partnerRevenue = partnerPurchaseRevenue + recordedRevenue;
+  const totalRevenue = purchaseRevenue + recordedRevenue;
 
   const filteredRoster = partnerRecords.rows.filter(({ entry, purchase }) => {
     const q = rosterSearch.trim().toLowerCase();
@@ -386,8 +386,8 @@ const AdminSales = () => {
     const matchesStatus =
       rosterStatusFilter === 'all' ||
       (rosterStatusFilter === 'paid'
-        ? Boolean(purchase) || Boolean(entry.invoicedPayment)
-        : !purchase && !entry.invoicedPayment);
+        ? Boolean(purchase) || Boolean(entry.recordedPayment)
+        : !purchase && !entry.recordedPayment);
     return matchesQuery && matchesStatus;
   });
 
@@ -681,11 +681,11 @@ const AdminSales = () => {
         entry.name,
         formatTier(entry.tier),
         entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0,
-        purchase ? 'Paid' : entry.invoicedPayment ? 'Paid by invoice' : 'No Stripe record',
+        purchase ? 'Paid' : entry.recordedPayment ? 'Paid by invoice' : 'No Stripe record',
         purchase
           ? (purchase.amount / 100).toFixed(2)
-          : entry.invoicedPayment
-            ? (entry.invoicedPayment.amountInCents / 100).toFixed(2)
+          : entry.recordedPayment
+            ? (entry.recordedPayment.amountInCents / 100).toFixed(2)
             : '',
         profile?.onboarding_completed ? 'Complete' : profile ? 'Started' : 'Not started',
         entry.source === 'site' ? 'Yes' : 'No',
@@ -1395,14 +1395,14 @@ const AdminSales = () => {
                                     <CheckCircle className="w-4 h-4" />
                                     ${(purchase.amount / 100).toLocaleString()}
                                   </span>
-                                ) : entry.invoicedPayment ? (
+                                ) : entry.recordedPayment ? (
                                   <span
                                     className="inline-flex items-center gap-1 text-green-700"
-                                    title={`${entry.invoicedPayment.method}${entry.invoicedPayment.paidOn ? `, ${new Date(entry.invoicedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this invoice.`}
+                                    title={`${entry.recordedPayment.method}${entry.recordedPayment.paidOn ? `, ${new Date(entry.recordedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this payment.`}
                                   >
                                     <CheckCircle className="w-4 h-4" />
-                                    ${(entry.invoicedPayment.amountInCents / 100).toLocaleString()}
-                                    <span className="text-xs text-muted-foreground">by invoice</span>
+                                    ${(entry.recordedPayment.amountInCents / 100).toLocaleString()}
+                                    <span className="text-xs text-muted-foreground">recorded</span>
                                   </span>
                                 ) : (
                                   <span className="inline-flex items-center gap-1 text-amber-700">

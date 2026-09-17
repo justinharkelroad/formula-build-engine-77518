@@ -40,11 +40,12 @@ export interface PartnerRosterEntry {
   /** Exact buyer addresses that belong to this partner but match nothing else. */
   payerEmails: string[];
   /**
-   * A sponsorship settled by invoice, recorded here because Stripe never
-   * produced a purchase row for it. Ignored the moment a real payment is
-   * matched, so this can never double count.
+   * A sponsorship Stripe never produced a purchase row for, recorded by hand.
+   * The method is stated per partner rather than assumed — these arrive by
+   * check, by invoice and by transfer, and the dashboard should not guess.
+   * Ignored the moment a real payment is matched, so it cannot double count.
    */
-  invoicedPayment?: InvoicedPayment;
+  recordedPayment?: RecordedPayment;
   /**
    * Whether this partner's tier passes occupy chairs in the room. False for
    * partners who work the floor instead of attending — they still appear on the
@@ -125,7 +126,7 @@ const registrableDomain = (url: string): string | null => {
  * the address has to be recorded by hand. Add a line when a payment cannot be
  * traced any other way.
  */
-export interface InvoicedPayment {
+export interface RecordedPayment {
   amountInCents: number;
   /** ISO date the invoice was settled, where it is known. */
   paidOn?: string;
@@ -134,10 +135,11 @@ export interface InvoicedPayment {
 }
 
 /**
- * Sponsorships paid by invoice that Stripe never recorded as a purchase.
+ * Sponsorships Stripe never recorded as a purchase.
  *
- * An invoice paid by check fires `invoice.paid`, which nothing was listening
- * for, so these partners read as unpaid however well the matching works —
+ * Payments settled outside Checkout — by check, by invoice, by transfer — fire
+ * events nothing was listening for, so these partners read as unpaid however
+ * well the matching works —
  * there is no row to match. The reconciler added in #19 creates those rows
  * properly, but only once its Edge Functions are deployed. Until then this
  * keeps the dashboard honest.
@@ -148,16 +150,16 @@ export interface InvoicedPayment {
  * a matched payment always wins — but the list should reflect what is actually
  * outstanding.
  */
-const INVOICED_PAYMENTS: Record<string, InvoicedPayment> = {
+const RECORDED_PAYMENTS: Record<string, RecordedPayment> = {
   "National General": {
     amountInCents: 500000,
     paidOn: "2026-07-30",
-    method: "Check against invoice",
+    method: "Paid by check",
   },
   "NW Preferred Federal Credit Union": {
     amountInCents: 500000,
     paidOn: "2026-07-30",
-    method: "Check against invoice",
+    method: "Paid by check",
   },
   "CRC Tapco": {
     amountInCents: 500000,
@@ -255,7 +257,7 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
         ...(PARTNER_CONTACT_NAMES[sponsor.name] ?? []),
       ],
       payerEmails: (PARTNER_PAYER_EMAILS[sponsor.name] ?? []).map(e => e.toLowerCase()),
-      invoicedPayment: INVOICED_PAYMENTS[sponsor.name],
+      recordedPayment: RECORDED_PAYMENTS[sponsor.name],
       emailDomains: [
         ...(registrableDomain(sponsor.linkUrl) ? [registrableDomain(sponsor.linkUrl)!] : []),
         ...(PARTNER_EMAIL_DOMAINS[sponsor.name] ?? []),
