@@ -1418,11 +1418,13 @@ const AdminSales = () => {
                                 ) : entry.recordedPayment ? (
                                   <span
                                     className="inline-flex items-center gap-1 text-green-700"
-                                    title={`${entry.recordedPayment.method}${entry.recordedPayment.paidOn ? `, ${new Date(entry.recordedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this payment.`}
+                                    title={`Paid by ${entry.recordedPayment.method}${entry.recordedPayment.paidOn ? ` on ${new Date(entry.recordedPayment.paidOn).toLocaleDateString()}` : ''}. Recorded manually — Stripe never created a purchase row for this payment.`}
                                   >
                                     <CheckCircle className="w-4 h-4" />
                                     ${(entry.recordedPayment.amountInCents / 100).toLocaleString()}
-                                    <span className="text-xs text-muted-foreground">recorded</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {entry.recordedPayment.method}
+                                    </span>
                                   </span>
                                 ) : entry.comped ? (
                                   <span

@@ -147,7 +147,11 @@ export interface RecordedPayment {
   amountInCents: number;
   /** ISO date the invoice was settled, where it is known. */
   paidOn?: string;
-  /** How it was paid, for whoever reconciles this against Stripe. */
+  /**
+   * How it was paid — one word, shown on the roster beside the amount. The
+   * dashboard says "invoice" or "check" rather than "recorded", because how the
+   * money arrived is the useful part; that we typed it in by hand is not.
+   */
   method: string;
 }
 
@@ -171,16 +175,16 @@ const RECORDED_PAYMENTS: Record<string, RecordedPayment> = {
   "National General": {
     amountInCents: 500000,
     paidOn: "2026-07-30",
-    method: "Paid by invoice",
+    method: "invoice",
   },
   "NW Preferred Federal Credit Union": {
     amountInCents: 500000,
     paidOn: "2026-07-30",
-    method: "Paid by invoice",
+    method: "invoice",
   },
   "CRC Tapco": {
     amountInCents: 500000,
-    method: "Paid by invoice",
+    method: "invoice",
   },
 };
 
