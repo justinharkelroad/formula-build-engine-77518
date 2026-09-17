@@ -17,6 +17,7 @@ import {
   normalizePartnerName,
   rosterLookupKeys,
   rosterPassCount,
+  tierRank,
 } from '@/config/partnerRoster';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -414,6 +415,22 @@ const AdminSales = () => {
   // completed forms as a fraction of submitted forms cannot see a partner who
   // never started one, so the six partners without a profile were missing from
   // the figure entirely — the number could only ever flatter itself.
+  // The form's company box is free text and is sometimes a person's name —
+  // SmarketingMail's was filled in as "Todd McLain", who paid for it. The
+  // partner the form resolved to leads the row; what was typed is kept beside
+  // it, and only when the two differ, so a mistyped field stays visible
+  // without being the thing you read first.
+  const submittedName = (profile: PartnerProfile) => {
+    const typed = profile.company_name || profile.purchase_name;
+    if (!typed) return null;
+    const resolved = partnerRecords.rosterByProfileId.get(profile.id);
+    if (resolved && normalizePartnerName(resolved) === normalizePartnerName(typed)) return null;
+    return typed;
+  };
+
+  const sortedPartnerProfiles = [...partnerProfiles]
+    .sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
+
   const onboardedCount = partnerRecords.rows.filter(
     r => r.profile?.onboarding_completed,
   ).length;
@@ -474,9 +491,11 @@ const AdminSales = () => {
       (tierFilter === 'all' || p.tier === tierFilter),
   );
 
-  const filteredPartnerPurchases = partnerPurchases.filter(
-    p => partnerTierFilter === 'all' || p.tier === partnerTierFilter,
-  );
+  // Every partner table orders by tier, highest first. Sort is stable, so the
+  // date ordering the query returned is preserved within each tier.
+  const filteredPartnerPurchases = partnerPurchases
+    .filter(p => partnerTierFilter === 'all' || p.tier === partnerTierFilter)
+    .sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
 
   const attendeeFiltersActive =
     attendeeSearch.trim() !== '' || passTypeFilter !== 'all' || tierFilter !== 'all';
@@ -754,10 +773,10 @@ const AdminSales = () => {
 
   const exportPartnerCSV = () => {
     const csvContent = [
-      ['Company', 'Partner', 'Tier', 'Contact Name', 'Contact Email', 'Phone', 'Website', 'Onboarded', 'Date'],
-      ...partnerProfiles.map(p => [
-        `"${p.company_name || p.purchase_name || ''}"`,
+      ['Partner', 'Submitted As', 'Tier', 'Contact Name', 'Contact Email', 'Phone', 'Website', 'Onboarded', 'Date'],
+      ...sortedPartnerProfiles.map(p => [
         partnerRecords.rosterByProfileId.get(p.id) || 'Unmatched',
+        `"${submittedName(p) ?? ''}"`,
         formatTier(p.tier),
         `"${p.primary_contact_name || p.purchase_name || ''}"`,
         p.primary_contact_email || p.purchase_email || '',
@@ -1638,8 +1657,8 @@ const AdminSales = () => {
                       <table className="w-full border-collapse">
                         <thead>
                           <tr className="border-b">
-                            <th className="text-left p-3">Company</th>
                             <th className="text-left p-3">Partner</th>
+                            <th className="text-left p-3">Submitted as</th>
                             <th className="text-left p-3">Tier</th>
                             <th className="text-left p-3">Contact</th>
                             <th className="text-left p-3">Email</th>
@@ -1652,7 +1671,7 @@ const AdminSales = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {partnerProfiles.map((profile) => {
+                          {sortedPartnerProfiles.map((profile) => {
                             const attendeeCount = Array.isArray(profile.attendees)
                               ? profile.attendees.filter((value: unknown) => {
                                   if (!value || typeof value !== 'object') return false;
@@ -1663,18 +1682,15 @@ const AdminSales = () => {
                             return (
                               <tr key={profile.id} className="border-b hover:bg-muted/50">
                                 <td className="p-3 font-medium">
-                                  {profile.company_name || profile.purchase_name || '-'}
-                                  {profile.website_url && (
-                                    <a href={profile.website_url} target="_blank" rel="noopener noreferrer" className="ml-1 inline-block">
-                                      <ExternalLink className="w-3 h-3 inline text-muted-foreground" />
-                                    </a>
-                                  )}
-                                </td>
-                                <td className="p-3">
                                   {partnerRecords.rosterByProfileId.get(profile.id) ? (
-                                    <span className="text-foreground">
+                                    <>
                                       {partnerRecords.rosterByProfileId.get(profile.id)}
-                                    </span>
+                                      {profile.website_url && (
+                                        <a href={profile.website_url} target="_blank" rel="noopener noreferrer" className="ml-1 inline-block">
+                                          <ExternalLink className="w-3 h-3 inline text-muted-foreground" />
+                                        </a>
+                                      )}
+                                    </>
                                   ) : (
                                     <span
                                       className="inline-flex items-center gap-1 text-amber-700"
@@ -1684,6 +1700,9 @@ const AdminSales = () => {
                                       Unmatched
                                     </span>
                                   )}
+                                </td>
+                                <td className="p-3 text-muted-foreground">
+                                  {submittedName(profile) ?? <span className="opacity-50">&mdash;</span>}
                                 </td>
                                 <td className="p-3">
                                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
