@@ -559,7 +559,7 @@ const AdminSales = () => {
       ...filteredRoster.map(({ entry, profile, purchase }) => [
         entry.name,
         formatTier(entry.tier),
-        PARTNER_TIERS[entry.tier].passes,
+        entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0,
         purchase ? 'Paid' : 'No Stripe record',
         purchase ? (purchase.amount / 100).toFixed(2) : '',
         profile?.onboarding_completed ? 'Complete' : profile ? 'Started' : 'Not started',
@@ -1250,7 +1250,15 @@ const AdminSales = () => {
                                   {formatTier(entry.tier)}
                                 </span>
                               </td>
-                              <td className="p-3">{PARTNER_TIERS[entry.tier].passes}</td>
+                              <td className="p-3">
+                                {entry.occupiesSeats ? (
+                                  PARTNER_TIERS[entry.tier].passes
+                                ) : (
+                                  <span className="text-muted-foreground" title="Does not count against room capacity">
+                                    &mdash;
+                                  </span>
+                                )}
+                              </td>
                               <td className="p-3">
                                 {purchase ? (
                                   <span className="inline-flex items-center gap-1 text-green-700">

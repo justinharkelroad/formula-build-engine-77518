@@ -24,7 +24,24 @@ export interface PartnerRosterEntry {
   note?: string;
   /** Other names this partner is known by, used to match database records. */
   aliases?: string[];
+  /**
+   * Whether this partner's tier passes occupy chairs in the room. False for
+   * partners who work the floor instead of attending — they still appear on the
+   * roster and still owe deliverables, they just do not eat into the seat cap.
+   */
+  occupiesSeats: boolean;
 }
+
+/**
+ * Roster partners whose tier passes do NOT consume room capacity, and why.
+ *
+ * Being a partner and occupying seats are separate facts. A photographer with a
+ * booth who works the floor alone holds a Bronze slot on the roster but never
+ * sits down, so charging the cap his two passes books chairs nobody uses.
+ */
+const NO_SEAT_PARTNERS = new Map<string, string>([
+  ["Disruptur", "Photographer — works the floor with a booth, attends alone. No passes against the cap."],
+]);
 
 /**
  * Alternate names, keyed by the name in the site config. Onboarding forms, the
@@ -109,6 +126,8 @@ const fromSiteConfig = (): PartnerRosterEntry[] =>
       logoUrl: sponsor.logoUrl,
       linkUrl: sponsor.linkUrl,
       aliases: SITE_PARTNER_ALIASES[sponsor.name],
+      occupiesSeats: !NO_SEAT_PARTNERS.has(sponsor.name),
+      note: NO_SEAT_PARTNERS.get(sponsor.name),
     }];
   });
 
@@ -126,9 +145,16 @@ export const rosterByTier = (): Record<PartnerTierKey, PartnerRosterEntry[]> => 
   return grouped;
 };
 
-/** Total partner passes owed across the roster — these occupy room capacity. */
+/**
+ * Partner passes that actually occupy chairs. Partners flagged as working the
+ * floor are excluded, so this is the number to subtract from the room cap —
+ * not the roster's full pass allocation.
+ */
 export const rosterPassCount = (): number =>
-  PARTNER_ROSTER.reduce((sum, entry) => sum + PARTNER_TIERS[entry.tier].passes, 0);
+  PARTNER_ROSTER.reduce(
+    (sum, entry) => sum + (entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0),
+    0,
+  );
 
 /**
  * Every name a roster entry answers to, normalized — the keys used to join
