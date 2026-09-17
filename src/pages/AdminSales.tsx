@@ -634,7 +634,7 @@ const AdminSales = () => {
         entry.name,
         formatTier(entry.tier),
         entry.occupiesSeats ? PARTNER_TIERS[entry.tier].passes : 0,
-        purchase ? 'Paid' : entry.invoicedPayment ? 'Paid by invoice' : 'Not paid',
+        purchase ? 'Paid' : entry.invoicedPayment ? 'Paid by invoice' : 'No Stripe record',
         purchase
           ? (purchase.amount / 100).toFixed(2)
           : entry.invoicedPayment
@@ -1360,7 +1360,7 @@ const AdminSales = () => {
                                 ) : (
                                   <span className="inline-flex items-center gap-1 text-amber-700">
                                     <AlertTriangle className="w-4 h-4" />
-                                    Not paid
+                                    No Stripe record
                                   </span>
                                 )}
                               </td>
