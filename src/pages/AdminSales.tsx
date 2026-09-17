@@ -17,6 +17,7 @@ import {
   normalizePartnerName,
   rosterLookupKeys,
   rosterPassCount,
+  tierRank,
 } from '@/config/partnerRoster';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -414,6 +415,9 @@ const AdminSales = () => {
   // completed forms as a fraction of submitted forms cannot see a partner who
   // never started one, so the six partners without a profile were missing from
   // the figure entirely — the number could only ever flatter itself.
+  const sortedPartnerProfiles = [...partnerProfiles]
+    .sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
+
   const onboardedCount = partnerRecords.rows.filter(
     r => r.profile?.onboarding_completed,
   ).length;
@@ -474,9 +478,11 @@ const AdminSales = () => {
       (tierFilter === 'all' || p.tier === tierFilter),
   );
 
-  const filteredPartnerPurchases = partnerPurchases.filter(
-    p => partnerTierFilter === 'all' || p.tier === partnerTierFilter,
-  );
+  // Every partner table orders by tier, highest first. Sort is stable, so the
+  // date ordering the query returned is preserved within each tier.
+  const filteredPartnerPurchases = partnerPurchases
+    .filter(p => partnerTierFilter === 'all' || p.tier === partnerTierFilter)
+    .sort((a, b) => tierRank(a.tier) - tierRank(b.tier));
 
   const attendeeFiltersActive =
     attendeeSearch.trim() !== '' || passTypeFilter !== 'all' || tierFilter !== 'all';
@@ -755,7 +761,7 @@ const AdminSales = () => {
   const exportPartnerCSV = () => {
     const csvContent = [
       ['Company', 'Partner', 'Tier', 'Contact Name', 'Contact Email', 'Phone', 'Website', 'Onboarded', 'Date'],
-      ...partnerProfiles.map(p => [
+      ...sortedPartnerProfiles.map(p => [
         `"${p.company_name || p.purchase_name || ''}"`,
         partnerRecords.rosterByProfileId.get(p.id) || 'Unmatched',
         formatTier(p.tier),
@@ -1652,7 +1658,7 @@ const AdminSales = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {partnerProfiles.map((profile) => {
+                          {sortedPartnerProfiles.map((profile) => {
                             const attendeeCount = Array.isArray(profile.attendees)
                               ? profile.attendees.filter((value: unknown) => {
                                   if (!value || typeof value !== 'object') return false;

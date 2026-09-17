@@ -337,3 +337,13 @@ export const emailDomain = (email: string): string | null => {
   const at = email.lastIndexOf("@");
   return at === -1 ? null : email.slice(at + 1).trim().toLowerCase();
 };
+
+/**
+ * Sort weight for a tier string, so every partner table on the admin page can
+ * order the same way — highest tier first. Unknown tiers sort last rather than
+ * jumping to the top, which is what an unranked value would otherwise do.
+ */
+export const tierRank = (tier: string): number => {
+  const key = tier.toLowerCase();
+  return isPartnerTier(key) ? TIER_RANK[key] : Number.MAX_SAFE_INTEGER;
+};
