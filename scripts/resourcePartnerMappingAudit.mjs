@@ -271,12 +271,24 @@ if (!sponsorRoster) {
 }
 
 if (!process.exitCode) {
-  const resourcePageFiles = [...new Set(EXPECTED.map(([fileName]) => fileName))];
-  const configuredResourceUrls = resourcePageFiles
-    .reduce((count, fileName) => {
+  // Supplied resources live in ONE per-partner registry, not in the page files.
+  // Counting `formulaResourceUrl:` across the page configs used to be the measure
+  // and now always returns 0, which would read as "nothing is configured" right
+  // after the refactor that centralised them.
+  const registrySource = fs.readFileSync(path.join(CONFIG_ROOT, "formulaResources.ts"), "utf8");
+  const configuredResourceUrls = (registrySource.match(/^\s{4}orgId:\s/gm) || []).length;
+
+  const strayPageLevelUrls = [...new Set(EXPECTED.map(([fileName]) => fileName))]
+    .filter((fileName) => {
       const source = fs.readFileSync(path.join(CONFIG_ROOT, fileName), "utf8");
-      return count + (source.match(/formulaResourceUrl\s*:/g) || []).length;
-    }, 0);
+      return /formulaResourceUrl\s*:/.test(source);
+    });
+  if (strayPageLevelUrls.length > 0) {
+    fail(
+      `page configs set formulaResourceUrl directly: ${strayPageLevelUrls.join(", ")}. ` +
+        "Add the resource to formulaResources.ts instead so every page that partner appears on gets it."
+    );
+  }
 
   console.log("Resource partner mapping passed: S1-S8, Funding the Build, 30-partner registry, and workbook v7 sponsor tiers.");
   console.log(`Readiness inventory covers all 30 partners; ${configuredResourceUrls} Formula resource URLs are currently configured.`);
