@@ -8,6 +8,7 @@ import ResourcePageHero from "./ResourcePageHero";
 import ResourceCategoryNav from "./ResourceCategoryNav";
 import ResourceTopicBlocks from "./ResourceTopicBlocks";
 import PartnerResourceCard from "./PartnerResourceCard";
+import { useLiveHandoutUrls } from "@/hooks/useLiveHandoutUrls";
 import ProblemMatchGuide from "./ProblemMatchGuide";
 import ResourceLibraryNav from "./ResourceLibraryNav";
 import FormulaResourceFooter from "./FormulaResourceFooter";
@@ -29,7 +30,12 @@ interface ResourcePageProps {
  * filters, and a page with a large ecosystem can group its list by pathway.
  */
 const ResourcePage = ({ content }: ResourcePageProps) => {
-  const { categories, partners, decision, guide } = content;
+  const { categories, partners: configuredPartners, decision, guide } = content;
+  // Supplied resources are re-pointed at whatever the partner currently has in
+  // the Partner Hub; everything downstream — filters, grouping, counts — reads
+  // the resolved list. Falls back to the configured URLs when the mirror is
+  // unreachable, so this never makes a card worse than it was.
+  const partners = useLiveHandoutUrls(configuredPartners);
   const hasFilters = Boolean(categories && categories.length > 1);
 
   const [activeCategory, setActiveCategory] = useState<string>("all");

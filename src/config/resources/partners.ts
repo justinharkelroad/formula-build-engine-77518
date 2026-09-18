@@ -118,6 +118,8 @@ export const partnerFor = (
       formulaResourceDescription: supplied.description,
       formulaResourceUrl: supplied.url,
       formulaResourceType: supplied.type,
+      formulaResourceOrgId: supplied.orgId,
+      formulaResourceSlot: supplied.slot,
     }),
     ...pageCopy,
   };
