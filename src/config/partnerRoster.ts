@@ -74,6 +74,7 @@ export interface PartnerRosterEntry {
  */
 const NO_SEAT_PARTNERS = new Map<string, string>([
   ["Disruptur", "Photographer — works the floor with a booth, attends alone. No passes against the cap."],
+  ["Authority War", "Marketing partner — works the floor with a booth, attends alone. No passes against the cap."],
 ]);
 
 /**
@@ -91,6 +92,8 @@ const NO_SEAT_PARTNERS = new Map<string, string>([
  * domain the site URL would never predict.
  */
 const PARTNER_EMAIL_DOMAINS: Record<string, string[]> = {
+  // Cameron trades as Authority War but corresponds from his own name's domain.
+  "Authority War": ["cameron-clayton.com"],
   // National General bills through NGIC, which nationalgeneral.com would never
   // predict. allstate.com is deliberately NOT listed: National General is an
   // Allstate company, but so is Ivantage, whose contact pays from an Allstate
@@ -100,6 +103,10 @@ const PARTNER_EMAIL_DOMAINS: Record<string, string[]> = {
   // The franchise trades as ServiceMaster Restoration by Royalty and pays from
   // its own domains, neither of which follows from servicemasterrestore.com.
   "ServiceMaster Restore": ["smrbyroyalty.com", "amrbyroyalty.com"],
+  // Digital Media Solutions' people are on dmsgroup.com, which the sponsor link
+  // digitalmediasolutions.com does not predict. Both their onboarding contact
+  // and their events contact write from it.
+  "DMS": ["dmsgroup.com"],
 };
 
 /**
@@ -145,6 +152,7 @@ const registrableDomain = (url: string): string | null => {
 const COMPED_PARTNERS: Record<string, string> = {
   "Standard": "Partner arrangement — no invoice raised.",
   "Disruptur": "Comped — event photographer.",
+  "Authority War": "Comped — marketing partner, booth only.",
   "LeadMiner": "Comped — no invoice raised.",
 };
 
@@ -200,6 +208,7 @@ const PARTNER_PAYER_EMAILS: Record<string, string[]> = {
 /** Extra representatives beyond the podcast guest already in the site config. */
 const PARTNER_CONTACT_NAMES: Record<string, string[]> = {
   "SmarketingMail": ["Brittany Barrere"],
+  "Authority War": ["Cameron Clayton"],
 };
 
 /**
@@ -214,6 +223,7 @@ const PARTNER_CONTACT_NAMES: Record<string, string[]> = {
 const PARTNER_CONTACTS: Record<string, string> = {
   "Agency Toolchest": "Todd McLain",
   "SmarketingMail": "Brittany Barrere",
+  "Authority War": "Cameron Clayton",
 };
 
 const SITE_PARTNER_ALIASES: Record<string, string[]> = {
