@@ -98,7 +98,7 @@ const PartnerResourceCard = ({
             aria-label={`View the Formula resource for ${partner.name} (opens in a new tab)`}
             className={`${CTA_BASE} border border-[hsl(214_73%_58%/0.5)] bg-[hsl(214_73%_58%/0.14)] text-white hover:bg-[hsl(var(--secondary))]`}
           >
-            Resource not available
+            View Formula Resource
           </a>
         ) : (
           <button
@@ -107,7 +107,7 @@ const PartnerResourceCard = ({
             aria-disabled="true"
             className={`${CTA_BASE} cursor-not-allowed border border-white/10 bg-white/[0.06] text-white/40`}
           >
-            View Formula Resource
+            Resource not available
           </button>
         )}
 

@@ -1,4 +1,8 @@
 import type { BaseResourcePartner } from "./types";
+import {
+  PARTNER_FORMULA_RESOURCES,
+  type SuppliedFormulaResource,
+} from "./formulaResources";
 
 /**
  * One identity per Formula partner — logo, name, external URL.
@@ -71,8 +75,14 @@ export const PARTNER_REGISTRY = {
 export type PartnerId = keyof typeof PARTNER_REGISTRY;
 
 /**
- * Build a page-scoped partner entry: registry identity + this session's framing.
- * Formula resource fields stay undefined until a partner actually supplies one.
+ * Build a page-scoped partner entry: registry identity, then any Formula
+ * resource the partner has supplied, then this session's framing.
+ *
+ * The supplied resource is keyed by PARTNER, not by page, so one entry in
+ * `formulaResources.ts` reaches every page that partner appears on — Standard is
+ * on seven of them. A page may still override any `formulaResource*` field when
+ * that session genuinely needs different framing; passing an override is a
+ * deliberate exception, not the normal way to add a resource.
  */
 export const partnerFor = (
   id: PartnerId,
@@ -80,10 +90,35 @@ export const partnerFor = (
     helpsWith: string;
     bestFit: string;
     categories: string[];
+    /**
+     * Opt this page out of the partner's supplied resource. Use it when the
+     * partner has a resource that is genuinely wrong for THIS session — the
+     * Core 4 personal pages do this, because a sales-training PDF is not a Body,
+     * Balance or Being resource. Without it those cards would render a live
+     * download under a heading that says nothing is available yet.
+     */
+    suppressFormulaResource?: true;
     formulaResourceTitle?: string;
     formulaResourceDescription?: string;
     formulaResourceUrl?: string;
     formulaResourceType?: string;
     formulaResourceBadge?: string;
   }
-): BaseResourcePartner => ({ ...PARTNER_REGISTRY[id], ...copy });
+): BaseResourcePartner => {
+  const { suppressFormulaResource, ...pageCopy } = copy;
+
+  const supplied: SuppliedFormulaResource | undefined = suppressFormulaResource
+    ? undefined
+    : (PARTNER_FORMULA_RESOURCES as Partial<Record<PartnerId, SuppliedFormulaResource>>)[id];
+
+  return {
+    ...PARTNER_REGISTRY[id],
+    ...(supplied && {
+      formulaResourceTitle: supplied.title,
+      formulaResourceDescription: supplied.description,
+      formulaResourceUrl: supplied.url,
+      formulaResourceType: supplied.type,
+    }),
+    ...pageCopy,
+  };
+};
