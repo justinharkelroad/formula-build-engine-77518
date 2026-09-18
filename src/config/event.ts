@@ -259,6 +259,8 @@ export const CONFIG = {
     // Added 2026-09-15 per Justin. Logo is the black lockup from disruptur.com's site header.
     { name: "Disruptur", tier: "Bronze", logoUrl: "/assets/sponsors/disruptur.png", linkUrl: "https://disruptur.com" },
     // Added 2026-09-15 per Justin. Logo is the mascot lockup from agencybrain/public/brand/agencybrain-wordmark-on-light.png.
-    { name: "AgencyBrain", tier: "Bronze", logoUrl: "/assets/sponsors/agencybrain.png", linkUrl: "https://myagencybrain.com/info" }
+    { name: "AgencyBrain", tier: "Bronze", logoUrl: "/assets/sponsors/agencybrain.png", linkUrl: "https://myagencybrain.com/info" },
+    // Added 2026-09-18 per Justin. Logo keyed off the white-background lockup he supplied.
+    { name: "Authority War", tier: "Bronze", logoUrl: "/assets/sponsors/authority-war.png", linkUrl: "https://authoritywar.com/" }
   ]
 } as const;
