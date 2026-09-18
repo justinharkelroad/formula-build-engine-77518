@@ -103,11 +103,29 @@ with more than one upload so the unused file stays visible.
 
 ## Keeping this true
 
-`bun run formula:handouts:audit` re-checks every configured resource against the live
-`partnerPages` mirror. It fails when a configured URL is no longer one of that org's current
-handouts — which is the only way the re-upload trap surfaces, since the superseded PDF keeps
-returning HTTP 200. Proven 2026-09-18: pointing an entry at a URL that returns 200
-`application/pdf` but is not the org's current handout exits 1; restoring it exits 0.
+**Links look after themselves now.** `src/lib/partnerHandouts.ts` reads the public
+`partnerPages` mirror on every resource page load and swaps each card onto whatever that
+partner currently has in the Partner Hub. A partner replacing their PDF no longer needs
+anyone to touch this repo. If the mirror is unreachable the reviewed URL baked into the
+bundle is used, so the card is never worse than before, and the prerendered HTML carries
+that URL too.
 
-Run it before any release that touches partner resources. Passing means the file still matches
-the Hub. It does not mean anyone re-read the PDF — that is what this document is for.
+Proven 2026-09-18, both directions: with the mirror reachable, an entry pointed at a
+filename that is no longer in the Hub renders the org's CURRENT handout; with the mirror
+blocked, the same entry renders the stale URL — which is what shows the swap came from the
+mirror and not from somewhere else.
+
+**The copy does not look after itself.** Title, description and type are written by a human
+who opened the PDF; the mirror has no field for any of them. So a partner who swaps in a
+different document changes what the button downloads while the card still describes the old
+one. That is the accepted trade for removing the manual step (Justin, 2026-09-18).
+
+`bun run formula:handouts:audit` is what surfaces that swap. It is now a **staleness report,
+not a broken-link report** — a failure means re-read the new PDF and rewrite the copy, not
+that anything on the site is down. Worth a run before the event; nothing breaks if it is
+skipped.
+
+**Still manual:** a partner who has never had a resource. Without a reviewed title and
+description there is nothing to render, so the card holds its not-supplied state until
+someone adds an entry. That is deliberate — it is the last place a human sees the PDF before
+it reaches the public site.

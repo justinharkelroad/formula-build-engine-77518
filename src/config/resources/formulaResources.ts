@@ -38,6 +38,12 @@ export interface SuppliedFormulaResource {
   url: string;
   /** Rendered as the panel badge — "Field guide", "Sell sheet", "Brochure". */
   type: string;
+  /**
+   * Which of this org's uploads was reviewed, by position in `handoutUrls`.
+   * Used when the partner replaces a handout: the file in the same slot is
+   * picked, which preserves a deliberate choice between two uploads.
+   */
+  slot: number;
   /** ISO date a human opened the PDF and confirmed the copy above. */
   reviewed: string;
 }
@@ -56,6 +62,7 @@ export const PARTNER_FORMULA_RESOURCES = {
       "Standard Playbook's field guide for new sales reps — the three buckets that organize a sales day, a five-day morning drill tracker, and a one-day self-audit.",
     url: handout("CtQVIJNXZK2wrx0zqGrP", "handout_1789731341684.pdf"),
     type: "Field guide",
+    slot: 0,
     reviewed: "2026-09-18",
   },
   arbeit: {
@@ -65,6 +72,7 @@ export const PARTNER_FORMULA_RESOURCES = {
       "Arbeit's sell sheet on seeing how carriers label your outbound numbers on real devices, and getting Spam or Scam labels remediated so calls get answered.",
     url: handout("AOHuQPc10AV5E2pnoCQJ", "handout_1789573646224.pdf"),
     type: "Sell sheet",
+    slot: 0,
     reviewed: "2026-09-18",
   },
   leadminer: {
@@ -74,6 +82,7 @@ export const PARTNER_FORMULA_RESOURCES = {
       "LeadMiner's company brochure: an outsourced contact-center team that nurtures and qualifies leads, then warm-transfers them to your licensed agents.",
     url: handout("UcaWlrOpL0UW2tGr9w4Q", "handout_0.pdf"),
     type: "Brochure",
+    slot: 0,
     reviewed: "2026-09-18",
   },
   "servicemaster-restore": {
@@ -84,9 +93,11 @@ export const PARTNER_FORMULA_RESOURCES = {
     // This org uploaded two handouts. The second is a general capabilities
     // tri-fold ("Who we are", 850 locations, service list) aimed at property
     // owners rather than agents; it is recorded in the readiness inventory and
-    // deliberately not the one linked from an agent-facing card.
+    // deliberately not the one linked from an agent-facing card. `slot: 0` is
+    // what keeps that choice after a re-upload.
     url: handout("tMe1bdQvDYksewzIqpKP", "handout_1788976159625.pdf"),
     type: "One-pager",
+    slot: 0,
     reviewed: "2026-09-18",
   },
   "nw-preferred": {
@@ -96,6 +107,7 @@ export const PARTNER_FORMULA_RESOURCES = {
       "NW Preferred's agency-lending one-pager — loans to buy an agency or an office, annual review instead of monthly reporting, business debt off personal credit, no prepayment penalties.",
     url: handout("w1t9JkRwmDQpKHOp8I1c", "handout_1789070514281.pdf"),
     type: "One-pager",
+    slot: 0,
     reviewed: "2026-09-18",
   },
 } satisfies Partial<Record<PartnerId, SuppliedFormulaResource>>;

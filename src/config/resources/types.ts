@@ -32,6 +32,14 @@ export interface BaseResourcePartner {
   formulaResourceType?: string;
   /** Defaults to "Coming soon" */
   formulaResourceBadge?: string;
+  /**
+   * Partner Hub org id that supplied the resource. Present only when the
+   * resource came from an upload, and used at runtime to swap in whatever that
+   * org's current handout is — see `src/lib/partnerHandouts.ts`.
+   */
+  formulaResourceOrgId?: string;
+  /** Which of that org's uploads was reviewed, by position. */
+  formulaResourceSlot?: number;
 }
 
 /** One row of the "not sure where to start?" decision guide. */

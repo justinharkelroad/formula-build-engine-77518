@@ -12,6 +12,13 @@
  * That is why this script checks MEMBERSHIP (is the URL still one of the org's
  * current handoutUrls?) and not just reachability.
  *
+ * SINCE THE RUNTIME RESOLVER LANDED, a failure here no longer means a broken or
+ * stale link — src/lib/partnerHandouts.ts swaps in the org's current handout on
+ * every page load, so the site self-heals. What a failure now means is that the
+ * PARTNER CHANGED THE FILE and the reviewed title and description in
+ * formulaResources.ts may describe a PDF that no longer exists. Re-read the new
+ * one, rewrite the copy, update `reviewed`. That is the only reason to run this.
+ *
  * Reads the public `partnerPages` mirror, which is `allow read: if true` in the
  * app's firestore.rules. The key below is the Formula Forum web app's public
  * client key, shipped in its browser bundle — it identifies the project, it does
