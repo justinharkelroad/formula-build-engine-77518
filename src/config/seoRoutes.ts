@@ -141,6 +141,13 @@ const SITE_ROUTES: SeoRoute[] = [
   // Public but deliberately unindexed — prerendered so the noindex directive is in
   // the raw HTML, not only in JavaScript-rendered output.
   {
+    path: "/desk",
+    title: "Partner Desk | Formula Forum 2026",
+    description:
+      "Floor reference for partner team access at Formula Forum 2026. Staff only; linked from nowhere.",
+    noindex: true,
+  },
+  {
     path: "/vip",
     title: "Past Attendee Exclusive — Formula Forum 2026",
     description:

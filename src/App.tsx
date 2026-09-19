@@ -49,6 +49,7 @@ const Body = lazy(() => import("./pages/resources/Body"));
 const Balance = lazy(() => import("./pages/resources/Balance"));
 const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
 const PartnerHubGuide = lazy(() => import("./pages/PartnerHubGuide"));
+const PartnerDesk = lazy(() => import("./pages/PartnerDesk"));
 const FormulaAppGuide = lazy(() => import("./pages/FormulaAppGuide"));
 const TestimonialStory = lazy(() => import("./pages/TestimonialStory"));
 
@@ -86,6 +87,8 @@ const App = () => (
             <Route path="/partner" element={<Navigate to="/partners" replace />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
+            {/* Staff floor reference. noindex, linked from nowhere, handed out by URL. */}
+            <Route path="/desk" element={<PartnerDesk />} />
             <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
             <Route path="/2025partners" element={<Navigate to="/partners" replace />} />
             <Route path="/gallery" element={<Gallery />} />
