@@ -26,7 +26,7 @@ import {
 import SEO from "@/components/SEO";
 import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
-import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL } from "@/config/appLinks";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ORLANDO_READINESS_URL } from "@/config/appLinks";
 
 const GUIDE_PATH = "/formula-app-guide";
 
@@ -169,11 +169,15 @@ const FormulaAppGuide = () => {
                   <span className="meta-pill">AFTER</span>
                 </div>
                 <AppDownloadButtons />
+                <a href={FORMULA_ORLANDO_READINESS_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                  Get Ready for Orlando <CheckCircle2 className="h-4 w-4" />
+                </a>
                 <a href="#profile" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">Start The Walkthrough <ArrowRight className="h-4 w-4" /></a>
               </div>
               <div>
                 <h2 className="text-2xl font-bold leading-tight md:text-3xl">The full forum experience in one place—from the profile people meet to the actions you take home.</h2>
                 <p className="mt-5 text-base leading-relaxed text-white/60">Owners and team members use the email assigned to their named attendee seat and complete email verification before a first ticket claim. Approved partner owners and staff use the email connected to their approved partner organization. Everyone creates their own account and never shares another attendee's password.</p>
+                <p className="mt-4 text-base leading-relaxed text-white/60">Before you arrive, open Ready for Orlando to check your seat, email, role, organization and sign-in, then try a practice scan. Owners can check for unnamed seats, and partners can check their team's access and resource readiness.</p>
               </div>
               <AppScreenshot src="/assets/formula-app-guide/today.png" alt="Formula App Today screen with a personalized event plan" onOpen={openImage} label="YOUR HOME BASE" />
             </div>

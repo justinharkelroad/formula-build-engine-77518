@@ -8,4 +8,5 @@
 export const FORMULA_IOS_APP_URL = "https://apps.apple.com/us/app/formula-forum/id6759879318";
 export const FORMULA_ANDROID_APP_URL = "https://play.google.com/store/apps/details?id=com.triumphboxandryde.formulaforum";
 export const FORMULA_ATTENDEE_WORKSPACE_URL = "https://flow.theformulaforum.com/";
+export const FORMULA_ORLANDO_READINESS_URL = "https://flow.theformulaforum.com/ready";
 export const FORMULA_PARTNER_HUB_WEB_URL = "https://flow.theformulaforum.com/partnerhub";
