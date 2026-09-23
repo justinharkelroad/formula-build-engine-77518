@@ -204,7 +204,7 @@ export const OPERATING_SYSTEM: ResourcePageContent = {
     headline: "The resource doesn't replace the decision.",
     body: "You already chose the Domino. Use the resource to execute it.",
     supporting: "The business should be able to run the day without you in the room.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s4",
   },
 };

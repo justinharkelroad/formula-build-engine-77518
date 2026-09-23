@@ -65,8 +65,8 @@ export const BODY: ResourcePageContent = {
   closing: {
     headline: "The standard only matters if you live it.",
     body: "Return to the recurring action you committed to in the workbook.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s3",
   },
 };
 
@@ -123,8 +123,8 @@ export const BALANCE: ResourcePageContent = {
   closing: {
     headline: "The people you say matter most should be able to see it.",
     body: "Return to the commitment you wrote in the workbook — and put it where they can see it.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s6",
   },
 };
 
@@ -181,7 +181,7 @@ export const BEING: ResourcePageContent = {
   closing: {
     headline: "The work is not to perform alignment. It is to live it.",
     body: "Return to the practice you committed to in the workbook.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s8",
   },
 };

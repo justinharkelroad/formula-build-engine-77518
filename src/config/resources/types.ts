@@ -108,7 +108,7 @@ export interface ResourcePageContent {
     body: string;
     supporting?: string;
     ctaLabel: string;
-    /** Internal route — these pages never sell a ticket. */
+    /** Exact session or map route in Formula Flow. */
     ctaTo: string;
   };
 
