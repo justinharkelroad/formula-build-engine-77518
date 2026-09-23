@@ -27,6 +27,7 @@ const EXPECTED_SPONSOR_TIERS = {
     "Melon Local",
     "Slide Insurance",
     "CRC Tapco",
+    "Ask Fetch",
     "NW Preferred Federal Credit Union",
     "Performology",
     "GOAL",
@@ -36,13 +37,17 @@ const EXPECTED_SPONSOR_TIERS = {
     "Quote Nerds",
     "Ivantage",
     "YPC Media",
+    "Elite Travel Hackers",
+    "Disruptur",
+    "AgencyBrain",
+    "Authority War",
   ],
-  Additional: ["Ask Fetch"],
 };
 
 const EXPECTED = [
   ["salesSequence.ts", "SALES_SEQUENCE", [
     "standard",
+    "agencybrain",
     "agency-toolchest",
     "performology",
     "ricochet360",
@@ -57,11 +62,18 @@ const EXPECTED = [
   ["personalSessions.ts", "BODY", ["standard"]],
   ["operatingSystem.ts", "OPERATING_SYSTEM", [
     "standard",
+    "agencybrain",
     "secure-evas",
     "agency-toolchest",
     "performology",
     "ricochet360",
     "ask-fetch",
+    "national-general",
+    "hagerty",
+    "slide-insurance",
+    "crc-tapco",
+    "elite-travel-hackers",
+    "ivantage",
   ]],
   ["training.ts", "TRAINING", ["standard"]],
   ["personalSessions.ts", "BALANCE", ["standard"]],
@@ -90,6 +102,10 @@ const EXPECTED = [
     "wintrust-agent-finance",
     "nw-preferred",
   ]],
+];
+const FLOW_SLUGS = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "map"];
+const REVIEWED_RESOURCE_IDS = [
+  "standard", "arbeit", "leadminer", "servicemaster-restore", "nw-preferred",
 ];
 
 function fail(message) {
@@ -174,7 +190,7 @@ function readSponsorRoster() {
   return roster;
 }
 
-for (const [fileName, exportName, expected] of EXPECTED) {
+for (const [index, [fileName, exportName, expected]] of EXPECTED.entries()) {
   const { variables } = parse(fileName);
   const exported = variables.get(exportName);
   if (!exported || !ts.isObjectLiteralExpression(exported)) {
@@ -196,6 +212,15 @@ for (const [fileName, exportName, expected] of EXPECTED) {
     fail(
       `${fileName}:${exportName} expected [${expected.join(", ")}], got [${actual.join(", ")}]`,
     );
+  }
+
+  const closing = property(exported, "closing");
+  const ctaTo = closing && ts.isObjectLiteralExpression(closing.initializer)
+    ? stringProperty(closing.initializer, "ctaTo")
+    : null;
+  const expectedReturn = `https://flow.theformulaforum.com/w26/${FLOW_SLUGS[index]}`;
+  if (ctaTo !== expectedReturn) {
+    fail(`${fileName}:${exportName} return link expected ${expectedReturn}, got ${ctaTo}`);
   }
 
   const guideProperty = property(exported, "guide");
@@ -227,11 +252,11 @@ if (!registry || !ts.isSatisfiesExpression(registry) || !ts.isObjectLiteralExpre
     )
     .filter(Boolean);
 
-  if (registryIds.length !== 30) {
-    fail(`PARTNER_REGISTRY expected 30 Formula partners, got ${registryIds.length}`);
+  if (registryIds.length !== 33) {
+    fail(`PARTNER_REGISTRY expected 33 Formula partners, got ${registryIds.length}`);
   }
 
-  for (const required of ["ask-fetch", "ivantage"]) {
+  for (const required of ["ask-fetch", "ivantage", "agencybrain", "disruptur", "elite-travel-hackers"]) {
     if (!registryIds.includes(required)) fail(`PARTNER_REGISTRY is missing ${required}`);
   }
 
@@ -275,8 +300,35 @@ if (!process.exitCode) {
   // Counting `formulaResourceUrl:` across the page configs used to be the measure
   // and now always returns 0, which would read as "nothing is configured" right
   // after the refactor that centralised them.
-  const registrySource = fs.readFileSync(path.join(CONFIG_ROOT, "formulaResources.ts"), "utf8");
-  const configuredResourceUrls = (registrySource.match(/^\s{4}orgId:\s/gm) || []).length;
+  const supplied = parse("formulaResources.ts").variables.get("PARTNER_FORMULA_RESOURCES");
+  const suppliedEntries = supplied && ts.isSatisfiesExpression(supplied) && ts.isObjectLiteralExpression(supplied.expression)
+    ? supplied.expression.properties.filter(ts.isPropertyAssignment)
+    : [];
+  const suppliedIds = suppliedEntries.map((entry) =>
+    ts.isIdentifier(entry.name) || ts.isStringLiteral(entry.name) ? entry.name.text : null
+  );
+  if (JSON.stringify(suppliedIds) !== JSON.stringify(REVIEWED_RESOURCE_IDS)) {
+    fail(`formulaResources.ts reviewed partners expected [${REVIEWED_RESOURCE_IDS.join(", ")}], got [${suppliedIds.join(", ")}]`);
+  }
+  for (const entry of suppliedEntries) {
+    if (!ts.isObjectLiteralExpression(entry.initializer)) {
+      fail("formulaResources.ts has an unreadable reviewed resource");
+      continue;
+    }
+    for (const field of ["orgId", "title", "description", "type", "reviewed"]) {
+      if (!stringProperty(entry.initializer, field)) fail(`reviewed resource is missing ${field}`);
+    }
+    const url = property(entry.initializer, "url");
+    const slot = property(entry.initializer, "slot");
+    if (!url || !ts.isCallExpression(url.initializer) || !slot || !ts.isNumericLiteral(slot.initializer)) {
+      fail("reviewed resource needs a handout URL and reviewed upload slot");
+    }
+  }
+  for (const id of suppliedIds) {
+    if (id && !registry?.expression?.properties?.some((entry) =>
+      ts.isPropertyAssignment(entry) && (ts.isIdentifier(entry.name) || ts.isStringLiteral(entry.name)) && entry.name.text === id
+    )) fail(`reviewed resource ${id} has no partner identity`);
+  }
 
   const strayPageLevelUrls = [...new Set(EXPECTED.map(([fileName]) => fileName))]
     .filter((fileName) => {
@@ -290,7 +342,31 @@ if (!process.exitCode) {
     );
   }
 
-  console.log("Resource partner mapping passed: S1-S8, Funding the Build, 30-partner registry, and workbook v7 sponsor tiers.");
-  console.log(`Readiness inventory covers all 30 partners; ${configuredResourceUrls} Formula resource URLs are currently configured.`);
-  console.log("Mapping is not delivery evidence. Review FORMULA-PARTNER-RESOURCE-READINESS.md before release.");
+  const readiness = EXPECTED.map(([fileName, exportName]) => {
+    const { variables } = parse(fileName);
+    const page = variables.get(exportName);
+    const partnersNode = page && ts.isObjectLiteralExpression(page)
+      ? property(page, "partners")
+      : null;
+    const partners = partnersNode ? resolve(partnersNode.initializer, variables) : null;
+    if (!partners || !ts.isArrayLiteralExpression(partners)) return `${exportName}: unreadable`;
+    const reviewed = partners.elements.filter((element) => {
+      if (!ts.isCallExpression(element)) return false;
+      const id = element.arguments[0];
+      const copy = element.arguments[1];
+      const suppressed = copy && ts.isObjectLiteralExpression(copy)
+        ? property(copy, "suppressFormulaResource")
+        : null;
+      return id && ts.isStringLiteral(id) && suppliedIds.includes(id.text) &&
+        !(suppressed && suppressed.initializer.kind === ts.SyntaxKind.TrueKeyword);
+    }).length;
+    return `${exportName}: ${reviewed}/${partners.elements.length} reviewed downloads`;
+  });
+
+  if (!process.exitCode) {
+    console.log("Resource partner mapping passed: S1-S8, Funding the Build, 33-partner registry, and current sponsor tiers.");
+    console.log(`Readiness inventory covers all 33 partners; ${suppliedIds.length} reviewed Formula resource URLs are configured.`);
+    console.log(`Page readiness: ${readiness.join("; ")}.`);
+    console.log("Mapping is not delivery evidence. Review FORMULA-PARTNER-RESOURCE-READINESS.md before release.");
+  }
 }

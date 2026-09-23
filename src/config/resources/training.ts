@@ -115,7 +115,7 @@ export const TRAINING: ResourcePageContent = {
     headline: "The resource doesn't replace the decision.",
     body: "You already chose the Domino. Use the resource to execute it.",
     supporting: "Training that isn't measured is just a meeting.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s5",
   },
 };

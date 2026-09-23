@@ -134,7 +134,7 @@ export const SALES_SEQUENCE: ResourcePageContent = {
     headline: "The resource doesn't replace the decision.",
     body: "You already chose the Domino. Pick the resources that help you execute it — then go build.",
     supporting: "You can't lead a year your team can't see.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s1",
   },
 };

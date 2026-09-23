@@ -62,8 +62,8 @@ export const FUNDING_THE_BUILD: ResourcePageContent = {
     headline: "The resource doesn't replace the decision.",
     body: "You already chose what to build. Use the resource to execute it.",
     supporting: "A funded plan still needs someone to execute it.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my 2027 Map",
+    ctaTo: "https://flow.theformulaforum.com/w26/map",
   },
   disclaimer:
     "Formula Forum does not provide financial, lending or investment advice, and does not originate, broker, endorse or guarantee any financing. Eligibility, terms, rates and approval are determined solely by each lender or financial institution. Contact the partner directly to discuss your situation.",

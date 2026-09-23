@@ -187,7 +187,7 @@ export const MAKING_IT_RAIN: ResourcePageContent = {
     headline: "More leads is not always the answer.",
     body: "Find the stage of the opportunity system that is actually broken — then go build.",
     supporting: "You already chose the Domino. Use the resource to execute it.",
-    ctaLabel: "Back to Formula 2026",
-    ctaTo: "/",
+    ctaLabel: "Return to my session",
+    ctaTo: "https://flow.theformulaforum.com/w26/s7",
   },
 };
