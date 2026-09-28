@@ -51,6 +51,7 @@ const FundingTheBuild = lazy(() => import("./pages/resources/FundingTheBuild"));
 const PartnerHubGuide = lazy(() => import("./pages/PartnerHubGuide"));
 const PartnerDesk = lazy(() => import("./pages/PartnerDesk"));
 const FormulaAppGuide = lazy(() => import("./pages/FormulaAppGuide"));
+const WhatToExpect = lazy(() => import("./pages/WhatToExpect"));
 const TestimonialStory = lazy(() => import("./pages/TestimonialStory"));
 
 const PageLoader = () => (
@@ -90,6 +91,7 @@ const App = () => (
             {/* Staff floor reference. noindex, linked from nowhere, handed out by URL. */}
             <Route path="/desk" element={<PartnerDesk />} />
             <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
+            <Route path="/what-to-expect" element={<WhatToExpect />} />
             <Route path="/2025partners" element={<Navigate to="/partners" replace />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/give-back" element={<GiveBack />} />

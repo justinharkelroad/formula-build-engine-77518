@@ -109,6 +109,12 @@ const SITE_ROUTES: SeoRoute[] = [
       "Browse photos from Formula Forum 2025: networking events, breakout sessions, speaker presentations, and attendee experiences at JW Marriott Orlando.",
   },
   {
+    path: "/what-to-expect",
+    title: "What to Expect at Formula Forum 2026 | Sessions, Your 2027 Map, and Progress",
+    description:
+      "Eight working sessions, one Domino each, your 2027 Map, and 90 days of follow-through in the Formula app. What agency owners, their teams, and partners experience in Orlando and after.",
+  },
+  {
     path: "/give-back",
     title: "The Room Gives Back | Formula Forum 2026 x Destiny Rescue",
     description:
