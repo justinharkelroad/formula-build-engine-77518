@@ -13,6 +13,7 @@ import ValuePropsGrid from "@/components/sections/ValuePropsGrid";
 import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
 import AboutSection from "@/components/sections/AboutSection";
 import ScheduleBlock from "@/components/sections/ScheduleBlock";
+import WhatToExpectBlurb from "@/components/sections/WhatToExpectBlurb";
 import VenueBlock from "@/components/sections/VenueBlock";
 import AgencyAIInstallGift from "@/components/sections/AgencyAIInstallGift";
 import GiveBackBlurb from "@/components/sections/GiveBackBlurb";
@@ -94,6 +95,9 @@ const Index = () => {
 
       {/* 5. Schedule */}
       <ScheduleBlock />
+
+      {/* 5b. What to expect — band into /what-to-expect */}
+      <WhatToExpectBlurb />
 
       {/* 6. Venue */}
       <VenueBlock />
