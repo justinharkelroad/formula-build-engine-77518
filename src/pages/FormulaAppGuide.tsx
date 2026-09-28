@@ -10,6 +10,7 @@ import {
   Camera,
   Check,
   CheckCircle2,
+  Target,
   FileCheck2,
   Heart,
   Image as ImageIcon,
@@ -27,7 +28,7 @@ import {
 import SEO from "@/components/SEO";
 import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
-import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ORLANDO_READINESS_URL } from "@/config/appLinks";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ORLANDO_READINESS_URL, FORMULA_FOCUS_URL } from "@/config/appLinks";
 import { WalkthroughCard, WalkthroughPlayer } from "@/components/walkthroughs/Walkthroughs";
 import { walkthroughs, type Walkthrough } from "@/config/walkthroughs";
 
@@ -185,6 +186,9 @@ const FormulaAppGuide = () => {
                 <a href={FORMULA_ORLANDO_READINESS_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
                   Get Ready for Orlando <CheckCircle2 className="h-4 w-4" />
                 </a>
+                <a href={FORMULA_FOCUS_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                  Set Your Formula Focus <Target className="h-4 w-4" />
+                </a>
                 <Link to="/what-to-expect" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white"><BookOpen className="h-4 w-4" />What To Expect At Formula</Link>
                 <a href="#videos" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white"><Play className="h-4 w-4" />Watch The Videos</a>
                 <a href="#profile" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">Start The Walkthrough <ArrowRight className="h-4 w-4" /></a>
@@ -192,6 +196,7 @@ const FormulaAppGuide = () => {
               <div>
                 <h2 className="text-2xl font-bold leading-tight md:text-3xl">The full forum experience in one place—from the profile people meet to the actions you take home.</h2>
                 <p className="mt-5 text-base leading-relaxed text-white/60">Owners and team members use the email assigned to their named attendee seat and complete email verification before a first ticket claim. Approved partner owners and staff use the email connected to their approved partner organization. Everyone creates their own account and never shares another attendee's password.</p>
+                <p className="mt-4 text-base leading-relaxed text-white/60">Set your Formula Focus: six short questions about what you want to understand or be able to do when you leave Orlando. It takes about 5 minutes, you review exactly what's shared, and you can start on your phone and finish on your computer.</p>
                 <p className="mt-4 text-base leading-relaxed text-white/60">Before you arrive, open Ready for Orlando to check your seat, email, role, organization and sign-in, then try a practice scan. Owners can check for unnamed seats, and partners can check their team's access and resource readiness.</p>
               </div>
               <AppScreenshot src="/assets/formula-app-guide/today.png" alt="Formula App Today screen with a personalized event plan" onOpen={openImage} label="YOUR HOME BASE" />

@@ -2,11 +2,11 @@ import { useSearchParams, Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { CircleHelp, ArrowLeft, Download, Hotel, Users, Monitor, BookOpen } from "lucide-react";
+import { CircleHelp, ArrowLeft, Download, Hotel, Users, Monitor, BookOpen, Target } from "lucide-react";
 import { CONFIG } from "@/config/event";
 import { formatEventDates } from "@/lib/dateUtils";
 import CheckoutVerificationNotice from "@/components/CheckoutVerificationNotice";
-import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ATTENDEE_WORKSPACE_URL as FORMULA_FLOW_URL } from "@/config/appLinks";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ATTENDEE_WORKSPACE_URL as FORMULA_FLOW_URL, FORMULA_FOCUS_URL } from "@/config/appLinks";
 
 const FACEBOOK_GROUP_URL = "https://www.facebook.com/groups/1637602806874362";
 
@@ -101,6 +101,12 @@ const ThankYouEnhanced = () => {
                   <a href={FORMULA_FLOW_URL} target="_blank" rel="noopener noreferrer">
                     <Monitor className="w-4 h-4 mr-2" />
                     Open the attendee workspace
+                  </a>
+                </Button>
+                <Button asChild variant="secondary" className="h-auto py-3 sm:col-span-2">
+                  <a href={FORMULA_FOCUS_URL}>
+                    <Target className="w-4 h-4 mr-2" />
+                    Set your Formula Focus
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="h-auto py-3 sm:col-span-2">

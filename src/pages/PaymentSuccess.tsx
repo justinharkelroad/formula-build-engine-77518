@@ -6,7 +6,7 @@ import SEO from "@/components/SEO";
 import { CONFIG } from "@/config/event";
 import { formatEventDates } from "@/lib/dateUtils";
 import CheckoutVerificationNotice from "@/components/CheckoutVerificationNotice";
-import { FORMULA_ORLANDO_READINESS_URL } from "@/config/appLinks";
+import { FORMULA_ORLANDO_READINESS_URL, FORMULA_FOCUS_URL } from "@/config/appLinks";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -89,6 +89,7 @@ const PaymentSuccess = () => {
                 <li>Contact the FORMULA team with the checkout reference if confirmation is missing.</li>
                 <li>Use the setup guide for iPhone, Android and the web attendee workspace after confirmation.</li>
                 <li>Complete Ready for Orlando before arrival to check your named seat, account, organization and practice scan.</li>
+                <li>Set your Formula Focus: tell us what you want to understand or be able to do when you leave Orlando, so you arrive knowing what you're looking for.</li>
                 <li>At the event, upload all three completed Formula workbook pages from each session so your scores, written reflections, and final commitment stay together.</li>
               </ul>
             </div>
@@ -97,6 +98,11 @@ const PaymentSuccess = () => {
               <Button asChild variant="default" size="lg">
                 <a href={FORMULA_ORLANDO_READINESS_URL} className="w-full sm:w-auto">
                   Get Ready for Orlando
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href={FORMULA_FOCUS_URL} className="w-full sm:w-auto">
+                  Set your Formula Focus
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">

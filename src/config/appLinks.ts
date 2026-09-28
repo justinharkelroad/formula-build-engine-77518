@@ -10,3 +10,5 @@ export const FORMULA_ANDROID_APP_URL = "https://play.google.com/store/apps/detai
 export const FORMULA_ATTENDEE_WORKSPACE_URL = "https://flow.theformulaforum.com/";
 export const FORMULA_ORLANDO_READINESS_URL = "https://flow.theformulaforum.com/ready";
 export const FORMULA_PARTNER_HUB_WEB_URL = "https://flow.theformulaforum.com/partnerhub";
+// Formula Focus: the pre-event intake (opens 2026-10-05). The same page resumes in the app.
+export const FORMULA_FOCUS_URL = "https://flow.theformulaforum.com/focus";
