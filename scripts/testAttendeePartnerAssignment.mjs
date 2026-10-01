@@ -34,6 +34,7 @@ select jsonb_build_object('attendees',coalesce(jsonb_agg(jsonb_build_object('id'
 $$;
 `);
 await db.exec(await readFile(new URL('../supabase/migrations/20261001135957_attendee_partner_company_assignment.sql', import.meta.url), 'utf8'));
+await db.exec(await readFile(new URL('../supabase/migrations/20261001162500_partner_catalog_safe_update.sql', import.meta.url), 'utf8'));
 const query = async (sql, params = []) => (await db.query(sql, params)).rows;
 const rpc = async (sql, params = []) => (await query(sql, params))[0].result;
 const sync = companies => rpc('select public.formula_bridge_sync_partner_catalog($1,$2::jsonb) result', ['test-scoped-secret', JSON.stringify(companies)]);
