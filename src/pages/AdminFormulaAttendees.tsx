@@ -82,6 +82,10 @@ interface RosterAttendee {
   identityLinked: boolean;
   createdAt: string;
   updatedAt: string;
+  partnerOrgId: string | null;
+  partnerCompanyName: string | null;
+  partnerConnectionState: 'not_assigned' | 'pending' | 'waiting_for_sign_in' | 'connected' | 'needs_attention';
+  partnerConnectionCode: string | null;
 }
 
 interface RosterPurchase {
@@ -108,6 +112,7 @@ interface RosterSnapshot {
   attendees: RosterAttendee[];
   purchases: RosterPurchase[];
   agencies: RosterAgency[];
+  partnerCompanies: { id: string; businessName: string }[];
 }
 
 interface AttendeeFormState {
@@ -118,6 +123,7 @@ interface AttendeeFormState {
   purchaseSeat: string;
   agencyChoice: string;
   newAgencyName: string;
+  partnerOrgId: string;
 }
 
 const emptyForm = (): AttendeeFormState => ({
@@ -128,9 +134,14 @@ const emptyForm = (): AttendeeFormState => ({
   purchaseSeat: '',
   agencyChoice: 'automatic',
   newAgencyName: '',
+  partnerOrgId: 'none',
 });
 
 const ERROR_MESSAGES: Record<string, string> = {
+  formula_partner_company_unavailable: 'That partner company is unavailable. Refresh the roster and choose an active approved company.',
+  formula_partner_connection_syncing: 'The company connection is syncing. Try saving again in a moment.',
+  formula_partner_connected_email_change: 'This person already has a connected company account. Correct that account connection in Partner Hub before changing the email.',
+  formula_partner_membership_change_requires_hub: 'This account is already linked to a company. Move or remove its membership in Partner Hub first.',
   formula_purchase_seat_already_assigned: 'That purchased seat has already been assigned.',
   formula_attendee_email_already_registered: 'That email already has a Formula 2026 registration.',
   formula_attendee_email_in_use: 'That email belongs to another Formula member.',
@@ -232,7 +243,7 @@ const AdminFormulaAttendees = () => {
     if (!snapshot) return [];
     const query = search.trim().toLowerCase();
     return snapshot.attendees.filter((attendee) => {
-      const matchesSearch = !query || [attendee.name, attendee.email, attendee.agencyName ?? '']
+      const matchesSearch = !query || [attendee.name, attendee.email, attendee.agencyName ?? '', attendee.partnerCompanyName ?? '']
         .some((value) => value.toLowerCase().includes(query));
       const matchesFilter = filter === 'all'
         || (filter === 'active' && attendee.registrationState !== 'revoked')
@@ -260,6 +271,7 @@ const AdminFormulaAttendees = () => {
       purchaseSeat: '',
       agencyChoice: attendee.agencyId ?? 'automatic',
       newAgencyName: '',
+      partnerOrgId: attendee.partnerOrgId ?? 'none',
     });
     setSheetOpen(true);
   };
@@ -309,6 +321,7 @@ const AdminFormulaAttendees = () => {
           sourceOrdinal: selectedSeat?.ordinal ?? null,
           agencyId,
           agencyDisplayName: form.agencyChoice === 'new' ? form.newAgencyName.trim() : null,
+          partnerOrgId: form.partnerOrgId === 'none' ? null : form.partnerOrgId,
         },
       });
       if (error) throw error;
@@ -316,7 +329,9 @@ const AdminFormulaAttendees = () => {
       await loadRoster(true);
       toast({
         title: sourceMode === 'edit' ? 'Attendee updated' : sourceMode === 'purchase' ? 'Purchased seat assigned' : 'Attendee added',
-        description: data?.identityLinked
+        description: form.partnerOrgId !== 'none'
+          ? 'Their partner company is saved. Existing accounts sync automatically; new accounts connect after sign-in.'
+          : data?.identityLinked
           ? 'Their existing app account is connected and access is syncing.'
           : 'They will connect automatically when they sign in with this email.',
       });
@@ -368,7 +383,7 @@ const AdminFormulaAttendees = () => {
                 Every seat, assigned to a person.
               </h1>
               <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-black/60 sm:text-lg">
-                Assign historical purchases, add approved guests, and see who has connected their existing Formula app account. No verification email is required.
+                Assign historical purchases, add approved guests, and connect their Formula app accounts to event access and partner-company breakdowns.
               </p>
             </div>
             <div className="mt-7 flex flex-wrap gap-3 lg:mt-0 lg:justify-end">
@@ -474,6 +489,9 @@ const AdminFormulaAttendees = () => {
                         <TableCell>
                           <div className="font-medium">{seatLabel(attendee.seatType)}</div>
                           <div className="mt-1 text-sm text-black/50">{attendee.agencyName ?? 'Individual workspace'}</div>
+                          {attendee.partnerCompanyName && (
+                            <div className="mt-2 text-sm font-medium text-[#a3421c]">Partner: {attendee.partnerCompanyName}</div>
+                          )}
                         </TableCell>
                         <TableCell>
                           <div className="text-sm font-medium">{sourceLabel(attendee)}</div>
@@ -486,6 +504,20 @@ const AdminFormulaAttendees = () => {
                               : <CircleAlert className="h-3 w-3" />}
                             {statusLabel(attendee)}
                           </span>
+                          {attendee.partnerOrgId && (
+                            <div className={`mt-2 text-xs ${attendee.partnerConnectionState === 'needs_attention' ? 'text-red-700' : 'text-black/60'}`}>
+                              {attendee.partnerConnectionState === 'connected' ? 'Company account connected'
+                                : attendee.partnerConnectionCode === 'email_verification_required' ? 'Company saved · verify app email'
+                                : attendee.partnerConnectionState === 'waiting_for_sign_in' && attendee.partnerConnectionCode === 'waiting_for_account' ? 'Company saved · waiting for sign-in'
+                                : attendee.partnerConnectionCode === 'account_disabled' ? 'Company connection blocked · account disabled'
+                                : attendee.partnerConnectionCode === 'user_in_other_org' ? 'Linked to another company · review in Partner Hub'
+                                : attendee.partnerConnectionCode === 'membership_removed' ? 'Removed in Partner Hub · edit to reassign'
+                                : attendee.partnerConnectionCode === 'org_inactive' ? 'Company is inactive · review assignment'
+                                : attendee.partnerConnectionCode === 'retryable' ? 'Company connection delayed · retrying automatically'
+                                : attendee.partnerConnectionState === 'needs_attention' ? 'Company account needs review in Partner Hub'
+                                : 'Company saved · syncing account'}
+                            </div>
+                          )}
                         </TableCell>
                         <TableCell>
                           <DropdownMenu>
@@ -541,7 +573,7 @@ const AdminFormulaAttendees = () => {
             <SheetDescription className="max-w-md leading-6 text-black/60">
               {sourceMode === 'purchase'
                 ? 'Choose an unassigned seat, then enter the person who will use it.'
-                : 'Use the exact email they use in the Formula app. Access connects without a verification email.'}
+                : 'Use the exact email they use in the Formula app. Company assignments stay saved until their account connects.'}
             </SheetDescription>
           </SheetHeader>
 
@@ -611,6 +643,29 @@ const AdminFormulaAttendees = () => {
             </div>
 
             <div className="space-y-2 border-t border-black/10 pt-6">
+              <Label htmlFor="attendee-partner" className="text-[#181816]">Partner company for AI breakdowns</Label>
+              <Select value={form.partnerOrgId}
+                onValueChange={(value) => setForm((current) => ({ ...current, partnerOrgId: value }))}>
+                <SelectTrigger id="attendee-partner" className="border-black/20 bg-white text-[#181816] focus:ring-[#f26622]">
+                  <SelectValue placeholder="Choose an approved partner company" />
+                </SelectTrigger>
+                <SelectContent className="border-black/15 bg-[#fffdf8] text-[#181816]">
+                  <SelectItem value="none">No partner company</SelectItem>
+                  {form.partnerOrgId !== 'none' && !(snapshot?.partnerCompanies ?? []).some((company) => company.id === form.partnerOrgId) && (
+                    <SelectItem value={form.partnerOrgId} disabled>Previously assigned company · currently unavailable</SelectItem>
+                  )}
+                  {(snapshot?.partnerCompanies ?? []).map((company) => (
+                    <SelectItem key={company.id} value={company.id}>{company.businessName}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs leading-5 text-black/50">Assign an approved vendor or partner to personalize their applicable business-session breakdowns. Existing accounts sync automatically; the assignment stays saved for future sign-in.</p>
+              {(snapshot?.partnerCompanies ?? []).length === 0 && (
+                <p className="text-xs leading-5 text-red-700">The approved partner directory is temporarily unavailable. Refresh before assigning a partner.</p>
+              )}
+            </div>
+
+            <div className="space-y-2 border-t border-black/10 pt-6">
               <Label htmlFor="attendee-agency" className="text-[#181816]">Agency workspace</Label>
               <Select
                 value={form.agencyChoice}
@@ -644,7 +699,7 @@ const AdminFormulaAttendees = () => {
 
             <div className="flex items-start gap-3 border border-black/10 bg-white/60 p-4 text-sm leading-6 text-black/60">
               <Link2 className="mt-1 h-4 w-4 shrink-0 text-[#c45120]" />
-              <p>If this email already has a Formula app account, it connects immediately. Otherwise it connects the first time the person signs in with that email.</p>
+              <p>Existing app accounts sync automatically. New accounts connect after sign-in with this email. If account verification is required, the roster will show that next step.</p>
             </div>
 
             <div className="flex justify-end gap-3 border-t border-black/10 pt-6">

@@ -32,8 +32,13 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Lint coupon admin page
-        run: npx eslint src/pages/AdminSales.tsx
+      - name: Lint admin pages
+        run: npx eslint src/pages/AdminSales.tsx src/pages/AdminFormulaAttendees.tsx
+
+      - name: Verify attendee partner SQL contract locally
+        run: |
+          npm install --prefix "$RUNNER_TEMP/formula-partner-sql-test" --no-save --package-lock=false @electric-sql/pglite@0.5.8
+          FORMULA_PGLITE_ROOT="$RUNNER_TEMP/formula-partner-sql-test/node_modules/@electric-sql/pglite" node scripts/testAttendeePartnerAssignment.mjs
 
   edge-functions:
     name: Edge Function checks
@@ -55,6 +60,9 @@ jobs:
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+
+      - name: Type-check attendee admin function
+        run: deno check supabase/functions/formula-admin-attendees/index.ts
 
       - name: Type-check Stripe webhook
         run: deno check supabase/functions/stripe-webhook-enhanced/index.ts

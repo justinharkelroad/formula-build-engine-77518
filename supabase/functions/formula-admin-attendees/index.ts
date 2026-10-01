@@ -59,7 +59,7 @@ serve(async (req) => {
   const action = text(body.action);
   try {
     if (action === "snapshot") {
-      const { data, error } = await supabase.rpc("formula_admin_roster_snapshot");
+      const { data, error } = await supabase.rpc("formula_admin_roster_snapshot_with_partners");
       if (error) throw error;
       return json(data);
     }
@@ -73,7 +73,11 @@ serve(async (req) => {
       const sourceOrdinal = typeof body.sourceOrdinal === "number" && Number.isInteger(body.sourceOrdinal)
         ? body.sourceOrdinal
         : null;
-      const { data, error } = await supabase.rpc("formula_admin_upsert_attendee", {
+      const partnerOrgId = body.partnerOrgId == null ? null : text(body.partnerOrgId);
+      if (body.partnerOrgId != null && (!partnerOrgId || !/^[A-Za-z0-9_-]{1,128}$/.test(partnerOrgId))) {
+        return json({ error: "formula_partner_company_unavailable" }, 400);
+      }
+      const { data, error } = await supabase.rpc("formula_admin_upsert_attendee_with_partner", {
         p_actor_id: authData.user.id,
         p_name: name,
         p_email: email,
@@ -83,6 +87,8 @@ serve(async (req) => {
         p_agency_display_name: text(body.agencyDisplayName),
         p_purchase_id: uuid(body.purchaseId),
         p_source_ordinal: sourceOrdinal,
+        p_partner_org_id: partnerOrgId,
+        p_partner_assignment_provided: Object.prototype.hasOwnProperty.call(body, "partnerOrgId"),
       });
       if (error) throw error;
       return json(data);
