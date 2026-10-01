@@ -871,6 +871,10 @@ export type Database = {
     Functions: {
       fix_partner_purchases: { Args: never; Returns: Json }
       formula_admin_roster_snapshot: { Args: never; Returns: Json }
+      formula_admin_roster_snapshot_with_partners: {
+        Args: never
+        Returns: Json
+      }
       formula_admin_set_attendee_access: {
         Args: {
           p_action: string
@@ -893,6 +897,26 @@ export type Database = {
         }
         Returns: Json
       }
+      formula_admin_upsert_attendee_with_partner: {
+        Args: {
+          p_actor_id: string
+          p_agency_display_name?: string
+          p_agency_id?: string
+          p_email: string
+          p_name: string
+          p_partner_assignment_provided?: boolean
+          p_partner_org_id?: string
+          p_purchase_id?: string
+          p_registration_id?: string
+          p_seat_type: string
+          p_source_ordinal?: number
+        }
+        Returns: Json
+      }
+      formula_bridge_claim_partner_assignments: {
+        Args: { p_batch_size?: number; p_integration_secret: string }
+        Returns: Json
+      }
       formula_bridge_claim_projection_outbox_batch: {
         Args: {
           p_batch_size: number
@@ -912,6 +936,18 @@ export type Database = {
           revocation_version: number
           target_path: string
         }[]
+      }
+      formula_bridge_complete_partner_assignment: {
+        Args: {
+          p_assignment_version: number
+          p_firebase_uid?: string
+          p_integration_secret: string
+          p_lease_token: string
+          p_registration_id: string
+          p_result_code: string
+          p_state: string
+        }
+        Returns: boolean
       }
       formula_bridge_complete_projection_outbox: {
         Args: {
@@ -943,6 +979,26 @@ export type Database = {
           p_integration_secret: string
         }
         Returns: string
+      }
+      formula_bridge_orlando_readiness: {
+        Args: {
+          p_firebase_uid: string
+          p_integration_secret: string
+          p_verified_email?: string
+        }
+        Returns: Json
+      }
+      formula_bridge_orlando_roster: {
+        Args: {
+          p_integration_secret: string
+          p_limit?: number
+          p_offset?: number
+        }
+        Returns: Json
+      }
+      formula_bridge_sync_partner_catalog: {
+        Args: { p_companies: Json; p_integration_secret: string }
+        Returns: undefined
       }
       formula_claim_projection_outbox_batch: {
         Args: {
