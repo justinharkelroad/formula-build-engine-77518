@@ -10,7 +10,7 @@ import type { PartnerId } from "./partners";
  * onto the public Firestore doc `partnerPages/{orgId}.handoutUrls`.
  *
  * This site has no Firebase client and does not read that at runtime, so the URL
- * is copied here by hand once a human has opened the PDF and confirmed what it
+ * is copied here by hand once a reviewer has opened the PDF and confirmed what it
  * is. `bun run formula:handouts:audit` re-checks every entry against the live
  * mirror; run it before a release.
  *
@@ -23,7 +23,7 @@ import type { PartnerId } from "./partners";
  *      `&token=` variant — it is noise here, and it invites someone to treat a
  *      rotated token as the reason a link "broke".
  *
- * An entry here is a claim that a human read the PDF. Record the review in
+ * An entry here records a reviewed PDF. Identify the reviewer in
  * FORMULA-PARTNER-RESOURCE-READINESS.md at the same time. A partner uploading
  * something is not the Formula team having checked it.
  */
@@ -44,7 +44,7 @@ export interface SuppliedFormulaResource {
    * picked, which preserves a deliberate choice between two uploads.
    */
   slot: number;
-  /** ISO date a human opened the PDF and confirmed the copy above. */
+  /** ISO date the recorded reviewer opened the PDF and confirmed the copy above. */
   reviewed: string;
 }
 
@@ -109,6 +109,51 @@ export const PARTNER_FORMULA_RESOURCES = {
     type: "One-pager",
     slot: 0,
     reviewed: "2026-09-18",
+  },
+  "crc-tapco": {
+    orgId: "UCNZfpR85rJNc7WkmJlZ",
+    title: "Make the Logical Choice and Call CRC Tapco",
+    description: "CRC Tapco’s overview of available commercial, personal and specialty lines, with quote and binding contacts.",
+    url: handout("UCNZfpR85rJNc7WkmJlZ", "handout_0.pdf"),
+    type: "Coverage overview",
+    slot: 0,
+    reviewed: "2026-10-05",
+  },
+  "ivantage": {
+    orgId: "Z1UnIFrbDYdULetpIIiJ",
+    title: "Ivantage Agency Engagement Alignment",
+    description: "The U.S. agency engagement territory map and regional leader contacts, dated September 14, 2026.",
+    url: handout("Z1UnIFrbDYdULetpIIiJ", "handout_0.pdf"),
+    type: "Territory map",
+    slot: 0,
+    reviewed: "2026-10-05",
+  },
+  "dms": {
+    orgId: "l9q8j1CcbDqYY8yAzkGQ",
+    title: "ZipQuote, DMS and ALM",
+    description: "A visual overview of the ZipQuote and ALM platforms and their connection to DMS.",
+    url: handout("l9q8j1CcbDqYY8yAzkGQ", "handout_0.pdf"),
+    type: "Platform overview",
+    slot: 0,
+    reviewed: "2026-10-05",
+  },
+  "national-general": {
+    orgId: "8ZSVx0v1170uVA24HFTN",
+    title: "National General Commercial Vehicle",
+    description: "National General’s commercial vehicle brochure, outlining business auto uses, program features and available discounts.",
+    url: handout("8ZSVx0v1170uVA24HFTN", "handout_0.pdf"),
+    type: "Brochure",
+    slot: 0,
+    reviewed: "2026-10-05",
+  },
+  "authority-war": {
+    orgId: "1ydxGtgkjb2OAQ2Ozxo4",
+    title: "The Formula Personal Brand Audit",
+    description: "A worksheet on online presence, content ownership and the next 90 days of your personal brand.",
+    url: handout("1ydxGtgkjb2OAQ2Ozxo4", "handout_0.pdf"),
+    type: "Worksheet",
+    slot: 0,
+    reviewed: "2026-10-05",
   },
 } satisfies Partial<Record<PartnerId, SuppliedFormulaResource>>;
 

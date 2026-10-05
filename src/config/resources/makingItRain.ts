@@ -77,6 +77,11 @@ const PARTNERS = [
   }),
 
   // 02 — Create your own opportunity
+  partnerFor("authority-war", {
+    helpsWith: "A personal brand audit of your online presence, content ownership and next 90 days.",
+    bestFit: "Your Domino involves clarifying how you show up online and what you want to be known for.",
+    categories: ["create-opportunity"],
+  }),
   partnerFor("goal", {
     helpsWith:
       "A marketing platform for building your own funnels and capturing insurance prospects under your own brand.",

@@ -267,11 +267,12 @@ const FormulaAppGuide = () => {
         <section id="plan" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="grid items-end gap-12 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
-              <SectionTitle number="02" eyebrow="Own The Day" title="KNOW WHERE TO BE—AND WHY" copy="Today turns the event into a focused next-action list. Agenda lets you scan the full schedule, save the sessions that matter, and keep your personal schedule close." />
+              <SectionTitle number="02" eyebrow="Own The Day" title="KNOW WHERE TO BE—AND WHY" copy="Today starts with the event banner, then your next action. During Orlando, Now and Next show what is happening in Eastern time. Agenda holds the full schedule and your saved sessions." />
               <div className="border-t border-white/20">
                 {[
                   [CalendarDays, "Favorite Sessions", "Build My Schedule before doors open."],
                   [Sparkles, "Follow The Prompt", "Today surfaces the most useful next move."],
+                  [CheckCircle2, "Check Your Readiness", "Profile and schedule checks are separate from Ready for Orlando. Complete the practice scan there; revisit it from More during the event."],
                 ].map(([Icon, label, copy]) => {
                   const FeatureIcon = Icon as typeof CalendarDays;
                   return <div key={String(label)} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/20 py-5"><FeatureIcon className="h-5 w-5 text-[hsl(var(--secondary))]" /><div><p className="font-black uppercase">{String(label)}</p><p className="mt-1 text-sm text-white/55">{String(copy)}</p></div></div>;
