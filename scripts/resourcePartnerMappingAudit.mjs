@@ -86,6 +86,7 @@ const EXPECTED = [
     "quote-nerds",
     "dms",
     "filtered-quotes",
+    "authority-war",
     "goal",
     "search-perfect",
     "melon-local",
@@ -106,6 +107,7 @@ const EXPECTED = [
 const FLOW_SLUGS = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "map"];
 const REVIEWED_RESOURCE_IDS = [
   "standard", "arbeit", "leadminer", "servicemaster-restore", "nw-preferred",
+  "crc-tapco", "ivantage", "dms", "national-general", "authority-war",
 ];
 
 function fail(message) {
@@ -252,8 +254,8 @@ if (!registry || !ts.isSatisfiesExpression(registry) || !ts.isObjectLiteralExpre
     )
     .filter(Boolean);
 
-  if (registryIds.length !== 33) {
-    fail(`PARTNER_REGISTRY expected 33 Formula partners, got ${registryIds.length}`);
+  if (registryIds.length !== 34) {
+    fail(`PARTNER_REGISTRY expected 34 Formula partners, got ${registryIds.length}`);
   }
 
   for (const required of ["ask-fetch", "ivantage", "agencybrain", "disruptur", "elite-travel-hackers"]) {
@@ -364,8 +366,8 @@ if (!process.exitCode) {
   });
 
   if (!process.exitCode) {
-    console.log("Resource partner mapping passed: S1-S8, Funding the Build, 33-partner registry, and current sponsor tiers.");
-    console.log(`Readiness inventory covers all 33 partners; ${suppliedIds.length} reviewed Formula resource URLs are configured.`);
+    console.log("Resource partner mapping passed: S1-S8, Funding the Build, 34-partner registry, and current sponsor tiers.");
+    console.log(`Readiness inventory covers all 34 partners; ${suppliedIds.length} reviewed Formula resource URLs are configured.`);
     console.log(`Page readiness: ${readiness.join("; ")}.`);
     console.log("Mapping is not delivery evidence. Review FORMULA-PARTNER-RESOURCE-READINESS.md before release.");
   }

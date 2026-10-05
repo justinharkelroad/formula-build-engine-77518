@@ -34,7 +34,7 @@ Never infer a resource, offer, representative, or booking destination from a com
 | `national-general` | National General | Not mapped to a resource page | Recorded | **UNASSIGNED** | **NOT SET** | Decide whether a destination is required, then assign owner/date. |
 | `hagerty` | Hagerty | Not mapped to a resource page | Recorded | **UNASSIGNED** | **NOT SET** | Decide whether a destination is required, then assign owner/date. |
 | `slide-insurance` | Slide Insurance | Not mapped to a resource page | Recorded | **UNASSIGNED** | **NOT SET** | Decide whether a destination is required, then assign owner/date. |
-| `crc-tapco` | CRC Tapco | Not mapped to a resource page | Recorded | **UNASSIGNED** | **NOT SET** | Decide whether a destination is required, then assign owner/date. |
+| `crc-tapco` | CRC Tapco | Operating System | Recorded | **UNASSIGNED** | **NOT SET** | Decide whether a destination is required, then assign owner/date. |
 | `mediaalpha` | MediaAlpha | S7 | Recorded | **UNASSIGNED** | **NOT SET** | Assign owner/date; collect and verify the five required deliverables. |
 | `everquote` | EverQuote | S7 | Recorded | **UNASSIGNED** | **NOT SET** | Assign owner/date; collect and verify the five required deliverables. |
 | `quotewizard` | QuoteWizard by LendingTree | S7 | Recorded | **UNASSIGNED** | **NOT SET** | Assign owner/date; collect and verify the five required deliverables. |
@@ -49,10 +49,12 @@ Never infer a resource, offer, representative, or booking destination from a com
 | `smarketingmail` | SmarketingMail | S7 | Recorded | **UNASSIGNED** | **NOT SET** | Assign owner/date; collect and verify the five required deliverables. |
 | `wintrust-agent-finance` | Wintrust Agent Finance | Funding the Build | Recorded | **UNASSIGNED** | **NOT SET** | Assign owner/date; collect and verify the five required deliverables. |
 | `nw-preferred` | NW Preferred Federal Credit Union| Funding the Build| Recorded| **UNASSIGNED** | **NOT SET** | Resource **DELIVERED** — agency-lending one-pager, wired via `formulaResources.ts` (see Release evidence). Offer, booking link, representative roster and public app page remain **UNVERIFIED**. |
-| `ivantage` | Ivantage | Not mapped; no company URL recorded | Missing | **UNASSIGNED** | **NOT SET** | Confirm identity and intended destination before collecting deliverables. |
+| `ivantage` | Ivantage | Operating System | Recorded | **UNASSIGNED** | **NOT SET** | U.S. Ivantage identity corrected; agency engagement map delivered. Remaining deliverables need an owner and verification. |
 | `agencybrain` | AgencyBrain | Sales Sequence, Operating System | Recorded | **UNASSIGNED** | **NOT SET** | Added to `PARTNER_REGISTRY` after this inventory was written; never intaked. Assign owner/date; collect and verify the five required deliverables. |
 | `disruptur` | Disruptur | Not mapped to a resource page | Recorded | **UNASSIGNED** | **NOT SET** | Added to `PARTNER_REGISTRY` after this inventory was written; never intaked. Assign owner/date; collect and verify the five required deliverables. |
 | `elite-travel-hackers` | Elite Travel Hackers | Operating System | Recorded | **UNASSIGNED** | **NOT SET** | Added to `PARTNER_REGISTRY` after this inventory was written; never intaked. Assign owner/date; collect and verify the five required deliverables. |
+
+| `authority-war` | Authority War | S7 | Recorded | **UNASSIGNED** | **NOT SET** | Personal brand worksheet delivered and reviewed. Other deliverables remain unverified. |
 
 ## Release evidence
 
@@ -99,7 +101,7 @@ genuinely exclusive deliverables, that is a separate ask to those four partners.
 not the one linked from an agent-facing card. `bun run formula:handouts:audit` reports orgs
 with more than one upload so the unused file stays visible.
 
-**Not wired:** no other org in the mirror has an upload. The audit lists any that appear later.
+Additional uploads were reviewed and wired on 2026-10-05; see the release evidence below.
 
 ## Keeping this true
 
@@ -129,3 +131,18 @@ skipped.
 description there is nothing to render, so the card holds its not-supplied state until
 someone adds an entry. That is deliberate — it is the last place a human sees the PDF before
 it reaches the public site.
+
+
+### Additional partner handouts (2026-10-05)
+
+Reviewer: Codex. Public Partner Hub PDFs were downloaded, text inspected and rendered pages visually reviewed before titles and descriptions were added. This is a document review, not a physical-device test or approval of every partner deliverable.
+
+| Partner | Selected upload | Reviewed contents | Destination |
+|---|---|---|---|
+| CRC Tapco | Slot 0, handout_0.pdf | Coverage overview and quote/binding contacts | Operating System |
+| Ivantage | Slot 0, handout_0.pdf | U.S. agency engagement territory map and leader contacts | Operating System |
+| DMS | Slot 0, handout_0.pdf | ZipQuote / DMS / ALM graphic | Making It Rain |
+| National General | Slot 0, handout_0.pdf | Commercial Vehicle brochure | Operating System |
+| Authority War | Slot 0, handout_0.pdf | Formula Personal Brand Audit worksheet | Making It Rain |
+
+Ivantage’s commercial consultant map and National General’s additional insured sheet are secondary uploads; the primary selection stays at slot 0. ServiceMaster’s second capabilities brochure remains deliberately excluded from the agent-facing card. Mobile PDF viewing and post-event ownership still require verification. Resource delivery does not establish completed offers, bookings or representative onboarding.
