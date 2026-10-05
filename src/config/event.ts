@@ -190,10 +190,9 @@ export const CONFIG = {
     { name: "SmartFinancial", tier: "Bronze", logoUrl: "/assets/sponsors/smart-financial.png", linkUrl: "https://smartfinancial.com" },
     { name: "SmarketingMail", tier: "Bronze", logoUrl: "/assets/sponsors/smarketing-mail.png", linkUrl: "https://smarketingmail.com" },
     { name: "Quote Nerds", tier: "Bronze", logoUrl: "/assets/sponsors/quote-nerds.png", linkUrl: "https://quotenerds.com" },
-    // The Canadian brokerage, confirmed by Justin 2026-09-09 and again 2026-09-10.
-    // NOT the US Allstate-affiliated Ivantage Select Agency, which is a different
-    // company with no public site — that mix-up is why this tile had no link.
-    { name: "Ivantage", tier: "Bronze", logoUrl: "/assets/sponsors/ivantage.png", linkUrl: "https://www.ivantageinsurance.ca" },
+    // Keep the homepage sponsor destination aligned with the approved U.S.
+    // Ivantage identity used by the Formula resource partner registry.
+    { name: "Ivantage", tier: "Bronze", logoUrl: "/assets/sponsors/ivantage.png", linkUrl: "https://ivantage.my.site.com/IM/login?locale=us" },
     { name: "YPC Media", tier: "Bronze", logoUrl: "/assets/sponsors/ypc-media.png", linkUrl: "https://www.ypcmedia.com" },
     {
       name: "National General",
