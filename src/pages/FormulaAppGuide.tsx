@@ -195,7 +195,7 @@ const FormulaAppGuide = () => {
               </div>
               <div>
                 <h2 className="text-2xl font-bold leading-tight md:text-3xl">The full forum experience in one place—from the profile people meet to the actions you take home.</h2>
-                <p className="mt-5 text-base leading-relaxed text-white/60">Owners and team members use the email assigned to their named attendee seat and complete email verification before a first ticket claim. Approved partner owners and staff use the email connected to their approved partner organization. Everyone creates their own account and never shares another attendee's password.</p>
+                <p className="mt-5 text-base leading-relaxed text-white/60">Owners and team members use the email assigned to their named attendee seat. Approved partner owners and staff use the email connected to their approved partner organization. Everyone creates their own account and never shares another attendee's password.</p>
                 <p className="mt-4 text-base leading-relaxed text-white/60">Set your Formula Focus: six short questions about what you want to understand or be able to do when you leave Orlando. It takes about 5 minutes, you review exactly what's shared, and you can start on your phone and finish on your computer.</p>
                 <p className="mt-4 text-base leading-relaxed text-white/60">Before you arrive, open Ready for Orlando to check your seat, email, role, organization and sign-in, then try a practice scan. Owners can check for unnamed seats, and partners can check their team's access and resource readiness.</p>
               </div>
@@ -228,7 +228,7 @@ const FormulaAppGuide = () => {
 
         <section id="profile" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
           <div className="mx-auto grid max-w-7xl items-start gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-            <SectionTitle number="01" eyebrow="Start With You" title="BUILD A PROFILE WORTH MEETING" copy="Create your account with the correct attendee or approved partner email. Owners and team members complete email verification before a first ticket claim. Then build the profile behind your posts, messages, QR connections, and follow-up." darkText />
+            <SectionTitle number="01" eyebrow="Start With You" title="BUILD A PROFILE WORTH MEETING" copy="Create your account with the correct attendee or approved partner email. Then build the profile behind your posts, messages, QR connections, and follow-up." darkText />
             <div className="brand-block-blue p-6 md:p-8">
               <div className="flex items-start gap-5 border-b border-white/35 pb-7">
                 <div className="relative inline-flex h-20 w-20 shrink-0 items-center justify-center bg-black text-white">
@@ -378,7 +378,7 @@ const FormulaAppGuide = () => {
             <div><div className="eyebrow mb-7">Your First Five Moves</div><h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">ARRIVE READY TO USE THE ROOM</h2></div>
             <ol className="border-t border-white/20">
               {[
-                "Download the Formula App, use your assigned attendee or approved partner email, and complete any required email verification.",
+                "Download the Formula App, use your assigned attendee or approved partner email.",
                 "Complete your profile so every connection has context.",
                 "Open Agenda and favorite the sessions that matter most.",
                 "Use your QR when a conversation is worth continuing.",

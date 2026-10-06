@@ -507,7 +507,7 @@ const AdminFormulaAttendees = () => {
                           {attendee.partnerOrgId && (
                             <div className={`mt-2 text-xs ${attendee.partnerConnectionState === 'needs_attention' ? 'text-red-700' : 'text-black/60'}`}>
                               {attendee.partnerConnectionState === 'connected' ? 'Company account connected'
-                                : attendee.partnerConnectionCode === 'email_verification_required' ? 'Company saved · verify app email'
+                                : attendee.partnerConnectionCode === 'email_verification_required' ? 'Company saved · connection retry needed'
                                 : attendee.partnerConnectionState === 'waiting_for_sign_in' && attendee.partnerConnectionCode === 'waiting_for_account' ? 'Company saved · waiting for sign-in'
                                 : attendee.partnerConnectionCode === 'account_disabled' ? 'Company connection blocked · account disabled'
                                 : attendee.partnerConnectionCode === 'user_in_other_org' ? 'Linked to another company · review in Partner Hub'
@@ -699,7 +699,7 @@ const AdminFormulaAttendees = () => {
 
             <div className="flex items-start gap-3 border border-black/10 bg-white/60 p-4 text-sm leading-6 text-black/60">
               <Link2 className="mt-1 h-4 w-4 shrink-0 text-[#c45120]" />
-              <p>Existing app accounts sync automatically. New accounts connect after sign-in with this email. If account verification is required, the roster will show that next step.</p>
+              <p>Existing app accounts sync automatically. New accounts connect after sign-in with this email. No email-verification step is required.</p>
             </div>
 
             <div className="flex justify-end gap-3 border-t border-black/10 pt-6">

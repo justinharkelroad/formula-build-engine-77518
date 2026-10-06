@@ -103,7 +103,7 @@ function attendeeEmail(name: string | null) {
     </table>
     <div style="margin:0 0 24px;padding:20px 22px;background:#eff6ff;border:1px solid #48b4d1;border-radius:8px">
       <p style="margin:0 0 8px;font-size:16px;font-weight:700">Set up every named attendee</p>
-      <p style="margin:0;font-size:14px;line-height:1.6">Each owner or team member uses the email assigned to their own named attendee seat and creates their own FORMULA account. Verify the email before a first ticket claim. Use the same account credentials in Formula Flow.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6">Each owner or team member uses the email assigned to their own named attendee seat and creates their own FORMULA account. Use the same account credentials in Formula Flow.</p>
     </div>
     <p style="margin:0 0 12px;font-size:16px;line-height:1.6"><strong>Do these next:</strong></p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -138,7 +138,7 @@ Formula Flow: ${FORMULA_FLOW_URL}
 Join the attendee Facebook group: ${FACEBOOK_GROUP_URL}
 Event details: ${WEBSITE_URL}
 
-Each named owner or team attendee uses the email assigned to their own seat and creates their own FORMULA account. Verify the email before a first ticket claim, then use the same account credentials in Formula Flow.
+Each named owner or team attendee uses the email assigned to their own seat and creates their own FORMULA account. Use the same account credentials in Formula Flow.
 
 After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
 
@@ -167,7 +167,7 @@ function partnerEmail(name: string | null, tier: string | null, sessionId: strin
     </div>
     <div style="margin:0 0 24px;padding:20px 22px;background:#eff6ff;border:1px solid #48b4d1;border-radius:8px">
       <p style="margin:0 0 8px;font-size:16px;font-weight:700">Set up your sponsor team</p>
-      <p style="margin:0;font-size:14px;line-height:1.6">Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Complete any verification prompt shown by the app. Do not share the partner owner's password.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6">Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Do not share the partner owner's password.</p>
     </div>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td style="padding:0 0 12px">${button(HOTEL_BOOK_URL, "Reserve your hotel room", "#fa9c27")}</td></tr>
@@ -195,7 +195,7 @@ App setup guide: ${APP_GUIDE_URL}
 Partner Hub setup guide: ${PARTNER_HUB_GUIDE_URL}
 Formula Flow: ${FORMULA_FLOW_URL}
 
-Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Complete any verification prompt shown by the app. Do not share the partner owner's password.
+Approved partner owners and staff use the email connected to their approved partner organization. Each person uses their own FORMULA account and signs in with those same credentials in Formula Flow. Do not share the partner owner's password.
 
 After each session, photograph or upload all three completed Formula workbook pages: the assessment and Mirror scores, the written reflection and discussion, and the Domino through declaration.
 
