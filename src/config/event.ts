@@ -89,6 +89,7 @@ export const CONFIG = {
   // Supporting 2026 sponsors — rendered below the Platinum grid on the homepage.
   // These are deliberately NOT tier: "Platinum"; keep tiers accurate before promoting one.
   LOGO_SPONSORS: [
+    { name: "Team Hired", tier: "Bronze", logoUrl: "/assets/sponsors/team-hired.webp", linkUrl: "https://teamhired.com/" },
     { name: "EverQuote", tier: "Bronze", logoUrl: "/assets/sponsors/everquote.png", linkUrl: "https://www.everquote.com/pro/" },
     {
       name: "Filtered Quotes",
