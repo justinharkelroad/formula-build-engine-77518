@@ -126,16 +126,16 @@ select is(
   public.formula_bridge_link_firebase_identity(
     repeat('b', 64), 'firebase-new-claim', 'new-claim@example.com', false
   ),
-  'email_verification_required',
-  'an unverified new Firebase account cannot claim an eligible ticket email'
+  'linked',
+  'an authenticated new Firebase account claims its assigned seat without inbox verification'
 );
 reset role;
 
 select is(
   (select count(*) from public.formula_auth_identities
     where provider_subject = 'firebase-new-claim'),
-  0::bigint,
-  'blocked first claim creates no Firebase identity'
+  1::bigint,
+  'first claim creates the Firebase identity'
 );
 
 select is(
@@ -144,8 +144,8 @@ select is(
       on registration.id = outbox.event_registration_id
     join public.formula_member_emails email on email.member_id = registration.member_id
    where email.normalized_email = 'new-claim@example.com'),
-  0::bigint,
-  'blocked first claim creates no projection work'
+  1::bigint,
+  'first claim queues event access projection'
 );
 
 select results_eq(
@@ -154,38 +154,38 @@ select results_eq(
       join public.formula_member_emails email on email.member_id = registration.member_id
       join public.formula_entitlements entitlement on entitlement.event_registration_id = registration.id
      where email.normalized_email = 'new-claim@example.com'$$,
-  $$values ('invited'::text, 'unclaimed'::text, 'active'::text)$$,
-  'blocked first claim leaves registration and entitlement states unchanged'
+  $$values ('claimed'::text, 'active'::text, 'active'::text)$$,
+  'first claim activates the named registration'
 );
 
 set local role anon;
 select is(
   public.formula_bridge_link_firebase_identity(
-    repeat('b', 64), 'firebase-no-ticket', 'no-ticket@example.com', true
+    repeat('b', 64), 'firebase-no-ticket', 'no-ticket@example.com', false
   ),
   'not_eligible',
   'a verified member email without an eligible registration cannot create an identity'
 );
 select is(
   public.formula_bridge_link_firebase_identity(
-    repeat('b', 64), 'firebase-suspended', 'suspended@example.com', true
+    repeat('b', 64), 'firebase-suspended', 'suspended@example.com', false
   ),
   'not_eligible',
   'a suspended entitlement cannot be claimed by logging in'
 );
 select is(
   public.formula_bridge_link_firebase_identity(
-    repeat('b', 64), 'firebase-revoked', 'revoked@example.com', true
+    repeat('b', 64), 'firebase-revoked', 'revoked@example.com', false
   ),
   'not_eligible',
   'a revoked entitlement cannot be claimed by logging in'
 );
 select is(
   public.formula_bridge_link_firebase_identity(
-    repeat('b', 64), 'firebase-pending', 'pending@example.com', true
+    repeat('b', 64), 'firebase-pending', 'pending@example.com', false
   ),
   'linked',
-  'an initial pending entitlement activates after a verified claim'
+  'an initial pending entitlement activates without inbox verification'
 );
 reset role;
 
@@ -215,8 +215,8 @@ select is(
   public.formula_bridge_link_firebase_identity(
     repeat('b', 64), 'firebase-new-claim', 'new-claim@example.com', true
   ),
-  'linked',
-  'a verified new Firebase account may claim its eligible ticket email'
+  'existing',
+  'later verification does not create a second identity or claim'
 );
 select is(
   public.formula_bridge_link_firebase_identity(

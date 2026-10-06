@@ -69,8 +69,7 @@ const ThankYouEnhanced = () => {
                 Owners and team members use the email assigned to their named attendee seat.
                 Approved partner owners and staff use the email connected to their approved partner
                 organization. Everyone uses their own account and signs in to the attendee workspace (flow.theformulaforum.com) with the
-                same Formula credentials. Owners and team members complete email verification before
-                a first ticket claim.
+                same Formula credentials. Your assigned seat connects without an email-verification step.
               </p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Button asChild variant="secondary" className="h-auto py-3">
