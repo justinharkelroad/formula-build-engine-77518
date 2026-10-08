@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,24 +10,16 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import SEO from '@/components/SEO';
 import Navigation from '@/components/Navigation';
+import AttendeePasswordReset from '@/components/admin/AttendeePasswordReset';
 
 const AdminAuth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signIn, signUp, user, isAdmin } = useAuth();
+  const { signIn, signUp, user, isAdmin, isLoading: authLoading, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user && isAdmin) {
-      // Sales is the working dashboard. The waitlist is a pre-launch artifact —
-      // its signup form is no longer rendered anywhere on the site — so landing
-      // there first meant opening a dead page instead of the numbers.
-      navigate('/admin/sales');
-    }
-  }, [user, isAdmin, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +68,28 @@ const AdminAuth = () => {
     
     setIsLoading(false);
   };
+
+  if (authLoading) return <div className="min-h-screen bg-background"><Navigation /><p className="container mx-auto px-4 py-16" role="status">Checking administrator access…</p></div>;
+
+  if (user && isAdmin) {
+    return (
+      <div className="min-h-screen bg-background">
+        <SEO title="Account access | Formula Forum 2026" description="Administrator account access tools" noindex />
+        <Navigation />
+        <main className="container mx-auto max-w-3xl space-y-6 px-4 py-12">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div><h1 className="text-3xl font-bold">Account access</h1><p className="mt-2 text-muted-foreground">Help attendees sign in before check-in.</p></div>
+            <Button variant="outline" onClick={() => void signOut()}>Sign out</Button>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button variant="outline" asChild><Link to="/admin/sales">Sales dashboard</Link></Button>
+            <Button variant="outline" asChild><Link to="/admin/formula-attendees">Attendee roster</Link></Button>
+          </div>
+          <AttendeePasswordReset />
+        </main>
+      </div>
+    );
+  }
 
   if (user && !isAdmin) {
     return (

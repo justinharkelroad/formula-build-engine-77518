@@ -33,7 +33,10 @@ jobs:
         run: npm run build
 
       - name: Lint admin pages
-        run: npx eslint src/pages/AdminSales.tsx src/pages/AdminFormulaAttendees.tsx
+        run: npx eslint src/pages/AdminSales.tsx src/pages/AdminFormulaAttendees.tsx src/pages/AdminAuth.tsx src/components/admin/AttendeePasswordReset.tsx src/lib/adminAttendeePassword.ts
+
+      - name: Test attendee password reset client
+        run: npm run test:admin-password
 
       - name: Verify attendee partner SQL contract locally
         run: |
