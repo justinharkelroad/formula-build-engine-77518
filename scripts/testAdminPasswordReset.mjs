@@ -50,3 +50,18 @@ test('roster reset refuses an account belonging to a different attendee registra
 test('roster reset accepts a different sign-in email only when linked to the selected registration', () => {
   assert.doesNotThrow(() => api.requireAttendeeRegistration({ ...account, email: 'alternate@example.com' }, 'registration'));
 });
+
+test('same-name account review suggests only another active connected registration', () => {
+  const selected = { id: 'unlinked', name: 'Jessica Hartline', identityLinked: false, accessState: 'active', registrationState: 'invited' };
+  const linked = { ...selected, id: 'connected', name: ' Jessica  Hartline ', identityLinked: true, registrationState: 'claimed' };
+  const rows = [selected, linked, { ...linked, id: 'revoked', registrationState: 'revoked' },
+    { ...linked, id: 'suspended', registrationState: 'suspended' }, { ...linked, id: 'pending', accessState: 'pending' },
+    { ...linked, id: 'unclaimed', identityLinked: false }, { ...linked, id: 'different-name', name: 'Dylan Hartline' }];
+  assert.deepEqual(api.connectedRegistrationCandidates(selected, rows), [linked]);
+  assert.equal(selected.id, 'unlinked');
+});
+test('reviewing a same-name registration does not allow its account to reset under the original row', () => {
+  const originalId = 'unlinked-registration';
+  assert.throws(() => api.requireAttendeeRegistration(account, originalId), /not linked/);
+  assert.doesNotThrow(() => api.requireAttendeeRegistration(account, account.registrationId));
+});

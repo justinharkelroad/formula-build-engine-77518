@@ -23,6 +23,23 @@ type AccountRequest = { action: 'lookup'; email: string } | {
 
 export const ATTENDEE_PASSWORD_ENDPOINT = 'https://us-central1-the-formula-forum-2026.cloudfunctions.net/adminAttendeePassword';
 
+interface RegistrationMatch {
+  id: string;
+  name: string;
+  identityLinked: boolean;
+  accessState: string;
+  registrationState: string;
+}
+
+/** Review candidates only; matching a name never links or changes an account. */
+export function connectedRegistrationCandidates<T extends RegistrationMatch>(selected: T, registrations: T[]): T[] {
+  const name = selected.name.trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+  if (!name) return [];
+  return registrations.filter(row => row.id !== selected.id && row.identityLinked && row.accessState === 'active'
+    && row.registrationState !== 'revoked' && row.registrationState !== 'suspended'
+    && row.name.trim().replace(/\s+/g, ' ').toLocaleLowerCase() === name);
+}
+
 export function requireAttendeeRegistration(account: AttendeePasswordAccount, registrationId: string): void {
   if (account.registrationId !== registrationId) {
     throw new Error('This app account is not linked to the selected attendee. Check their sign-in email and attendee access before resetting their password.');
