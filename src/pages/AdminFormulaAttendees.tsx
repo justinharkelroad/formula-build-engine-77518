@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   CircleAlert,
   Ellipsis,
+  KeyRound,
   Link2,
   Loader2,
   Pencil,
@@ -17,6 +18,8 @@ import {
 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
+import AttendeePasswordReset from '@/components/admin/AttendeePasswordReset';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -202,6 +205,8 @@ const AdminFormulaAttendees = () => {
   const [form, setForm] = useState<AttendeeFormState>(emptyForm);
   const [revokeTarget, setRevokeTarget] = useState<RosterAttendee | null>(null);
   const [busyRegistrationId, setBusyRegistrationId] = useState<string | null>(null);
+  const [passwordTarget, setPasswordTarget] = useState<RosterAttendee | null>(null);
+  const [passwordBusy, setPasswordBusy] = useState(false);
   const { toast } = useToast();
 
   const loadRoster = useCallback(async (quiet = false) => {
@@ -518,6 +523,13 @@ const AdminFormulaAttendees = () => {
                                 : 'Company saved · syncing account'}
                             </div>
                           )}
+                          {attendee.registrationState !== 'revoked' && attendee.registrationState !== 'suspended' && (
+                            <Button variant="ghost" size="sm" className="mt-2 flex h-auto px-0 py-1 text-[#a3421c] hover:bg-transparent hover:text-[#763013]"
+                              aria-label={`Set temporary password for ${attendee.name}`}
+                              onClick={() => { setPasswordBusy(false); setPasswordTarget(attendee); }}>
+                              <KeyRound className="mr-1.5 h-3.5 w-3.5" /> Set temporary password
+                            </Button>
+                          )}
                         </TableCell>
                         <TableCell>
                           <DropdownMenu>
@@ -560,6 +572,18 @@ const AdminFormulaAttendees = () => {
           </section>
         </section>
       </main>
+
+      <Dialog open={Boolean(passwordTarget)} onOpenChange={(open) => { if (!open && !passwordBusy) setPasswordTarget(null); }}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Set temporary password</DialogTitle>
+            <DialogDescription>For the attendee selected in the roster.</DialogDescription>
+          </DialogHeader>
+          {passwordTarget && <AttendeePasswordReset key={passwordTarget.id}
+            attendee={{ registrationId: passwordTarget.id, name: passwordTarget.name, email: passwordTarget.email }}
+            onBusyChange={setPasswordBusy} />}
+        </DialogContent>
+      </Dialog>
 
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent className="w-full overflow-y-auto border-black/15 bg-[#f8f5ee] text-[#181816] [&>button]:text-[#181816] [&>button]:ring-offset-[#f8f5ee] sm:max-w-xl">

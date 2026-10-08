@@ -23,6 +23,12 @@ type AccountRequest = { action: 'lookup'; email: string } | {
 
 export const ATTENDEE_PASSWORD_ENDPOINT = 'https://us-central1-the-formula-forum-2026.cloudfunctions.net/adminAttendeePassword';
 
+export function requireAttendeeRegistration(account: AttendeePasswordAccount, registrationId: string): void {
+  if (account.registrationId !== registrationId) {
+    throw new Error('This app account is not linked to the selected attendee. Check their sign-in email and attendee access before resetting their password.');
+  }
+}
+
 export async function requestAttendeePassword(
   token: string, body: AccountRequest, fetcher: typeof fetch = fetch,
 ): Promise<AttendeePasswordResult> {

@@ -42,3 +42,11 @@ test('lookup never includes a password', async () => {
 test('an unreadable reset response does not claim the password was unchanged', async () => {
   await assert.rejects(api.requestAttendeePassword('session', request, async () => new Response('Gateway unavailable')), /could not be confirmed/);
 });
+
+test('roster reset refuses an account belonging to a different attendee registration', () => {
+  assert.throws(() => api.requireAttendeeRegistration(account, 'another-registration'), /not linked to the selected attendee/);
+  assert.throws(() => api.requireAttendeeRegistration({ ...account, registrationId: null }, 'registration'), /not linked/);
+});
+test('roster reset accepts a different sign-in email only when linked to the selected registration', () => {
+  assert.doesNotThrow(() => api.requireAttendeeRegistration({ ...account, email: 'alternate@example.com' }, 'registration'));
+});
