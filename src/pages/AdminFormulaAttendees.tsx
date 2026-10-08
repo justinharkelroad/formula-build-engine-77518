@@ -19,6 +19,7 @@ import {
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
 import AttendeePasswordReset from '@/components/admin/AttendeePasswordReset';
+import { connectedRegistrationCandidates } from '@/lib/adminAttendeePassword';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -367,6 +368,7 @@ const AdminFormulaAttendees = () => {
   };
 
   const summary = snapshot?.summary;
+  const relatedRegistrations = passwordTarget ? connectedRegistrationCandidates(passwordTarget, snapshot?.attendees ?? []) : [];
 
   return (
     <>
@@ -525,9 +527,9 @@ const AdminFormulaAttendees = () => {
                           )}
                           {attendee.registrationState !== 'revoked' && attendee.registrationState !== 'suspended' && (
                             <Button variant="ghost" size="sm" className="mt-2 flex h-auto px-0 py-1 text-[#a3421c] hover:bg-transparent hover:text-[#763013]"
-                              aria-label={`Set temporary password for ${attendee.name}`}
+                              aria-label={`${attendee.identityLinked ? 'Set temporary password' : 'Find app account'} for ${attendee.name}`}
                               onClick={() => { setPasswordBusy(false); setPasswordTarget(attendee); }}>
-                              <KeyRound className="mr-1.5 h-3.5 w-3.5" /> Set temporary password
+                              <KeyRound className="mr-1.5 h-3.5 w-3.5" /> {attendee.identityLinked ? 'Set temporary password' : 'Find app account'}
                             </Button>
                           )}
                         </TableCell>
@@ -576,12 +578,16 @@ const AdminFormulaAttendees = () => {
       <Dialog open={Boolean(passwordTarget)} onOpenChange={(open) => { if (!open && !passwordBusy) setPasswordTarget(null); }}>
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
           <DialogHeader>
-            <DialogTitle>Set temporary password</DialogTitle>
+            <DialogTitle>{passwordTarget?.identityLinked ? 'Set temporary password' : 'Find app account'}</DialogTitle>
             <DialogDescription>For the attendee selected in the roster.</DialogDescription>
           </DialogHeader>
           {passwordTarget && <AttendeePasswordReset key={passwordTarget.id}
             attendee={{ registrationId: passwordTarget.id, name: passwordTarget.name, email: passwordTarget.email }}
-            onBusyChange={setPasswordBusy} />}
+            onBusyChange={setPasswordBusy} relatedRegistrations={relatedRegistrations}
+            onReviewRegistration={id => {
+              const target = relatedRegistrations.find(row => row.id === id);
+              if (target && !passwordBusy) setPasswordTarget(target);
+            }} />}
         </DialogContent>
       </Dialog>
 

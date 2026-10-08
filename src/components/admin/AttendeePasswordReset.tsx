@@ -11,6 +11,8 @@ import { requestAttendeePassword, requireAttendeeRegistration, type AttendeePass
 interface AttendeePasswordResetProps {
   attendee: { registrationId: string; name: string; email: string };
   onBusyChange: (busy: boolean) => void;
+  relatedRegistrations: { id: string; name: string; email: string; agencyName: string | null }[];
+  onReviewRegistration: (registrationId: string) => void;
 }
 
 async function token() {
@@ -19,7 +21,7 @@ async function token() {
   return data.session.access_token;
 }
 
-export default function AttendeePasswordReset({ attendee, onBusyChange }: AttendeePasswordResetProps) {
+export default function AttendeePasswordReset({ attendee, onBusyChange, relatedRegistrations, onReviewRegistration }: AttendeePasswordResetProps) {
   const [email, setEmail] = useState(attendee.email);
   const [account, setAccount] = useState<AttendeePasswordAccount | null>(null);
   const [password, setPassword] = useState('');
@@ -85,7 +87,7 @@ export default function AttendeePasswordReset({ attendee, onBusyChange }: Attend
     <Card className="border-0 shadow-none">
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><KeyRound className="h-5 w-5" /> {attendee.name}</CardTitle>
-        <CardDescription>Choose a temporary password at check-in. The attendee does not need to receive a reset email.</CardDescription>
+        <CardDescription>Review the attendee’s app account, then choose a temporary password without a reset email.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {!account && <form onSubmit={lookup} className="space-y-3">
@@ -100,6 +102,20 @@ export default function AttendeePasswordReset({ attendee, onBusyChange }: Attend
           <p className="text-sm text-muted-foreground">{busy ? 'Looking up this attendee’s app account…' : 'If their sign-in email differs, enter it here. It must be linked to this attendee.'}</p>
         </form>}
         {error && <Alert variant="destructive" role="alert"><AlertDescription>{error}</AlertDescription></Alert>}
+        {!account && !busy && error && relatedRegistrations.length > 0 && (
+          <div className="space-y-3 rounded-md border p-4">
+            <p className="font-semibold">Another connected registration has this name</p>
+            <p className="text-sm text-muted-foreground">Review its email and agency. If it is the person you are helping, open that registration to reset their existing account.</p>
+            {relatedRegistrations.map(row => (
+              <Button key={row.id} type="button" variant="outline" className="h-auto w-full justify-start whitespace-normal py-3 text-left"
+                onClick={() => onReviewRegistration(row.id)}>
+                <span className="space-y-1"><span className="block font-semibold">{row.name}</span><span className="block break-all">{row.email}</span>
+                  {row.agencyName && <span className="block text-sm text-muted-foreground">{row.agencyName}</span>}
+                  <span className="block text-sm">Review connected registration →</span></span>
+              </Button>
+            ))}
+          </div>
+        )}
         {success && <Alert role="status"><AlertDescription>{success}</AlertDescription></Alert>}
         {account && (
           <div className="space-y-5 border-t pt-5">
