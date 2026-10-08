@@ -13,7 +13,8 @@
     "formula:handouts:audit": "node scripts/partnerHandoutAudit.mjs",
     "formula:roster:audit": "node scripts/formulaRosterReconciliation.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:admin-password": "node --test scripts/testAdminPasswordReset.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
