@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Eye, EyeOff, KeyRound, Loader2, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -6,10 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { requestAttendeePassword, type AttendeePasswordAccount } from '@/lib/adminAttendeePassword';
+import { requestAttendeePassword, requireAttendeeRegistration, type AttendeePasswordAccount } from '@/lib/adminAttendeePassword';
 
-export default function AttendeePasswordReset() {
-  const [email, setEmail] = useState('');
+interface AttendeePasswordResetProps {
+  attendee: { registrationId: string; name: string; email: string };
+  onBusyChange: (busy: boolean) => void;
+}
+
+async function token() {
+  const { data, error } = await supabase.auth.getSession();
+  if (error || !data.session?.access_token) throw new Error('Sign in again as a website administrator.');
+  return data.session.access_token;
+}
+
+export default function AttendeePasswordReset({ attendee, onBusyChange }: AttendeePasswordResetProps) {
+  const [email, setEmail] = useState(attendee.email);
   const [account, setAccount] = useState<AttendeePasswordAccount | null>(null);
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -18,17 +29,28 @@ export default function AttendeePasswordReset() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const token = async () => {
-    const { data, error } = await supabase.auth.getSession();
-    if (error || !data.session?.access_token) throw new Error('Sign in again as a website administrator.');
-    return data.session.access_token;
-  };
+  useEffect(() => {
+    let active = true;
+    setBusy(true);
+    const load = async () => {
+      try {
+        const result = await requestAttendeePassword(await token(), { action: 'lookup', email: attendee.email });
+        requireAttendeeRegistration(result.account, attendee.registrationId);
+        if (active) setAccount(result.account);
+      } catch (failure) {
+        if (active) setError(failure instanceof Error ? failure.message : 'The account could not be found.');
+      } finally { if (active) setBusy(false); }
+    };
+    void load();
+    return () => { active = false; };
+  }, [attendee.email, attendee.registrationId]);
 
   const lookup = async (event: FormEvent) => {
     event.preventDefault();
     setBusy(true); setAccount(null); setError(''); setSuccess(''); setPassword(''); setConfirmation(''); setShowPassword(false);
     try {
       const result = await requestAttendeePassword(await token(), { action: 'lookup', email: email.trim() });
+      requireAttendeeRegistration(result.account, attendee.registrationId);
       setAccount(result.account);
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'The account could not be found.'); }
     finally { setBusy(false); }
@@ -41,7 +63,9 @@ export default function AttendeePasswordReset() {
     if (password !== confirmation) { setError('The passwords do not match.'); return; }
     if (password.length < 6) { setError('Choose a temporary password with at least 6 characters.'); return; }
     setBusy(true);
+    onBusyChange(true);
     try {
+      requireAttendeeRegistration(account, attendee.registrationId);
       const result = await requestAttendeePassword(await token(), {
         action: 'reset', email: account.email, uid: account.uid, registrationId: account.registrationId,
         password, operationId: crypto.randomUUID(),
@@ -54,17 +78,17 @@ export default function AttendeePasswordReset() {
           : 'The password changed, but the final audit status could not be saved. Contact support to check the reset record.');
       }
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'The password could not be changed.'); }
-    finally { setBusy(false); }
+    finally { setBusy(false); onBusyChange(false); }
   };
 
   return (
-    <Card>
+    <Card className="border-0 shadow-none">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><KeyRound className="h-5 w-5" /> Attendee password reset</CardTitle>
+        <CardTitle className="flex items-center gap-2"><KeyRound className="h-5 w-5" /> {attendee.name}</CardTitle>
         <CardDescription>Choose a temporary password at check-in. The attendee does not need to receive a reset email.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form onSubmit={lookup} className="space-y-3">
+        {!account && <form onSubmit={lookup} className="space-y-3">
           <Label htmlFor="attendee-login-email">Attendee’s sign-in email</Label>
           <div className="flex flex-col gap-2 sm:flex-row">
             <Input id="attendee-login-email" type="email" autoComplete="off" placeholder="attendee@example.com" value={email} required disabled={busy}
@@ -73,8 +97,8 @@ export default function AttendeePasswordReset() {
               {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />} Find account
             </Button>
           </div>
-          <p className="text-sm text-muted-foreground">Use the email they actually use to sign in. It may differ from their registration email.</p>
-        </form>
+          <p className="text-sm text-muted-foreground">{busy ? 'Looking up this attendee’s app account…' : 'If their sign-in email differs, enter it here. It must be linked to this attendee.'}</p>
+        </form>}
         {error && <Alert variant="destructive" role="alert"><AlertDescription>{error}</AlertDescription></Alert>}
         {success && <Alert role="status"><AlertDescription>{success}</AlertDescription></Alert>}
         {account && (
