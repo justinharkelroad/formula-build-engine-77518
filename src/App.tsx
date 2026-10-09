@@ -53,6 +53,8 @@ const PartnerDesk = lazy(() => import("./pages/PartnerDesk"));
 const FormulaAppGuide = lazy(() => import("./pages/FormulaAppGuide"));
 const WhatToExpect = lazy(() => import("./pages/WhatToExpect"));
 const TestimonialStory = lazy(() => import("./pages/TestimonialStory"));
+const AIPortal = lazy(() => import("./pages/AIPortal"));
+const AdminAIPortal = lazy(() => import("./pages/AdminAIPortal"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -90,6 +92,8 @@ const App = () => (
             <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
             {/* Staff floor reference. noindex, linked from nowhere, handed out by URL. */}
             <Route path="/desk" element={<PartnerDesk />} />
+            {/* Attendee AI toolkit. noindex, linked from nowhere; the URL is shown on the closing Zoom call. */}
+            <Route path="/ai-portal" element={<AIPortal />} />
             <Route path="/formula-app-guide" element={<FormulaAppGuide />} />
             <Route path="/what-to-expect" element={<WhatToExpect />} />
             <Route path="/2025partners" element={<Navigate to="/partners" replace />} />
@@ -120,6 +124,11 @@ const App = () => (
             <Route path="/admin/formula-attendees" element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminFormulaAttendees />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/ai-portal" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminAIPortal />
               </ProtectedRoute>
             } />
             <Route path="/partner-welcome/:tier" element={<PartnerWelcome />} />

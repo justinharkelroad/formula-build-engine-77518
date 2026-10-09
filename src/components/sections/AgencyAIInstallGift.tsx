@@ -7,7 +7,7 @@ const includedOutcomes = [
   "A local MY BIZ BRAIN workspace you control",
   "Your voice, preferences, and approval rules",
   "Team, project, and durable-memory context",
-  "Five reusable insurance-agency analysis skills",
+  "Ten reusable agency skills: six report analyzers, four operating workflows",
   "Build guides, starter files, and secure portal access",
 ] as const;
 

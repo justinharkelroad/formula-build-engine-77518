@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,7 @@ const AdminAuth = () => {
   const { signIn, signUp, user, isAdmin, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +72,8 @@ const AdminAuth = () => {
   if (authLoading) return <div className="min-h-screen bg-background"><Navigation /><p className="container mx-auto px-4 py-16" role="status">Checking administrator access…</p></div>;
 
   if (user && isAdmin) {
-    return <Navigate to="/admin/sales" replace />;
+    const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+    return <Navigate to={from?.startsWith("/admin/") && from !== "/admin/auth" ? from : "/admin/sales"} replace />;
   }
 
   if (user && !isAdmin) {

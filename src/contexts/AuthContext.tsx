@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -28,7 +28,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const checkAdminStatus = async (userId: string) => {
+  // Bumped whenever the signed-in user changes, so a slow role check for an
+  // earlier user can never overwrite the answer for the current one.
+  const authGeneration = useRef(0);
+  const roleCheckedFor = useRef<string | null>(null);
+
+  const checkAdminStatus = async (userId: string): Promise<boolean> => {
     try {
       const { data, error } = await supabase
         .from('user_roles' as any)
@@ -36,51 +41,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('user_id', userId)
         .eq('role', 'admin')
         .maybeSingle();
-      
-      if (error) {
-        console.log('user_roles table not found, setting admin to false');
-        setIsAdmin(false);
-        return;
-      }
-      
-      setIsAdmin(!!data);
+      return !error && !!data;
     } catch (error) {
-      setIsAdmin(false);
+      return false;
     }
   };
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          // Check admin status after setting user
-          setTimeout(() => {
-            checkAdminStatus(session.user.id);
-          }, 0);
-        } else {
-          setIsAdmin(false);
-        }
-        
-        setIsLoading(false);
-      }
-    );
-
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Stay "loading" until the admin role is known. Reporting a signed-in user
+    // with isAdmin=false first made ProtectedRoute bounce admins off deep links
+    // on every hard reload.
+    const applySession = (session: Session | null) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        setTimeout(() => {
-          checkAdminStatus(session.user.id);
-        }, 0);
+      const userId = session?.user?.id ?? null;
+      // Token refreshes keep the same user; re-checking would flash the
+      // loading state and unmount whatever admin page is open.
+      if (userId && userId === roleCheckedFor.current) return;
+      roleCheckedFor.current = userId;
+      const generation = ++authGeneration.current;
+      if (!session?.user) {
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
       }
-      
-      setIsLoading(false);
+      setIsLoading(true);
+      // Deferred: awaiting Supabase calls inside onAuthStateChange can deadlock the client.
+      setTimeout(async () => {
+        const admin = await checkAdminStatus(session.user.id);
+        if (generation !== authGeneration.current) return;
+        setIsAdmin(admin);
+        setIsLoading(false);
+      }, 0);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      applySession(session);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      applySession(session);
     });
 
     return () => subscription.unsubscribe();
