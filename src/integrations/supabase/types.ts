@@ -913,6 +913,74 @@ export type Database = {
         }
         Returns: Json
       }
+      formula_ai_portal_admin_approve: {
+        Args: {
+          p_actor_id: string
+          p_email: string
+          p_name: string
+          p_reason: string
+        }
+        Returns: Json
+      }
+      formula_ai_portal_admin_check_email: {
+        Args: { p_email: string }
+        Returns: Json
+      }
+      formula_ai_portal_admin_dismiss_request: {
+        Args: { p_actor_id: string; p_request_id: string }
+        Returns: Json
+      }
+      formula_ai_portal_admin_revoke_approval: {
+        Args: { p_actor_id: string; p_approval_id: string }
+        Returns: Json
+      }
+      formula_ai_portal_admin_set_member_state: {
+        Args: {
+          p_actor_id: string
+          p_member_id: string
+          p_reason: string
+          p_state: string
+        }
+        Returns: Json
+      }
+      formula_ai_portal_admin_set_sign_in: {
+        Args: { p_actor_id: string; p_open: boolean }
+        Returns: Json
+      }
+      formula_ai_portal_admin_snapshot: { Args: never; Returns: Json }
+      formula_ai_portal_enter: {
+        Args: { p_email: string; p_user_id: string }
+        Returns: Json
+      }
+      formula_ai_portal_record_code_send: {
+        Args: { p_request_id: string; p_sent: boolean }
+        Returns: undefined
+      }
+      formula_ai_portal_record_download: {
+        Args: { p_asset_id: string; p_issued: boolean; p_user_id: string }
+        Returns: undefined
+      }
+      formula_ai_portal_record_progress: {
+        Args: { p_content_id: string; p_percent: number; p_user_id: string }
+        Returns: Json
+      }
+      formula_ai_portal_request_access: {
+        Args: {
+          p_client_hash: string
+          p_email: string
+          p_name: string
+          p_note: string
+        }
+        Returns: Json
+      }
+      formula_ai_portal_request_code: {
+        Args: { p_client_hash: string; p_email: string }
+        Returns: Json
+      }
+      formula_ai_portal_set_platform: {
+        Args: { p_platform: string; p_user_id: string }
+        Returns: Json
+      }
       formula_bridge_claim_partner_assignments: {
         Args: { p_batch_size?: number; p_integration_secret: string }
         Returns: Json
