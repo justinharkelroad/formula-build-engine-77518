@@ -70,6 +70,11 @@ const PARTNERS = [
     bestFit: "Your Domino involves producers spending too much time chasing prospects who are not ready to talk.",
     categories: ["work-opportunity-faster", "qualify-nurture"],
   }),
+  partnerFor("team-hired", {
+    helpsWith: "Local and remote producer recruiting, pre-licensing bootcamps and dedicated staff who dial leads and warm-transfer prospects.",
+    bestFit: "Your Domino involves an unfilled producer role, a licensing bottleneck or capacity to work the leads you already have.",
+    categories: ["build-the-sales-system", "work-opportunity-faster"],
+  }),
   partnerFor("leadminer", {
     helpsWith: "Lead nurture, qualification and moving engaged opportunities toward licensed agents.",
     bestFit: "Your Domino involves improving contact rates, nurture or getting producers into more qualified conversations.",
@@ -114,11 +119,11 @@ export const SALES_SEQUENCE: ResourcePageContent = {
     rows: [
       {
         problem: "Recruiting / role clarity / sales structure",
-        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology"],
+        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology", "team-hired"],
       },
       {
         problem: "Accountability / coaching / producer performance",
-        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology"],
+        partnerIds: ["standard", "agencybrain", "agency-toolchest", "performology", "team-hired"],
       },
       {
         problem: "Speed-to-lead / calling / follow-up",

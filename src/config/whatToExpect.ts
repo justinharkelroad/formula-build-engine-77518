@@ -39,14 +39,14 @@ export const ATTENDEE = {
 
   beforeYouLand: {
     eyebrow: "Before you land in Orlando",
-    body: `Your ticket comes with a seat in the Formula app, tied to the email on your registration. Download the app and create your account with that email and a password. The same email and password sign you in at flow.theformulaforum.com. Everything you build at Formula lives in that one account: your workbook sessions, your plans, your 2027 Map, and later your Progress. Your access runs through ${ACCESS_ENDS}.`,
+    body: `Your ticket comes with a seat in the Formula app, tied to the email on your registration. Download the app or open the attendee workspace in a browser and create your account with that email and a password. The same email and password sign you in at flow.theformulaforum.com. Everything you build at Formula lives in that one account: your workbook sessions, your plans, your 2027 Map, and later your Progress. Your access runs through ${ACCESS_ENDS}.`,
   },
 
   inTheRoom: {
     title: "IN THE ROOM: OCTOBER 14 TO 16",
     lead: "Formula is eight working sessions. Five are about your agency. Three are about you. Each one ends with something written in your own hand, not a slide you photographed.",
     howItWorks:
-      "Every session works the same way. You fill in the workbook pages during the session. At the end, you scan the session's code, photograph your three pages, and the app turns your handwriting into a structured plan for that session: your scores, your Domino, and the build behind it — who owns it, how you will measure it, and how often you will check it.",
+      "Every session works the same way. You fill in the workbook pages during the session. At the end, scan the session's code and photograph all three pages, upload photos later, or type the content from all three pages in the attendee workspace in a browser — no camera needed. Review the captured answers to create a structured plan for that session: your scores, your Domino, and the build behind it — who owns it, how you will measure it, and how often you will check it.",
     yours:
       "It's yours within minutes, on your phone and on the web. Personal sessions stay private to you.",
     domino:
@@ -135,7 +135,7 @@ export const PARTNER = {
     title: "FORMULA IS A WORKING ROOM",
     lead: "Three days, October 14 to 16 in Orlando. Agency owners and their teams build their 2027 plan in their own handwriting through eight working sessions.",
     body: [
-      "Every session ends with workbook pages photographed into the Formula app, which turns the handwriting into a structured plan within minutes. Day three assembles the eight decisions — we call them Dominos — into My 2027 Map: a first commitment, a first action, a date, a witness, a signature.",
+      "Every session ends with all three workbook pages captured: photograph them, upload photos later, or type the content from all three pages in the attendee workspace in a browser — no camera needed. Review the captured answers to create a structured plan. Day three assembles the eight decisions — we call them Dominos — into My 2027 Map: a first commitment, a first action, a date, a witness, a signature.",
       `After the event the app opens My Progress: a 30, 60 or 90-day runway with weekly check-ins on every Domino, milestone reviews, and an accountability partner who can see the shared Dominos. Access runs through ${ACCESS_ENDS}.`,
     ],
   },
@@ -195,7 +195,7 @@ export const PARTNER = {
     steps: [
       "Decide who from your company sits in the room, and get them on your organization in the Partner Hub so their seats connect. Choose people who serve agencies daily; the partner pages ask what they see.",
       "Finish your Partners page: logo, banner, one-paragraph description, booth number, booking link, one product video, a handout or two.",
-      "Have each of your people download the Formula app and create their account with the email you registered them under, before they land.",
+      "Have each of your people download the Formula app or open the attendee workspace in a browser and create their account with the email you registered them under, before they land.",
     ],
   },
 } as const;

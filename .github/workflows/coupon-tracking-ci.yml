@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify resource partner mapping
+        run: npm run formula:resources:audit
+
       - name: Build application
         run: npm run build
 

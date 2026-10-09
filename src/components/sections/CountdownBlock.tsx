@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-// Event start — Oct 14, 2026 at 6:00 PM Eastern (EDT, UTC-4)
+// Welcome reception — Oct 14, 2026 at 6:00 PM Eastern (EDT, UTC-4). Check-in opens at 4 PM.
 const EVENT_TARGET = new Date("2026-10-14T18:00:00-04:00");
 
 type Countdown = {
@@ -73,8 +73,8 @@ const CountdownBlock = () => {
           </div>
           <p className={`text-base md:text-lg text-white/85 md:justify-self-end max-w-md reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
             {time.isPast
-              ? "Doors are open at the JW Marriott Bonnet Creek. Let's go."
-              : "Doors open in Orlando. The clock is live. Secure your seat before the next price tier."}
+              ? "The welcome reception has started at the JW Marriott Bonnet Creek."
+              : "Welcome reception starts at 6 p.m. Eastern. Check-in opens at 4 p.m. Secure your seat before the next price tier."}
           </p>
         </div>
 

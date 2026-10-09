@@ -10,7 +10,7 @@ import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 import { WalkthroughCard, WalkthroughPlayer } from "@/components/walkthroughs/Walkthroughs";
 import { walkthroughs, type Walkthrough } from "@/config/walkthroughs";
-import { FORMULA_PARTNER_HUB_WEB_URL } from "@/config/appLinks";
+import { FORMULA_ATTENDEE_WORKSPACE_URL, FORMULA_PARTNER_HUB_WEB_URL } from "@/config/appLinks";
 import { ATTENDEE, PARTNER, SESSIONS, type Block } from "@/config/whatToExpect";
 
 const WHAT_TO_EXPECT_PATH = "/what-to-expect";
@@ -98,6 +98,7 @@ const AttendeeView = ({ onPlay }: { onPlay: (walkthrough: Walkthrough) => void }
       <div className="mx-auto max-w-7xl">
         <Eyebrow dark>{ATTENDEE.beforeYouLand.eyebrow}</Eyebrow>
         <Prose dark>{ATTENDEE.beforeYouLand.body}</Prose>
+        <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="mt-6 inline-flex items-center gap-2 border-b border-black pb-1 text-sm font-black uppercase">Open the attendee workspace <ArrowUpRight className="h-4 w-4" /></a>
       </div>
     </section>
 
@@ -193,6 +194,7 @@ const PartnerView = ({ onPlay }: { onPlay: (walkthrough: Walkthrough) => void })
         <SessionColumns dark />
         <div className="flex flex-col gap-4">
           {PARTNER.workingRoom.body.map((paragraph) => <Prose key={paragraph} dark>{paragraph}</Prose>)}
+          <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="mt-2 inline-flex items-center gap-2 self-start border-b border-black pb-1 text-sm font-black uppercase">Open the attendee workspace <ArrowUpRight className="h-4 w-4" /></a>
         </div>
       </div>
     </section>
