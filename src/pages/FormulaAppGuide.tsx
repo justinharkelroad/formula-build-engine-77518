@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FORMULA_ATTENDEE_WORKSPACE_URL } from "@/config/appLinks";
 import {
   ArrowLeft,
   ArrowRight,
@@ -355,7 +356,7 @@ const FormulaAppGuide = () => {
             <SectionTitle number="06" eyebrow="Bring It Home" title="TURN THE BEST INSIGHT INTO AN INSTALLED ACTION" copy="Build 2027 helps you capture the work, confirm what matters, and leave with a clear plan your team can use after the event." darkText />
             <div className="mt-16 grid border-l border-t border-black/20 md:grid-cols-4">
               {[
-                ["01", Camera, "Capture All Three", "For each session, photograph or upload the scores page, the reflection and discussion page, and the Domino through declaration page."],
+                ["01", Camera, "Capture All Three", "For each session, photograph the scores page, the reflection and discussion page, and the Domino through declaration page. You can upload photos later or type the content from all three pages in a browser — no camera needed."],
                 ["02", Sparkles, "Extract", "Let the app organize the important signal."],
                 ["03", CheckCircle2, "Confirm", "Review and edit before anything is final."],
                 ["04", FileCheck2, "Install", "Create a usable plan, scorecard, or next step."],
@@ -364,6 +365,7 @@ const FormulaAppGuide = () => {
                 return <div key={String(label)} className="relative border-b border-r border-black/20 p-6"><span className="absolute right-5 top-5 text-[10px] font-black text-black/35">{String(number)}</span><FeatureIcon className="h-6 w-6 text-[hsl(var(--secondary))]" /><h3 className="mt-5 text-lg font-black uppercase">{String(label)}</h3><p className="mt-2 text-sm leading-relaxed text-black/55">{String(copy)}</p></div>;
               })}
             </div>
+            <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="mt-8 inline-flex items-center gap-2 border-b border-black pb-1 text-sm font-black uppercase">Open the attendee workspace in your browser <ArrowUpRight className="h-4 w-4" /></a>
             <div className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-4">
               <AppScreenshot src="/assets/formula-app-guide/build.png" alt="Build action pack selection screen" onOpen={openImage} label="CHOOSE" />
               <AppScreenshot src="/assets/formula-app-guide/capture.png" alt="Capture all three completed Formula workbook session pages" onOpen={openImage} label="CAPTURE" />
@@ -378,11 +380,11 @@ const FormulaAppGuide = () => {
             <div><div className="eyebrow mb-7">Your First Five Moves</div><h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">ARRIVE READY TO USE THE ROOM</h2></div>
             <ol className="border-t border-white/20">
               {[
-                "Download the Formula App, use your assigned attendee or approved partner email.",
+                "Download the Formula App or open the attendee workspace in a browser. Create your account with your assigned attendee or approved partner email.",
                 "Complete your profile so every connection has context.",
                 "Open Agenda and favorite the sessions that matter most.",
                 "Use your QR when a conversation is worth continuing.",
-                "After each session, upload all three completed workbook pages so the scores, written reflections, and final commitment stay together.",
+                "After each session, photograph all three completed workbook pages, upload photos later, or type the content from all three pages in the attendee workspace in a browser — no camera needed. Keep the scores, written reflections, and final commitment together.",
               ].map((item, index) => <li key={item} className="grid grid-cols-[3rem_1fr] gap-4 border-b border-white/20 py-5 text-sm leading-relaxed text-white/70"><span className="font-black text-[hsl(var(--secondary))]">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}
             </ol>
           </div>

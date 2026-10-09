@@ -52,6 +52,11 @@ const PARTNERS = [
       "train-the-transfer",
     ],
   }),
+  partnerFor("team-hired", {
+    helpsWith: "State pre-licensing bootcamps, coached study and licensing progress reports for new agency hires.",
+    bestFit: "Your Domino involves getting a new hire licensed and ready for their agency role.",
+    categories: ["build-training-system"],
+  }),
 ];
 
 export const TRAINING: ResourcePageContent = {
@@ -89,6 +94,10 @@ export const TRAINING: ResourcePageContent = {
     headline: "Not sure where to start?",
     lede: "Match the problem in your workbook to the partners built closest to it.",
     rows: [
+      {
+        problem: "A new hire needs a structured path to licensing",
+        partnerIds: ["team-hired"],
+      },
       {
         problem: "New people take too long to become productive",
         partnerIds: ["standard"],

@@ -35,6 +35,7 @@ export const PARTNER_REGISTRY = {
   "filtered-quotes": identity("filtered-quotes", "Filtered Quotes", "filtered-quotes.png", "https://filteredquotes.com/"),
   ricochet360: identity("ricochet360", "Ricochet360", "ricochet360.png", "https://ricochet360.com/"),
   "ask-fetch": identity("ask-fetch", "Ask Fetch", "ask-fetch.png", "https://askfetch.com/"),
+  "team-hired": identity("team-hired", "Team Hired", "team-hired.webp", "https://teamhired.com/"),
   arbeit: identity("arbeit", "Arbeit", "arbeit.png", "https://arbeitsoftware.com/"),
   mav: identity("mav", "Mav", "mav.png", "https://hiremav.com/"),
   leadminer: identity("leadminer", "LeadMiner", "leadminer.png", "https://leadminer.ai/"),

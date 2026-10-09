@@ -2,7 +2,8 @@ export const CONFIG = {
   EVENT_NAME: "Formula Forum 2026",
   BRAND_SHORT: "Formula",
   TAGLINE: "National Insurance Agency Growth Conference",
-  START_DATETIME_ISO: "2026-10-14T09:00:00-04:00",
+  // Event arrival begins with registration/check-in; the welcome reception starts at 6 PM.
+  START_DATETIME_ISO: "2026-10-14T16:00:00-04:00",
   END_DATETIME_ISO: "2026-10-16T17:00:00-04:00",
   CITY: "Orlando",
   STATE: "FL",
