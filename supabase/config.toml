@@ -40,3 +40,16 @@ verify_jwt = false
 # Public checkout-return verifier. It returns only coarse status and no PII.
 [functions.verify-formula-registration]
 verify_jwt = false
+
+# Formula AI portal. Public sign-in returns the same reply for every email and
+# never reveals roster membership; it creates no passwords.
+[functions.formula-ai-portal-signin]
+verify_jwt = false
+
+# Verifies the attendee's token with the auth service and rechecks access in SQL.
+[functions.formula-ai-portal]
+verify_jwt = false
+
+# Performs its own admin-role check before using service-only portal RPCs.
+[functions.formula-ai-portal-admin]
+verify_jwt = false

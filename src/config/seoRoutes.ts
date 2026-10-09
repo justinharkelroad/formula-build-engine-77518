@@ -179,9 +179,16 @@ const SITE_ROUTES: SeoRoute[] = [
     description: "GA4 configuration page",
     noindex: true,
   },
+  {
+    path: "/ai-portal",
+    title: "Formula AI Toolkit | Formula Forum 2026",
+    description: "Private replays, guides, and starter files for Formula 2026 attendees.",
+    noindex: true,
+  },
   { path: "/admin/auth", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/registrations", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/sales", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
+  { path: "/admin/ai-portal", title: "AI Portal | Formula Admin", description: "Administrative access.", noindex: true },
 ];
 
 export const SEO_ROUTES: SeoRoute[] = [

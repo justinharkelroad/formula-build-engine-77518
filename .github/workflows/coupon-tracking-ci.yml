@@ -41,6 +41,12 @@ jobs:
       - name: Test attendee password reset client
         run: npm run test:admin-password
 
+      - name: Lint AI portal pages
+        run: npx eslint src/pages/AIPortal.tsx src/lib/aiPortal.ts src/pages/AdminAIPortal.tsx src/lib/aiPortalAdmin.ts
+
+      - name: Test AI portal clients
+        run: npm run test:ai-portal && npm run test:ai-portal-admin
+
       - name: Verify attendee partner SQL contract locally
         run: |
           npm install --prefix "$RUNNER_TEMP/formula-partner-sql-test" --no-save --package-lock=false @electric-sql/pglite@0.5.8
@@ -75,6 +81,9 @@ jobs:
 
       - name: Type-check Stripe reconciliation
         run: deno check supabase/functions/reconcile-stripe-purchases/index.ts
+
+      - name: Type-check AI portal functions
+        run: deno check supabase/functions/formula-ai-portal-signin/index.ts supabase/functions/formula-ai-portal/index.ts supabase/functions/formula-ai-portal-admin/index.ts
 
       - name: Test coupon response parsing
         run: deno test supabase/functions/_shared/stripe-coupons.test.ts
