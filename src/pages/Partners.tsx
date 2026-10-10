@@ -5,15 +5,13 @@ import BoldHeader from "@/components/BoldHeader";
 import PassDialogHost from "@/components/PassDialogHost";
 import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import PartnerHero from "@/components/sections/PartnerHero";
-import PartnerLevels from "@/components/sections/PartnerLevels";
 import PlatinumSponsors from "@/components/sections/PlatinumSponsors";
 import EventSponsors from "@/components/sections/EventSponsors";
-import PartnerCTA from "@/components/sections/PartnerCTA";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 
 const Partners = () => {
-  const title = "Partner with Formula Forum 2026 | Platinum, Gold, Silver, Bronze";
-  const description = "Become a 2026 Formula Forum partner. Four tiers from $5,000 to $15,000 — stage time, 1-on-1 podcast interviews, booth placement, attendee lead lists, and mobile-app exposure.";
+  const title = "Thank You to Our 2026 Partners | Formula Forum";
+  const description = "Thank you to the partners and sponsors supporting Formula Forum 2026. Meet the companies helping bring our agency community together in Orlando.";
 
   return (
     <PassDialogProvider>
@@ -25,14 +23,8 @@ const Partners = () => {
         <PassDialogHost />
 
         <PartnerHero />
-        <PartnerLevels />
-        {/* Same 2026 sponsor walls the homepage runs — one source of truth in CONFIG,
-            so a roster change lands on both pages at once. Replaced the 2025 partner
-            podcast grid and the name marquee that used to sit here; the roster is
-            shown once, as logos. */}
         <PlatinumSponsors />
         <EventSponsors />
-        <PartnerCTA />
         <GiantTicketFooter />
       </div>
     </PassDialogProvider>

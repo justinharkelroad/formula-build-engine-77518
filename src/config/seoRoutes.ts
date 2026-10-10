@@ -98,9 +98,9 @@ const SITE_ROUTES: SeoRoute[] = [
   },
   {
     path: "/partners",
-    title: "Partner with Formula Forum 2026 | Platinum, Gold, Silver, Bronze",
+    title: "Thank You to Our 2026 Partners | Formula Forum",
     description:
-      "Become a 2026 Formula Forum partner. Four tiers from $5,000 to $15,000 — stage time, 1-on-1 podcast interviews, booth placement, attendee lead lists, and mobile-app exposure.",
+      "Thank you to the partners and sponsors supporting Formula Forum 2026. Meet the companies helping bring our agency community together in Orlando.",
   },
   {
     path: "/gallery",
