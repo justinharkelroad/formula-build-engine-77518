@@ -870,6 +870,10 @@ export type Database = {
     }
     Functions: {
       fix_partner_purchases: { Args: never; Returns: Json }
+      formula_admin_attendance: {
+        Args: { p_actor_id: string; p_request: Json }
+        Returns: Json
+      }
       formula_admin_roster_snapshot: { Args: never; Returns: Json }
       formula_admin_roster_snapshot_with_partners: {
         Args: never
@@ -979,6 +983,16 @@ export type Database = {
       }
       formula_ai_portal_set_platform: {
         Args: { p_platform: string; p_user_id: string }
+        Returns: Json
+      }
+      formula_bridge_attendance: {
+        Args: {
+          p_actor_firebase_uid: string
+          p_email?: string
+          p_firebase_uid?: string
+          p_integration_secret: string
+          p_request: Json
+        }
         Returns: Json
       }
       formula_bridge_claim_partner_assignments: {
