@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { requireAdmin } from "../_shared/admin-auth.ts";
+import { webAttendanceRequest } from "../_shared/formula-attendance-admin.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -52,12 +53,22 @@ serve(async (req) => {
   let body: Record<string, unknown>;
   try {
     body = await req.json();
+    if (!body || typeof body !== "object" || Array.isArray(body)) return json({ error: "Invalid request" }, 400);
   } catch {
     return json({ error: "Invalid request" }, 400);
   }
 
   const action = text(body.action);
   try {
+    if (action && ["attendance-list", "attendance-check-in", "attendance-undo", "attendance-history"].includes(action)) {
+      const { data, error } = await supabase.rpc("formula_admin_attendance", {
+        p_actor_id: authData.user.id,
+        p_request: webAttendanceRequest(action, body),
+      });
+      if (error) throw error;
+      return json(data);
+    }
+
     if (action === "snapshot") {
       const { data, error } = await supabase.rpc("formula_admin_roster_snapshot_with_partners");
       if (error) throw error;

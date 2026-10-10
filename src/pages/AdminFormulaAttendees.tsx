@@ -19,6 +19,7 @@ import {
 import Navigation from '@/components/Navigation';
 import SEO from '@/components/SEO';
 import AttendeePasswordReset from '@/components/admin/AttendeePasswordReset';
+import FormulaAttendanceDesk from '@/components/admin/FormulaAttendanceDesk';
 import { connectedRegistrationCandidates } from '@/lib/adminAttendeePassword';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
@@ -429,6 +430,8 @@ const AdminFormulaAttendees = () => {
               ))}
             </div>
           )}
+
+          <FormulaAttendanceDesk />
 
           <section className="pt-10" aria-labelledby="roster-heading">
             <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
