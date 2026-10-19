@@ -5,6 +5,8 @@
 // the original 2:23 cut minus its first ~18.8s). Vimeo kept the old caption
 // track after the replace, so re-check these by ear on any future re-cut.
 
+import type { Review } from "@/config/reviews";
+
 export const FORMULA_FILM = {
   vimeoId: "1232406913",
   title: "The Formula Opener",
@@ -32,6 +34,8 @@ export interface FormulaChapter {
   /** The line from the film. */
   line: string;
   startSeconds: number;
+  /** An attendee's words that back up the chapter's line. */
+  quote?: Review;
   /** First photo renders large. Use 5 or 3 photos so the grid stays even. All 16:9. */
   photos: ChapterPhoto[];
 }
@@ -48,6 +52,11 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     name: "Access",
     line: "Access to a room most agency owners and team members will never actually set foot inside of.",
     startSeconds: 1,
+    quote: {
+      quote: "Formula Forum is not just another insurance conference. It is more than just that. … I am so thankful to be in a room with the most successful and determined people I know.",
+      name: "Jasmine Talbert",
+      source: "facebook",
+    },
     photos: [
       photo("dsc1380", "Formula hosts pointing at the camera under the stage lights"),
       photo("dsc1086", "The Formula check-in desk welcoming attendees"),
@@ -62,6 +71,11 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     name: "Association",
     line: "By design, we're going to put you face-to-face, eye-to-eye, with other agency owners, team members, and other partners in the space.",
     startSeconds: 18,
+    quote: {
+      quote: "I loved getting an audience with not only my service peers, but agency owners and LSPs as well. I appreciate everyone's vulnerability and openness and think more than anything that's what sets this event apart from others!",
+      name: "Emily Reshkin",
+      source: "facebook",
+    },
     photos: [
       photo("dsc3031", "Owners in a breakout, light-up wristbands on"),
       photo("dsc2962", "Three attendees working through a breakout together"),
@@ -76,6 +90,11 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     name: "Accountability",
     line: "It's not that you won't do it. It's that when you actually begin, you stop.",
     startSeconds: 39,
+    quote: {
+      quote: "It is something else by far bigger and better than just sitting there taking notes. You also build and set actions and goals. Then after, you map and plan. And the last part: accountability and capability.",
+      name: "Jasmine Talbert",
+      source: "facebook",
+    },
     photos: [
       photo("dsc2934", "An owner writing targets into the Formula workbook"),
       photo("dsc2950", "Attendees heads-down on their plans"),
@@ -88,6 +107,11 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     name: "Acceleration",
     line: "We live in a world of AI. Slow is not an option anymore.",
     startSeconds: 65,
+    quote: {
+      quote: "Businesses are moving faster than ever. … As insurance agents we have to realize change is coming. Are you going to keep fighting it or learn how to change with it?",
+      name: "Heather Gallo Ebersole",
+      source: "facebook",
+    },
     photos: [
       photo("dsc2996", "A speaker pointing out into the room on stage"),
       photo("dsc3108", "The Formula stage between sessions"),
@@ -100,6 +124,11 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     name: "Ascension",
     line: "Once we reach that peak, we reach the possibility of discovering a new version of ourselves.",
     startSeconds: 86,
+    quote: {
+      quote: "All I can say is it's life changing. And not just hitting every business goal, but truly feeling like WINNING AT LIFE.",
+      name: "Heather Gallo Ebersole",
+      source: "facebook",
+    },
     photos: [
       photo("dsc1366", "A Formula shirt reading I AM THAT I AM"),
       photo("dsc1862-2", "Attendees together at the welcome reception"),

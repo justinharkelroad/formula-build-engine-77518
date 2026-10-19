@@ -4,11 +4,12 @@ import VimeoModal from "@/components/VimeoModal";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackCTAClick } from "@/hooks/useAnalytics";
 import { FORMULA_FILM, filmPlayerUrl, formatTimestamp, type FormulaChapter } from "@/config/formulaFilm";
+import { REVIEW_SOURCE_LABEL } from "@/config/reviews";
 
 /**
  * One of the five Formula chapters. Opens with the chapter's line from the
- * film, a "hear it" link that plays the film from that moment, and the 2026
- * photos for that idea. Chapter-specific content (sponsors, the call, the AI
+ * film, a "hear it" link that plays the film from that moment, an attendee's
+ * words backing it up, and the 2026 photos for that idea. Chapter-specific content (sponsors, the call, the AI
  * portal) renders after this section on the page.
  */
 const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
@@ -44,9 +45,14 @@ const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
           </div>
 
           <div className={`md:ml-auto md:max-w-3xl reveal-up delay-1 ${v}`}>
-            <blockquote className="text-2xl font-bold leading-snug md:text-3xl">
-              &ldquo;{chapter.line}&rdquo;
-            </blockquote>
+            <figure>
+              <blockquote className="text-2xl font-bold leading-snug md:text-3xl">
+                &ldquo;{chapter.line}&rdquo;
+              </blockquote>
+              <figcaption className="mt-3 text-sm font-semibold text-white/50">
+                Justin Harkelroad · {FORMULA_FILM.title}
+              </figcaption>
+            </figure>
             <button
               type="button"
               onClick={handleHear}
@@ -55,6 +61,23 @@ const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
               <Play className="h-4 w-4 fill-current" aria-hidden="true" />
               Hear it · {formatTimestamp(chapter.startSeconds)}
             </button>
+
+            {chapter.quote && (
+              <figure className="mt-10 border-l-4 border-[hsl(var(--primary))] pl-5 md:pl-7">
+                <div className="text-xs font-bold uppercase tracking-[0.18em] text-[hsl(var(--primary))]">
+                  From the room
+                </div>
+                <blockquote className="mt-3 text-lg leading-relaxed text-white/85 md:text-xl">
+                  &ldquo;{chapter.quote.quote}&rdquo;
+                </blockquote>
+                <figcaption className="mt-3 text-sm">
+                  <span className="font-bold">{chapter.quote.name}</span>
+                  <span className="text-white/50">
+                    {" "}· {chapter.quote.detail ?? "Formula 2026 attendee"} · {REVIEW_SOURCE_LABEL[chapter.quote.source]}
+                  </span>
+                </figcaption>
+              </figure>
+            )}
           </div>
         </div>
 
