@@ -25,9 +25,9 @@ const GiveBackBlurb = () => {
               The room gives back
             </div>
             <h2 className="text-2xl font-black leading-tight md:text-4xl">
-              This room raised{" "}
-              <span className="text-[hsl(var(--primary))]">{DESTINY_RESCUE.NUMBER_TO_BEAT}</span> for
-              Destiny Rescue. In 2026 we beat it.
+              In {DESTINY_RESCUE.EVENT_COUNT_LABEL}, this room has raised{" "}
+              <span className="text-[hsl(var(--primary))]">{DESTINY_RESCUE.TOTAL_RAISED}</span> for
+              Destiny Rescue.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-white/72">
               Formula partners with Destiny Rescue to rescue children from sexual exploitation.

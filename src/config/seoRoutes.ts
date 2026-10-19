@@ -110,9 +110,9 @@ const SITE_ROUTES: SeoRoute[] = [
   },
   {
     path: "/give-back",
-    title: "The Room Gives Back | Formula Forum 2026 x Destiny Rescue",
+    title: "The Room Gives Back | Formula Forum x Destiny Rescue",
     description:
-      "Formula Forum 2026 partners with Destiny Rescue to rescue children from sexual exploitation. This room raised $31,000 in 2025. Give now and help us beat the number in Orlando.",
+      "Formula Forum partners with Destiny Rescue to rescue children from sexual exploitation. In two events the Formula room has raised $52,000+.",
   },
   {
     path: "/contact",

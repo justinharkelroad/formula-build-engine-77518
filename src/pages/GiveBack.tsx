@@ -13,9 +13,8 @@ import { DESTINY_RESCUE } from "@/config/giveBack";
 const STAT_DELAYS = ["delay-1", "delay-2", "delay-3"] as const;
 
 const GiveBack = () => {
-  const title = "The Room Gives Back | Formula Forum 2026 x Destiny Rescue";
-  const description =
-    "Formula Forum 2026 partners with Destiny Rescue to rescue children from sexual exploitation. This room raised $31,000 in 2025. Give now and help us beat the number in Orlando.";
+  const title = "The Room Gives Back | Formula Forum x Destiny Rescue";
+  const description = `Formula Forum partners with Destiny Rescue to rescue children from sexual exploitation. In ${DESTINY_RESCUE.EVENT_COUNT_LABEL} the Formula room has raised ${DESTINY_RESCUE.TOTAL_RAISED}.`;
 
   const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation(0.15);
   const { ref: closerRef, isVisible: closerVisible } = useScrollAnimation(0.15);
@@ -42,22 +41,23 @@ const GiveBack = () => {
             <h1 className="display-bold mb-8 break-words text-[clamp(2.25rem,7vw,5.5rem)] leading-[0.9]">
               {/* Hard breaks match the workbook spread on desktop. Below md they are
                   suppressed so the headline wraps naturally instead of leaving an orphan. */}
-              Last year this room{" "}
+              In {DESTINY_RESCUE.EVENT_COUNT_LABEL}, this room{" "}
               <span className="hidden md:inline">
                 <br />
               </span>
-              raised <span className="text-[hsl(var(--primary))]">$31,000</span>.{" "}
+              has raised{" "}
+              <span className="text-[hsl(var(--primary))]">{DESTINY_RESCUE.TOTAL_RAISED}</span>{" "}
               <span className="hidden md:inline">
                 <br />
               </span>
-              This year we beat it.
+              for Destiny Rescue.
             </h1>
 
             <div className="grid gap-10 md:grid-cols-2 md:gap-12">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-wrap gap-3">
                   <span className="meta-pill meta-pill-solid">DESTINY RESCUE</span>
-                  <span className="meta-pill meta-pill-dot">GIVING OPEN NOW</span>
+                  <span className="meta-pill meta-pill-dot">{DESTINY_RESCUE.TOTAL_RAISED} RAISED</span>
                 </div>
 
                 <div className="mt-4 flex flex-col items-start gap-3 sm:flex-row">
@@ -83,13 +83,29 @@ const GiveBack = () => {
               </div>
 
               <p className="text-lg leading-relaxed text-white/72 md:text-xl" data-speakable="true">
-                Formula 2026 partners with Destiny Rescue because the work in the Formula workbook
-                is not only about what you build. It is about what you are willing to use it for.
+                Formula partners with Destiny Rescue because the work in the Formula workbook is
+                not only about what you build. It is about what you are willing to use it for.
                 Every dollar raised in this room goes to rescue operations, aftercare, and keeping
-                rescued children free. Give what you decide to give, and let us walk out of Orlando
-                past $31,000.
+                rescued children free. Two rooms have now given {DESTINY_RESCUE.TOTAL_RAISED}, and
+                every gift adds to it.
               </p>
             </div>
+
+            {/* Scoreboard — each event, then the running total */}
+            <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl bg-white/12 sm:grid-cols-3 md:mt-16 md:rounded-3xl">
+              {DESTINY_RESCUE.RAISED.map((r) => (
+                <div key={r.year} className="bg-[hsl(0,0%,5%)] p-6 md:p-8">
+                  <dt className="text-xs font-bold uppercase tracking-[0.18em] text-white/55">{r.place}</dt>
+                  <dd className="mt-3 text-4xl font-black leading-none md:text-5xl">{r.amount}</dd>
+                </div>
+              ))}
+              <div className="brand-block-blue rounded-none p-6 md:p-8">
+                <dt className="text-xs font-bold uppercase tracking-[0.18em] text-white/80">
+                  Total, {DESTINY_RESCUE.EVENT_COUNT_LABEL}
+                </dt>
+                <dd className="mt-3 text-4xl font-black leading-none md:text-5xl">{DESTINY_RESCUE.TOTAL_RAISED}</dd>
+              </div>
+            </dl>
           </div>
         </section>
 
@@ -136,7 +152,7 @@ const GiveBack = () => {
                   aria-hidden="true"
                 />
                 <h2 className="max-w-2xl text-3xl font-black leading-tight md:text-5xl lg:text-6xl">
-                  Give. Then <span className="text-[hsl(var(--primary))]">beat the number</span>.
+                  Give. Then <span className="text-[hsl(var(--primary))]">grow the total</span>.
                   <br />
                   One child is worth the whole room.
                 </h2>
@@ -154,11 +170,12 @@ const GiveBack = () => {
 
               <div className="brand-block-blue flex flex-col justify-center p-7 md:p-12">
                 <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/72">
-                  The number to beat
+                  Raised so far
                 </div>
-                <div className="mt-3 text-6xl font-black leading-none md:text-7xl">$31,000</div>
+                <div className="mt-3 text-6xl font-black leading-none md:text-7xl">{DESTINY_RESCUE.TOTAL_RAISED}</div>
                 <p className="mt-5 text-sm leading-relaxed text-white/82">
-                  Raised by the Formula room in 2025. Every gift in 2026 counts toward passing it.
+                  {DESTINY_RESCUE.RAISED.map((r) => `${r.amount} in ${r.year}`).join(" + ")}, across the
+                  first {DESTINY_RESCUE.EVENT_COUNT_LABEL} of Formula Forum.
                 </p>
               </div>
             </div>
