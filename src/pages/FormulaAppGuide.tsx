@@ -7,41 +7,43 @@ import {
   ArrowUpRight,
   Bell,
   BookOpen,
-  CalendarDays,
   Camera,
-  Check,
   CheckCircle2,
-  Target,
+  Download,
   FileCheck2,
   Heart,
   Image as ImageIcon,
   Mail,
-  MessageCircle,
   Play,
-  QrCode,
   Route,
   Smartphone,
   Sparkles,
-  UserRound,
+  Users,
   X,
   Zap,
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import f3Logo from "@/assets/f3-logo.png";
 import { CONFIG } from "@/config/event";
-import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL, FORMULA_ORLANDO_READINESS_URL, FORMULA_FOCUS_URL } from "@/config/appLinks";
+import { FORMULA_IOS_APP_URL as IOS_APP_URL, FORMULA_ANDROID_APP_URL as ANDROID_APP_URL } from "@/config/appLinks";
+import { ACCESS_ENDS } from "@/config/whatToExpect";
+import { REUNION_CALL, getReunionCallPhase } from "@/config/postEvent";
 import { WalkthroughCard, WalkthroughPlayer } from "@/components/walkthroughs/Walkthroughs";
 import { walkthroughs, type Walkthrough } from "@/config/walkthroughs";
+
+// Post-event app page: what a Formula seat keeps doing after Orlando. Every
+// feature claim here mirrors src/config/whatToExpect.ts, which was checked
+// against the shipped app; change both together.
 
 const GUIDE_PATH = "/formula-app-guide";
 
 const featureNav = [
-  ["01", "Profile", "#profile"],
-  ["02", "Schedule", "#plan"],
-  ["03", "Connect", "#connect"],
-  ["04", "Partners", "#partners"],
-  ["05", "Flows", "#flows"],
-  ["06", "Build", "#build"],
+  ["01", "Analyze", "#build"],
+  ["02", "Map", "#map"],
+  ["03", "Progress", "#progress"],
+  ["04", "Accountability", "#accountability"],
+  ["05", "Partners", "#partners"],
+  ["06", "Flows", "#flows"],
 ];
 
 type Screenshot = { src: string; alt: string };
@@ -110,15 +112,38 @@ type SectionTitleProps = {
 };
 
 const SectionTitle = ({ number, eyebrow, title, copy, darkText = false }: SectionTitleProps) => (
-  <div>
+  <div className="min-w-0">
     <div className={`eyebrow mb-6 ${darkText ? "text-black" : "text-white"}`}>{number} — {eyebrow}</div>
-    <h2 className={`display-bold text-[clamp(3rem,9vw,7rem)] ${darkText ? "text-black" : "text-white"}`}>{title}</h2>
+    <h2 className={`display-bold break-words text-[clamp(2.25rem,9vw,7rem)] ${darkText ? "text-black" : "text-white"}`}>{title}</h2>
     <p className={`mt-7 max-w-2xl text-base leading-relaxed md:text-lg ${darkText ? "text-black/65" : "text-white/65"}`}>{copy}</p>
   </div>
 );
 
+type FeatureRow = [typeof Zap, string, string];
+
+const FeatureGrid = ({ items, dark = true, cols = "md:grid-cols-3" }: { items: FeatureRow[]; dark?: boolean; cols?: string }) => (
+  <div className={`mt-16 grid border-l border-t ${dark ? "border-white/20" : "border-black/20"} ${cols}`}>
+    {items.map(([FeatureIcon, label, copy]) => (
+      <div key={label} className={`border-b border-r p-6 ${dark ? "border-white/20" : "border-black/20"}`}>
+        <FeatureIcon className="h-6 w-6 text-[hsl(var(--secondary))]" />
+        <h3 className="mt-5 text-lg font-black uppercase">{label}</h3>
+        <p className={`mt-2 text-sm leading-relaxed ${dark ? "text-white/55" : "text-black/55"}`}>{copy}</p>
+      </div>
+    ))}
+  </div>
+);
+
+// The 30/60/90 runway, drawn rather than screenshotted: there is no shared
+// Progress screenshot, and this shows the structure without faking app UI.
+const RUNWAY = [
+  { day: "Day 30", label: "First milestone review" },
+  { day: "Day 60", label: "Second milestone review" },
+  { day: "Day 90", label: "Final review: did it fall?" },
+];
+
 const FormulaAppGuide = () => {
   const [activeImage, setActiveImage] = useState<Screenshot | null>(null);
+  const callIsOver = getReunionCallPhase() === "past";
 
   useEffect(() => {
     if (!activeImage) return;
@@ -146,11 +171,21 @@ const FormulaAppGuide = () => {
     if (match) setActiveVideo(match);
   }, []);
 
+  const nextMoves = [
+    ...(callIsOver
+      ? []
+      : [`Register for the Formula Reunion Call, ${REUNION_CALL.dateSentence}. We set the plan together and hand out the AI install link.`]),
+    "Missed a capture in the room? Photograph the three workbook pages now, or type them into the attendee workspace in a browser. The app builds that session's plan the same way.",
+    "Open My 2027 Map and name your Main priority: the Domino the others serve.",
+    "Start Progress. Pick a 30, 60 or 90-day runway and a start date. A full 90-day push needs to start by early January.",
+    "Share your Business Dominos with an accountability partner and turn on the weekly nudge.",
+  ];
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-black text-white">
       <SEO
-        title="Welcome to the Formula App | Complete Experience Guide"
-        description="Set up your profile, build your agenda, connect by QR, discover partners, use Formula Flows, and turn event insights into action inside the Formula Forum app."
+        title="The Formula App | Built in the Room, Run Through Q1 2027"
+        description="After Formula Forum, the app turns your workbook pages into AI-built session plans, assembles your 2027 Map, and runs a 30, 60 or 90-day Progress plan with weekly check-ins and an accountability partner."
         path={GUIDE_PATH}
       />
 
@@ -172,35 +207,30 @@ const FormulaAppGuide = () => {
             <div className="hero-orb hero-orb-primary absolute -bottom-56 -right-44 h-[40rem] w-[40rem] animate-flicker-slow opacity-30" />
           </div>
           <div className="relative mx-auto max-w-7xl">
-            <div className="eyebrow mb-8">Formula App Experience — 2026</div>
-            <h1 className="display-bold max-w-7xl text-[clamp(3.7rem,14vw,10.5rem)]">
-              YOUR EVENT.<br /><span className="display-outline">YOUR PEOPLE.</span><br />YOUR NEXT MOVE.
+            <div className="eyebrow mb-8">The Formula App — After Orlando</div>
+            <h1 className="display-bold max-w-7xl text-[clamp(3.4rem,13vw,10rem)]">
+              BUILT IN THE ROOM.<br /><span className="display-outline">RUN IN THE APP.</span>
             </h1>
             <div className="mt-14 grid items-start gap-12 border-t border-white/20 pt-8 md:grid-cols-3 md:gap-12">
               <div className="flex flex-col items-start gap-5">
                 <div className="flex flex-wrap gap-3">
-                  <span className="meta-pill meta-pill-solid">BEFORE</span>
-                  <span className="meta-pill">DURING</span>
-                  <span className="meta-pill">AFTER</span>
+                  <span className="meta-pill meta-pill-solid">AFTER ORLANDO</span>
+                  <span className="meta-pill">Q1 2027</span>
+                  <span className="meta-pill meta-pill-dot">ACCESS THROUGH {ACCESS_ENDS.toUpperCase()}</span>
                 </div>
                 <AppDownloadButtons />
-                <a href={FORMULA_ORLANDO_READINESS_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
-                  Get Ready for Orlando <CheckCircle2 className="h-4 w-4" />
+                <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                  Open the attendee workspace <ArrowUpRight className="h-4 w-4" />
                 </a>
-                <a href={FORMULA_FOCUS_URL} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-3 text-sm font-bold transition hover:bg-white hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
-                  Set Your Formula Focus <Target className="h-4 w-4" />
-                </a>
-                <Link to="/what-to-expect" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white"><BookOpen className="h-4 w-4" />What To Expect At Formula</Link>
                 <a href="#videos" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white"><Play className="h-4 w-4" />Watch The Videos</a>
-                <a href="#profile" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">Start The Walkthrough <ArrowRight className="h-4 w-4" /></a>
+                <a href="#build" className="inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">See How It Works <ArrowRight className="h-4 w-4" /></a>
               </div>
               <div>
-                <h2 className="text-2xl font-bold leading-tight md:text-3xl">The full forum experience in one place—from the profile people meet to the actions you take home.</h2>
-                <p className="mt-5 text-base leading-relaxed text-white/60">Owners and team members use the email assigned to their named attendee seat. Approved partner owners and staff use the email connected to their approved partner organization. Everyone creates their own account and never shares another attendee's password.</p>
-                <p className="mt-4 text-base leading-relaxed text-white/60">Set your Formula Focus: six short questions about what you want to understand or be able to do when you leave Orlando. It takes about 5 minutes, you review exactly what's shared, and you can start on your phone and finish on your computer.</p>
-                <p className="mt-4 text-base leading-relaxed text-white/60">Before you arrive, open Ready for Orlando to check your seat, email, role, organization and sign-in, then try a practice scan. Owners can check for unnamed seats, and partners can check their team's access and resource readiness.</p>
+                <h2 className="text-2xl font-bold leading-tight md:text-3xl">Most conferences end when the room empties. Formula moves into your phone.</h2>
+                <p className="mt-5 text-base leading-relaxed text-white/60">Every seat leaves Orlando with eight session plans built from its own workbook pages, one 2027 Map, and a Progress plan to run through the first quarter of 2027.</p>
+                <p className="mt-4 text-base leading-relaxed text-white/60">Sign in with the email on your seat and the password you created, on your phone or at the attendee workspace in a browser. Everything you built lives in that one account, and your access runs through {ACCESS_ENDS}.</p>
               </div>
-              <AppScreenshot src="/assets/formula-app-guide/today.png" alt="Formula App Today screen with a personalized event plan" onOpen={openImage} label="YOUR HOME BASE" />
+              <AppScreenshot src="/assets/formula-app-guide/artifact.png" alt="A session plan the app built from workbook pages" onOpen={openImage} label="YOUR PLAN" />
             </div>
           </div>
         </section>
@@ -216,112 +246,115 @@ const FormulaAppGuide = () => {
           </div>
         </nav>
 
-        <section id="videos" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
+        <section id="build" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
-            <div className="eyebrow mb-6">Watch The Walkthrough</div>
-            <h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">SEE THE APP IN ACTION</h2>
-            <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">Pick your seat. Each short video walks through the app exactly as you will use it. Demonstrations are recorded with sample data.</p>
-            <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-              {walkthroughs.map((walkthrough) => <WalkthroughCard key={walkthrough.id} walkthrough={walkthrough} onPlay={setActiveVideo} />)}
+            <SectionTitle number="01" eyebrow="Your Pages, Analyzed" title="AI READS YOUR WORKBOOK. YOU GET A PLAN." copy="Photograph the three pages from any session, or type them in a browser. AI reads your scores, your reflection and your Domino, then builds that session's plan: who owns it, how you'll measure it, and how often you'll check it. You review every word before it's final." darkText />
+            <FeatureGrid
+              dark={false}
+              cols="md:grid-cols-4"
+              items={[
+                [Camera, "Capture", "Photograph all three pages, upload photos later, or type them in the attendee workspace. No camera needed."],
+                [Sparkles, "Analyze", "AI pulls out your scores, your reflection and the Domino you declared."],
+                [CheckCircle2, "Confirm", "Review and edit what it read. Nothing is final until you say so."],
+                [FileCheck2, "Install", "Get the session plan your agency can run, with an owner, a measure and a cadence."],
+              ]}
+            />
+            <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="mt-8 inline-flex items-center gap-2 border-b border-black pb-1 text-sm font-black uppercase">Capture a session in your browser <ArrowUpRight className="h-4 w-4" /></a>
+            <div className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <AppScreenshot src="/assets/formula-app-guide/build.png" alt="Choosing which session to build" onOpen={openImage} label="CHOOSE" />
+              <AppScreenshot src="/assets/formula-app-guide/capture.png" alt="Capturing all three completed Formula workbook pages" onOpen={openImage} label="CAPTURE" />
+              <AppScreenshot src="/assets/formula-app-guide/confirm.png" alt="Confirming what AI read from the pages" onOpen={openImage} label="CONFIRM" />
+              <AppScreenshot src="/assets/formula-app-guide/artifact.png" alt="The finished session plan, ready to use" onOpen={openImage} label="USE IT" />
             </div>
           </div>
         </section>
 
-        <section id="profile" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
-          <div className="mx-auto grid max-w-7xl items-start gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-            <SectionTitle number="01" eyebrow="Start With You" title="BUILD A PROFILE WORTH MEETING" copy="Create your account with the correct attendee or approved partner email. Then build the profile behind your posts, messages, QR connections, and follow-up." darkText />
+        <section id="map" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
+          <div className="mx-auto grid max-w-7xl items-start gap-14 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
+            <SectionTitle number="02" eyebrow="Eight Decisions, One Page" title="YOUR 2027 MAP" copy="Each session ends with one Domino: the single decision that knocks over everything behind it. Your Map puts all eight on one page, with your first commitment, your first action, the date it happens by, and the witness who signed it with you." />
             <div className="brand-block-blue p-6 md:p-8">
-              <div className="flex items-start gap-5 border-b border-white/35 pb-7">
-                <div className="relative inline-flex h-20 w-20 shrink-0 items-center justify-center bg-black text-white">
-                  <UserRound className="h-9 w-9" />
-                  <span className="absolute bottom-0 right-0 inline-flex h-7 w-7 items-center justify-center bg-white text-black"><Camera className="h-3.5 w-3.5" /></span>
-                </div>
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-white/60">Profile Setup</p>
-                  <h3 className="mt-2 text-2xl font-black uppercase">Make the first hello easier.</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/75">Open Profile, tap your cover image or Edit Profile, add your details, then tap Save.</p>
-                </div>
-              </div>
-              <div className="mt-2 grid sm:grid-cols-2">
-                {[
-                  ["Photo + cover", "Be recognizable in the room."],
-                  ["Name + job title", "Tell people who they met."],
-                  ["Company + state", "Add useful business context."],
-                  ["Bio + phone", "Make follow-up straightforward."],
-                ].map(([label, copy]) => (
-                  <div key={label} className="border-b border-white/30 py-4 sm:odd:pr-5 sm:even:border-l sm:even:pl-5">
-                    <div className="flex items-center gap-2 font-black uppercase"><Check className="h-4 w-4" />{label}</div>
-                    <p className="mt-2 text-sm text-white/70">{copy}</p>
-                  </div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-white/70">On your Map</p>
+              <ul className="mt-5 divide-y divide-white/30 border-y border-white/30">
+                {["Five Business Dominos", "Three Personal Dominos, private to you", "Your first commitment and first action", "The date, and the witness who signed it"].map((item) => (
+                  <li key={item} className="flex items-start gap-3 py-4 text-sm font-bold"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />{item}</li>
                 ))}
+              </ul>
+              <p className="mt-5 text-sm leading-relaxed text-white/80">The Map is the contract you took home. Everything after Formula is built from it.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="progress" className="scroll-mt-20 border-y border-white/15 px-5 py-20 md:px-12 md:py-28">
+          <div className="mx-auto max-w-7xl">
+            <SectionTitle number="03" eyebrow="Q1 2027" title="PROGRESS: RUN IT, WEEK BY WEEK" copy={`Progress turns your Map into a plan you actually run. Pick a 30, 60 or 90-day runway and a start date. Your Dominos come across from the Map, and the plan lays out week by week. Every plan finishes by ${ACCESS_ENDS}, so a full 90-day push starts by early January and carries you through the first quarter of 2027.`} />
+
+            <div className="mt-14 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+              <div className="rounded-2xl border border-white/15 bg-[hsl(0,0%,5%)] p-6 md:rounded-3xl md:p-10">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-white/50">The 90-day runway</p>
+                <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+                  {RUNWAY.map((step) => (
+                    <li key={step.day} className="border-t-4 border-[hsl(var(--secondary))] pt-4">
+                      <div className="text-3xl font-black md:text-4xl">{step.day}</div>
+                      <div className="mt-2 text-sm text-white/60">{step.label}</div>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-8 text-sm leading-relaxed text-white/60">At each milestone you review every Domino: did it fall, is it standing, do you push on or change the play.</p>
               </div>
-              <div className="mt-6 border-2 border-white p-5">
-                <div className="flex items-start gap-3">
-                  <Heart className="mt-0.5 h-5 w-5 shrink-0" />
-                  <div><p className="font-black uppercase">Add “My Why” if you want to go deeper.</p><p className="mt-1 text-sm leading-relaxed text-white/75">Upload a photo that represents the motivation behind what you are building.</p></div>
+              <div className="rounded-2xl bg-white p-6 text-black md:rounded-3xl md:p-10">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-black/50">Every week, for every Domino</p>
+                <div className="mt-6 grid grid-cols-3 gap-2 text-center text-xs font-black uppercase">
+                  <span className="rounded-full bg-[hsl(var(--secondary))] px-2 py-3 text-white">On track</span>
+                  <span className="rounded-full border border-black/20 px-2 py-3">Behind</span>
+                  <span className="rounded-full border border-black/20 px-2 py-3">Blocked</span>
                 </div>
+                <p className="mt-6 text-sm leading-relaxed text-black/65">One question per Domino. Add your actual number and a private note if you want. A few minutes a week keeps you honest with the version of you that sat in the room.</p>
               </div>
             </div>
+
+            <FeatureGrid
+              items={[
+                [CheckCircle2, "Actions, Not Intentions", "Keep a running list of actions under each Domino. Check-ins record what you actually finished that week."],
+                [Bell, "A Weekly Nudge", "Turn on a reminder for the day and time you choose. It respects quiet hours and never shows your plan."],
+                [Download, "Your Export", "Export the whole plan for your files, or a business-only version to hand your team."],
+              ]}
+            />
+            <p className="mt-7 max-w-3xl text-sm leading-relaxed text-white/45">A 30-day review with two Dominos behind is not failure. It is information the old you never had.</p>
           </div>
         </section>
 
-        <section id="plan" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid items-end gap-12 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
-              <SectionTitle number="02" eyebrow="Own The Day" title="KNOW WHERE TO BE—AND WHY" copy="Today starts with the event banner, then your next action. During Orlando, Now and Next show what is happening in Eastern time. Agenda holds the full schedule and your saved sessions." />
-              <div className="border-t border-white/20">
-                {[
-                  [CalendarDays, "Favorite Sessions", "Build My Schedule before doors open."],
-                  [Sparkles, "Follow The Prompt", "Today surfaces the most useful next move."],
-                  [CheckCircle2, "Check Your Readiness", "Profile and schedule checks are separate from Ready for Orlando. Complete the practice scan there; revisit it from More during the event."],
-                ].map(([Icon, label, copy]) => {
-                  const FeatureIcon = Icon as typeof CalendarDays;
-                  return <div key={String(label)} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/20 py-5"><FeatureIcon className="h-5 w-5 text-[hsl(var(--secondary))]" /><div><p className="font-black uppercase">{String(label)}</p><p className="mt-1 text-sm text-white/55">{String(copy)}</p></div></div>;
-                })}
-              </div>
+        <section id="accountability" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
+          <div className="mx-auto grid max-w-7xl items-start gap-14 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
+            <div className="min-w-0">
+              <SectionTitle number="04" eyebrow="Someone Watching The Dominos" title="ACCOUNTABILITY, BUILT IN" copy="It's not that you won't do it. It's that when you begin, you stop. So pick an accountability partner: any Formula attendee with the app. Share the Business Dominos you choose and they see the commitment, the status, the milestones and that week's actions." darkText />
+              <FeatureGrid
+                dark={false}
+                cols="md:grid-cols-2"
+                items={[
+                  [Users, "Owners See The Team", "A team member can share their Business Dominos with you. Five people sharing is five follow-through plans you can see before the Monday meeting."],
+                  [Heart, "Personal Stays Personal", "Partners never see your Personal Dominos, your private notes, or anything you did not share. Reduce or revoke a share at any time."],
+                ]}
+              />
             </div>
-            <div className="mt-16 grid items-start gap-10 md:grid-cols-2">
-              <AppScreenshot src="/assets/formula-app-guide/today.png" alt="Personalized Today screen" onOpen={openImage} label="TODAY" />
-              <AppScreenshot src="/assets/formula-app-guide/agenda.png" alt="Agenda with full schedule and saved sessions" onOpen={openImage} label="AGENDA" />
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <AppScreenshot src="/assets/formula-app-guide/messages.png" alt="Direct messages with people from the room" onOpen={openImage} label="STAY CLOSE" />
+              <AppScreenshot src="/assets/formula-app-guide/notifications.png" alt="Notifications keeping activity visible" onOpen={openImage} label="STAY CURRENT" />
             </div>
-          </div>
-        </section>
-
-        <section id="connect" className="scroll-mt-20 border-y border-white/15 px-5 py-20 md:px-12 md:py-28">
-          <div className="mx-auto max-w-7xl">
-            <SectionTitle number="03" eyebrow="Make The Room Smaller" title="TURN A GOOD CONVERSATION INTO A REAL CONNECTION" copy="Use Networking / QR when you meet, then keep the conversation moving through the feed, direct messages, and timely notifications." />
-            <div className="mt-16 grid items-start gap-10 lg:grid-cols-3">
-              <AppScreenshot src="/assets/formula-app-guide/networking.png" alt="Networking / QR and lead capture screen" onOpen={openImage} label="CONNECT" />
-              <AppScreenshot src="/assets/formula-app-guide/messages.png" alt="Formula App direct messages screen" onOpen={openImage} label="MESSAGE" />
-              <AppScreenshot src="/assets/formula-app-guide/notifications.png" alt="Formula App notifications screen" onOpen={openImage} label="STAY CURRENT" />
-            </div>
-            <div className="mt-16 grid border-l border-t border-white/20 md:grid-cols-3">
-              {[
-                [QrCode, "Scan Or Show Your QR", "Create a connection while the context is fresh."],
-                [MessageCircle, "Continue One-To-One", "Use direct messages for the useful follow-up."],
-                [Bell, "Catch What Changed", "Notifications keep event updates and activity visible."],
-              ].map(([Icon, label, copy]) => {
-                const FeatureIcon = Icon as typeof QrCode;
-                return <div key={String(label)} className="border-b border-r border-white/20 p-6"><FeatureIcon className="h-6 w-6 text-[hsl(var(--secondary))]" /><h3 className="mt-5 text-lg font-black uppercase">{String(label)}</h3><p className="mt-2 text-sm leading-relaxed text-white/55">{String(copy)}</p></div>;
-              })}
-            </div>
-            <p className="mt-7 max-w-3xl text-sm leading-relaxed text-white/45">The feed also brings together event announcements and attendee posts. Messaging and other event features appear as access opens.</p>
           </div>
         </section>
 
         <section id="partners" className="scroll-mt-20 bg-[hsl(var(--secondary))] px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2 lg:gap-24">
-            <AppScreenshot src="/assets/formula-app-guide/partner-hub.png" alt="Configured Formula Forum Partner Hub" onOpen={openImage} label="PARTNER HUB" />
+            <AppScreenshot src="/assets/formula-app-guide/partner-hub.png" alt="Formula Forum partner directory" onOpen={openImage} label="PARTNERS" />
             <div>
-              <SectionTitle number="04" eyebrow="Meet The Partners" title="FIND THE PEOPLE WHO CAN HELP WITH WHAT COMES NEXT" copy="Open Partners to discover participating companies, find booth details, view offers and handouts, watch product videos, and reach the right contact." />
+              <SectionTitle number="05" eyebrow="Help For What Comes Next" title="THE PARTNERS STAY IN YOUR POCKET" copy="Your Dominos will need tools, people and systems. The Partners directory keeps every company from the room one tap away: what they do, their handouts and product videos, and a booking link to the right contact." />
               <div className="mt-8 border-t border-white/35">
                 {[
-                  "Browse company pages before and during the forum.",
-                  "Use booth, website, email, video, and booking details in one place.",
-                  "Partner accounts use Partner Hub to manage their own organization presence and leads.",
+                  "Match a Domino to the partner built for it.",
+                  "Website, email, video, handouts and booking in one place.",
+                  "Partner teams run their own Formula plans too, from the same room.",
                 ].map((item) => <div key={item} className="flex items-start gap-3 border-b border-white/35 py-4 text-sm leading-relaxed text-white/80"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />{item}</div>)}
               </div>
-              <Link to="/partners/partner-hub-guide" className="mt-7 inline-flex items-center gap-2 border-b border-white pb-1 text-sm font-black uppercase text-white transition hover:text-black">See The Complete Partner Hub Setup Guide <ArrowRight className="h-4 w-4" /></Link>
             </div>
           </div>
         </section>
@@ -329,7 +362,7 @@ const FormulaAppGuide = () => {
         <section id="flows" className="scroll-mt-20 px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
             <div className="grid items-end gap-12 lg:grid-cols-[1fr_0.72fr] lg:gap-20">
-              <SectionTitle number="05" eyebrow="Work The Operator" title="USE THE SPACE BETWEEN SESSIONS" copy="Flows are short guided experiences that help you process what you heard, find clarity, and leave with something more useful than notes." />
+              <SectionTitle number="06" eyebrow="Between Check-Ins" title="FLOWS FOR THE HARD WEEKS" copy="Flows are short guided experiences that help you process what is in front of you, find clarity, and get back to the work. Use them when a Domino stalls, not just when a session ends." />
               <div className="brand-block-blue p-6 md:p-8">
                 <Route className="h-7 w-7" /><p className="mt-5 text-xl font-black uppercase">Resume where you left off.</p><p className="mt-2 text-sm leading-relaxed text-white/75">The hub keeps active and past Flows together so the work stays easy to return to.</p>
               </div>
@@ -338,64 +371,45 @@ const FormulaAppGuide = () => {
               <AppScreenshot src="/assets/formula-app-guide/flows.png" alt="Flows hub with Formula, Bible, and Prayer Flows" onOpen={openImage} label="CHOOSE A FLOW" />
               <AppScreenshot src="/assets/formula-app-guide/formula-flow.png" alt="Guided Formula Flow experience" onOpen={openImage} label="WORK IT THROUGH" />
             </div>
-            <div className="mt-16 grid border-l border-t border-white/20 md:grid-cols-3">
-              {[
-                [Zap, "The Formula Flow", "Work the operator between sessions in about 5–8 minutes."],
+            <FeatureGrid
+              items={[
+                [Zap, "The Formula Flow", "Work the operator in about 5–8 minutes."],
                 [BookOpen, "Bible Flow", "Read the Word and notice what God is showing you."],
                 [Heart, "Prayer Flow", "Bring God in, lay it down, and walk out clearer."],
-              ].map(([Icon, label, copy]) => {
-                const FeatureIcon = Icon as typeof Zap;
-                return <div key={String(label)} className="border-b border-r border-white/20 p-6"><FeatureIcon className="h-6 w-6 text-[hsl(var(--secondary))]" /><h3 className="mt-5 text-xl font-black uppercase">{String(label)}</h3><p className="mt-2 text-sm leading-relaxed text-white/55">{String(copy)}</p></div>;
-              })}
-            </div>
+              ]}
+            />
           </div>
         </section>
 
-        <section id="build" className="scroll-mt-20 bg-[hsl(0,0%,96%)] px-5 py-20 text-black md:px-12 md:py-28">
+        <section id="videos" className="scroll-mt-20 border-t border-white/15 px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto max-w-7xl">
-            <SectionTitle number="06" eyebrow="Bring It Home" title="TURN THE BEST INSIGHT INTO AN INSTALLED ACTION" copy="Build 2027 helps you capture the work, confirm what matters, and leave with a clear plan your team can use after the event." darkText />
-            <div className="mt-16 grid border-l border-t border-black/20 md:grid-cols-4">
-              {[
-                ["01", Camera, "Capture All Three", "For each session, photograph the scores page, the reflection and discussion page, and the Domino through declaration page. You can upload photos later or type the content from all three pages in a browser — no camera needed."],
-                ["02", Sparkles, "Extract", "Let the app organize the important signal."],
-                ["03", CheckCircle2, "Confirm", "Review and edit before anything is final."],
-                ["04", FileCheck2, "Install", "Create a usable plan, scorecard, or next step."],
-              ].map(([number, Icon, label, copy]) => {
-                const FeatureIcon = Icon as typeof Camera;
-                return <div key={String(label)} className="relative border-b border-r border-black/20 p-6"><span className="absolute right-5 top-5 text-[10px] font-black text-black/35">{String(number)}</span><FeatureIcon className="h-6 w-6 text-[hsl(var(--secondary))]" /><h3 className="mt-5 text-lg font-black uppercase">{String(label)}</h3><p className="mt-2 text-sm leading-relaxed text-black/55">{String(copy)}</p></div>;
-              })}
-            </div>
-            <a href={FORMULA_ATTENDEE_WORKSPACE_URL} className="mt-8 inline-flex items-center gap-2 border-b border-black pb-1 text-sm font-black uppercase">Open the attendee workspace in your browser <ArrowUpRight className="h-4 w-4" /></a>
-            <div className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              <AppScreenshot src="/assets/formula-app-guide/build.png" alt="Build action pack selection screen" onOpen={openImage} label="CHOOSE" />
-              <AppScreenshot src="/assets/formula-app-guide/capture.png" alt="Capture all three completed Formula workbook session pages" onOpen={openImage} label="CAPTURE" />
-              <AppScreenshot src="/assets/formula-app-guide/confirm.png" alt="Confirm extracted action details" onOpen={openImage} label="CONFIRM" />
-              <AppScreenshot src="/assets/formula-app-guide/artifact.png" alt="Completed action artifact ready to use" onOpen={openImage} label="USE IT" />
+            <div className="eyebrow mb-6">Watch The Walkthrough</div>
+            <h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">SEE THE APP IN ACTION</h2>
+            <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/65 md:text-lg">Recorded before Orlando with sample data. The capture, confirm and plan steps work the same way today.</p>
+            <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+              {walkthroughs.map((walkthrough) => <WalkthroughCard key={walkthrough.id} walkthrough={walkthrough} onPlay={setActiveVideo} />)}
             </div>
           </div>
         </section>
 
         <section className="px-5 py-20 md:px-12 md:py-28">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-            <div><div className="eyebrow mb-7">Your First Five Moves</div><h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">ARRIVE READY TO USE THE ROOM</h2></div>
+            <div><div className="eyebrow mb-7">Attendees: Your Next Moves</div><h2 className="display-bold text-[clamp(3rem,9vw,7rem)]">PUT THE MAP IN MOTION</h2></div>
             <ol className="border-t border-white/20">
-              {[
-                "Download the Formula App or open the attendee workspace in a browser. Create your account with your assigned attendee or approved partner email.",
-                "Complete your profile so every connection has context.",
-                "Open Agenda and favorite the sessions that matter most.",
-                "Use your QR when a conversation is worth continuing.",
-                "After each session, photograph all three completed workbook pages, upload photos later, or type the content from all three pages in the attendee workspace in a browser — no camera needed. Keep the scores, written reflections, and final commitment together.",
-              ].map((item, index) => <li key={item} className="grid grid-cols-[3rem_1fr] gap-4 border-b border-white/20 py-5 text-sm leading-relaxed text-white/70"><span className="font-black text-[hsl(var(--secondary))]">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}
+              {nextMoves.map((item, index) => <li key={item} className="grid grid-cols-[3rem_1fr] gap-4 border-b border-white/20 py-5 text-sm leading-relaxed text-white/70"><span className="font-black text-[hsl(var(--secondary))]">{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}
             </ol>
           </div>
         </section>
 
         <section className="border-t border-white/15 px-5 pb-32 pt-20 md:px-12 md:pb-36 md:pt-28">
           <div className="mx-auto max-w-7xl">
-            <div className="eyebrow mb-8">Welcome To Formula Forum</div>
-            <h2 className="display-bold max-w-6xl text-[clamp(4rem,14vw,11rem)]">OPEN THE <span className="text-[hsl(var(--secondary))]">APP</span></h2>
+            <div className="eyebrow mb-8">This Is What A Formula Seat Buys</div>
+            <h2 className="display-bold max-w-6xl text-[clamp(3.2rem,11vw,9rem)]">THREE DAYS IN THE ROOM. <span className="text-[hsl(var(--secondary))]">A QUARTER IN MOTION.</span></h2>
             <div className="mt-12 grid gap-8 border-t border-white/20 pt-8 md:grid-cols-2 md:items-end">
-              <p className="max-w-xl text-lg leading-relaxed text-white/65">Set up the app now. When the room opens, you can focus on the people, ideas, and actions that matter.</p>
+              <div>
+                <p className="max-w-xl text-lg leading-relaxed text-white/65">Next year&apos;s room gets the same thing: eight sessions, a plan built from your own pages, and the app to run it after you fly home.</p>
+                <Link to="/" className="mt-6 inline-flex items-center gap-2 text-sm font-black uppercase text-[hsl(var(--secondary))] transition hover:text-white">Watch the Formula Opener <ArrowRight className="h-4 w-4" /></Link>
+              </div>
               <div className="flex flex-col gap-3 md:items-end"><AppDownloadButtons className="md:justify-end" /><a href={`mailto:${CONFIG.ORGANIZER_EMAIL}`} className="inline-flex items-center gap-2 text-sm font-black uppercase text-white/65 transition hover:text-white"><Mail className="h-4 w-4" />Get App Help</a><p className="text-sm text-white/40">{CONFIG.ORGANIZER_EMAIL} · {CONFIG.ORGANIZER_PHONE}</p></div>
             </div>
           </div>
