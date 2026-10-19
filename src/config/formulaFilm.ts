@@ -53,9 +53,9 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     line: "Access to a room most agency owners and team members will never actually set foot inside of.",
     startSeconds: 1,
     quote: {
-      quote: "Formula Forum is not just another insurance conference. It is more than just that. … I am so thankful to be in a room with the most successful and determined people I know.",
-      name: "Jasmine Talbert",
-      source: "facebook",
+      quote: "It was evident you put a lot of hard work into it. I heard multiple people talking about how much they enjoyed it and how much they got out of each session!",
+      name: "Sean O.",
+      source: "text",
     },
     photos: [
       photo("dsc1380", "Formula hosts pointing at the camera under the stage lights"),
@@ -91,7 +91,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     line: "It's not that you won't do it. It's that when you actually begin, you stop.",
     startSeconds: 39,
     quote: {
-      quote: "It is something else by far bigger and better than just sitting there taking notes. You also build and set actions and goals. Then after, you map and plan. And the last part: accountability and capability.",
+      quote: "Formula Forum is not just another insurance conference. … It is something else by far bigger and better than just sitting there taking notes. You also build and set actions and goals. Then after, you map and plan. And the last part: accountability and capability.",
       name: "Jasmine Talbert",
       source: "facebook",
     },
@@ -125,9 +125,9 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     line: "Once we reach that peak, we reach the possibility of discovering a new version of ourselves.",
     startSeconds: 86,
     quote: {
-      quote: "All I can say is it's life changing. And not just hitting every business goal, but truly feeling like WINNING AT LIFE.",
-      name: "Heather Gallo Ebersole",
-      source: "facebook",
+      quote: "This year was better than last year's. And I can't wait for 2027. You are making a huge impact on more people than you realize. Don't stop.",
+      name: "Melissa F.",
+      source: "text",
     },
     photos: [
       photo("dsc1366", "A Formula shirt reading I AM THAT I AM"),

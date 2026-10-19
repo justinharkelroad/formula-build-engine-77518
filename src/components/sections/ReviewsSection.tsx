@@ -32,7 +32,7 @@ const ReviewsSection = () => {
           In their words, after Orlando.
         </h2>
 
-        <div className={`mt-12 columns-1 gap-4 md:columns-2 lg:columns-3 reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
+        <div className={`mt-12 columns-1 gap-4 md:columns-2 ${REVIEWS.length >= 3 ? "lg:columns-3" : ""} reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
           {REVIEWS.map((review) => {
             const body = (
               <>
