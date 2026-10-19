@@ -8,8 +8,7 @@ import { PassDialogProvider } from "@/contexts/PassDialogContext";
 import FilmHero from "@/components/sections/FilmHero";
 import CallStrip from "@/components/sections/CallStrip";
 import FormulaChapterSection from "@/components/sections/FormulaChapterSection";
-import PlatinumSponsors from "@/components/sections/PlatinumSponsors";
-import EventSponsors from "@/components/sections/EventSponsors";
+import HomeSponsors from "@/components/sections/HomeSponsors";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import CountdownBlock from "@/components/sections/CountdownBlock";
 import AIPortalBlock from "@/components/sections/AIPortalBlock";
@@ -79,8 +78,7 @@ const Index = () => {
 
       {/* 01 Access — the room, and the partners who built it */}
       <FormulaChapterSection chapter={chapter("access")} />
-      <PlatinumSponsors />
-      <EventSponsors />
+      <HomeSponsors />
 
       {/* 02 Association — breakouts and the people in them */}
       <FormulaChapterSection chapter={chapter("association")} />
