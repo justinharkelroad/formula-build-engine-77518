@@ -6,12 +6,11 @@ import f3Logo from "@/assets/f3-logo.png";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 
 const navItems = [
-  { label: "about", sectionId: "about", path: "/" },
-  { label: "agenda", sectionId: null, path: "/agenda" },
-  { label: "venue", sectionId: "venue", path: "/" },
+  { label: "the film", sectionId: "film", path: "/" },
   { label: "partners", sectionId: null, path: "/partners" },
-  { label: "app", sectionId: null, path: "/formula-app-guide" },
   { label: "photos", sectionId: null, path: "/gallery" },
+  { label: "app", sectionId: null, path: "/formula-app-guide" },
+  { label: "ai portal", sectionId: null, path: "/ai-portal" },
   { label: "give back", sectionId: null, path: "/give-back" }
 ];
 
@@ -59,13 +58,13 @@ const BoldHeader = () => {
           </button>
 
           {/* Inline nav (desktop) */}
-          <div className="hidden md:flex items-center gap-1 px-2 text-sm text-white/80">
+          <div className="hidden lg:flex items-center gap-1 px-2 text-sm text-white/80">
             {navItems.map((item, i) => (
               <div key={item.label} className="flex items-center gap-1">
                 {i > 0 && <span className="text-white/15">|</span>}
                 <button
                   onClick={() => handleNav(item)}
-                  className="px-3 py-1.5 rounded-full hover:bg-white/10 hover:text-white transition-colors"
+                  className="whitespace-nowrap px-3 py-1.5 rounded-full hover:bg-white/10 hover:text-white transition-colors"
                 >
                   {item.label}
                 </button>

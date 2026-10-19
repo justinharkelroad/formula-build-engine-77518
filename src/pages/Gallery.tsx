@@ -68,8 +68,8 @@ const Gallery = () => {
     <PassDialogProvider>
     <div className="min-h-screen bg-background">
       <SEO
-        title="Photo Gallery | Formula Forum 2025 Highlights"
-        description="Browse photos from Formula Forum 2025: networking events, breakout sessions, speaker presentations, and attendee experiences at JW Marriott Orlando."
+        title="Photo Gallery | Formula Forum 2026 Highlights"
+        description="Browse photos from Formula Forum 2026 in Orlando: check-in, the welcome reception, general sessions, breakouts, and Casino Night at JW Marriott Orlando Bonnet Creek."
         path="/gallery"
       />
       <StructuredData page="general" />

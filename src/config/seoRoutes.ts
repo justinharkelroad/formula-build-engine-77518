@@ -62,21 +62,15 @@ const TESTIMONIAL_ROUTES: SeoRoute[] = TESTIMONIAL_STORIES.map((story) => ({
 const SITE_ROUTES: SeoRoute[] = [
   {
     path: "/",
-    title: "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16",
+    title: "Formula Forum 2026 | That's Formula | The Insurance Agency Growth Conference",
     description:
-      "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek. Eight working sessions and the Formula workbook.",
+      "Formula Forum 2026 brought insurance agency owners and their teams to Orlando, Oct 14-16. Watch the Formula Opener, see the room, and join the Nov 2 reunion call.",
   },
   {
     path: "/agenda",
     title: "Event Agenda | Formula Forum 2026 — Three Days of Agency Growth",
     description:
       "Formula Forum 2026 three-day agenda: Oct 14 welcome reception, Oct 15 full conference day with breakouts, Oct 16 implementation and action planning.",
-  },
-  {
-    path: "/pricing",
-    title: "Ticket Pricing | Formula Forum 2026 — Agency Owner & Team Passes",
-    description:
-      "Formula Forum 2026 tickets: Agency Owner Pass $697, Team Member Pass $397. Includes all sessions, the Formula workbook, meals, and networking events.",
   },
   {
     path: "/format",
@@ -104,9 +98,9 @@ const SITE_ROUTES: SeoRoute[] = [
   },
   {
     path: "/gallery",
-    title: "Photo Gallery | Formula Forum 2025 Highlights",
+    title: "Photo Gallery | Formula Forum 2026 Highlights",
     description:
-      "Browse photos from Formula Forum 2025: networking events, breakout sessions, speaker presentations, and attendee experiences at JW Marriott Orlando.",
+      "Browse photos from Formula Forum 2026 in Orlando: check-in, the welcome reception, general sessions, breakouts, and Casino Night at JW Marriott Orlando Bonnet Creek.",
   },
   {
     path: "/what-to-expect",
