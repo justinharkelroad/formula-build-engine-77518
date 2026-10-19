@@ -1,8 +1,9 @@
 // The Formula Opener film and the five chapters the post-event homepage is
 // built around: Access, Association, Accountability, Acceleration, Ascension.
 //
-// startSeconds are where each idea begins in the film. They come from the
-// film's caption file; re-check them whenever a new cut replaces vimeoId.
+// startSeconds are where each idea begins in the film (2:04 cut, Oct 19 2026:
+// the original 2:23 cut minus its first ~18.8s). Vimeo kept the old caption
+// track after the replace, so re-check these by ear on any future re-cut.
 
 export const FORMULA_FILM = {
   vimeoId: "1232406913",
@@ -46,7 +47,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     number: "01",
     name: "Access",
     line: "Access to a room most agency owners and team members will never actually set foot inside of.",
-    startSeconds: 16,
+    startSeconds: 1,
     photos: [
       photo("dsc1380", "Formula hosts pointing at the camera under the stage lights"),
       photo("dsc1086", "The Formula check-in desk welcoming attendees"),
@@ -60,7 +61,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     number: "02",
     name: "Association",
     line: "By design, we're going to put you face-to-face, eye-to-eye, with other agency owners, team members, and other partners in the space.",
-    startSeconds: 40,
+    startSeconds: 18,
     photos: [
       photo("dsc3031", "Owners in a breakout, light-up wristbands on"),
       photo("dsc2962", "Three attendees working through a breakout together"),
@@ -74,7 +75,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     number: "03",
     name: "Accountability",
     line: "It's not that you won't do it. It's that when you actually begin, you stop.",
-    startSeconds: 58,
+    startSeconds: 39,
     photos: [
       photo("dsc2934", "An owner writing targets into the Formula workbook"),
       photo("dsc2950", "Attendees heads-down on their plans"),
@@ -86,7 +87,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     number: "04",
     name: "Acceleration",
     line: "We live in a world of AI. Slow is not an option anymore.",
-    startSeconds: 84,
+    startSeconds: 65,
     photos: [
       photo("dsc2996", "A speaker pointing out into the room on stage"),
       photo("dsc3108", "The Formula stage between sessions"),
@@ -98,7 +99,7 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
     number: "05",
     name: "Ascension",
     line: "Once we reach that peak, we reach the possibility of discovering a new version of ourselves.",
-    startSeconds: 106,
+    startSeconds: 86,
     photos: [
       photo("dsc1366", "A Formula shirt reading I AM THAT I AM"),
       photo("dsc1862-2", "Attendees together at the welcome reception"),
