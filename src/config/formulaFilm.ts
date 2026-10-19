@@ -25,6 +25,8 @@ export const formatTimestamp = (seconds: number) =>
 export interface ChapterPhoto {
   src: string;
   alt: string;
+  /** Portrait shot: fills a full-height column instead of a 16:9 cell. */
+  tall?: boolean;
 }
 
 export interface FormulaChapter {
@@ -36,13 +38,18 @@ export interface FormulaChapter {
   startSeconds: number;
   /** An attendee's words that back up the chapter's line. */
   quote?: Review;
-  /** First photo renders large. Use 5 or 3 photos so the grid stays even. All 16:9. */
+  /**
+   * First photo renders large (2x2). Then any tall portraits (1 column, 2 rows),
+   * then 16:9 photos stacked two per column. Keep the 16:9 count even so every
+   * column fills.
+   */
   photos: ChapterPhoto[];
 }
 
-const photo = (file: string, alt: string): ChapterPhoto => ({
+const photo = (file: string, alt: string, tall = false): ChapterPhoto => ({
   src: `/assets/formula-2026/home/${file}.jpg`,
   alt,
+  ...(tall ? { tall } : {}),
 });
 
 export const FORMULA_CHAPTERS: FormulaChapter[] = [
@@ -113,9 +120,10 @@ export const FORMULA_CHAPTERS: FormulaChapter[] = [
       source: "facebook",
     },
     photos: [
-      photo("dsc2996", "A speaker pointing out into the room on stage"),
-      photo("dsc3108", "The Formula stage between sessions"),
-      photo("dsc3096", "A speaker on the Formula stage in black and white"),
+      photo("dsc2875", "A conversation on the Formula stage under the hexagon lights"),
+      photo("dsc2858", "Gregg Blanchard heading to the stage in a Purpose over Pressure shirt", true),
+      photo("dsc2949", "Attendees heads-down, putting the session to work in their workbooks"),
+      photo("dsc3159", "The room applauding during a session"),
     ],
   },
   {
