@@ -82,9 +82,8 @@ const Index = () => {
       <PlatinumSponsors />
       <EventSponsors />
 
-      {/* 02 Association — breakouts, and what the room said */}
+      {/* 02 Association — breakouts and the people in them */}
       <FormulaChapterSection chapter={chapter("association")} />
-      <ReviewsSection />
 
       {/* 03 Accountability — the Nov 2 reunion call (#reunion-call) */}
       <FormulaChapterSection chapter={chapter("accountability")} />
@@ -94,8 +93,9 @@ const Index = () => {
       <FormulaChapterSection chapter={chapter("acceleration")} />
       <AIPortalBlock />
 
-      {/* 05 Ascension — giving back and what comes next */}
+      {/* 05 Ascension — what comes next, what the room said, giving back */}
       <FormulaChapterSection chapter={chapter("ascension")} />
+      <ReviewsSection />
       <GiveBackBlurb />
 
       {/* Closing line of the film */}

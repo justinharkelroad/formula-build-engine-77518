@@ -42,7 +42,7 @@ const ReviewsSection = () => {
                 <blockquote className="mt-4 text-lg font-semibold leading-snug">&ldquo;{review.quote}&rdquo;</blockquote>
                 <div className="mt-5 text-sm">
                   <span className="font-bold">{review.name}</span>
-                  {review.detail && <span className="text-black/55"> · {review.detail}</span>}
+                  <span className="text-black/55"> · {review.detail ?? "Formula 2026 attendee"}</span>
                 </div>
                 {review.screenshotSrc && (
                   <div className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-[hsl(var(--secondary))]">
