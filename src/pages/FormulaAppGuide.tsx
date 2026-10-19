@@ -58,18 +58,18 @@ const AppScreenshot = ({ src, alt, onOpen, className = "", label }: AppScreensho
   <button
     type="button"
     onClick={() => onOpen({ src, alt })}
-    className={`group relative mx-auto block w-full max-w-[390px] border border-white/25 bg-black p-2 shadow-[16px_16px_0_hsl(var(--secondary))] transition-transform duration-300 hover:-translate-x-1 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black ${className}`}
+    className={`group relative mx-auto block w-full max-w-[390px] rounded-[2.75rem] border border-white/15 bg-[hsl(0,0%,8%)] p-2.5 shadow-[0_30px_80px_-25px_hsl(var(--secondary)/0.55)] transition-transform duration-300 hover:-translate-y-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-black ${className}`}
     aria-label={`Enlarge: ${alt}`}
   >
     {label && (
-      <span className="absolute left-4 top-4 z-10 bg-[hsl(var(--secondary))] px-3 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white">
+      <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[hsl(var(--secondary))] px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white shadow-lg">
         {label}
       </span>
     )}
-    <div className="aspect-[1206/2512] overflow-hidden bg-black">
+    <div className="aspect-[1206/2512] overflow-hidden rounded-[2.25rem] bg-black">
       <img src={src} alt={alt} className="h-auto w-full -translate-y-[4.15%]" loading="lazy" width="1206" height="2622" />
     </div>
-    <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 bg-black px-3 py-2 text-xs font-bold uppercase text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+    <span className="absolute bottom-6 right-6 inline-flex items-center gap-2 rounded-full bg-black/80 px-3 py-2 text-xs font-bold uppercase text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
       <ImageIcon className="h-3.5 w-3.5" />
       Enlarge
     </span>
@@ -319,6 +319,10 @@ const FormulaAppGuide = () => {
                 [Download, "Your Export", "Export the whole plan for your files, or a business-only version to hand your team."],
               ]}
             />
+            <div className="mt-20 grid items-start gap-12 sm:grid-cols-2">
+              <AppScreenshot src="/assets/formula-app-guide/progress-dashboard.png" alt="My Progress: a 90-day plan from Jan 1 to Apr 1, 2027 with the week's action and check-in" onOpen={openImage} label="MY PROGRESS" />
+              <AppScreenshot src="/assets/formula-app-guide/progress-review.png" alt="A day-30 milestone review for The Sales Sequence" onOpen={openImage} label="DAY 30 REVIEW" />
+            </div>
             <p className="mt-7 max-w-3xl text-sm leading-relaxed text-white/45">A 30-day review with two Dominos behind is not failure. It is information the old you never had.</p>
           </div>
         </section>
@@ -336,9 +340,8 @@ const FormulaAppGuide = () => {
                 ]}
               />
             </div>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              <AppScreenshot src="/assets/formula-app-guide/messages.png" alt="Direct messages with people from the room" onOpen={openImage} label="STAY CLOSE" />
-              <AppScreenshot src="/assets/formula-app-guide/notifications.png" alt="Notifications keeping activity visible" onOpen={openImage} label="STAY CURRENT" />
+            <div className="lg:pt-6">
+              <AppScreenshot src="/assets/formula-app-guide/progress-share.png" alt="Choosing which Business Dominos to share with an accountability partner, with a preview of exactly what they will see" onOpen={openImage} label="YOU CHOOSE WHAT THEY SEE" />
             </div>
           </div>
         </section>
@@ -367,9 +370,8 @@ const FormulaAppGuide = () => {
                 <Route className="h-7 w-7" /><p className="mt-5 text-xl font-black uppercase">Resume where you left off.</p><p className="mt-2 text-sm leading-relaxed text-white/75">The hub keeps active and past Flows together so the work stays easy to return to.</p>
               </div>
             </div>
-            <div className="mt-16 grid items-start gap-10 lg:grid-cols-2">
-              <AppScreenshot src="/assets/formula-app-guide/flows.png" alt="Flows hub with Formula, Bible, and Prayer Flows" onOpen={openImage} label="CHOOSE A FLOW" />
-              <AppScreenshot src="/assets/formula-app-guide/formula-flow.png" alt="Guided Formula Flow experience" onOpen={openImage} label="WORK IT THROUGH" />
+            <div className="mt-16">
+              <AppScreenshot src="/assets/formula-app-guide/flows.png" alt="Flows hub with the Formula, Bible and Prayer Flows" onOpen={openImage} label="CHOOSE A FLOW" />
             </div>
             <FeatureGrid
               items={[
@@ -425,7 +427,7 @@ const FormulaAppGuide = () => {
       {activeImage && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/95 p-4" role="dialog" aria-modal="true" aria-label={activeImage.alt} onMouseDown={(event) => { if (event.target === event.currentTarget) setActiveImage(null); }}>
           <button type="button" onClick={() => setActiveImage(null)} className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-black text-white transition hover:bg-white hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Close enlarged screenshot" autoFocus><X className="h-5 w-5" /></button>
-          <div className="aspect-[1206/2512] w-[min(92vw,430px)] overflow-hidden border border-white/25 bg-black shadow-[18px_18px_0_hsl(var(--secondary))]"><img src={activeImage.src} alt={activeImage.alt} className="h-auto w-full -translate-y-[4.15%]" /></div>
+          <div className="aspect-[1206/2512] w-[min(92vw,430px)] overflow-hidden rounded-[2.5rem] border border-white/15 bg-black shadow-[0_40px_100px_-30px_hsl(var(--secondary)/0.6)]"><img src={activeImage.src} alt={activeImage.alt} className="h-auto w-full -translate-y-[4.15%]" /></div>
         </div>
       )}
     </div>
