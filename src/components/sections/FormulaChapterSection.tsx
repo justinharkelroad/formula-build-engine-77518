@@ -12,10 +12,22 @@ import { REVIEW_SOURCE_LABEL } from "@/config/reviews";
  * words backing it up, and the 2026 photos for that idea. Chapter-specific content (sponsors, the call, the AI
  * portal) renders after this section on the page.
  */
+// Literal class names so Tailwind keeps them in the build.
+const GRID_COLS: Record<number, string> = {
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+  4: "md:grid-cols-4",
+  5: "md:grid-cols-5",
+};
+
 const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
   const { ref, isVisible } = useScrollAnimation(0.08);
   const [open, setOpen] = useState(false);
   const [lead, ...rest] = chapter.photos;
+  const tall = rest.filter((p) => p.tall);
+  const wide = rest.filter((p) => !p.tall);
+  // Lead takes two columns, each tall portrait one, 16:9 photos stack two per column.
+  const gridColumns = 2 + tall.length + Math.ceil(wide.length / 2);
   const v = isVisible ? "is-visible" : "";
 
   const handleHear = () => {
@@ -83,7 +95,7 @@ const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
 
         {lead && (
           <div
-            className={`mt-12 grid grid-cols-2 gap-3 md:mt-16 md:gap-4 ${rest.length >= 4 ? "md:grid-cols-4" : "md:grid-cols-3"} reveal-up delay-2 ${v}`}
+            className={`mt-12 grid grid-cols-2 gap-3 md:mt-16 md:gap-4 ${GRID_COLS[gridColumns] ?? "md:grid-cols-4"} reveal-up delay-2 ${v}`}
           >
             <figure className={`col-span-2 overflow-hidden rounded-2xl md:rounded-3xl ${rest.length > 0 ? "md:row-span-2" : ""}`}>
               <img
@@ -96,7 +108,21 @@ const FormulaChapterSection = ({ chapter }: { chapter: FormulaChapter }) => {
                 className={`aspect-video h-full w-full object-cover ${rest.length > 0 ? "md:aspect-auto" : ""}`}
               />
             </figure>
-            {rest.map((p) => (
+            {tall.map((p) => (
+              <figure key={p.src} className="row-span-2 overflow-hidden rounded-xl md:rounded-2xl">
+                <img
+                  src={p.src}
+                  alt={p.alt}
+                  width={1125}
+                  height={2000}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ objectPosition: "50% 30%" }}
+                  className="h-full w-full object-cover"
+                />
+              </figure>
+            ))}
+            {wide.map((p) => (
               <figure key={p.src} className="overflow-hidden rounded-xl md:rounded-2xl">
                 <img
                   src={p.src}
