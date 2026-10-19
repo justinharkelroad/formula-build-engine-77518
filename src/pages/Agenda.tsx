@@ -94,7 +94,7 @@ const AgendaCloser = () => {
           onClick={() => open("earlyBird")}
           className={`mt-10 inline-flex items-center gap-3 bg-[hsl(var(--secondary))] text-white px-8 py-5 rounded-full text-base md:text-lg font-bold uppercase tracking-widest hover:opacity-90 transition-opacity reveal-up delay-2 ${v}`}
         >
-          Claim your seat →
+          See what&apos;s next →
         </button>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { getPostEventCtaLabel } from "@/config/postEvent";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ArrowUpRight } from "lucide-react";
@@ -83,7 +84,7 @@ const BoldHeader = () => {
         </nav>
       </header>
 
-      {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
+      {/* Post-event: former ticket CTA, now opens the call / AI portal dialog. */}
       <button
         onClick={() => openPassDialog("earlyBird")}
         className="fixed top-6 right-6 z-40 inline-flex items-center gap-2
@@ -91,7 +92,7 @@ const BoldHeader = () => {
           hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors
           shadow-lg shadow-black/40"
       >
-        BUY TICKET
+        {getPostEventCtaLabel()}
         <ArrowUpRight className="w-4 h-4" />
       </button>
 
@@ -122,7 +123,7 @@ const BoldHeader = () => {
                 }}
                 className="mt-6 inline-flex items-center justify-center gap-2 bg-white text-black px-5 py-3 rounded-full font-semibold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors"
               >
-                BUY TICKET
+                {getPostEventCtaLabel()}
                 <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>

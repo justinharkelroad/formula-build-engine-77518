@@ -1,3 +1,4 @@
+import { getPostEventCtaLabel } from "@/config/postEvent";
 import { CONFIG } from "@/config/event";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -12,14 +13,14 @@ const GiantTicketFooter = () => {
       <WaveDivider position="top" fill="hsl(var(--secondary) / 0.18)" speed="slow" className="absolute top-0 left-0" />
 
       <div className="container mx-auto max-w-7xl">
-        {/* Massive BUY TICKET CTA */}
+        {/* Giant CTA — opens the post-event dialog (call / AI portal) */}
         <button
           onClick={() => open("earlyBird")}
           className={`block group cursor-pointer text-left w-full reveal-up ${isVisible ? "is-visible" : ""}`}
         >
           <h2 className="display-bold text-[clamp(2.5rem,16vw,13rem)] md:text-[16vw] lg:text-[14vw] leading-[0.85] flex items-baseline gap-2 md:gap-4 flex-wrap">
             <span className="text-[hsl(var(--secondary))] animate-sun inline-block">●</span>
-            <span className="group-hover:text-[hsl(var(--secondary))] transition-colors">BUY TICKET</span>
+            <span className="group-hover:text-[hsl(var(--secondary))] transition-colors">{getPostEventCtaLabel()}</span>
           </h2>
         </button>
 

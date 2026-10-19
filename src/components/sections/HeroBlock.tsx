@@ -1,3 +1,4 @@
+import { getPostEventCtaLabel } from "@/config/postEvent";
 import { ArrowUpRight } from "lucide-react";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -46,7 +47,7 @@ const HeroBlock = () => {
           <div className="flex flex-col gap-4 order-1 md:col-span-1">
             <div className={`flex flex-wrap gap-3 reveal-up delay-1 ${isVisible ? "is-visible" : ""}`}>
               <span className="meta-pill">OCT 14-16</span>
-              <span className="meta-pill meta-pill-dot">TICKETS ACTIVE</span>
+              <span className="meta-pill meta-pill-dot">THAT&apos;S A WRAP</span>
               <span className="meta-pill">2026</span>
             </div>
             <div className={`flex flex-wrap gap-3 reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
@@ -54,12 +55,12 @@ const HeroBlock = () => {
               <span className="meta-pill">JW MARRIOTT BONNET CREEK</span>
             </div>
 
-            {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
+            {/* Post-event: former ticket CTA, now opens the call / AI portal dialog. */}
             <button
               onClick={() => open("earlyBird")}
               className={`mt-4 self-start inline-flex items-center gap-2 bg-white text-black px-7 py-4 rounded-radius-pill font-bold hover:bg-[hsl(var(--secondary))] hover:text-white transition-colors shadow-lg shadow-black/40 reveal-up delay-3 ${isVisible ? "is-visible" : ""}`}
             >
-              BUY TICKET
+              {getPostEventCtaLabel()}
               <ArrowUpRight className="w-4 h-4" />
             </button>
           </div>

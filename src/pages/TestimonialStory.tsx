@@ -92,7 +92,7 @@ const StoryContent = ({ story }: { story: TestimonialStoryData }) => {
                   onClick={handleAccessPassClick}
                   className="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-bold text-black shadow-lg shadow-black/40 transition-colors hover:bg-[hsl(var(--secondary))] hover:text-white"
                 >
-                  GRAB YOUR ACCESS PASS
+                  SEE WHAT&apos;S NEXT
                   <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>
@@ -164,7 +164,7 @@ const StoryContent = ({ story }: { story: TestimonialStoryData }) => {
                   onClick={handleAccessPassClick}
                   className="mt-2 inline-flex self-start items-center gap-2 rounded-full bg-black px-7 py-4 font-bold text-white transition-colors hover:bg-[hsl(var(--secondary))]"
                 >
-                  SEE ACCESS PASS OPTIONS
+                  SEE WHAT&apos;S NEXT
                   <ArrowUpRight className="h-4 w-4" />
                 </button>
               </div>

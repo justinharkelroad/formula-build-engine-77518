@@ -101,7 +101,7 @@ const SessionModal = ({ session, onClose }: SessionModalProps) => {
               className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold uppercase tracking-widest text-white hover:opacity-90 transition-opacity"
               style={{ background: color }}
             >
-              Claim your seat →
+              See what&apos;s next →
             </button>
           </div>
         </div>
