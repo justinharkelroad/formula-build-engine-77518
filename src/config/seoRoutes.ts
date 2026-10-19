@@ -173,6 +173,21 @@ const SITE_ROUTES: SeoRoute[] = [
     description: "GA4 configuration page",
     noindex: true,
   },
+  // Keep these two in sync with the <SEO> props on their pages. Without an
+  // entry here a page is not prerendered, and link-preview bots (which do not
+  // run JavaScript) get the homepage's title and description instead.
+  {
+    path: "/formula-app-guide",
+    title: "The Formula App | Built in the Room, Run Through Q1 2027",
+    description:
+      "After Formula Forum, the app turns your workbook pages into AI-built session plans, assembles your 2027 Map, and runs a 30, 60 or 90-day Progress plan with weekly check-ins and an accountability partner.",
+  },
+  {
+    path: "/partners/partner-hub-guide",
+    title: "Create Your Formula Forum Partner Hub | Partner Walkthrough",
+    description:
+      "Build your Formula Forum Partner Hub on your computer or in the Formula App. Step-by-step walkthrough for your logo, banner, company details, video, booking link, and event offer.",
+  },
   {
     path: "/ai-portal",
     title: "Formula AI Toolkit | Formula Forum 2026",
