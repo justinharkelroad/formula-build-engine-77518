@@ -7,6 +7,8 @@ export const REUNION_CALL = {
   // Treat the call as live for an hour before flipping to the "it happened" copy.
   durationMinutes: 60,
   dateLabel: "MON, NOV 2 · 11\u00a0AM\u00a0ET",
+  /** Sentence-case date for body copy. */
+  dateSentence: "Monday, Nov 2 at 11\u00a0AM Eastern",
   registerUrl: "https://us06web.zoom.us/meeting/register/XEequJmATfmp2V36WUmokg",
 } as const;
 

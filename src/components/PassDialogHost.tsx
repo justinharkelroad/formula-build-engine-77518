@@ -76,18 +76,27 @@ const PassDialogHost = () => {
             </button>
           )}
 
-          <button
-            onClick={handlePortal}
-            className="group w-full text-left brand-block-blue p-6 mb-6 hover:brightness-110 transition-all"
-          >
-            <div className="flex items-baseline justify-between mb-2">
-              <span className="font-bold text-lg">Attendees: open the AI portal</span>
+          {callIsOver ? (
+            <button
+              onClick={handlePortal}
+              className="group w-full text-left brand-block-blue p-6 mb-6 hover:brightness-110 transition-all"
+            >
+              <div className="flex items-baseline justify-between mb-2">
+                <span className="font-bold text-lg">Attendees: open the AI portal</span>
+              </div>
+              <div className="flex items-center justify-between text-sm opacity-90">
+                <span>Sign in with your email to reach your Agency AI Install build</span>
+                <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          ) : (
+            <div className="brand-block-blue p-6 mb-6">
+              <div className="font-bold text-lg mb-2">Attendees: your AI build unlocks on the call</div>
+              <p className="text-sm opacity-90">
+                We hand out the Agency AI Install link live on the Nov 2 reunion call. Register above so you&apos;re there.
+              </p>
             </div>
-            <div className="flex items-center justify-between text-sm opacity-90">
-              <span>Sign in with your email to reach your Agency AI Install build</span>
-              <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
+          )}
         </DialogPrimitive.Content>
       </DialogPortal>
     </Dialog>

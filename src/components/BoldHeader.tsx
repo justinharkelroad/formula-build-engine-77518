@@ -1,20 +1,30 @@
-import { getPostEventCtaLabel } from "@/config/postEvent";
+import { getPostEventCtaLabel, getReunionCallPhase } from "@/config/postEvent";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import f3Logo from "@/assets/f3-logo.png";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 
-const navItems = [
+type NavItem = {
+  label: string;
+  sectionId: string | null;
+  path: string;
+  /** Hidden until the Nov 2 reunion call is over (the portal link is handed out on it). */
+  afterCall?: boolean;
+};
+
+const ALL_NAV_ITEMS: NavItem[] = [
   { label: "the film", sectionId: "film", path: "/" },
   { label: "partners", sectionId: null, path: "/partners" },
   { label: "photos", sectionId: null, path: "/gallery" },
   { label: "app", sectionId: null, path: "/formula-app-guide" },
-  { label: "ai portal", sectionId: null, path: "/ai-portal" },
+  { label: "ai portal", sectionId: null, path: "/ai-portal", afterCall: true },
   { label: "give back", sectionId: null, path: "/give-back" }
 ];
 
 const BoldHeader = () => {
+  const callIsOver = getReunionCallPhase() === "past";
+  const navItems = ALL_NAV_ITEMS.filter((item) => !item.afterCall || callIsOver);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -27,7 +37,7 @@ const BoldHeader = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNav = (item: typeof navItems[number]) => {
+  const handleNav = (item: NavItem) => {
     setMenuOpen(false);
     if (item.sectionId && location.pathname === "/") {
       document.getElementById(item.sectionId)?.scrollIntoView({ behavior: "smooth" });
