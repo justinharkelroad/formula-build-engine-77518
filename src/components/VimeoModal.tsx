@@ -5,9 +5,11 @@ interface VimeoModalProps {
   isOpen: boolean;
   onClose: () => void;
   vimeoId: string;
+  /** Full player URL; overrides the default looping player built from vimeoId. */
+  src?: string;
 }
 
-const VimeoModal = ({ isOpen, onClose, vimeoId }: VimeoModalProps) => {
+const VimeoModal = ({ isOpen, onClose, vimeoId, src }: VimeoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -26,7 +28,7 @@ const VimeoModal = ({ isOpen, onClose, vimeoId }: VimeoModalProps) => {
           {isOpen && (
             <iframe
               className="w-full h-full"
-              src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0`}
+              src={src ?? `https://player.vimeo.com/video/${vimeoId}?autoplay=1&loop=1&muted=0&title=0&byline=0&portrait=0`}
               title="Video"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen

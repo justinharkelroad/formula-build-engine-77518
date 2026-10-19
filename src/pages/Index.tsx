@@ -5,27 +5,29 @@ import BoldHeader from "@/components/BoldHeader";
 import VimeoModal from "@/components/VimeoModal";
 import PassDialogHost from "@/components/PassDialogHost";
 import { PassDialogProvider } from "@/contexts/PassDialogContext";
-import HeroBlock from "@/components/sections/HeroBlock";
-import CountdownBlock from "@/components/sections/CountdownBlock";
+import FilmHero from "@/components/sections/FilmHero";
+import CallStrip from "@/components/sections/CallStrip";
+import FormulaChapterSection from "@/components/sections/FormulaChapterSection";
 import PlatinumSponsors from "@/components/sections/PlatinumSponsors";
 import EventSponsors from "@/components/sections/EventSponsors";
-import ValuePropsGrid from "@/components/sections/ValuePropsGrid";
-import VideoTestimonialsGrid from "@/components/sections/VideoTestimonialsGrid";
-import AboutSection from "@/components/sections/AboutSection";
-import ScheduleBlock from "@/components/sections/ScheduleBlock";
-import WhatToExpectBlurb from "@/components/sections/WhatToExpectBlurb";
-import VenueBlock from "@/components/sections/VenueBlock";
-import AgencyAIInstallGift from "@/components/sections/AgencyAIInstallGift";
+import ReviewsSection from "@/components/sections/ReviewsSection";
+import CountdownBlock from "@/components/sections/CountdownBlock";
+import AIPortalBlock from "@/components/sections/AIPortalBlock";
 import GiveBackBlurb from "@/components/sections/GiveBackBlurb";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
+import { FORMULA_CHAPTERS, FORMULA_FILM, filmPlayerUrl } from "@/config/formulaFilm";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const HOMEPAGE_VIMEO_ID = "1168470992";
+const chapter = (id: string) => {
+  const found = FORMULA_CHAPTERS.find((c) => c.id === id);
+  if (!found) throw new Error(`Unknown Formula chapter: ${id}`);
+  return found;
+};
 
 const Index = () => {
-  const title = "Formula Forum 2026 | The #1 Insurance Agency Growth Conference | Orlando Oct 14-16";
-  const description = "Formula Forum 2026 is the national insurance agency growth conference. Oct 14-16 at JW Marriott Orlando Bonnet Creek, with eight working sessions, the Formula workbook, and a final-day Agency AI Install attendee gift.";
+  const title = "Formula Forum 2026 | That's Formula | The Insurance Agency Growth Conference";
+  const description = "Formula Forum 2026 brought insurance agency owners and their teams to Orlando, Oct 14-16. Watch the Formula Opener, see the room, and join the Nov 2 reunion call.";
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,53 +63,42 @@ const Index = () => {
       <BoldHeader />
       <PassDialogHost />
 
-      <VimeoModal isOpen={showVideo} onClose={handleCloseVideo} vimeoId={HOMEPAGE_VIMEO_ID} />
+      {/* ?video=1 deep link opens the Formula Opener */}
+      <VimeoModal
+        isOpen={showVideo}
+        onClose={handleCloseVideo}
+        vimeoId={FORMULA_FILM.vimeoId}
+        src={filmPlayerUrl()}
+      />
 
-      {/* 1. Hero — massive headline + meta pills + overview */}
-      <HeroBlock />
+      {/* Hero — the Formula Opener film */}
+      <FilmHero />
 
-      {/* 1b. Nov 2 reunion call — countdown + Zoom registration */}
-      <CountdownBlock />
+      {/* Slim reunion-call band until Nov 2 */}
+      <CallStrip />
 
-      {/* 1c. Platinum sponsors — top-tier partner thank-you directly below countdown */}
+      {/* 01 Access — the room, and the partners who built it */}
+      <FormulaChapterSection chapter={chapter("access")} />
       <PlatinumSponsors />
-
-      {/* 1d. Supporting sponsors — full logo wall beneath the Platinum tier */}
       <EventSponsors />
 
-      {/* 2. Value props — light section */}
-      <ValuePropsGrid />
+      {/* 02 Association — breakouts, and what the room said */}
+      <FormulaChapterSection chapter={chapter("association")} />
+      <ReviewsSection />
 
-      {/* 3. Video testimonials — front-and-center (preserved) */}
-      <section className="bg-black py-16 md:py-20 px-5 md:px-12">
-        <div className="container mx-auto max-w-7xl mb-10 md:mb-12">
-          <div className="eyebrow mb-4">VOICES - REAL OWNERS</div>
-          <h2 className="text-2xl md:text-5xl font-bold leading-tight max-w-3xl">
-            Hear from agency owners and team members who put the Formula work into practice, in their words.
-          </h2>
-        </div>
-        <VideoTestimonialsGrid />
-      </section>
+      {/* 03 Accountability — the Nov 2 reunion call (#reunion-call) */}
+      <FormulaChapterSection chapter={chapter("accountability")} />
+      <CountdownBlock />
 
-      {/* 4. About — bold-block About Us with stage photo */}
-      <AboutSection />
+      {/* 04 Acceleration — the Agency AI Install, behind the AI portal */}
+      <FormulaChapterSection chapter={chapter("acceleration")} />
+      <AIPortalBlock />
 
-      {/* 5. Schedule */}
-      <ScheduleBlock />
-
-      {/* 5b. What to expect — band into /what-to-expect */}
-      <WhatToExpectBlurb />
-
-      {/* 6. Venue */}
-      <VenueBlock />
-
-      {/* 6b. The room gives back — slim band linking to /give-back */}
+      {/* 05 Ascension — giving back and what comes next */}
+      <FormulaChapterSection chapter={chapter("ascension")} />
       <GiveBackBlurb />
 
-      {/* 7. Final-day attendee gift */}
-      <AgencyAIInstallGift />
-
-      {/* 8. Giant footer CTA — post-event dialog (call / AI portal) */}
+      {/* Closing line of the film */}
       <GiantTicketFooter />
     </div>
     </PassDialogProvider>

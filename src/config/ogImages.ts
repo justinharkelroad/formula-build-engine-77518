@@ -18,6 +18,8 @@
  * in here would inflate the initial chunk.
  */
 export const OG_IMAGES: Record<string, string> = {
+  "/": "/og/home-2026.jpg",
+  "/gallery": "/og/gallery-2026.jpg",
   "/agenda": "/og/agenda.jpg",
 };
 
