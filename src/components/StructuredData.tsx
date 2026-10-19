@@ -130,7 +130,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
       "lowPrice": String(PRICING.earlyBird.team.price),
       "highPrice": String(PRICING.earlyBird.agencyOwner.price),
       "offerCount": 2,
-      "availability": "https://schema.org/InStock",
+      "availability": "https://schema.org/SoldOut",
       "validFrom": "2026-01-01T00:00:00-05:00"
     }
   };
@@ -263,7 +263,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "Agency Owner Pass",
         "price": String(PRICING.earlyBird.agencyOwner.price),
         "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
+        "availability": "https://schema.org/SoldOut",
         "url": `${siteUrl}/pricing`,
         "priceValidUntil": "2026-10-14"
       },
@@ -272,7 +272,7 @@ const StructuredData = ({ page = "general" }: StructuredDataProps) => {
         "name": "Team Member Pass",
         "price": String(PRICING.earlyBird.team.price),
         "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
+        "availability": "https://schema.org/SoldOut",
         "url": `${siteUrl}/pricing`,
         "priceValidUntil": "2026-10-14"
       }

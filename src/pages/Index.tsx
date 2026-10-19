@@ -17,7 +17,6 @@ import WhatToExpectBlurb from "@/components/sections/WhatToExpectBlurb";
 import VenueBlock from "@/components/sections/VenueBlock";
 import AgencyAIInstallGift from "@/components/sections/AgencyAIInstallGift";
 import GiveBackBlurb from "@/components/sections/GiveBackBlurb";
-import PricingBlock from "@/components/sections/PricingBlock";
 import GiantTicketFooter from "@/components/sections/GiantTicketFooter";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -67,7 +66,7 @@ const Index = () => {
       {/* 1. Hero — massive headline + meta pills + overview */}
       <HeroBlock />
 
-      {/* 1b. Countdown — blue brand block bridging black hero & light advantages */}
+      {/* 1b. Nov 2 reunion call — countdown + Zoom registration */}
       <CountdownBlock />
 
       {/* 1c. Platinum sponsors — top-tier partner thank-you directly below countdown */}
@@ -108,10 +107,7 @@ const Index = () => {
       {/* 7. Final-day attendee gift */}
       <AgencyAIInstallGift />
 
-      {/* 8. Pricing */}
-      <PricingBlock />
-
-      {/* 9. Massive BUY TICKET footer */}
+      {/* 8. Giant footer CTA — post-event dialog (call / AI portal) */}
       <GiantTicketFooter />
     </div>
     </PassDialogProvider>

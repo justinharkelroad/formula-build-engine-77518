@@ -1,3 +1,4 @@
+import { getPostEventCtaLabel } from "@/config/postEvent";
 import { ArrowUpRight, Check, FileText, Folder, ShieldCheck } from "lucide-react";
 import { usePassDialog } from "@/contexts/PassDialogContext";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -114,12 +115,12 @@ const AgencyAIInstallGift = () => {
             </p>
 
             <div className="mt-auto pt-10">
-              {/* BRAND_CONTRACT.md Step 4 Ticket CTAs only — retained marketing variant. */}
+              {/* Post-event: former ticket CTA, now opens the call / AI portal dialog. */}
               <button
                 onClick={() => open("earlyBird")}
                 className="inline-flex items-center gap-2 rounded-radius-pill bg-white px-7 py-4 font-bold text-black transition-transform hover:-translate-y-0.5 active:translate-y-px"
               >
-                BUY TICKET
+                {getPostEventCtaLabel()}
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </button>
               <p className="mt-4 max-w-sm text-xs leading-relaxed text-white/68">

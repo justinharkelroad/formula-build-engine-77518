@@ -110,7 +110,7 @@ const Format = () => {
               Work the page that matches the room. Business sessions end in a team build; Body, Balance, and Being remain private unless you choose to share them.
             </p>
             <Button asChild variant="cta" size="lg" className="text-xl px-8 py-6">
-              <Link to="/pricing">Get Tickets</Link>
+              <Link to="/" state={{ scrollTo: "reunion-call" }}>See what&apos;s next</Link>
             </Button>
           </div>
         </section>

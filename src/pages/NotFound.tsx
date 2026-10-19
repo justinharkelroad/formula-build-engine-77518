@@ -31,9 +31,6 @@ const NotFound = () => {
           <Link to="/agenda" className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition-colors">
             Agenda
           </Link>
-          <Link to="/pricing" className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition-colors">
-            Pricing
-          </Link>
           <Link to="/faq" className="px-4 py-2 bg-muted text-foreground rounded-md hover:bg-muted/80 transition-colors">
             FAQ
           </Link>

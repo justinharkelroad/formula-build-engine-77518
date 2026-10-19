@@ -19,13 +19,11 @@ import Index from "./pages/Index";
 const Partners = lazy(() => import("./pages/Partners"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Pricing = lazy(() => import("./pages/Pricing"));
 const Agenda = lazy(() => import("./pages/Agenda"));
 const Format = lazy(() => import("./pages/Format"));
 const Venue = lazy(() => import("./pages/Venue"));
 const Survey = lazy(() => import("./pages/Survey"));
 const FAQ = lazy(() => import("./pages/FAQ"));
-const VIP = lazy(() => import("./pages/VIP"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const GASetup = lazy(() => import("./pages/GASetup"));
@@ -82,7 +80,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/agenda" element={<Agenda />} />
-            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing" element={<Navigate to="/" replace />} />
             <Route path="/speakers" element={<Navigate to="/agenda" replace />} />
             <Route path="/format" element={<Format />} />
             <Route path="/venue" element={<Venue />} />
@@ -105,8 +103,8 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/vip" element={<VIP />} />
-            <Route path="/register" element={<Navigate to="/pricing" replace />} />
+            <Route path="/vip" element={<Navigate to="/" replace />} />
+            <Route path="/register" element={<Navigate to="/" replace />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/thank-you" element={<ThankYouEnhanced />} />
             <Route path="/ga-setup" element={<GASetup />} />
