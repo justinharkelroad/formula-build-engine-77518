@@ -27,8 +27,9 @@ export const CONFIG = {
   // tier) occupy seats but are not sold as attendee tickets.
   SEAT_CAP: 300,
   EARLY_BIRD_END_ISO: "2026-09-15T23:59:00-04:00",
-  OG_IMAGE_1200x630: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
-  TW_IMAGE_1200x600: "https://koubtooblwjcwubcuhml.supabase.co/storage/v1/object/public/images/SEO%20IMAGE.jpg",
+  // Post-event share card (1200x630), rendered 2026-10-19 from the 2026 photos.
+  OG_IMAGE_1200x630: "/og/formula-2026.jpg",
+  TW_IMAGE_1200x600: "/og/formula-2026.jpg",
   HOTEL_BOOK_URL: "https://book.passkey.com/event/51189838/owner/49980248/home",
   LOGO_PARTNERS: [
     {
