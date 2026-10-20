@@ -1139,6 +1139,19 @@ export type Database = {
         }
         Returns: Json
       }
+      formula_survey_testimonial_submit: {
+        Args: {
+          p_audience: string
+          p_body: string
+          p_company: string
+          p_email: string
+          p_full_name: string
+          p_publish_consent: boolean
+          p_submission_key: string
+          p_title: string
+        }
+        Returns: Json
+      }
       get_partner_profile_by_session: {
         Args: { p_session_id: string }
         Returns: Json
