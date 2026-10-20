@@ -110,7 +110,11 @@ export const prerenderMeta = (): Plugin => ({
       // "/" is the template itself; leaving it alone keeps the SPA fallback intact.
       if (route.path === "/") continue;
 
-      const html = stripped.replace("</head>", `${headFor(route)}\n  </head>`);
+      let html = stripped.replace("</head>", `${headFor(route)}\n  </head>`);
+      // Survey pages promise no advertising tracker; drop the no-JS pixel image too.
+      if (/^\/survey(\/|$)/.test(route.path)) {
+        html = html.replace(/[ \t]*<!-- Facebook Pixel[^>]*-->\s*<noscript>[\s\S]*?<\/noscript>\r?\n?/, "");
+      }
       const filePath = join(outDir, route.path.replace(/^\//, ""), "index.html");
       mkdirSync(dirname(filePath), { recursive: true });
       writeFileSync(filePath, html, "utf8");

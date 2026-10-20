@@ -405,8 +405,10 @@
     }
     </script>
 
-    <!-- Meta Pixel (ID matches src/config/analytics.ts) -->
+    <!-- Meta Pixel (ID matches src/config/analytics.ts). Not loaded on /survey:
+         anonymous survey respondents are promised no advertising tracker. -->
     <script>
+      if (!/^\/survey(\/|$)/.test(window.location.pathname)) {
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -414,6 +416,7 @@
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '591865596577612');
       fbq('track', 'PageView');
+      }
     </script>
 </head>
 

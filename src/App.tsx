@@ -53,6 +53,7 @@ const WhatToExpect = lazy(() => import("./pages/WhatToExpect"));
 const TestimonialStory = lazy(() => import("./pages/TestimonialStory"));
 const AIPortal = lazy(() => import("./pages/AIPortal"));
 const AdminAIPortal = lazy(() => import("./pages/AdminAIPortal"));
+const AdminSurveyResults = lazy(() => import("./pages/AdminSurveyResults"));
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -85,6 +86,7 @@ const App = () => (
             <Route path="/format" element={<Format />} />
             <Route path="/venue" element={<Venue />} />
             <Route path="/survey" element={<Survey />} />
+            <Route path="/survey/:audience" element={<Survey />} />
             <Route path="/partner" element={<Navigate to="/partners" replace />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/partners/partner-hub-guide" element={<PartnerHubGuide />} />
@@ -127,6 +129,11 @@ const App = () => (
             <Route path="/admin/ai-portal" element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminAIPortal />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/survey-results" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminSurveyResults />
               </ProtectedRoute>
             } />
             <Route path="/partner-welcome/:tier" element={<PartnerWelcome />} />

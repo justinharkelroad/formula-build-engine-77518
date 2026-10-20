@@ -16,7 +16,8 @@
     "preview": "vite preview",
     "test:admin-password": "node --test scripts/testAdminPasswordReset.mjs",
     "test:ai-portal": "node --test scripts/testAiPortal.mjs",
-    "test:ai-portal-admin": "node --test scripts/testAiPortalAdmin.mjs"
+    "test:ai-portal-admin": "node --test scripts/testAiPortalAdmin.mjs",
+    "test:survey": "node --test scripts/testFormulaSurvey.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
