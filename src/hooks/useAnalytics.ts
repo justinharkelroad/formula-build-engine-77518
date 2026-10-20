@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { ANALYTICS_CONFIG, GAEvent, GAEventParams } from '../config/analytics';
 import { trackFBEvent, trackFBPageView, trackFBInitiateCheckout, trackFBPurchase } from './useFacebookPixel';
+import { isNoTrackingPath } from '@/lib/surveyTracking';
 
 declare global {
   interface Window {
@@ -11,7 +12,9 @@ declare global {
 export const usePageView = (path: string) => {
   useEffect(() => {
     if (!ANALYTICS_CONFIG.ENABLED) return;
-    
+    // Survey pages promise anonymous respondents that no tracker sees them.
+    if (isNoTrackingPath(path)) return;
+
     trackEvent('view_item', {
       page_location: window.location.href
     });

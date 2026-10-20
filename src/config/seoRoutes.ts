@@ -86,9 +86,21 @@ const SITE_ROUTES: SeoRoute[] = [
   },
   {
     path: "/survey",
-    title: "Formula Forum Survey | Share Your Feedback",
-    description:
-      "Help us make Formula Forum even better. Share your feedback and insights about the insurance agency growth conference.",
+    title: "Formula 2026 Feedback",
+    description: "Help us understand what delivered value and where the experience fell short.",
+    noindex: true,
+  },
+  {
+    path: "/survey/attendee",
+    title: "Attendee Feedback | Formula 2026",
+    description: "Help us understand what delivered value and where the experience fell short.",
+    noindex: true,
+  },
+  {
+    path: "/survey/partner",
+    title: "Partner Feedback | Formula 2026",
+    description: "Help us understand what delivered value and where the experience fell short.",
+    noindex: true,
   },
   {
     path: "/partners",
@@ -198,6 +210,7 @@ const SITE_ROUTES: SeoRoute[] = [
   { path: "/admin/registrations", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/sales", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/ai-portal", title: "AI Portal | Formula Admin", description: "Administrative access.", noindex: true },
+  { path: "/admin/survey-results", title: "Survey Results | Formula Admin", description: "Administrative access.", noindex: true },
 ];
 
 export const SEO_ROUTES: SeoRoute[] = [

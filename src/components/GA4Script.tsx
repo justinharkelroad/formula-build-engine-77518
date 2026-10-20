@@ -1,7 +1,12 @@
 import { ANALYTICS_CONFIG } from '../config/analytics';
+import { isNoTrackingPath } from '@/lib/surveyTracking';
 
 const GA4Script = () => {
-  if (!ANALYTICS_CONFIG.ENABLED || ANALYTICS_CONFIG.GA4_MEASUREMENT_ID === "G-XXXXXXXXXX") {
+  if (
+    !ANALYTICS_CONFIG.ENABLED ||
+    ANALYTICS_CONFIG.GA4_MEASUREMENT_ID === "G-XXXXXXXXXX" ||
+    isNoTrackingPath(window.location.pathname)
+  ) {
     return null;
   }
 

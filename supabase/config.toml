@@ -53,3 +53,12 @@ verify_jwt = false
 # Performs its own admin-role check before using service-only portal RPCs.
 [functions.formula-ai-portal-admin]
 verify_jwt = false
+
+# Public survey submit. Validates against the shared survey definition and
+# never logs answers or contact details.
+[functions.formula-survey-submit]
+verify_jwt = false
+
+# Performs its own admin-role check; the RPC also requires the reviewer list.
+[functions.formula-survey-results]
+verify_jwt = false
