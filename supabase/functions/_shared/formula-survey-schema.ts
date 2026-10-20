@@ -13,7 +13,8 @@
 // - Session names come from src/config/agenda.ts plus Garrett J. White's
 //   main-stage slot. Evening events use the names printed on the agenda.
 
-export const SURVEY_SCHEMA_VERSION = 1;
+// 2: added question 11 (2027 dates) to both surveys.
+export const SURVEY_SCHEMA_VERSION = 2;
 
 export type Audience = "attendee" | "partner";
 export type AnonymityMode = "anonymous" | "identified";
@@ -23,6 +24,8 @@ export interface SurveyOption {
   label: string;
   /** Asks for a short "please specify" text, stored as `<questionId>_other`. */
   specify?: boolean;
+  /** Multi-select only: choosing this clears every other choice. */
+  exclusive?: boolean;
 }
 
 interface QuestionBase {
@@ -66,7 +69,20 @@ export interface TextQuestion extends QuestionBase {
   maxLength: number;
 }
 
-export type SurveyQuestion = ChoiceQuestion | GridQuestion | ScaleQuestion | CountQuestion | TextQuestion;
+/** Checkboxes: up to `maxSpecific` non-exclusive options, or exactly one exclusive option. */
+export interface MultiQuestion extends QuestionBase {
+  kind: "multi";
+  options: SurveyOption[];
+  maxSpecific: number;
+}
+
+export type SurveyQuestion =
+  | ChoiceQuestion
+  | GridQuestion
+  | ScaleQuestion
+  | CountQuestion
+  | TextQuestion
+  | MultiQuestion;
 
 export interface SurveyStep {
   id: string;
@@ -299,11 +315,52 @@ const A_Q10: ScaleQuestion = {
   ],
 };
 
+// ---------------------------------------------------------------------------
+// 2027 dates (both surveys). September and November 2027 are the two real
+// options (Justin, 2026-10-20).
+// ---------------------------------------------------------------------------
+
+export const DATE_NOTE_MAX = 500;
+
+const DATE_OPTIONS: SurveyOption[] = [
+  { value: "sep_first_half", label: "September 2027, first half" },
+  { value: "sep_second_half", label: "September 2027, second half" },
+  { value: "nov_first_half", label: "November 2027, first half" },
+  { value: "nov_second_half", label: "November 2027, second half" },
+  { value: "no_preference", label: "No preference", exclusive: true },
+  { value: "neither", label: "Neither month works", exclusive: true },
+];
+
+function dateQuestions(prefix: "a" | "p", who: string): [MultiQuestion, TextQuestion] {
+  return [
+    {
+      kind: "multi",
+      id: `${prefix}_q11_dates_2027`,
+      number: "11",
+      prompt: `Formula 2027 will be in September or November. Which timing works best for ${who}?`,
+      helper: "Pick up to two windows, or choose No preference or Neither month works.",
+      options: DATE_OPTIONS,
+      maxSpecific: 2,
+    },
+    {
+      kind: "text",
+      id: `${prefix}_q11_dates_note`,
+      number: "11b",
+      prompt: "Any specific dates or conflicts we should know about?",
+      helper: "Optional. For example, a carrier conference or a busy season.",
+      maxLength: DATE_NOTE_MAX,
+    },
+  ];
+}
+
+const [A_Q11, A_Q11B] = dateQuestions("a", "you");
+const [P_Q11, P_Q11B] = dateQuestions("p", "your company");
+
 export const ATTENDEE_STEPS: SurveyStep[] = [
   { id: "about", title: "About you and your plan", questions: [A_Q1, A_Q2, A_Q3] },
   { id: "sessions", title: "Sessions and connections", questions: [A_Q4, A_Q5] },
   { id: "event", title: "The event experience", questions: [A_Q6A, A_Q6B, A_Q6C, A_Q6D, A_Q7] },
-  { id: "results", title: "What happened next", questions: [A_Q8, A_Q9, A_Q10] },
+  { id: "results", title: "What happened next", questions: [A_Q8, A_Q9, A_Q10, A_Q11, A_Q11B] },
 ];
 
 export const ATTENDEE_Q6_HEADING = "6. How did the pacing and other parts of the event work for you?";
@@ -466,7 +523,7 @@ export const PARTNER_STEPS: SurveyStep[] = [
   { id: "company", title: "Your company", questions: [] },
   { id: "objective", title: "Your objective", questions: [P_Q1, P_Q2, P_Q3] },
   { id: "pipeline", title: "Conversations and delivery", questions: [P_Q4, P_Q5, P_Q6, P_Q7] },
-  { id: "value", title: "Value and next year", questions: [P_Q8, P_Q9, P_Q10] },
+  { id: "value", title: "Value and next year", questions: [P_Q8, P_Q9, P_Q10, P_Q11, P_Q11B] },
 ];
 
 // ---------------------------------------------------------------------------
@@ -507,7 +564,7 @@ export interface SurveyContact {
   contactPermission: boolean | null;
 }
 
-export type AnswerValue = string | number | Record<string, string>;
+export type AnswerValue = string | number | string[] | Record<string, string>;
 
 export interface NormalizedSubmission {
   submissionKey: string;
@@ -697,6 +754,20 @@ export function validateSubmission(input: unknown): ValidationResult {
         if (cleaned) freeText[key] = cleaned;
         break;
       }
+      case "multi": {
+        if (!Array.isArray(raw) || raw.some((item) => typeof item !== "string")) {
+          return { ok: false, error: "invalid_multi" };
+        }
+        const picked = [...new Set(raw as string[])];
+        const byValue = new Map(question.options.map((option) => [option.value, option]));
+        if (picked.some((item) => !byValue.has(item))) return { ok: false, error: "invalid_multi" };
+        const exclusive = picked.filter((item) => byValue.get(item)?.exclusive);
+        if (exclusive.length && picked.length > 1) return { ok: false, error: "invalid_multi" };
+        if (picked.length > question.maxSpecific) return { ok: false, error: "too_many_choices" };
+        // Keep the options' own order so stored answers compare cleanly.
+        if (picked.length) structured[key] = question.options.map((o) => o.value).filter((v) => picked.includes(v));
+        break;
+      }
     }
   }
 
@@ -733,6 +804,75 @@ export function validateSubmission(input: unknown): ValidationResult {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Testimonials. Left after the survey is submitted, saved on their own and
+// never linked to a survey response, so an anonymous attendee stays anonymous.
+// ---------------------------------------------------------------------------
+
+export const TESTIMONIAL_MAX = 1500;
+
+export const TESTIMONIAL_COPY = {
+  heading: "Leave a testimonial",
+  intro:
+    "Tell other agency owners what Formula did for you, in your own words. It's saved on its own and isn't linked to the survey you just answered.",
+  partnerIntro:
+    "Tell other partners what Formula did for your company, in your own words. It's saved on its own, apart from your survey response.",
+  bodyLabel: "Your testimonial",
+  publishYes: "Formula may share this publicly with my name and company.",
+  publishNo: "Keep it internal: for the Formula team only.",
+  anonymousNote: "Your survey answers stay anonymous. Your testimonial carries the name you enter here.",
+  saved: "Thank you. Your testimonial was received.",
+};
+
+export interface NormalizedTestimonial {
+  submissionKey: string;
+  audience: Audience;
+  body: string;
+  fullName: string;
+  company: string | null;
+  title: string | null;
+  email: string | null;
+  publishConsent: boolean;
+}
+
+export type TestimonialResult = { ok: true; value: NormalizedTestimonial } | { ok: false; error: string };
+
+export function validateTestimonial(input: unknown): TestimonialResult {
+  if (!isPlainObject(input)) return { ok: false, error: "invalid_body" };
+  const allowed = new Set(["type", "submissionKey", "audience", "body", "fullName", "company", "title", "email", "publishConsent"]);
+  if (Object.keys(input).some((key) => !allowed.has(key))) return { ok: false, error: "invalid_testimonial" };
+
+  const submissionKey = typeof input.submissionKey === "string" ? input.submissionKey : "";
+  if (!UUID_RE.test(submissionKey)) return { ok: false, error: "invalid_submission_key" };
+  const audience = input.audience;
+  if (audience !== "attendee" && audience !== "partner") return { ok: false, error: "invalid_audience" };
+
+  const body = cleanText(input.body, TESTIMONIAL_MAX);
+  const fullName = cleanText(input.fullName, 120);
+  const company = cleanText(input.company, 160);
+  const title = cleanText(input.title, 120);
+  const email = cleanText(input.email, 254);
+  if ([body, fullName, company, title, email].includes("too_long")) return { ok: false, error: "text_too_long" };
+  if (!body) return { ok: false, error: "testimonial_required" };
+  if (!fullName) return { ok: false, error: "name_required" };
+  if (email && !isValidEmail(email)) return { ok: false, error: "valid_email_required" };
+  if (typeof input.publishConsent !== "boolean") return { ok: false, error: "publish_choice_required" };
+
+  return {
+    ok: true,
+    value: {
+      submissionKey: submissionKey.toLowerCase(),
+      audience,
+      body: body as string,
+      fullName: fullName as string,
+      company: (company as string | null) ?? null,
+      title: (title as string | null) ?? null,
+      email: email ? (email as string).toLowerCase() : null,
+      publishConsent: input.publishConsent,
+    },
+  };
+}
+
 /** Plain-language messages for the error codes above. */
 export const SURVEY_ERROR_MESSAGES: Record<string, string> = {
   name_required: "Please enter your full name.",
@@ -742,4 +882,7 @@ export const SURVEY_ERROR_MESSAGES: Record<string, string> = {
     "Question 5 can't be higher than question 4. Agreed next steps come from the agencies you had qualified conversations with.",
   text_too_long: `Comments can be up to ${TEXT_MAX} characters.`,
   rate_limited: "Too many submissions from this connection. Please wait a few minutes and try again.",
+  too_many_choices: "Pick up to two windows for question 11.",
+  testimonial_required: "Please write your testimonial.",
+  publish_choice_required: "Please choose whether we may share it publicly.",
 };

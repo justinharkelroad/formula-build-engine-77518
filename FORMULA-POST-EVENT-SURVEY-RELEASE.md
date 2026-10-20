@@ -80,10 +80,19 @@ Session names come from the agenda: the eight working sessions plus Garrett J. W
 - Partner next steps are counts, not sales.
 - If a company submits more than once, the figures use its latest response, and a banner names the company. The CSV files keep every response.
 
+## Added 2026-10-20 (second release)
+
+- **Question 11, 2027 timing, on both surveys.** September and November 2027 are the real options (Justin). Respondents tick up to two windows (first or second half of each month), or exactly one of "No preference" / "Neither month works". There's an optional note for specific dates or conflicts.
+- **Testimonials.** After the survey is saved, the thank-you screen offers "Leave a testimonial":
+  - It needs the testimonial text, a name, and an explicit choice: share publicly with name and company, or internal only. Company, title and email are optional.
+  - It's saved in its own table, `formula_private.survey_testimonials`, with no link to any survey response. Leaving one never identifies an anonymous attendee.
+  - Identified attendees and partners see their name prefilled; anonymous attendees get an empty form.
+- **Results page:** a "Formula 2027 timing" block on both tabs, and a Testimonials tab that shows each testimonial's share choice, with full and shareable CSV.
+- **Backend for this release:** migration `20261021000000_formula_2026_survey_testimonials.sql`, then redeploy both `formula-survey-submit` and `formula-survey-results`.
+
 ## Not built (deliberately)
 
-- **The optional date-preference and testimonial modules.** They are off in the brief until the 2027 dates are confirmed. The server rejects their fields.
-- **Automatic theme coding of written answers.** The results page lists the written answers, showing the attendee's role or the partner's company.
+- **Automatic theme coding of written answers.** The results page lists the written answers with the attendee's role or the partner's company.
 - **Expected-time copy.** The brief says to add it only after real usability testing.
 
 ## Rollback

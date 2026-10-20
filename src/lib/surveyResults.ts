@@ -37,6 +37,18 @@ export interface SurveyResponseRow {
   contact: SurveyContactRow | null;
 }
 
+export interface TestimonialRow {
+  id: string;
+  audience: Audience;
+  body: string;
+  fullName: string;
+  company: string | null;
+  title: string | null;
+  email: string | null;
+  publishConsent: boolean;
+  submittedAt: string;
+}
+
 /** Answers that are real information but not a point on the scale. */
 export const NON_SCORED = new Set([
   "unable_to_assess",
@@ -121,6 +133,31 @@ export function choiceDistribution(rows: SurveyResponseRow[], audience: Audience
   const options =
     id === "p_q2_attainment" ? [...q.options, { value: "not_applicable", label: "Not applicable (no objective)" }] : q.options;
   return distributionOf(rows.map((row) => row.answers[id]), options, rows.length);
+}
+
+export interface MultiResult {
+  responses: number;
+  /** Responses that picked at least one option (the percentage denominator). */
+  answered: number;
+  unanswered: number;
+  /** Percent of `answered` that picked each option; can sum past 100. */
+  bars: { value: string; label: string; count: number; percent: number | null }[];
+}
+
+export function multiDistribution(rows: SurveyResponseRow[], audience: Audience, id: string): MultiResult {
+  const q = question(audience, id);
+  if (q.kind !== "multi") throw new Error(`${id} is not a multi-select question`);
+  const picks = rows.map((row) => (Array.isArray(row.answers[id]) ? (row.answers[id] as string[]) : []));
+  const answered = picks.filter((pick) => pick.length).length;
+  return {
+    responses: rows.length,
+    answered,
+    unanswered: rows.length - answered,
+    bars: q.options.map((option) => {
+      const count = picks.filter((pick) => pick.includes(option.value)).length;
+      return { value: option.value, label: option.label, count, percent: pct(count, answered) };
+    }),
+  };
 }
 
 export function roleDistribution(rows: SurveyResponseRow[]): Distribution {
@@ -326,6 +363,9 @@ function answerLabel(q: SurveyQuestion, value: unknown): string {
   if (q.kind === "scale" || q.kind === "count") {
     return typeof value === "number" ? String(value) : q.extras.find((o) => o.value === value)?.label ?? String(value);
   }
+  if (q.kind === "multi" && Array.isArray(value)) {
+    return value.map((item) => q.options.find((o) => o.value === item)?.label ?? String(item)).join("; ");
+  }
   return String(value);
 }
 
@@ -377,6 +417,20 @@ export function toCsv(rows: SurveyResponseRow[], audience: Audience, includeCont
       }
       if (q.kind === "choice" && q.options.some((o) => o.specify)) cells.push(row.freeText[`${q.id}_other`] ?? "");
     }
+    lines.push(cells.map(csvCell).join(","));
+  }
+  return `${lines.join("\r\n")}\r\n`;
+}
+
+/** Testimonials file. Email is left out of the shareable version. */
+export function testimonialsCsv(rows: TestimonialRow[], includeEmail: boolean): string {
+  const header = ["submitted_hour_utc", "audience", "full_name", "company", "title", "may_publish", "testimonial"];
+  if (includeEmail) header.splice(5, 0, "email");
+  const lines = [header.map(csvCell).join(",")];
+  for (const row of rows) {
+    const cells: unknown[] = [row.submittedAt, row.audience, row.fullName, row.company ?? "", row.title ?? ""];
+    if (includeEmail) cells.push(row.email ?? "");
+    cells.push(row.publishConsent ? "yes" : "no, internal only", row.body);
     lines.push(cells.map(csvCell).join(","));
   }
   return `${lines.join("\r\n")}\r\n`;
