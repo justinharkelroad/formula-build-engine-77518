@@ -8,6 +8,8 @@ import {
   ATTENDEE_ROLES,
   SURVEY_COPY,
   SURVEY_ERROR_MESSAGES,
+  TESTIMONIAL_COPY,
+  TESTIMONIAL_MAX,
   isValidEmail,
   stepsFor,
   submitSurvey,
@@ -163,6 +165,7 @@ function SurveyFlow({ audience }: { audience: Audience }) {
   const [identityErrors, setIdentityErrors] = useState<Record<string, string>>({});
   const [countError, setCountError] = useState<string | null>(null);
   const [submit, setSubmit] = useState<SubmitState>({ kind: "editing" });
+  const [testimonialPrefill, setTestimonialPrefill] = useState<ContactDraft | null>(null);
   // One key per survey attempt, kept only in memory. Retries reuse it.
   const [submissionKey] = useState(newSubmissionKey);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -276,6 +279,9 @@ function SurveyFlow({ audience }: { audience: Audience }) {
     const outcome = await submitSurvey(body);
     if (outcome.kind === "saved") {
       pendingPayload.current = null;
+      // Offer identified people their own details back on the testimonial
+      // form. Anonymous attendees get an empty form, never their survey data.
+      setTestimonialPrefill(identified ? { ...contact } : null);
       setSubmit({ kind: "saved" });
       setAnswers({});
       setContact(EMPTY_CONTACT);
@@ -305,8 +311,9 @@ function SurveyFlow({ audience }: { audience: Audience }) {
         <p className="mt-3 leading-relaxed text-black/70">
           {audience === "partner"
             ? "The Formula team will review your company's response and follow up on any partnership issues you raised."
-            : "Your answers were saved. You can close this page."}
+            : "Your answers were saved."}
         </p>
+        <TestimonialForm audience={audience} anonymous={!testimonialPrefill} prefill={testimonialPrefill} />
       </section>
     );
   }
@@ -435,6 +442,183 @@ function SurveyFlow({ audience }: { audience: Audience }) {
       {audience === "attendee" && (
         <p className="text-xs leading-relaxed text-white/50">{SURVEY_COPY.technicalDataNotice}</p>
       )}
+    </div>
+  );
+}
+
+type TestimonialState =
+  | { kind: "editing"; error: string | null }
+  | { kind: "submitting" }
+  | { kind: "failed"; message: string }
+  | { kind: "saved" };
+
+/**
+ * Optional testimonial, shown after the survey is saved. It is its own
+ * submission with its own key, so nothing ties it to the survey response.
+ */
+function TestimonialForm({
+  audience,
+  anonymous,
+  prefill,
+}: {
+  audience: Audience;
+  anonymous: boolean;
+  prefill: ContactDraft | null;
+}) {
+  const [body, setBody] = useState("");
+  const [fullName, setFullName] = useState(prefill?.fullName ?? "");
+  const [company, setCompany] = useState(prefill?.company ?? "");
+  const [title, setTitle] = useState(prefill?.title ?? "");
+  const [email, setEmail] = useState(prefill?.email ?? "");
+  const [publish, setPublish] = useState<boolean | null>(null);
+  const [state, setState] = useState<TestimonialState>({ kind: "editing", error: null });
+  const [submissionKey] = useState(newSubmissionKey);
+  // Once a send's outcome is unknown, retries resend exactly this payload.
+  const pending = useRef<Record<string, unknown> | null>(null);
+
+  if (state.kind === "saved") {
+    return (
+      <div className="mt-8 rounded-2xl border border-black/10 bg-white p-5" role="status">
+        <p className="font-bold">{TESTIMONIAL_COPY.saved}</p>
+      </div>
+    );
+  }
+
+  const locked = state.kind === "submitting" || state.kind === "failed";
+
+  const send = async () => {
+    let payload = pending.current;
+    if (!payload) {
+      const error = !body.trim()
+        ? SURVEY_ERROR_MESSAGES.testimonial_required
+        : !fullName.trim()
+          ? SURVEY_ERROR_MESSAGES.name_required
+          : email.trim() && !isValidEmail(email.trim())
+            ? SURVEY_ERROR_MESSAGES.valid_email_required
+            : publish === null
+              ? SURVEY_ERROR_MESSAGES.publish_choice_required
+              : null;
+      if (error) {
+        setState({ kind: "editing", error });
+        return;
+      }
+      payload = {
+        type: "testimonial",
+        submissionKey,
+        audience,
+        body: body.trim(),
+        fullName: fullName.trim(),
+        company: company.trim() || null,
+        title: title.trim() || null,
+        email: email.trim() || null,
+        publishConsent: publish,
+      };
+      pending.current = payload;
+    }
+    setState({ kind: "submitting" });
+    const outcome = await submitSurvey(payload);
+    if (outcome.kind === "saved") {
+      pending.current = null;
+      setState({ kind: "saved" });
+      return;
+    }
+    if (outcome.status >= 400 && outcome.status < 500) {
+      pending.current = null;
+      setState({
+        kind: "editing",
+        error: SURVEY_ERROR_MESSAGES[outcome.code] ?? "Something in the form couldn't be accepted. Please check it.",
+      });
+      return;
+    }
+    setState({
+      kind: "failed",
+      message: "We couldn't confirm your testimonial was saved. Press Try again to resend it; it won't be saved twice.",
+    });
+  };
+
+  return (
+    <div className="mt-10 space-y-5 border-t border-black/10 pt-8">
+      <div>
+        <h2 className="text-2xl font-black">{TESTIMONIAL_COPY.heading}</h2>
+        <p className="mt-2 leading-relaxed text-black/70">
+          {audience === "partner" ? TESTIMONIAL_COPY.partnerIntro : TESTIMONIAL_COPY.intro}
+        </p>
+        {anonymous && audience === "attendee" && (
+          <p className="mt-2 text-sm text-black/60">{TESTIMONIAL_COPY.anonymousNote}</p>
+        )}
+      </div>
+      <fieldset disabled={locked} className="space-y-4">
+        <div>
+          <label htmlFor="testimonial-body" className="text-sm font-semibold text-black/80">
+            {TESTIMONIAL_COPY.bodyLabel}
+            <span aria-hidden="true"> *</span>
+          </label>
+          <textarea
+            id="testimonial-body"
+            rows={6}
+            maxLength={TESTIMONIAL_MAX}
+            value={body}
+            onChange={(event) => setBody(event.target.value)}
+            className={field}
+          />
+          <p aria-hidden="true" className="mt-1 text-right text-xs text-black/50">
+            {body.length}/{TESTIMONIAL_MAX}
+          </p>
+        </div>
+        <TextInput id="testimonial-name" label="Your name" value={fullName} onChange={setFullName} autoComplete="name" required />
+        <TextInput
+          id="testimonial-company"
+          label={audience === "partner" ? "Company" : "Agency"}
+          value={company}
+          onChange={setCompany}
+          autoComplete="organization"
+        />
+        <TextInput id="testimonial-title" label="Title or role" value={title} onChange={setTitle} autoComplete="organization-title" />
+        <TextInput
+          id="testimonial-email"
+          label="Email, in case we need to check your wording"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          autoComplete="email"
+        />
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-semibold text-black/80">
+            May we share it?<span aria-hidden="true"> *</span>
+          </legend>
+          {[
+            { value: true, label: TESTIMONIAL_COPY.publishYes },
+            { value: false, label: TESTIMONIAL_COPY.publishNo },
+          ].map((option) => (
+            <label key={String(option.value)} className={choiceCard}>
+              <input
+                type="radio"
+                name="testimonial-publish"
+                checked={publish === option.value}
+                onChange={() => setPublish(option.value)}
+                className="mt-1 accent-black"
+              />
+              {option.label}
+            </label>
+          ))}
+        </fieldset>
+      </fieldset>
+      {(state.kind === "failed" || (state.kind === "editing" && state.error)) && (
+        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
+          {state.kind === "failed" ? state.message : state.error}
+        </p>
+      )}
+      <button type="button" className={primaryButton} onClick={send} disabled={state.kind === "submitting"}>
+        {state.kind === "submitting" ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Sending…
+          </>
+        ) : state.kind === "failed" ? (
+          "Try again"
+        ) : (
+          "Send testimonial"
+        )}
+      </button>
     </div>
   );
 }

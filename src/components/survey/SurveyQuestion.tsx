@@ -6,6 +6,7 @@ import {
   type ChoiceQuestion,
   type CountQuestion,
   type GridQuestion,
+  type MultiQuestion,
   type ScaleQuestion,
   type SurveyOption,
   type SurveyQuestion as Question,
@@ -284,6 +285,54 @@ function TextField({ question, answers, setAnswer }: FieldProps<TextQuestion>) {
   );
 }
 
+function MultiField({ question, answers, setAnswer }: FieldProps<MultiQuestion>) {
+  const current = Array.isArray(answers[question.id]) ? (answers[question.id] as string[]) : [];
+  const exclusive = new Set(question.options.filter((option) => option.exclusive).map((option) => option.value));
+  const specificCount = current.filter((value) => !exclusive.has(value)).length;
+  const atLimit = specificCount >= question.maxSpecific;
+
+  const toggle = (value: string, checked: boolean) => {
+    let next: string[];
+    if (!checked) next = current.filter((item) => item !== value);
+    // An exclusive choice ("No preference", "Neither") replaces everything else,
+    // and any specific window replaces an exclusive choice.
+    else if (exclusive.has(value)) next = [value];
+    else next = [...current.filter((item) => !exclusive.has(item)), value];
+    setAnswer(question.id, next.length ? next : undefined);
+  };
+
+  return (
+    <Shell question={question}>
+      <div className="flex flex-col gap-2">
+        {question.options.map((option) => {
+          const checked = current.includes(option.value);
+          const blocked = !checked && !option.exclusive && atLimit;
+          return (
+            <label
+              key={option.value}
+              className={`${pill} gap-3 ${blocked ? "cursor-not-allowed opacity-45 hover:border-black/15" : ""}`}
+            >
+              <input
+                type="checkbox"
+                name={question.id}
+                value={option.value}
+                checked={checked}
+                disabled={blocked}
+                onChange={(event) => toggle(option.value, event.target.checked)}
+                className="h-4 w-4 accent-white"
+              />
+              {option.label}
+            </label>
+          );
+        })}
+      </div>
+      <p aria-live="polite" className="text-xs text-black/55">
+        {atLimit ? `You've picked ${question.maxSpecific}. Untick one to choose a different window.` : ""}
+      </p>
+    </Shell>
+  );
+}
+
 export function SurveyQuestionField(props: FieldProps<Question> & { disabledNote?: string }) {
   const { question } = props;
   switch (question.kind) {
@@ -297,6 +346,8 @@ export function SurveyQuestionField(props: FieldProps<Question> & { disabledNote
       return <CountField {...props} question={question} />;
     case "text":
       return <TextField {...props} question={question} />;
+    case "multi":
+      return <MultiField {...props} question={question} />;
   }
 }
 
@@ -323,5 +374,7 @@ export function describeAnswer(question: Question, answers: Answers): string[] {
       return [typeof value === "number" ? String(value) : labelFor(question.extras, value)];
     case "text":
       return [String(value)];
+    case "multi":
+      return [(value as string[]).map((item) => labelFor(question.options, item)).join(", ")];
   }
 }

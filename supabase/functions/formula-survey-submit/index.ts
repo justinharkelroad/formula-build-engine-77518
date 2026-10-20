@@ -1,5 +1,8 @@
 // Public submit for the Formula 2026 post-event surveys (/survey).
 //
+// Two payload types: a survey response (default), or `type: "testimonial"`,
+// which is saved to its own table with no link to any response.
+//
 // Validates the payload against the shared survey definition, checks the rate
 // limit, then saves through formula_survey_submit. The client sends a random
 // submission key per survey attempt, so a retry after a dropped connection
@@ -13,7 +16,7 @@
 // an error code.
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { corsHeaders, json, serviceClient, sha256Hex } from "../_shared/ai-portal-http.ts";
-import { validateSubmission } from "../_shared/formula-survey-schema.ts";
+import { validateSubmission, validateTestimonial } from "../_shared/formula-survey-schema.ts";
 
 const MAX_BODY_BYTES = 64 * 1024;
 
@@ -69,9 +72,9 @@ serve(async (req) => {
   if (body === "too_large") return json({ error: "too_large" }, 413);
   if (!body) return json({ error: "invalid_body" }, 400);
 
-  const result = validateSubmission(body);
+  const isTestimonial = body.type === "testimonial";
+  const result = isTestimonial ? validateTestimonial(body) : validateSubmission(body);
   if (!result.ok) return json({ error: result.error }, 400);
-  const submission = result.value;
 
   const supabase = serviceClient();
   const hash = await clientHash(req);
@@ -87,16 +90,27 @@ serve(async (req) => {
   }
   if ((rate as { allowed?: boolean } | null)?.allowed !== true) return json({ error: "rate_limited" }, 429);
 
-  const { data, error } = await supabase.rpc("formula_survey_submit", {
-    p_submission_key: submission.submissionKey,
-    p_audience: submission.audience,
-    p_role: submission.role,
-    p_anonymity: submission.anonymity,
-    p_structured: submission.structured,
-    p_free_text: submission.freeText,
-    p_contact: submission.contact,
-    p_schema_version: submission.schemaVersion,
-  });
+  const { data, error } = "body" in result.value
+    ? await supabase.rpc("formula_survey_testimonial_submit", {
+      p_submission_key: result.value.submissionKey,
+      p_audience: result.value.audience,
+      p_body: result.value.body,
+      p_full_name: result.value.fullName,
+      p_company: result.value.company,
+      p_title: result.value.title,
+      p_email: result.value.email,
+      p_publish_consent: result.value.publishConsent,
+    })
+    : await supabase.rpc("formula_survey_submit", {
+      p_submission_key: result.value.submissionKey,
+      p_audience: result.value.audience,
+      p_role: result.value.role,
+      p_anonymity: result.value.anonymity,
+      p_structured: result.value.structured,
+      p_free_text: result.value.freeText,
+      p_contact: result.value.contact,
+      p_schema_version: result.value.schemaVersion,
+    });
 
   if (error) {
     // Only the code: Postgres error details can echo row values.

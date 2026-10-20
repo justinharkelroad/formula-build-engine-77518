@@ -18,12 +18,15 @@ import {
   partnerFollowUps,
   partnerPipeline,
   roleDistribution,
+  multiDistribution,
+  testimonialsCsv,
   toCsv,
   type Distribution,
   type FreeTextEntry,
   type GridRowResult,
   type NumericSummary,
   type SurveyResponseRow,
+  type TestimonialRow,
 } from "@/lib/surveyResults";
 
 /**
@@ -38,7 +41,9 @@ type LoadState =
   | { kind: "denied" }
   | { kind: "signed-out" }
   | { kind: "error" }
-  | { kind: "ready"; responses: SurveyResponseRow[]; generatedAt: string };
+  | { kind: "ready"; responses: SurveyResponseRow[]; testimonials: TestimonialRow[]; generatedAt: string };
+
+type Tab = Audience | "testimonials";
 
 const accent = "text-[#c45120]";
 const card = "border border-black/15 bg-[#faf8f2] p-5 sm:p-6";
@@ -51,9 +56,14 @@ async function loadResults(): Promise<LoadState> {
     if (context instanceof Response && context.status === 401) return { kind: "signed-out" };
     return { kind: "error" };
   }
-  const payload = data as { responses?: SurveyResponseRow[]; generatedAt?: string } | null;
+  const payload = data as { responses?: SurveyResponseRow[]; testimonials?: TestimonialRow[]; generatedAt?: string } | null;
   if (!payload || !Array.isArray(payload.responses)) return { kind: "error" };
-  return { kind: "ready", responses: payload.responses, generatedAt: payload.generatedAt ?? new Date().toISOString() };
+  return {
+    kind: "ready",
+    responses: payload.responses,
+    testimonials: Array.isArray(payload.testimonials) ? payload.testimonials : [],
+    generatedAt: payload.generatedAt ?? new Date().toISOString(),
+  };
 }
 
 function download(filename: string, csv: string) {
@@ -69,7 +79,7 @@ function download(filename: string, csv: string) {
 
 const AdminSurveyResults = () => {
   const [state, setState] = useState<LoadState>({ kind: "loading" });
-  const [tab, setTab] = useState<Audience>("attendee");
+  const [tab, setTab] = useState<Tab>("attendee");
 
   const refresh = useCallback(async () => {
     setState({ kind: "loading" });
@@ -83,9 +93,16 @@ const AdminSurveyResults = () => {
   const attendees = useMemo(() => (state.kind === "ready" ? byAudience(state.responses, "attendee") : []), [state]);
   const partners = useMemo(() => (state.kind === "ready" ? byAudience(state.responses, "partner") : []), [state]);
 
-  const exportCsv = (audience: Audience, includeContact: boolean) => {
-    const rows = audience === "attendee" ? attendees : partners;
+  const testimonials = state.kind === "ready" ? state.testimonials : [];
+
+  const exportCsv = (target: Tab, includeContact: boolean) => {
     const date = new Date().toISOString().slice(0, 10);
+    if (target === "testimonials") {
+      download(`formula-2026-testimonials-${includeContact ? "full" : "shareable"}-${date}.csv`, testimonialsCsv(testimonials, includeContact));
+      return;
+    }
+    const audience = target;
+    const rows = audience === "attendee" ? attendees : partners;
     download(
       `formula-2026-${audience}-survey-${includeContact ? "full" : "shareable"}-${date}.csv`,
       toCsv(rows, audience, includeContact),
@@ -148,7 +165,7 @@ const AdminSurveyResults = () => {
 
           {state.kind === "ready" && (
             <>
-              <section aria-label="Response counts" className="mt-8 grid gap-px border-y border-black/15 bg-black/15 sm:grid-cols-3">
+              <section aria-label="Response counts" className="mt-8 grid gap-px border-y border-black/15 bg-black/15 sm:grid-cols-2 lg:grid-cols-4">
                 <Stat value={String(attendees.length)} label="Attendee responses" />
                 <Stat
                   value={`${attendees.filter((row) => row.anonymity === "identified").length} of ${attendees.length}`}
@@ -158,19 +175,23 @@ const AdminSurveyResults = () => {
                   value={String(companyCount(partners).companies)}
                   label={`Partner companies (${responsesLabel(partners.length)})`}
                 />
+                <Stat
+                  value={`${testimonials.filter((t) => t.publishConsent).length} of ${testimonials.length}`}
+                  label="Testimonials cleared to share publicly"
+                />
               </section>
 
               <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
                 <div role="group" aria-label="Survey" className="inline-flex border border-black/20">
-                  {(["attendee", "partner"] as const).map((audience) => (
+                  {(["attendee", "partner", "testimonials"] as const).map((option) => (
                     <button
-                      key={audience}
+                      key={option}
                       type="button"
-                      aria-pressed={tab === audience}
-                      onClick={() => setTab(audience)}
-                      className={`px-5 py-2.5 text-sm font-bold ${tab === audience ? "bg-black text-white" : "text-black/70 hover:text-black"}`}
+                      aria-pressed={tab === option}
+                      onClick={() => setTab(option)}
+                      className={`px-4 py-2.5 text-sm font-bold sm:px-5 ${tab === option ? "bg-black text-white" : "text-black/70 hover:text-black"}`}
                     >
-                      {audience === "attendee" ? "Attendees" : "Partners"}
+                      {option === "attendee" ? "Attendees" : option === "partner" ? "Partners" : "Testimonials"}
                     </button>
                   ))}
                 </div>
@@ -179,7 +200,8 @@ const AdminSurveyResults = () => {
                     <Download className="mr-2 h-4 w-4" /> Full CSV
                   </Button>
                   <Button variant="outline" className="border-black/20 bg-transparent" onClick={() => exportCsv(tab, false)}>
-                    <Download className="mr-2 h-4 w-4" /> Shareable CSV (no names or emails)
+                    <Download className="mr-2 h-4 w-4" />{" "}
+                    {tab === "testimonials" ? "Shareable CSV (no emails)" : "Shareable CSV (no names or emails)"}
                   </Button>
                 </div>
               </div>
@@ -187,7 +209,9 @@ const AdminSurveyResults = () => {
                 Data as of {new Date(state.generatedAt).toLocaleString()}. Submission times are stored to the hour only.
               </p>
 
-              {tab === "attendee" ? <AttendeeResults rows={attendees} /> : <PartnerResults rows={partners} />}
+              {tab === "attendee" && <AttendeeResults rows={attendees} />}
+              {tab === "partner" && <PartnerResults rows={partners} />}
+              {tab === "testimonials" && <TestimonialResults rows={testimonials} />}
             </>
           )}
         </section>
@@ -393,6 +417,9 @@ function AttendeeResults({ rows }: { rows: SurveyResponseRow[] }) {
       <Block title="10. Likelihood of attending in 2027" note="Reported as a distribution. Not an NPS.">
         <Numeric s={numericSummary(rows, "attendee", "a_q10_attend_2027")} unit="" />
       </Block>
+      <div className="lg:col-span-2">
+        <DateBlock rows={rows} audience="attendee" />
+      </div>
       <Block title="8. One action already taken" note="Shown without names, with the respondent's role only.">
         <TextList entries={freeTextEntries(rows, "a_q8_action")} responses={rows.length} />
       </Block>
@@ -473,6 +500,9 @@ function PartnerResults({ rows: allRows }: { rows: SurveyResponseRow[] }) {
           )}
         </Block>
       </div>
+      <div className="lg:col-span-2">
+        <DateBlock rows={rows} audience="partner" />
+      </div>
       <Block title="8. What created the most value">
         <TextList entries={freeTextEntries(rows, "p_q8_most_value")} responses={rows.length} />
       </Block>
@@ -484,3 +514,81 @@ function PartnerResults({ rows: allRows }: { rows: SurveyResponseRow[] }) {
 }
 
 export default AdminSurveyResults;
+
+function DateBlock({ rows, audience }: { rows: SurveyResponseRow[]; audience: Audience }) {
+  const prefix = audience === "attendee" ? "a" : "p";
+  const d = multiDistribution(rows, audience, `${prefix}_q11_dates_2027`);
+  const notes = freeTextEntries(rows, `${prefix}_q11_dates_note`);
+  const max = Math.max(1, ...d.bars.map((bar) => bar.count));
+  return (
+    <Block
+      title="11. Formula 2027 timing"
+      note="People could pick up to two windows, so the percentages add up to more than 100%."
+    >
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div>
+          <p className="mb-3 text-xs font-semibold text-black/55">
+            {d.answered} of {responsesLabel(d.responses)} answered · {d.unanswered} unanswered
+          </p>
+          <ul className="space-y-1.5">
+            {d.bars.map((bar) => (
+              <li key={bar.value} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 text-sm">
+                <div className="min-w-0">
+                  <div>{bar.label}</div>
+                  <div className="mt-0.5 h-2 bg-black/[0.06]">
+                    <div className="h-full bg-[#181816]" style={{ width: `${(bar.count / max) * 100}%` }} />
+                  </div>
+                </div>
+                <div className="w-24 text-right font-mono tabular-nums">
+                  {bar.count}
+                  <span className="ml-1 text-black/45">{bar.percent === null ? "" : `· ${bar.percent}%`}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="mb-3 text-sm font-semibold">Specific dates or conflicts</p>
+          <TextList entries={notes} responses={rows.length} />
+        </div>
+      </div>
+    </Block>
+  );
+}
+
+function TestimonialResults({ rows }: { rows: TestimonialRow[] }) {
+  if (!rows.length) return <p className="mt-8 text-black/60">No testimonials yet.</p>;
+  const shareable = rows.filter((row) => row.publishConsent).length;
+  return (
+    <div className="mt-6 space-y-4">
+      <p className="text-sm text-black/60">
+        {rows.length} {rows.length === 1 ? "testimonial" : "testimonials"}: {shareable} cleared to share publicly with the
+        person's name, {rows.length - shareable} internal only. Testimonials are stored apart from survey answers and are
+        not linked to them.
+      </p>
+      <ul className="grid gap-4 lg:grid-cols-2">
+        {rows.map((row) => (
+          <li key={row.id} className={card}>
+            <p
+              className={`mb-3 inline-block px-2 py-0.5 text-xs font-bold uppercase tracking-wide ${
+                row.publishConsent ? "bg-emerald-100 text-emerald-900" : "bg-black/10 text-black/70"
+              }`}
+            >
+              {row.publishConsent ? "May share publicly" : "Internal only"}
+            </p>
+            <blockquote className="whitespace-pre-wrap text-[15px] leading-7">{row.body}</blockquote>
+            <p className="mt-4 text-sm font-semibold">{row.fullName}</p>
+            <p className="text-sm text-black/60">
+              {[row.title, row.company, row.audience === "partner" ? "Partner" : "Attendee"].filter(Boolean).join(" · ")}
+            </p>
+            {row.email && (
+              <a className="text-sm underline" href={`mailto:${row.email}`}>
+                {row.email}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

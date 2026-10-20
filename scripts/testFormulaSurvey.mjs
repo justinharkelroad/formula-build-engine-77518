@@ -53,12 +53,12 @@ test('session and event names match the agenda and Justin\'s rulings', () => {
   );
 });
 
-test('each survey has ten numbered questions across four steps', () => {
+test('each survey has eleven numbered questions across four steps', () => {
   for (const audience of ['attendee', 'partner']) {
     const steps = schema.stepsFor(audience);
     assert.equal(steps.length, 4);
     const numbers = new Set(schema.questionsFor(audience).map((q) => q.number.replace(/[a-z]$/, '')));
-    assert.deepEqual([...numbers].map(Number).sort((a, b) => a - b), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    assert.deepEqual([...numbers].map(Number).sort((a, b) => a - b), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   }
 });
 
@@ -133,9 +133,46 @@ test('unknown questions, options and grid rows are refused', () => {
   assert.equal(errorOf({ ...attendee(), submissionKey: 'abc' }), 'invalid_submission_key');
 });
 
-test('optional date and testimonial modules are off: their fields are refused', () => {
+test('2027 dates: up to two windows, or exactly one of No preference / Neither', () => {
+  for (const [audience, id] of [['attendee', 'a_q11_dates_2027'], ['partner', 'p_q11_dates_2027']]) {
+    const base = audience === 'attendee' ? attendee : partner;
+    const ok = schema.validateSubmission(base({ answers: { [id]: ['nov_second_half', 'sep_first_half'] } }));
+    assert.deepEqual(ok.value.structured[id], ['sep_first_half', 'nov_second_half'], 'stored in option order');
+    assert.equal(errorOf(base({ answers: { [id]: ['sep_first_half', 'sep_second_half', 'nov_first_half'] } })), 'too_many_choices');
+    assert.equal(errorOf(base({ answers: { [id]: ['no_preference', 'sep_first_half'] } })), 'invalid_multi');
+    assert.equal(errorOf(base({ answers: { [id]: ['neither', 'no_preference'] } })), 'invalid_multi');
+    assert.equal(errorOf(base({ answers: { [id]: ['december'] } })), 'invalid_multi');
+    assert.equal(errorOf(base({ answers: { [id]: 'sep_first_half' } })), 'invalid_multi');
+    assert.deepEqual(schema.validateSubmission(base({ answers: { [id]: ['neither'] } })).value.structured[id], ['neither']);
+    assert.deepEqual(schema.validateSubmission(base({ answers: { [id]: [] } })).value.structured, {}, 'empty = skipped');
+  }
+  const note = schema.validateSubmission(attendee({ answers: { a_q11_dates_note: 'Avoid the week of the 14th' } }));
+  assert.equal(note.value.freeText.a_q11_dates_note, 'Avoid the week of the 14th');
+  assert.equal(errorOf(attendee({ answers: { a_q11_dates_note: 'x'.repeat(schema.DATE_NOTE_MAX + 1) } })), 'text_too_long');
+  assert.equal(schema.SURVEY_SCHEMA_VERSION, 2);
+});
+
+test('testimonials need text, a name and an explicit share choice', () => {
+  const t = (extra = {}) => ({ type: 'testimonial', submissionKey: KEY, audience: 'attendee', body: 'Changed how I run my week.', fullName: 'Ann Lee', publishConsent: true, ...extra });
+  const ok = schema.validateTestimonial(t({ email: 'Ann@B.co', company: 'Lee Agency' }));
+  assert.equal(ok.ok, true);
+  assert.deepEqual(ok.value, {
+    submissionKey: KEY, audience: 'attendee', body: 'Changed how I run my week.', fullName: 'Ann Lee',
+    company: 'Lee Agency', title: null, email: 'ann@b.co', publishConsent: true,
+  });
+  assert.equal(schema.validateTestimonial(t({ publishConsent: false })).value.publishConsent, false);
+  assert.equal(schema.validateTestimonial(t({ body: '  ' })).error, 'testimonial_required');
+  assert.equal(schema.validateTestimonial(t({ fullName: '' })).error, 'name_required');
+  assert.equal(schema.validateTestimonial(t({ email: 'nope' })).error, 'valid_email_required');
+  assert.equal(schema.validateTestimonial(t({ publishConsent: undefined })).error, 'publish_choice_required');
+  assert.equal(schema.validateTestimonial(t({ body: 'x'.repeat(schema.TESTIMONIAL_MAX + 1) })).error, 'text_too_long');
+  assert.equal(schema.validateTestimonial(t({ responseId: 'abc' })).error, 'invalid_testimonial', 'no way to link a response');
+  assert.equal(schema.validateTestimonial(t({ audience: 'vendor' })).error, 'invalid_audience');
+});
+
+test('unknown answer keys are still refused', () => {
   assert.equal(errorOf(attendee({ answers: { date_preference: ['september_first_half'] } })), 'unknown_question');
-  assert.equal(errorOf(attendee({ answers: { testimonial_optin: true } })), 'unknown_question');
+  assert.equal(errorOf(attendee({ answers: { p_q11_dates_2027: ['neither'] } })), 'unknown_question');
 });
 
 test('free text over the limit is refused', () => {
@@ -248,4 +285,29 @@ test('partner figures use one response per company, the latest received', () => 
   const { rows, excluded } = results.latestPerCompany([older, newer, beta]);
   assert.equal(excluded, 1);
   assert.deepEqual(results.partnerPipeline(rows), { companiesWithBoth: 2, conversations: 15, nextSteps: 5 });
+});
+
+test('date results count each window once per person, with answered as the denominator', () => {
+  const rows = [
+    row({ a_q11_dates_2027: ['sep_first_half', 'nov_first_half'] }),
+    row({ a_q11_dates_2027: ['sep_first_half'] }),
+    row({ a_q11_dates_2027: ['neither'] }),
+    row({}),
+  ];
+  const d = results.multiDistribution(rows, 'attendee', 'a_q11_dates_2027');
+  assert.equal(d.answered, 3);
+  assert.equal(d.unanswered, 1);
+  const sep = d.bars.find((b) => b.value === 'sep_first_half');
+  assert.deepEqual([sep.count, sep.percent], [2, 66.7]);
+  assert.equal(d.bars.find((b) => b.value === 'neither').count, 1);
+});
+
+test('testimonials CSV marks the share choice and drops emails from the shareable file', () => {
+  const rows = [{ id: '1', audience: 'attendee', body: '=cmd()', fullName: 'Ann', company: null, title: null, email: 'ann@b.co', publishConsent: false, submittedAt: '2026-10-22T14:00:00Z' }];
+  const full = results.testimonialsCsv(rows, true);
+  const share = results.testimonialsCsv(rows, false);
+  assert.ok(full.includes('ann@b.co'));
+  assert.ok(!share.includes('ann@b.co'));
+  assert.ok(share.includes('no, internal only'));
+  assert.ok(share.includes("\"'=cmd()\""), 'formula defused');
 });
