@@ -1121,6 +1121,24 @@ export type Database = {
         }
         Returns: string
       }
+      formula_survey_rate_check: {
+        Args: { p_client_hash: string }
+        Returns: Json
+      }
+      formula_survey_results: { Args: { p_user_id: string }; Returns: Json }
+      formula_survey_submit: {
+        Args: {
+          p_anonymity: string
+          p_audience: string
+          p_contact: Json
+          p_free_text: Json
+          p_role: string
+          p_schema_version: number
+          p_structured: Json
+          p_submission_key: string
+        }
+        Returns: Json
+      }
       get_partner_profile_by_session: {
         Args: { p_session_id: string }
         Returns: Json
