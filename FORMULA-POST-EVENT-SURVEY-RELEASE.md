@@ -18,7 +18,7 @@ Who can read results: Justin, Mary and Gregg only. Two checks apply, on the serv
 
 Being an admin is not enough on its own.
 
-Session names come from the agenda: the eight working sessions plus Garrett J. White. The evening events are named as the agenda printed them: Poolside Cocktail Hour and Formula Thursday Night.
+Session names come from the agenda: the eight working sessions plus Garrett J. White. The evening events are the Poolside Cocktail Hour and Casino Night (Thursday). Justin asked for Casino Night instead of the agenda's "Formula Thursday Night" on 2026-10-21.
 
 ## Release order (Justin)
 
@@ -89,6 +89,16 @@ Session names come from the agenda: the eight working sessions plus Garrett J. W
   - Identified attendees and partners see their name prefilled; anonymous attendees get an empty form.
 - **Results page:** a "Formula 2027 timing" block on both tabs, and a Testimonials tab that shows each testimonial's share choice, with full and shareable CSV.
 - **Backend for this release:** migration `20261021000000_formula_2026_survey_testimonials.sql`, then redeploy both `formula-survey-submit` and `formula-survey-results`.
+
+## Added 2026-10-21 (third release)
+
+- **Video or audio testimonials.** The testimonial form now offers "Write it" or "Upload a video or audio file". Uploads can carry an optional written note.
+  - Accepted: MP4, MOV (iPhone), WebM, MP3, M4A, AAC and WAV, up to 50 MB.
+  - The file goes straight from the browser to a private bucket, `formula-survey-testimonials`, through a one-time upload link. It's named by the testimonial's own key, carries nothing from the survey, and can't be overwritten or read publicly.
+  - A testimonial that names a file is saved only if the file is really in the bucket.
+  - Reviewers play or download each file on the Testimonials tab through a one-hour private link.
+- **Casino Night.** Question 6c now says "Casino Night (Thursday)" instead of "Formula Thursday Night". The stored answer key is unchanged, so earlier answers still count. The public agenda page is unchanged.
+- **Backend for this release:** migration `20261021120000_formula_2026_testimonial_uploads.sql`, then redeploy both `formula-survey-submit` and `formula-survey-results`.
 
 ## Not built (deliberately)
 

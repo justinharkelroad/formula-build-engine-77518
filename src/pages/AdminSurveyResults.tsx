@@ -576,7 +576,25 @@ function TestimonialResults({ rows }: { rows: TestimonialRow[] }) {
             >
               {row.publishConsent ? "May share publicly" : "Internal only"}
             </p>
-            <blockquote className="whitespace-pre-wrap text-[15px] leading-7">{row.body}</blockquote>
+            {row.mediaPath &&
+              (row.mediaUrl ? (
+                <div className="mb-3">
+                  {row.mediaType?.startsWith("video/") ? (
+                    <video controls preload="metadata" className="w-full rounded bg-black" src={`${import.meta.env.VITE_SUPABASE_URL}${row.mediaUrl}`} />
+                  ) : (
+                    <audio controls preload="metadata" className="w-full" src={`${import.meta.env.VITE_SUPABASE_URL}${row.mediaUrl}`} />
+                  )}
+                  <a className="mt-1 inline-block text-xs underline" href={`${import.meta.env.VITE_SUPABASE_URL}${row.mediaUrl}&download`}>
+                    Download file{row.mediaBytes ? ` (${(row.mediaBytes / (1024 * 1024)).toFixed(1)} MB)` : ""}
+                  </a>
+                  <p className="text-xs text-black/45">
+                    Some browsers can't play iPhone .mov files inline; download it instead. Links expire after an hour; press Refresh for new ones.
+                  </p>
+                </div>
+              ) : (
+                <p className="mb-3 text-sm text-red-700">The file couldn't be loaded. Press Refresh to try again.</p>
+              ))}
+            {row.body && <blockquote className="whitespace-pre-wrap text-[15px] leading-7">{row.body}</blockquote>}
             <p className="mt-4 text-sm font-semibold">{row.fullName}</p>
             <p className="text-sm text-black/60">
               {[row.title, row.company, row.audience === "partner" ? "Partner" : "Attendee"].filter(Boolean).join(" · ")}

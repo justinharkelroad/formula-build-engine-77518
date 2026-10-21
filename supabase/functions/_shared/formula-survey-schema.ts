@@ -11,7 +11,9 @@
 // - "Did not attend", "Unsure", "Not tracked", "Not applicable" and 0 are all
 //   distinct stored values.
 // - Session names come from src/config/agenda.ts plus Garrett J. White's
-//   main-stage slot. Evening events use the names printed on the agenda.
+//   main-stage slot. Evening events use the names attendees know: the
+//   Poolside Cocktail Hour, and Casino Night for Formula Thursday Night
+//   (Justin, 2026-10-21).
 
 // 2: added question 11 (2027 dates) to both surveys.
 export const SURVEY_SCHEMA_VERSION = 2;
@@ -133,7 +135,7 @@ export const EVENT_ROWS = [
   { id: "registration", label: "Registration and check-in" },
   { id: "venue", label: "Venue" },
   { id: "cocktail_hour", label: "Poolside Cocktail Hour" },
-  { id: "thursday_night", label: "Formula Thursday Night" },
+  { id: "thursday_night", label: "Casino Night (Thursday)" },
 ];
 
 const A_Q1: ChoiceQuestion = {
@@ -811,6 +813,48 @@ export function validateSubmission(input: unknown): ValidationResult {
 
 export const TESTIMONIAL_MAX = 1500;
 
+// Video or audio testimonials. Files go straight from the browser to a
+// private bucket through a one-time signed upload URL; the path is derived
+// from the testimonial's own submission key, never from anything in the
+// survey response. 50 MB is the storage default per-file ceiling.
+export const TESTIMONIAL_BUCKET = "formula-survey-testimonials";
+export const TESTIMONIAL_MEDIA_MAX_BYTES = 50 * 1024 * 1024;
+export const TESTIMONIAL_MEDIA_TYPES: Record<string, string> = {
+  "video/mp4": "mp4",
+  "video/quicktime": "mov",
+  "video/webm": "webm",
+  "audio/mpeg": "mp3",
+  "audio/mp4": "m4a",
+  "audio/x-m4a": "m4a",
+  "audio/aac": "aac",
+  "audio/wav": "wav",
+  "audio/x-wav": "wav",
+  "audio/webm": "weba",
+};
+
+export function testimonialMediaPath(submissionKey: string, mimeType: string): string | null {
+  const ext = TESTIMONIAL_MEDIA_TYPES[mimeType];
+  return ext && UUID_RE.test(submissionKey) ? `testimonials/${submissionKey.toLowerCase()}.${ext}` : null;
+}
+
+export type UploadRequestResult =
+  | { ok: true; value: { submissionKey: string; mimeType: string; path: string } }
+  | { ok: false; error: string };
+
+/** `type: "testimonial-upload"`: asks for a one-time upload URL for one file. */
+export function validateUploadRequest(input: unknown): UploadRequestResult {
+  if (!isPlainObject(input)) return { ok: false, error: "invalid_body" };
+  const submissionKey = typeof input.submissionKey === "string" ? input.submissionKey : "";
+  if (!UUID_RE.test(submissionKey)) return { ok: false, error: "invalid_submission_key" };
+  const mimeType = typeof input.mimeType === "string" ? input.mimeType : "";
+  const path = testimonialMediaPath(submissionKey, mimeType);
+  if (!path) return { ok: false, error: "unsupported_file_type" };
+  const size = input.sizeBytes;
+  if (typeof size !== "number" || !Number.isInteger(size) || size <= 0) return { ok: false, error: "invalid_file" };
+  if (size > TESTIMONIAL_MEDIA_MAX_BYTES) return { ok: false, error: "file_too_large" };
+  return { ok: true, value: { submissionKey: submissionKey.toLowerCase(), mimeType, path } };
+}
+
 export const TESTIMONIAL_COPY = {
   heading: "Leave a testimonial",
   intro:
@@ -818,6 +862,10 @@ export const TESTIMONIAL_COPY = {
   partnerIntro:
     "Tell other partners what Formula did for your company, in your own words. It's saved on its own, apart from your survey response.",
   bodyLabel: "Your testimonial",
+  modeWrite: "Write it",
+  modeUpload: "Upload a video or audio file",
+  uploadHelp: "MP4, MOV, WebM, MP3, M4A or WAV, up to 50 MB. On a phone, about a 30 to 60 second clip fits.",
+  uploadNoteLabel: "Anything to add in writing?",
   publishYes: "Formula may share this publicly with my name and company.",
   publishNo: "Keep it internal: for the Formula team only.",
   anonymousNote: "Your survey answers stay anonymous. Your testimonial carries the name you enter here.",
@@ -827,7 +875,10 @@ export const TESTIMONIAL_COPY = {
 export interface NormalizedTestimonial {
   submissionKey: string;
   audience: Audience;
-  body: string;
+  /** Written testimonial; optional when a video/audio file is attached. */
+  body: string | null;
+  mediaPath: string | null;
+  mediaType: string | null;
   fullName: string;
   company: string | null;
   title: string | null;
@@ -839,7 +890,9 @@ export type TestimonialResult = { ok: true; value: NormalizedTestimonial } | { o
 
 export function validateTestimonial(input: unknown): TestimonialResult {
   if (!isPlainObject(input)) return { ok: false, error: "invalid_body" };
-  const allowed = new Set(["type", "submissionKey", "audience", "body", "fullName", "company", "title", "email", "publishConsent"]);
+  const allowed = new Set([
+    "type", "submissionKey", "audience", "body", "mediaType", "fullName", "company", "title", "email", "publishConsent",
+  ]);
   if (Object.keys(input).some((key) => !allowed.has(key))) return { ok: false, error: "invalid_testimonial" };
 
   const submissionKey = typeof input.submissionKey === "string" ? input.submissionKey : "";
@@ -853,7 +906,15 @@ export function validateTestimonial(input: unknown): TestimonialResult {
   const title = cleanText(input.title, 120);
   const email = cleanText(input.email, 254);
   if ([body, fullName, company, title, email].includes("too_long")) return { ok: false, error: "text_too_long" };
-  if (!body) return { ok: false, error: "testimonial_required" };
+
+  let mediaPath: string | null = null;
+  let mediaType: string | null = null;
+  if (input.mediaType !== undefined && input.mediaType !== null) {
+    mediaType = typeof input.mediaType === "string" ? input.mediaType : "";
+    mediaPath = testimonialMediaPath(submissionKey, mediaType);
+    if (!mediaPath) return { ok: false, error: "unsupported_file_type" };
+  }
+  if (!body && !mediaPath) return { ok: false, error: "testimonial_required" };
   if (!fullName) return { ok: false, error: "name_required" };
   if (email && !isValidEmail(email)) return { ok: false, error: "valid_email_required" };
   if (typeof input.publishConsent !== "boolean") return { ok: false, error: "publish_choice_required" };
@@ -863,7 +924,9 @@ export function validateTestimonial(input: unknown): TestimonialResult {
     value: {
       submissionKey: submissionKey.toLowerCase(),
       audience,
-      body: body as string,
+      body: (body as string | null) ?? null,
+      mediaPath,
+      mediaType,
       fullName: fullName as string,
       company: (company as string | null) ?? null,
       title: (title as string | null) ?? null,
@@ -883,6 +946,9 @@ export const SURVEY_ERROR_MESSAGES: Record<string, string> = {
   text_too_long: `Comments can be up to ${TEXT_MAX} characters.`,
   rate_limited: "Too many submissions from this connection. Please wait a few minutes and try again.",
   too_many_choices: "Pick up to two windows for question 11.",
-  testimonial_required: "Please write your testimonial.",
+  testimonial_required: "Please write your testimonial or attach a video or audio file.",
+  unsupported_file_type: "That file type isn't supported. Use MP4, MOV, WebM, MP3, M4A or WAV.",
+  file_too_large: "That file is over 50 MB. Trim it or record a shorter clip, then try again.",
+  media_missing: "Your file didn't finish uploading. Please attach it again.",
   publish_choice_required: "Please choose whether we may share it publicly.",
 };
