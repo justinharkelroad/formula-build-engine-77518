@@ -29,6 +29,13 @@
       "when": 1792617526693,
       "tag": "0003_formula_2026_testimonial_uploads_fix",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792619634425,
+      "tag": "0004_formula_2026_testimonial_media_type_check",
+      "breakpoints": true
     }
   ]
 }
