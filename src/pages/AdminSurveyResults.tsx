@@ -391,7 +391,7 @@ function AttendeeResults({ rows }: { rows: SurveyResponseRow[] }) {
           title="4. Session usefulness"
           note="Rated = attended and gave a usefulness rating. Did not attend and Unable to assess are excluded from the denominator."
         >
-          <GridTable rows={gridDistributions(rows, "attendee", "a_q4_sessions")} topLabel="Very + Extremely useful" />
+          <GridTable rows={gridDistributions(rows, "attendee", "a_q4_sessions")} topLabel="4–5 stars" />
         </Block>
       </div>
       <Block title="5. Value of connections">
@@ -408,7 +408,7 @@ function AttendeeResults({ rows }: { rows: SurveyResponseRow[] }) {
       </Block>
       <div className="lg:col-span-2">
         <Block title="6c. Event experience" note="Each item rated separately. No composite score.">
-          <GridTable rows={gridDistributions(rows, "attendee", "a_q6c_event")} topLabel="Very good + Excellent" />
+          <GridTable rows={gridDistributions(rows, "attendee", "a_q6c_event")} topLabel="4–5 stars" />
         </Block>
       </div>
       <Block title="7. Saving plans with the Formula app">

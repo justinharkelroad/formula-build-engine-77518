@@ -339,3 +339,19 @@ test('testimonials CSV names the stored file but never a playback link', () => {
   assert.ok(csv.includes(`video/mp4 (testimonials/${KEY}.mp4)`));
   assert.ok(!csv.includes('token=secret'));
 });
+
+test('five-star standard: rating questions map stars 1-5 onto their first five options, worst to best', () => {
+  const starIds = ['a_q1_value', 'a_q3_alignment', 'a_q4_sessions', 'a_q5_connections', 'a_q6c_event', 'a_q6d_destiny_rescue', 'p_q2_attainment', 'p_q3_fit', 'p_q9_renewal'];
+  const all = [...schema.questionsFor('attendee'), ...schema.questionsFor('partner')];
+  assert.deepEqual(all.filter((q) => q.stars).map((q) => q.id).sort(), [...starIds].sort());
+  for (const q of all.filter((x) => x.stars)) {
+    const { stars, extras } = schema.starOptions(q);
+    assert.equal(stars.length, 5, q.id);
+    for (const s of stars) assert.ok(!results.NON_SCORED.has(s.value), `${q.id}: ${s.value} is a star, so it must be scored`);
+    for (const e of extras) assert.ok(results.NON_SCORED.has(e.value), `${q.id}: ${e.value} is an extra, so it must not be scored`);
+  }
+  // Stored values are unchanged, so earlier answers still validate.
+  assert.equal(schema.validateSubmission(attendee({ answers: { a_q1_value: 'very', a_q4_sessions: { body: 'did_not_attend' } } })).ok, true);
+  // Bipolar scales (too slow/too fast) stay as plain choices.
+  assert.ok(!all.find((q) => q.id === 'a_q6a_pace').stars);
+});

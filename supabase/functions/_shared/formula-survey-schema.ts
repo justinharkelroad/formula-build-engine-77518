@@ -41,12 +41,16 @@ interface QuestionBase {
 export interface ChoiceQuestion extends QuestionBase {
   kind: "choice";
   options: SurveyOption[];
+  /** Shown as 1-5 stars: the first five options, worst to best. Any later options are "Did not attend"-style extras. */
+  stars?: boolean;
 }
 
 export interface GridQuestion extends QuestionBase {
   kind: "grid";
   rows: { id: string; label: string }[];
   options: SurveyOption[];
+  /** Same as ChoiceQuestion.stars, for every row. */
+  stars?: boolean;
 }
 
 /** Whole number 0..max, or one of the non-numeric extras. */
@@ -140,6 +144,7 @@ export const EVENT_ROWS = [
 
 const A_Q1: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "a_q1_value",
   number: "1",
   prompt: "Overall, how valuable was attending Formula 2026 to you?",
@@ -166,6 +171,7 @@ const A_Q2: ChoiceQuestion = {
 
 const A_Q3: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "a_q3_alignment",
   number: "3",
   prompt:
@@ -183,10 +189,11 @@ const A_Q3: ChoiceQuestion = {
 
 const A_Q4: GridQuestion = {
   kind: "grid",
+  stars: true,
   id: "a_q4_sessions",
   number: "4",
   prompt: "How useful was each session to you?",
-  helper: "Rate each one separately. Choose \"Did not attend\" for any session you missed.",
+  helper: "Give each session 1 to 5 stars. Choose \"Did not attend\" for any session you missed.",
   rows: SESSION_ROWS,
   options: [
     ...value("useful"),
@@ -197,6 +204,7 @@ const A_Q4: GridQuestion = {
 
 const A_Q5: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "a_q5_connections",
   number: "5",
   prompt: "How valuable were the connections you made or strengthened at Formula?",
@@ -240,6 +248,7 @@ const A_Q6B: ChoiceQuestion = {
 
 const A_Q6C: GridQuestion = {
   kind: "grid",
+  stars: true,
   id: "a_q6c_event",
   number: "6c",
   prompt: "Rate each part of the event",
@@ -257,6 +266,7 @@ const A_Q6C: GridQuestion = {
 
 const A_Q6D: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "a_q6d_destiny_rescue",
   number: "6d",
   prompt: "Destiny Rescue experience",
@@ -403,6 +413,7 @@ export const P_Q2_NOT_APPLICABLE = "not_applicable";
 
 const P_Q2: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "p_q2_attainment",
   number: "2",
   prompt: "To what extent did Formula meet that primary objective?",
@@ -419,6 +430,7 @@ const P_Q2: ChoiceQuestion = {
 
 const P_Q3: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "p_q3_fit",
   number: "3",
   prompt: "How well did the agencies you interacted with fit your target customer profile?",
@@ -498,6 +510,7 @@ const P_Q8: TextQuestion = {
 
 const P_Q9: ChoiceQuestion = {
   kind: "choice",
+  stars: true,
   id: "p_q9_renewal",
   number: "9",
   prompt: "For a comparable package and investment, how likely would your company be to partner with Formula again?",
@@ -585,6 +598,17 @@ export type ValidationResult =
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/**
+ * The Formula five-star standard (Justin, 2026-10-21): rating questions show
+ * 1-5 stars, matching the workbook. Stars map onto the question's first five
+ * options, so stored answers are unchanged and earlier responses still count.
+ */
+export const STAR_COUNT = 5;
+
+export function starOptions(question: ChoiceQuestion | GridQuestion): { stars: SurveyOption[]; extras: SurveyOption[] } {
+  return { stars: question.options.slice(0, STAR_COUNT), extras: question.options.slice(STAR_COUNT) };
+}
 
 export function stepsFor(audience: Audience): SurveyStep[] {
   return audience === "attendee" ? ATTENDEE_STEPS : PARTNER_STEPS;
