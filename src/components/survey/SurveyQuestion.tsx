@@ -1,7 +1,10 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { Star } from "lucide-react";
 import {
   SPECIFY_MAX,
+  STAR_COUNT,
   SURVEY_COPY,
+  starOptions,
   type AnswerValue,
   type ChoiceQuestion,
   type CountQuestion,
@@ -82,12 +85,128 @@ function Shell({ question, children, error }: { question: Question; children: Re
   );
 }
 
+/**
+ * The Formula five-star standard: five stars, worst to best, plus any
+ * "Did not attend" / "Unable to assess" extras as small buttons. Hovering (or
+ * keyboard-focusing) a star shows what it means; on a phone the meaning shows
+ * under the stars once tapped. All of it is one native radio group, so arrow
+ * keys and screen readers work as they do for any radio list.
+ */
+function StarScale({
+  name,
+  question,
+  value,
+  onSelect,
+}: {
+  name: string;
+  question: ChoiceQuestion | GridQuestion;
+  value: string | undefined;
+  onSelect: (value: string) => void;
+}) {
+  const { stars, extras } = starOptions(question);
+  const [hover, setHover] = useState<number | null>(null);
+  const selected = stars.findIndex((option) => option.value === value);
+  const lit = hover ?? selected;
+  const extra = extras.find((option) => option.value === value);
+  const caption =
+    hover !== null
+      ? stars[hover].label
+      : selected >= 0
+        ? stars[selected].label
+        : extra
+          ? extra.label
+          : "Tap a star to rate";
+
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap items-center gap-x-1 gap-y-2" onPointerLeave={() => setHover(null)}>
+        {stars.map((option, index) => (
+          <label
+            key={option.value}
+            onPointerEnter={(event) => event.pointerType === "mouse" && setHover(index)}
+            className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[hsl(var(--secondary))]"
+          >
+            <input
+              type="radio"
+              name={name}
+              value={option.value}
+              checked={value === option.value}
+              onChange={() => onSelect(option.value)}
+              // Keyboard focus only: a tap also focuses the radio, and a bubble
+              // left behind on a phone would cover the row's name.
+              onFocus={(event) => event.currentTarget.matches(":focus-visible") && setHover(index)}
+              onBlur={() => setHover(null)}
+              aria-label={`${index + 1} of ${STAR_COUNT} stars: ${option.label}`}
+              className="sr-only"
+            />
+            <Star
+              aria-hidden="true"
+              className={`h-8 w-8 transition ${
+                index <= lit ? "fill-amber-400 text-amber-500" : "fill-transparent text-black/25"
+              } ${hover === index ? "scale-110" : ""}`}
+            />
+            {hover === index && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-full z-10 mt-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-black px-2 py-1 text-xs font-semibold text-white shadow"
+              >
+                {option.label}
+              </span>
+            )}
+          </label>
+        ))}
+        <span aria-hidden="true" className={`ml-2 text-sm font-semibold ${lit >= 0 || extra ? "text-black" : "text-black/45"}`}>
+          {caption}
+        </span>
+      </div>
+      {extras.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {extras.map((option) => (
+            <label
+              key={option.value}
+              className="inline-flex min-h-[36px] cursor-pointer items-center rounded-full border border-black/15 bg-white px-3 py-1.5 text-sm text-black/75 transition hover:border-black/40 has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[hsl(var(--secondary))]"
+            >
+              <input
+                type="radio"
+                name={name}
+                value={option.value}
+                checked={value === option.value}
+                onChange={() => onSelect(option.value)}
+                className="sr-only"
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const starText = (question: ChoiceQuestion | GridQuestion, value: unknown): string | null => {
+  const index = starOptions(question).stars.findIndex((option) => option.value === value);
+  return index >= 0 ? `${"★".repeat(index + 1)}${"☆".repeat(STAR_COUNT - index - 1)} ${question.options[index].label}` : null;
+};
+
 function ChoiceField({ question, answers, setAnswer, disabledNote }: FieldProps<ChoiceQuestion> & { disabledNote?: string }) {
   const current = answers[question.id];
   if (disabledNote) {
     return (
       <Shell question={question}>
         <p className="rounded-xl bg-black/5 px-4 py-3 text-sm text-black/70">{disabledNote}</p>
+      </Shell>
+    );
+  }
+  if (question.stars) {
+    return (
+      <Shell question={question}>
+        <StarScale
+          name={question.id}
+          question={question}
+          value={typeof current === "string" ? current : undefined}
+          onSelect={(value) => setAnswer(question.id, value)}
+        />
+        <ClearAnswer visible={current !== undefined} onClear={() => setAnswer(question.id, undefined)} />
       </Shell>
     );
   }
@@ -146,17 +265,26 @@ function GridField({ question, answers, setAnswer }: FieldProps<GridQuestion>) {
             <p aria-hidden="true" className="mb-3 font-bold text-black">
               {row.label}
             </p>
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-              {question.options.map((option) => (
-                <Radio
-                  key={option.value}
-                  name={`${question.id}-${row.id}`}
-                  option={option}
-                  checked={current[row.id] === option.value}
-                  onSelect={() => setRow(row.id, option.value)}
-                />
-              ))}
-            </div>
+            {question.stars ? (
+              <StarScale
+                name={`${question.id}-${row.id}`}
+                question={question}
+                value={current[row.id]}
+                onSelect={(value) => setRow(row.id, value)}
+              />
+            ) : (
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                {question.options.map((option) => (
+                  <Radio
+                    key={option.value}
+                    name={`${question.id}-${row.id}`}
+                    option={option}
+                    checked={current[row.id] === option.value}
+                    onSelect={() => setRow(row.id, option.value)}
+                  />
+                ))}
+              </div>
+            )}
             <ClearAnswer visible={current[row.id] !== undefined} onClear={() => setRow(row.id, undefined)} />
           </fieldset>
         ))}
@@ -360,13 +488,20 @@ export function describeAnswer(question: Question, answers: Answers): string[] {
   if (value === undefined) return ["No answer"];
   switch (question.kind) {
     case "choice": {
-      const label = labelFor(question.options, value);
+      const label = (question.stars && starText(question, value)) || labelFor(question.options, value);
       const other = answers[`${question.id}_other`];
       return [typeof other === "string" && value === "other" ? `${label}: ${other}` : label];
     }
     case "grid": {
       const rows = value as Record<string, string>;
-      return question.rows.map((row) => `${row.label}: ${rows[row.id] ? labelFor(question.options, rows[row.id]) : "No answer"}`);
+      return question.rows.map(
+        (row) =>
+          `${row.label}: ${
+            rows[row.id]
+              ? (question.stars && starText(question, rows[row.id])) || labelFor(question.options, rows[row.id])
+              : "No answer"
+          }`,
+      );
     }
     case "scale":
       return [typeof value === "number" ? `${value} out of ${question.max}` : labelFor(question.extras, value)];

@@ -132,11 +132,19 @@ function question(audience: Audience, id: string): SurveyQuestion {
   return found;
 }
 
+/** Star questions show "★★★ Moderately valuable" so the page reads like the survey. */
+function withStars(q: SurveyQuestion, options: SurveyOption[]): SurveyOption[] {
+  if (!((q.kind === "choice" || q.kind === "grid") && q.stars)) return options;
+  return options.map((option, index) => (index < 5 ? { ...option, label: `${"★".repeat(index + 1)} ${option.label}` } : option));
+}
+
 export function choiceDistribution(rows: SurveyResponseRow[], audience: Audience, id: string): Distribution {
   const q = question(audience, id);
   if (q.kind !== "choice") throw new Error(`${id} is not a choice question`);
-  const options =
-    id === "p_q2_attainment" ? [...q.options, { value: "not_applicable", label: "Not applicable (no objective)" }] : q.options;
+  const options = withStars(
+    q,
+    id === "p_q2_attainment" ? [...q.options, { value: "not_applicable", label: "Not applicable (no objective)" }] : q.options,
+  );
   return distributionOf(rows.map((row) => row.answers[id]), options, rows.length);
 }
 
@@ -187,7 +195,7 @@ export function gridDistributions(rows: SurveyResponseRow[], audience: Audience,
       const grid = response.answers[id];
       return grid && typeof grid === "object" ? (grid as Record<string, unknown>)[row.id] : undefined;
     });
-    const distribution = distributionOf(values, q.options, rows.length);
+    const distribution = distributionOf(values, withStars(q, q.options), rows.length);
     const top = distribution.bars.filter((bar) => topValues.has(bar.value)).reduce((sum, bar) => sum + bar.count, 0);
     return {
       rowId: row.id,
