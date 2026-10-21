@@ -36,3 +36,55 @@ export async function submitSurvey(payload: Record<string, unknown>): Promise<Su
     return { kind: "failed", code: "network", status: 0 };
   }
 }
+
+export type UploadOutcome = { kind: "uploaded" } | { kind: "failed"; code: string };
+
+/**
+ * Uploads one testimonial video/audio file: asks the submit function for a
+ * one-time token, then sends the file straight to storage. `onProgress`
+ * gets 0-100. Uses XHR because fetch cannot report upload progress.
+ */
+export async function uploadTestimonialFile(
+  file: File,
+  submissionKey: string,
+  onProgress: (percent: number) => void,
+): Promise<UploadOutcome> {
+  const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  let token: { bucket: string; path: string; token: string };
+  try {
+    const response = await fetch(SUBMIT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: key, Authorization: `Bearer ${key}` },
+      body: JSON.stringify({ type: "testimonial-upload", submissionKey, mimeType: file.type, sizeBytes: file.size }),
+      credentials: "omit",
+      referrerPolicy: "no-referrer",
+    });
+    const body = await response.json().catch(() => null);
+    if (!response.ok || body?.ok !== true) {
+      return { kind: "failed", code: typeof body?.error === "string" ? body.error : `http_${response.status}` };
+    }
+    token = body;
+  } catch {
+    return { kind: "failed", code: "network" };
+  }
+
+  const url = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/upload/sign/${token.bucket}/${token.path}?token=${encodeURIComponent(token.token)}`;
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", url);
+    xhr.setRequestHeader("apikey", key);
+    xhr.setRequestHeader("content-type", file.type);
+    xhr.setRequestHeader("x-upsert", "false");
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    };
+    xhr.onload = () => {
+      // 409 means this exact file key is already stored: a retry of an upload
+      // that finished but whose reply was lost.
+      if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 409) resolve({ kind: "uploaded" });
+      else resolve({ kind: "failed", code: xhr.status === 413 ? "file_too_large" : `upload_${xhr.status}` });
+    };
+    xhr.onerror = () => resolve({ kind: "failed", code: "network" });
+    xhr.send(file);
+  });
+}

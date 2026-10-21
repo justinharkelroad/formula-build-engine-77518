@@ -49,7 +49,7 @@ test('session and event names match the agenda and Justin\'s rulings', () => {
   assert.ok(schema.SESSION_ROWS.some((row) => row.label === 'Garrett J. White'));
   assert.deepEqual(
     schema.EVENT_ROWS.map((row) => row.label),
-    ['Registration and check-in', 'Venue', 'Poolside Cocktail Hour', 'Formula Thursday Night'],
+    ['Registration and check-in', 'Venue', 'Poolside Cocktail Hour', 'Casino Night (Thursday)'],
   );
 });
 
@@ -157,8 +157,8 @@ test('testimonials need text, a name and an explicit share choice', () => {
   const ok = schema.validateTestimonial(t({ email: 'Ann@B.co', company: 'Lee Agency' }));
   assert.equal(ok.ok, true);
   assert.deepEqual(ok.value, {
-    submissionKey: KEY, audience: 'attendee', body: 'Changed how I run my week.', fullName: 'Ann Lee',
-    company: 'Lee Agency', title: null, email: 'ann@b.co', publishConsent: true,
+    submissionKey: KEY, audience: 'attendee', body: 'Changed how I run my week.', mediaPath: null, mediaType: null,
+    fullName: 'Ann Lee', company: 'Lee Agency', title: null, email: 'ann@b.co', publishConsent: true,
   });
   assert.equal(schema.validateTestimonial(t({ publishConsent: false })).value.publishConsent, false);
   assert.equal(schema.validateTestimonial(t({ body: '  ' })).error, 'testimonial_required');
@@ -310,4 +310,32 @@ test('testimonials CSV marks the share choice and drops emails from the shareabl
   assert.ok(!share.includes('ann@b.co'));
   assert.ok(share.includes('no, internal only'));
   assert.ok(share.includes("\"'=cmd()\""), 'formula defused');
+});
+
+test('video/audio testimonials: allowed types and size, path derived from the testimonial key only', () => {
+  const up = (extra = {}) => schema.validateUploadRequest({ type: 'testimonial-upload', submissionKey: KEY, mimeType: 'video/quicktime', sizeBytes: 1000, ...extra });
+  assert.deepEqual(up().value, { submissionKey: KEY, mimeType: 'video/quicktime', path: `testimonials/${KEY}.mov` });
+  assert.equal(up({ mimeType: 'audio/x-m4a' }).value.path, `testimonials/${KEY}.m4a`);
+  assert.equal(up({ mimeType: 'application/pdf' }).error, 'unsupported_file_type');
+  assert.equal(up({ mimeType: 'image/png' }).error, 'unsupported_file_type');
+  assert.equal(up({ sizeBytes: schema.TESTIMONIAL_MEDIA_MAX_BYTES + 1 }).error, 'file_too_large');
+  assert.equal(up({ sizeBytes: 0 }).error, 'invalid_file');
+  assert.equal(up({ submissionKey: '../etc' }).error, 'invalid_submission_key');
+
+  const t = (extra = {}) => ({ type: 'testimonial', submissionKey: KEY, audience: 'partner', fullName: 'Pat', publishConsent: false, ...extra });
+  const fileOnly = schema.validateTestimonial(t({ mediaType: 'video/mp4' }));
+  assert.equal(fileOnly.ok, true, 'a file alone is enough');
+  assert.equal(fileOnly.value.body, null);
+  assert.equal(fileOnly.value.mediaPath, `testimonials/${KEY}.mp4`);
+  assert.equal(schema.validateTestimonial(t({ mediaType: 'video/mp4', body: 'Short note' })).value.body, 'Short note');
+  assert.equal(schema.validateTestimonial(t()).error, 'testimonial_required', 'neither text nor file');
+  assert.equal(schema.validateTestimonial(t({ mediaType: 'text/html' })).error, 'unsupported_file_type');
+  assert.equal(schema.validateTestimonial(t({ mediaType: 'video/mp4', mediaPath: 'testimonials/other.mp4' })).error, 'invalid_testimonial', 'client cannot pick the path');
+});
+
+test('testimonials CSV names the stored file but never a playback link', () => {
+  const rows = [{ id: '1', audience: 'partner', body: null, mediaPath: `testimonials/${KEY}.mp4`, mediaType: 'video/mp4', mediaUrl: '/storage/v1/object/sign/x?token=secret', fullName: 'Pat', company: 'Acme', title: null, email: null, publishConsent: true, submittedAt: '2026-10-22T14:00:00Z' }];
+  const csv = results.testimonialsCsv(rows, true);
+  assert.ok(csv.includes(`video/mp4 (testimonials/${KEY}.mp4)`));
+  assert.ok(!csv.includes('token=secret'));
 });

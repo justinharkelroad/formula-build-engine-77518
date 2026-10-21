@@ -10,9 +10,12 @@ import {
   SURVEY_ERROR_MESSAGES,
   TESTIMONIAL_COPY,
   TESTIMONIAL_MAX,
+  TESTIMONIAL_MEDIA_MAX_BYTES,
+  TESTIMONIAL_MEDIA_TYPES,
   isValidEmail,
   stepsFor,
   submitSurvey,
+  uploadTestimonialFile,
   type AnonymityMode,
   type AnswerValue,
   type Audience,
@@ -448,13 +451,24 @@ function SurveyFlow({ audience }: { audience: Audience }) {
 
 type TestimonialState =
   | { kind: "editing"; error: string | null }
+  | { kind: "uploading"; percent: number }
   | { kind: "submitting" }
   | { kind: "failed"; message: string }
   | { kind: "saved" };
 
+function fileProblem(file: File): string | null {
+  if (!TESTIMONIAL_MEDIA_TYPES[file.type]) return SURVEY_ERROR_MESSAGES.unsupported_file_type;
+  if (file.size > TESTIMONIAL_MEDIA_MAX_BYTES) return SURVEY_ERROR_MESSAGES.file_too_large;
+  return null;
+}
+
+const formatMb = (bytes: number) =>
+  bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+
 /**
- * Optional testimonial, shown after the survey is saved. It is its own
- * submission with its own key, so nothing ties it to the survey response.
+ * Optional testimonial, shown after the survey is saved: written, a video or
+ * audio file, or both. It is its own submission with its own key, so nothing
+ * ties it to the survey response; an uploaded file is named by that key too.
  */
 function TestimonialForm({
   audience,
@@ -465,7 +479,9 @@ function TestimonialForm({
   anonymous: boolean;
   prefill: ContactDraft | null;
 }) {
+  const [mode, setMode] = useState<"write" | "upload">("write");
   const [body, setBody] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [fullName, setFullName] = useState(prefill?.fullName ?? "");
   const [company, setCompany] = useState(prefill?.company ?? "");
   const [title, setTitle] = useState(prefill?.title ?? "");
@@ -473,6 +489,8 @@ function TestimonialForm({
   const [publish, setPublish] = useState<boolean | null>(null);
   const [state, setState] = useState<TestimonialState>({ kind: "editing", error: null });
   const [submissionKey] = useState(newSubmissionKey);
+  // The file already stored for this key; a retry never uploads it twice.
+  const uploadedType = useRef<string | null>(null);
   // Once a send's outcome is unknown, retries resend exactly this payload.
   const pending = useRef<Record<string, unknown> | null>(null);
 
@@ -484,29 +502,55 @@ function TestimonialForm({
     );
   }
 
-  const locked = state.kind === "submitting" || state.kind === "failed";
+  const busy = state.kind === "uploading" || state.kind === "submitting";
+  const locked = busy || state.kind === "failed";
+  const useFile = mode === "upload";
 
   const send = async () => {
     let payload = pending.current;
     if (!payload) {
-      const error = !body.trim()
-        ? SURVEY_ERROR_MESSAGES.testimonial_required
-        : !fullName.trim()
-          ? SURVEY_ERROR_MESSAGES.name_required
-          : email.trim() && !isValidEmail(email.trim())
-            ? SURVEY_ERROR_MESSAGES.valid_email_required
-            : publish === null
-              ? SURVEY_ERROR_MESSAGES.publish_choice_required
-              : null;
+      const error =
+        useFile && !file
+          ? "Please choose a video or audio file."
+          : useFile && file && fileProblem(file)
+            ? fileProblem(file)
+            : !useFile && !body.trim()
+              ? "Please write your testimonial."
+              : !fullName.trim()
+                ? SURVEY_ERROR_MESSAGES.name_required
+                : email.trim() && !isValidEmail(email.trim())
+                  ? SURVEY_ERROR_MESSAGES.valid_email_required
+                  : publish === null
+                    ? SURVEY_ERROR_MESSAGES.publish_choice_required
+                    : null;
       if (error) {
         setState({ kind: "editing", error });
         return;
       }
+
+      if (useFile && file && uploadedType.current !== file.type) {
+        setState({ kind: "uploading", percent: 0 });
+        const uploaded = await uploadTestimonialFile(file, submissionKey, (percent) =>
+          setState({ kind: "uploading", percent }),
+        );
+        if (uploaded.kind === "failed") {
+          setState({
+            kind: "editing",
+            error:
+              SURVEY_ERROR_MESSAGES[uploaded.code]
+              ?? "The upload didn't finish. Check your connection and press Send again.",
+          });
+          return;
+        }
+        uploadedType.current = file.type;
+      }
+
       payload = {
         type: "testimonial",
         submissionKey,
         audience,
-        body: body.trim(),
+        body: body.trim() || null,
+        mediaType: useFile && file ? file.type : null,
         fullName: fullName.trim(),
         company: company.trim() || null,
         title: title.trim() || null,
@@ -524,6 +568,7 @@ function TestimonialForm({
     }
     if (outcome.status >= 400 && outcome.status < 500) {
       pending.current = null;
+      if (outcome.code === "media_missing") uploadedType.current = null;
       setState({
         kind: "editing",
         error: SURVEY_ERROR_MESSAGES[outcome.code] ?? "Something in the form couldn't be accepted. Please check it.",
@@ -535,6 +580,23 @@ function TestimonialForm({
       message: "We couldn't confirm your testimonial was saved. Press Try again to resend it; it won't be saved twice.",
     });
   };
+
+  const tab = (value: "write" | "upload", label: string) => (
+    <label
+      className={`flex min-h-[44px] flex-1 cursor-pointer items-center justify-center rounded-full px-4 py-2 text-center text-sm font-bold has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-[hsl(var(--secondary))] ${
+        mode === value ? "bg-black text-white" : "text-black/70"
+      }`}
+    >
+      <input
+        type="radio"
+        name="testimonial-mode"
+        className="sr-only"
+        checked={mode === value}
+        onChange={() => setMode(value)}
+      />
+      {label}
+    </label>
+  );
 
   return (
     <div className="mt-10 space-y-5 border-t border-black/10 pt-8">
@@ -548,14 +610,47 @@ function TestimonialForm({
         )}
       </div>
       <fieldset disabled={locked} className="space-y-4">
+        <div role="radiogroup" aria-label="How do you want to leave it?" className="flex gap-1 rounded-full border border-black/15 bg-white p-1">
+          {tab("write", TESTIMONIAL_COPY.modeWrite)}
+          {tab("upload", TESTIMONIAL_COPY.modeUpload)}
+        </div>
+
+        {useFile && (
+          <div className="space-y-2">
+            <label htmlFor="testimonial-file" className="text-sm font-semibold text-black/80">
+              Video or audio file<span aria-hidden="true"> *</span>
+            </label>
+            <input
+              id="testimonial-file"
+              type="file"
+              accept={Object.keys(TESTIMONIAL_MEDIA_TYPES).join(",")}
+              aria-describedby="testimonial-file-help"
+              onChange={(event) => {
+                const chosen = event.target.files?.[0] ?? null;
+                setFile(chosen);
+                setState({ kind: "editing", error: chosen ? fileProblem(chosen) : null });
+              }}
+              className="block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:font-bold file:text-white"
+            />
+            <p id="testimonial-file-help" className="text-xs text-black/55">
+              {TESTIMONIAL_COPY.uploadHelp}
+            </p>
+            {file && (
+              <p className="text-sm text-black/70">
+                {file.name} · {formatMb(file.size)}
+              </p>
+            )}
+          </div>
+        )}
+
         <div>
           <label htmlFor="testimonial-body" className="text-sm font-semibold text-black/80">
-            {TESTIMONIAL_COPY.bodyLabel}
-            <span aria-hidden="true"> *</span>
+            {useFile ? TESTIMONIAL_COPY.uploadNoteLabel : TESTIMONIAL_COPY.bodyLabel}
+            {useFile ? <span className="font-normal text-black/50"> (optional)</span> : <span aria-hidden="true"> *</span>}
           </label>
           <textarea
             id="testimonial-body"
-            rows={6}
+            rows={useFile ? 3 : 6}
             maxLength={TESTIMONIAL_MAX}
             value={body}
             onChange={(event) => setBody(event.target.value)}
@@ -603,15 +698,32 @@ function TestimonialForm({
           ))}
         </fieldset>
       </fieldset>
+      {state.kind === "uploading" && (
+        <div aria-live="polite">
+          <p className="text-sm font-semibold">Uploading… {state.percent}%</p>
+          <div
+            className="mt-2 h-2 w-full overflow-hidden rounded-full bg-black/10"
+            role="progressbar"
+            aria-label="Upload progress"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={state.percent}
+          >
+            <div className="h-full bg-black transition-all" style={{ width: `${state.percent}%` }} />
+          </div>
+          <p className="mt-1 text-xs text-black/55">Keep this page open until it finishes.</p>
+        </div>
+      )}
       {(state.kind === "failed" || (state.kind === "editing" && state.error)) && (
         <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
           {state.kind === "failed" ? state.message : state.error}
         </p>
       )}
-      <button type="button" className={primaryButton} onClick={send} disabled={state.kind === "submitting"}>
-        {state.kind === "submitting" ? (
+      <button type="button" className={primaryButton} onClick={send} disabled={busy}>
+        {busy ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Sending…
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />{" "}
+            {state.kind === "uploading" ? "Uploading…" : "Sending…"}
           </>
         ) : state.kind === "failed" ? (
           "Try again"

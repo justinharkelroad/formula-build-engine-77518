@@ -40,7 +40,12 @@ export interface SurveyResponseRow {
 export interface TestimonialRow {
   id: string;
   audience: Audience;
-  body: string;
+  body: string | null;
+  mediaPath?: string | null;
+  mediaType?: string | null;
+  mediaBytes?: number | null;
+  /** Signed playback path (one hour), added by formula-survey-results. */
+  mediaUrl?: string | null;
   fullName: string;
   company: string | null;
   title: string | null;
@@ -424,13 +429,14 @@ export function toCsv(rows: SurveyResponseRow[], audience: Audience, includeCont
 
 /** Testimonials file. Email is left out of the shareable version. */
 export function testimonialsCsv(rows: TestimonialRow[], includeEmail: boolean): string {
-  const header = ["submitted_hour_utc", "audience", "full_name", "company", "title", "may_publish", "testimonial"];
+  const header = ["submitted_hour_utc", "audience", "full_name", "company", "title", "may_publish", "testimonial", "file"];
   if (includeEmail) header.splice(5, 0, "email");
   const lines = [header.map(csvCell).join(",")];
   for (const row of rows) {
     const cells: unknown[] = [row.submittedAt, row.audience, row.fullName, row.company ?? "", row.title ?? ""];
     if (includeEmail) cells.push(row.email ?? "");
-    cells.push(row.publishConsent ? "yes" : "no, internal only", row.body);
+    // The file column names the stored file; playback links expire, so they stay off the CSV.
+    cells.push(row.publishConsent ? "yes" : "no, internal only", row.body ?? "", row.mediaPath ? `${row.mediaType} (${row.mediaPath})` : "");
     lines.push(cells.map(csvCell).join(","));
   }
   return `${lines.join("\r\n")}\r\n`;
