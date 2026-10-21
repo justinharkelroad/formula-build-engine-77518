@@ -888,7 +888,7 @@ export const TESTIMONIAL_COPY = {
   bodyLabel: "Your testimonial",
   modeWrite: "Write it",
   modeUpload: "Upload a video or audio file",
-  uploadHelp: "MP4, MOV, WebM, MP3, M4A or WAV, up to 50 MB. On a phone, about a 30 to 60 second clip fits.",
+  uploadHelp: "Record up to 60 seconds. Files can be up to 50 MB (MP4, MOV, WebM, MP3, M4A or WAV).",
   uploadNoteLabel: "Anything to add in writing?",
   publishYes: "Formula may share this publicly with my name and company.",
   publishNo: "Keep it internal: for the Formula team only.",
