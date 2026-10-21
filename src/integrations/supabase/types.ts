@@ -1146,6 +1146,8 @@ export type Database = {
           p_company: string
           p_email: string
           p_full_name: string
+          p_media_path: string
+          p_media_type: string
           p_publish_consent: boolean
           p_submission_key: string
           p_title: string
