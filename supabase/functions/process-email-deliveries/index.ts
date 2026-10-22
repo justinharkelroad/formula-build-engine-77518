@@ -19,7 +19,7 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-async function isAdmin(req: Request, supabase: ReturnType<typeof createClient>): Promise<boolean> {
+async function isAdmin(req: Request, supabase: SupabaseClient): Promise<boolean> {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   if (!token) return false;
   const { data, error } = await supabase.auth.getUser(token);
