@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import {
   processPurchaseEmail,
   queuePurchaseEmail,
@@ -19,7 +19,7 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-async function isAdmin(req: Request, supabase: ReturnType<typeof createClient>): Promise<boolean> {
+async function isAdmin(req: Request, supabase: SupabaseClient): Promise<boolean> {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   if (!token) return false;
   const { data, error } = await supabase.auth.getUser(token);
