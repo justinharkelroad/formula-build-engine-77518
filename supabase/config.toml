@@ -62,3 +62,8 @@ verify_jwt = false
 # Performs its own admin-role check; the RPC also requires the reviewer list.
 [functions.formula-survey-results]
 verify_jwt = false
+
+# Public admin "Forgot password?". Sends a reset link through Resend only to
+# website admins; every other outcome gets the same reply.
+[functions.formula-admin-password-reset]
+verify_jwt = false

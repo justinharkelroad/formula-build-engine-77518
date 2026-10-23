@@ -31,9 +31,18 @@ const AdminAuth = () => {
     const { error } = await sendPasswordReset(email.trim());
     setIsLoading(false);
     // The same reply whether or not the email has an account, so the form
-    // can't be used to find out who has one. Only a rate limit is reported.
-    if (error && /rate|too many|security purposes/i.test(error.message)) {
-      setError('Too many reset requests. Wait a few minutes, then try again.');
+    // can't be used to find out who has one. Only a rate limit, a malformed
+    // email or an outage is reported.
+    if (error?.message === 'rate_limited') {
+      setError('Too many reset requests. Wait 15 minutes, then try again.');
+      return;
+    }
+    if (error?.message === 'invalid_email') {
+      setError('Enter a valid email address.');
+      return;
+    }
+    if (error) {
+      setError("We couldn't send the reset email right now. Try again in a minute.");
       return;
     }
     setResetSent(true);
