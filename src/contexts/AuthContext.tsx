@@ -109,14 +109,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
-  // The reset email links to /admin/set-password. If the auth service does not
-  // allow that address it falls back to the site root; index.html forwards any
-  // recovery link to /admin/set-password before the app starts either way.
-  const sendPasswordReset = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/admin/set-password`,
-    });
-    return { error };
+  // The reset link is emailed by formula-admin-password-reset through Resend
+  // (tickets@theformulaforum.com); Lovable Cloud's built-in auth mailer did not
+  // deliver. The link lands on /admin/set-password, and index.html forwards any
+  // recovery link there even if the auth service falls back to the site root.
+  const sendPasswordReset = async (email: string): Promise<{ error: AuthError | null }> => {
+    const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/formula-admin-password-reset`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: key, Authorization: `Bearer ${key}` },
+        body: JSON.stringify({ email }),
+        credentials: 'omit',
+      });
+      if (response.ok) return { error: null };
+      const body = await response.json().catch(() => null);
+      return { error: new AuthError(response.status === 429 ? 'rate_limited' : String(body?.error ?? 'unavailable'), response.status) };
+    } catch {
+      return { error: new AuthError('unavailable', 0) };
+    }
   };
 
   const updatePassword = async (password: string) => {
