@@ -16,10 +16,28 @@ const AdminAuth = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signIn, signUp, user, isAdmin, isLoading: authLoading } = useAuth();
+  const { signIn, signUp, sendPasswordReset, user, isAdmin, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  // "Forgot password?" view; /admin/auth?reset=1 opens it directly (used by an expired reset link).
+  const [forgot, setForgot] = useState(() => new URLSearchParams(location.search).get('reset') === '1');
+  const [resetSent, setResetSent] = useState(false);
+
+  const handleReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    const { error } = await sendPasswordReset(email.trim());
+    setIsLoading(false);
+    // The same reply whether or not the email has an account, so the form
+    // can't be used to find out who has one. Only a rate limit is reported.
+    if (error && /rate|too many|security purposes/i.test(error.message)) {
+      setError('Too many reset requests. Wait a few minutes, then try again.');
+      return;
+    }
+    setResetSent(true);
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,6 +144,55 @@ const AdminAuth = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {forgot ? (
+                <div className="space-y-4">
+                  {resetSent ? (
+                    <Alert>
+                      <AlertDescription>
+                        If {email.trim() || 'that email'} has an admin account, a reset link is on its way. Open it on
+                        any device to choose a new password. Check spam if it isn't there in a few minutes.
+                      </AlertDescription>
+                    </Alert>
+                  ) : (
+                    <form onSubmit={handleReset} className="space-y-4">
+                      <p className="text-sm text-muted-foreground">
+                        Enter the email you sign in with and we'll send you a link to choose a new password.
+                      </p>
+                      <div className="space-y-2">
+                        <Label htmlFor="reset-email">Email</Label>
+                        <Input
+                          id="reset-email"
+                          type="email"
+                          autoComplete="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      {error && (
+                        <Alert variant="destructive">
+                          <AlertDescription>{error}</AlertDescription>
+                        </Alert>
+                      )}
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? 'Sending…' : 'Send reset link'}
+                      </Button>
+                    </form>
+                  )}
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="w-full"
+                    onClick={() => {
+                      setForgot(false);
+                      setResetSent(false);
+                      setError('');
+                    }}
+                  >
+                    Back to sign in
+                  </Button>
+                </div>
+              ) : (
               <Tabs defaultValue="signin" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -166,6 +233,17 @@ const AdminAuth = () => {
                       disabled={isLoading}
                     >
                       {isLoading ? 'Signing in...' : 'Sign In'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="w-full"
+                      onClick={() => {
+                        setForgot(true);
+                        setError('');
+                      }}
+                    >
+                      Forgot password?
                     </Button>
                   </form>
                 </TabsContent>
@@ -213,6 +291,7 @@ const AdminAuth = () => {
                   </Alert>
                 </TabsContent>
               </Tabs>
+              )}
             </CardContent>
           </Card>
         </div>

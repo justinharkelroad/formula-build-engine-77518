@@ -405,6 +405,15 @@
     }
     </script>
 
+    <!-- A password-reset link can land on any page (the auth service falls back to
+         the site root). Forward it, token and all, to the set-password page before
+         the app starts; an expired link goes there too, to say so. -->
+    <script>
+      if (/(^|[#&])(type=recovery|error_code=otp_expired)(&|$)/.test(window.location.hash) && window.location.pathname !== "/admin/set-password") {
+        window.location.replace("/admin/set-password" + window.location.hash);
+      }
+    </script>
+
     <!-- Meta Pixel (ID matches src/config/analytics.ts). Not loaded on /survey:
          anonymous survey respondents are promised no advertising tracker. -->
     <script>

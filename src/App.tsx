@@ -32,6 +32,7 @@ const AdminRegistrations = lazy(() => import("./pages/AdminRegistrations"));
 const AdminSales = lazy(() => import("./pages/AdminSales"));
 const AdminFormulaAttendees = lazy(() => import("./pages/AdminFormulaAttendees"));
 const AdminAuth = lazy(() => import("./pages/AdminAuth"));
+const AdminSetPassword = lazy(() => import("./pages/AdminSetPassword"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const GiveBack = lazy(() => import("./pages/GiveBack"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -111,6 +112,7 @@ const App = () => (
             <Route path="/thank-you" element={<ThankYouEnhanced />} />
             <Route path="/ga-setup" element={<GASetup />} />
             <Route path="/admin/auth" element={<AdminAuth />} />
+            <Route path="/admin/set-password" element={<AdminSetPassword />} />
             <Route path="/admin/registrations" element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminRegistrations />
