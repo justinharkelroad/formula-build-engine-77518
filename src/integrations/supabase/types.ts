@@ -874,6 +874,14 @@ export type Database = {
         Args: { p_actor_id: string; p_request: Json }
         Returns: Json
       }
+      formula_admin_reset_record: {
+        Args: { p_request_id: string; p_sent: boolean }
+        Returns: undefined
+      }
+      formula_admin_reset_request: {
+        Args: { p_client_hash: string; p_email: string }
+        Returns: Json
+      }
       formula_admin_roster_snapshot: { Args: never; Returns: Json }
       formula_admin_roster_snapshot_with_partners: {
         Args: never
