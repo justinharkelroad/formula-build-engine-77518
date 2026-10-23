@@ -207,6 +207,7 @@ const SITE_ROUTES: SeoRoute[] = [
     noindex: true,
   },
   { path: "/admin/auth", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
+  { path: "/admin/set-password", title: "Set Password | Formula Admin", description: "Administrative access.", noindex: true },
   { path: "/admin/registrations", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/sales", title: "Admin | Formula Forum", description: "Administrative access.", noindex: true },
   { path: "/admin/ai-portal", title: "AI Portal | Formula Admin", description: "Administrative access.", noindex: true },
