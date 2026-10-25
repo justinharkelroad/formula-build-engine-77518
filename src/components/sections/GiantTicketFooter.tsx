@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { getPostEventCtaLabel } from "@/config/postEvent";
 import { CONFIG } from "@/config/event";
 import { usePassDialog } from "@/contexts/PassDialogContext";
@@ -39,6 +40,12 @@ const GiantTicketFooter = () => {
         <div className={`mt-12 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8 pt-6 md:pt-8 border-t border-white/15 text-sm reveal-up delay-2 ${isVisible ? "is-visible" : ""}`}>
           <div className="text-xs tracking-widest uppercase text-white/50">
             THEFORMULAFORUM.COM
+            <Link
+              to="/faq"
+              className="mt-2 flex min-h-11 w-fit items-center text-white/70 underline underline-offset-4 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              FAQ
+            </Link>
           </div>
           <div className="md:text-center text-white/70 text-xs md:text-sm">
             {CONFIG.VENUE_NAME}, Orlando, FL, Oct 14-16, 2026
