@@ -21,7 +21,24 @@ export function isPortalStatus(value: PortalStatus | PortalDenied): value is Por
   return value.access === true;
 }
 
-export type CodeRequestState = "check_email" | "closed" | "rate_limited";
+type PortalSession = { token: string; email: string };
+const SESSION_KEY = "formula_ai_portal_session_v1";
+let currentSession: PortalSession | null = null;
+
+export function portalSession(): PortalSession | null {
+  if (currentSession) return currentSession;
+  try {
+    const saved = JSON.parse(localStorage.getItem(SESSION_KEY) ?? "null");
+    if (saved && typeof saved.token === "string" && /^fai_[a-f0-9]{64}$/.test(saved.token)
+      && typeof saved.email === "string") currentSession = saved;
+  } catch { /* A blocked browser store only disables remembering the toolkit. */ }
+  return currentSession;
+}
+
+export function clearPortalSession(): void {
+  currentSession = null;
+  try { localStorage.removeItem(SESSION_KEY); } catch { /* Storage may be disabled. */ }
+}
 
 export const SUPPORT_EMAIL = "info@f3florida.com";
 
@@ -39,7 +56,9 @@ async function errorBody(error: unknown): Promise<Record<string, unknown> | null
 }
 
 async function invoke<T>(fn: string, body: Record<string, unknown>): Promise<T> {
-  const { data, error } = await supabase.functions.invoke(fn, { body });
+  const { data, error } = await supabase.functions.invoke(fn, {
+    body: fn === "formula-ai-portal" ? { ...body, portalToken: portalSession()?.token } : body,
+  });
   if (error) {
     const payload = await errorBody(error);
     if (payload && payload.access === false) return payload as T;
@@ -48,18 +67,20 @@ async function invoke<T>(fn: string, body: Record<string, unknown>): Promise<T> 
   return data as T;
 }
 
-export async function requestCode(email: string): Promise<CodeRequestState> {
-  const result = await invoke<{ state: CodeRequestState }>("formula-ai-portal-signin", { action: "request-code", email });
-  return result.state;
+export async function openPortal(email: string): Promise<PortalStatus | PortalDenied> {
+  const result = await invoke<(PortalStatus & { token: string }) | PortalDenied>(
+    "formula-ai-portal-signin", { action: "enter", email: email.trim() },
+  );
+  if (result.access) {
+    if (!/^fai_[a-f0-9]{64}$/.test(result.token)) throw new Error("formula_ai_portal_unavailable");
+    currentSession = { token: result.token, email: result.member.email };
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); } catch { /* Keep this tab working. */ }
+  }
+  return result;
 }
 
 export async function requestAccess(input: { email: string; name: string; note?: string }): Promise<void> {
   await invoke("formula-ai-portal-signin", { action: "request-access", ...input });
-}
-
-export async function verifyCode(email: string, code: string): Promise<boolean> {
-  const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code, type: "email" });
-  return !error;
 }
 
 export function loadStatus(): Promise<PortalStatus | PortalDenied> {
@@ -115,6 +136,10 @@ export function parseVimeoMessage(origin: string, data: unknown): VimeoEvent | n
 
 export function denialMessage(reason: string): string {
   switch (reason) {
+    case "closed":
+      return "The toolkit is not open yet. Please check back soon.";
+    case "rate_limited":
+      return "Too many access attempts. Please wait a few minutes and try again.";
     case "expired":
       return "Portal access for Formula 2026 has ended.";
     case "revoked":

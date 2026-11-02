@@ -246,7 +246,7 @@ const AdminAIPortal = () => {
       await approveEmail(invoke, email, reason, approvalForm.name.trim() || undefined);
       if (mountedRef.current) setApprovalSheetOpen(false);
       await refreshAfterMutation();
-      toast({ title: 'Approval added', description: `${email} can now request a sign-in code.` });
+      toast({ title: 'Approval added', description: `${email} can now open the toolkit with their email.` });
     } catch (error) {
       showMutationError('Approval not saved', error);
     } finally {
@@ -315,7 +315,7 @@ const AdminAIPortal = () => {
 
   const confirmTitle = confirmState?.kind === 'sign-in' ? `${confirmState.open ? 'Open' : 'Close'} sign-in?` : confirmState?.kind === 'dismiss' ? 'Dismiss this request?' : confirmState?.kind === 'revoke-approval' ? 'Revoke this approval?' : confirmState?.kind === 'member' ? `${confirmState.state === 'revoked' ? 'Revoke' : 'Restore'} access?` : '';
   const confirmDescription = confirmState?.kind === 'sign-in'
-    ? confirmState.open ? 'People can request a sign-in code as soon as you open the gate.' : 'Nobody can request a sign-in code while the gate is closed.'
+    ? confirmState.open ? 'Eligible emails can open the toolkit as soon as you open the gate.' : 'New visitors cannot open the toolkit while the gate is closed.'
     : confirmState?.kind === 'dismiss' ? `${confirmState.request.email} will be removed from Mary’s pending queue.`
       : confirmState?.kind === 'revoke-approval' ? `${confirmState.approval.email} will no longer have this manual approval.`
         : confirmState?.kind === 'member' ? confirmState.state === 'revoked' ? 'This person will lose portal access immediately. You can restore access later.' : 'This person will regain portal access immediately.' : '';
@@ -344,7 +344,7 @@ const AdminAIPortal = () => {
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#c45120]">Sign-in switch</p>
                 <h2 id="sign-in-heading" className="mt-3 text-3xl font-bold tracking-[-0.04em]">{snapshot ? snapshot.settings.sign_in_open ? 'Sign-in is OPEN' : 'Sign-in is CLOSED' : <Skeleton className="h-10 w-72" />}</h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-black/60">When closed, nobody can request a sign-in code. Open it on the closing Zoom call.</p>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-black/60">When closed, new visitors cannot open the toolkit. Existing sessions retain access until revoked or the access period ends.</p>
                 {snapshot && <p className="mt-3 text-sm font-semibold text-black/60">{formatAccessEnd(snapshot.settings.access_until)}</p>}
               </div>
               {snapshot ? <Button className="shrink-0 bg-[#f26622] text-black hover:bg-[#dc5719]" onClick={() => setConfirmState({ kind: 'sign-in', open: !snapshot.settings.sign_in_open })} disabled={busy}><span className={`mr-2 h-3 w-3 rounded-full ring-2 ring-offset-2 ring-offset-[#faf8f2] ${snapshot.settings.sign_in_open ? 'bg-emerald-500 ring-emerald-200' : 'bg-red-500 ring-red-200'}`} aria-hidden="true" /> {snapshot.settings.sign_in_open ? 'Close sign-in' : 'Open sign-in'}</Button> : <Skeleton className="h-10 w-32" />}
@@ -396,7 +396,7 @@ const AdminAIPortal = () => {
 
       <Sheet open={approvalSheetOpen} onOpenChange={(open) => { if (!open && mutation !== 'approve') setApprovalSheetOpen(false); }}>
         <SheetContent className={sheetClass}>
-          <SheetHeader className="pr-8"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#c45120]">Manual access</p><SheetTitle className="text-3xl tracking-[-0.04em] text-[#181816]">Add an approval</SheetTitle><SheetDescription className="leading-6 text-black/60">Use the exact email they will use to request their sign-in code. The reason stays with the approval record.</SheetDescription></SheetHeader>
+          <SheetHeader className="pr-8"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#c45120]">Manual access</p><SheetTitle className="text-3xl tracking-[-0.04em] text-[#181816]">Add an approval</SheetTitle><SheetDescription className="leading-6 text-black/60">Use the exact email they will enter to open the toolkit. The reason stays with the approval record.</SheetDescription></SheetHeader>
           <form className="mt-8 space-y-6" onSubmit={submitApproval}><div className="space-y-2"><Label htmlFor="approval-email">Email address</Label><Input id="approval-email" type="email" autoComplete="email" value={approvalForm.email} onChange={(event) => setApprovalForm((current) => ({ ...current, email: event.target.value }))} className={inputClass} required /></div><div className="space-y-2"><Label htmlFor="approval-name">Name (optional)</Label><Input id="approval-name" autoComplete="name" value={approvalForm.name} onChange={(event) => setApprovalForm((current) => ({ ...current, name: event.target.value }))} className={inputClass} /></div><div className="space-y-2"><Label htmlFor="approval-reason">Reason</Label><Textarea id="approval-reason" value={approvalForm.reason} onChange={(event) => setApprovalForm((current) => ({ ...current, reason: event.target.value }))} className={inputClass} required /></div><div className="flex justify-end gap-3 border-t border-black/10 pt-6"><Button type="button" variant="ghost" onClick={() => setApprovalSheetOpen(false)} disabled={mutation === 'approve'}>Cancel</Button><Button type="submit" className="bg-[#f26622] text-black hover:bg-[#dc5719]" disabled={mutation === 'approve'}>{mutation === 'approve' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Save approval</Button></div></form>
         </SheetContent>
       </Sheet>

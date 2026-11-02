@@ -1,14 +1,10 @@
-// Public sign-in for the Formula AI portal (/ai-portal).
-//
-// `request-code`: if the email is eligible and sign-in is open, the auth
-// service issues a one-time 6-digit code and we email it. Every outcome other
-// than "closed" or "rate limited" gets the same reply after the same minimum
-// delay, so the endpoint cannot be used to test who is on the roster.
-// No password is ever created or changed here.
-//
-// `request-access`: someone not on the roster asks Mary to review them.
+// Email-only entry issues a toolkit-only opaque token after the database
+// checks eligibility. It never creates a website authentication session.
+// The legacy request-code action remains for already-open old clients.
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { corsHeaders, json, readBody, serviceClient, sha256Hex, text } from "../_shared/ai-portal-http.ts";
+
+import { AI_PORTAL_VIDEOS, vimeoEmbedUrl } from "../_shared/ai-portal-catalog.ts";
 
 const MIN_RESPONSE_MS = 1200;
 const PORTAL_URL = "https://theformulaforum.com/ai-portal";
@@ -100,6 +96,22 @@ serve(async (req) => {
   const action = text(body.action, 40);
 
   try {
+    if (action === "enter") {
+      const email = text(body.email, 254);
+      if (!email) return settle({ error: "formula_ai_portal_invalid_email" }, 400);
+      const random = crypto.getRandomValues(new Uint8Array(32));
+      const token = "fai_" + Array.from(random, (byte) => byte.toString(16).padStart(2, "0")).join("");
+      const { data, error } = await supabase.rpc("formula_ai_portal_email_entry", {
+        p_email: email,
+        p_token_hash: await sha256Hex(token),
+        p_client_hash: await clientHash(req),
+      });
+      if (error) throw error;
+      if (!data?.access) return settle(data, data?.reason === "rate_limited" ? 429 : 403);
+      return settle({ ...data, token,
+        videos: AI_PORTAL_VIDEOS.map((video) => ({ id: video.id, embedUrl: vimeoEmbedUrl(video.vimeoId) })),
+      });
+    }
     if (action === "request-code") {
       const email = text(body.email, 254);
       if (!email) return settle({ error: "formula_ai_portal_invalid_email" }, 400);
