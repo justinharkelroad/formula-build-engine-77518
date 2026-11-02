@@ -960,6 +960,10 @@ export type Database = {
         Returns: Json
       }
       formula_ai_portal_admin_snapshot: { Args: never; Returns: Json }
+      formula_ai_portal_email_entry: {
+        Args: { p_client_hash: string; p_email: string; p_token_hash: string }
+        Returns: Json
+      }
       formula_ai_portal_enter: {
         Args: { p_email: string; p_user_id: string }
         Returns: Json
@@ -987,6 +991,18 @@ export type Database = {
       }
       formula_ai_portal_request_code: {
         Args: { p_client_hash: string; p_email: string }
+        Returns: Json
+      }
+      formula_ai_portal_session_action: {
+        Args: {
+          p_action: string
+          p_asset_id?: string
+          p_content_id?: string
+          p_issued?: boolean
+          p_percent?: number
+          p_platform?: string
+          p_token_hash: string
+        }
         Returns: Json
       }
       formula_ai_portal_set_platform: {
