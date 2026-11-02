@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDownToLine, ArrowRight, Check, FileText, Folder, Loader2, LogOut, PlayCircle } from "lucide-react";
 import SEO from "@/components/SEO";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { supabase } from "@/integrations/supabase/client";
 import {
   PLATFORM_DETAIL,
   PLATFORM_LABEL,
@@ -18,19 +16,20 @@ import {
   parseVimeoMessage,
   progressStep,
   requestAccess,
-  requestCode,
+  openPortal,
+  portalSession,
+  clearPortalSession,
   savePlatform,
   saveProgress,
-  verifyCode,
 } from "@/lib/aiPortal";
 
 /**
  * Private post-event library for Formula 2026 attendees.
  *
- * Linked from nowhere and noindexed; the URL is shown on the closing Zoom
- * call. Hiding the URL is not the protection: sign-in is an emailed one-time
- * code for roster, purchaser, partner or manually approved emails, and every
- * replay, file and progress write is re-checked server-side.
+ * Email-only entry checks the Formula roster, purchaser, partner and manual
+ * approval records. The resulting session is limited to this toolkit; it never
+ * signs the visitor into a website or admin account. Protected actions recheck
+ * eligibility server-side.
  */
 
 const SEO_PROPS = {
@@ -59,8 +58,8 @@ const AIPortal = () => {
   const [phase, setPhase] = useState<Phase>({ kind: "loading" });
 
   const refresh = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) {
+    const session = portalSession();
+    if (!session) {
       setPhase({ kind: "signed-out" });
       return;
     }
@@ -69,10 +68,10 @@ const AIPortal = () => {
       setPhase(
         isPortalStatus(status)
           ? { kind: "ready", status }
-          : { kind: "denied", reason: status.reason, email: data.session.user.email ?? null },
+          : { kind: "denied", reason: status.reason, email: session.email },
       );
     } catch {
-      setPhase({ kind: "denied", reason: "unavailable", email: data.session.user.email ?? null });
+      setPhase({ kind: "denied", reason: "unavailable", email: session.email });
     }
   }, []);
 
@@ -81,7 +80,7 @@ const AIPortal = () => {
   }, [refresh]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    clearPortalSession();
     setPhase({ kind: "signed-out" });
   };
 
@@ -128,21 +127,13 @@ const AIPortal = () => {
 /* ------------------------------------------------------------------ sign-in */
 
 const SignIn = ({ onSignedIn }: { onSignedIn: () => Promise<void> }) => {
-  const [step, setStep] = useState<"email" | "code" | "request" | "requested">("email");
+  const [step, setStep] = useState<"email" | "request" | "requested">("email");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [resendAt, setResendAt] = useState(0);
-  const [now, setNow] = useState(Date.now());
 
-  useEffect(() => {
-    if (step !== "code") return;
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(timer);
-  }, [step]);
-
-  const sendCode = async () => {
+  const enter = async () => {
+    if (busy) return;
     if (!isEmail(email)) {
       setMessage("Enter the email address you registered with.");
       return;
@@ -150,35 +141,14 @@ const SignIn = ({ onSignedIn }: { onSignedIn: () => Promise<void> }) => {
     setBusy(true);
     setMessage(null);
     try {
-      const state = await requestCode(email.trim());
-      if (state === "closed") {
-        setMessage("The toolkit opens on the Formula closing call. Come back to this page then.");
-      } else if (state === "rate_limited") {
-        setMessage("Too many code requests for this email. Wait 15 minutes, then try again.");
-      } else {
-        setCode("");
-        setStep("code");
-        setResendAt(Date.now() + 30_000);
-      }
+      const result = await openPortal(email);
+      if (isPortalStatus(result)) await onSignedIn();
+      else setMessage(denialMessage(result.reason));
     } catch {
-      setMessage("Something went wrong on our side. Try again in a minute.");
+      setMessage("We could not check your access. Please try again in a minute.");
     } finally {
       setBusy(false);
     }
-  };
-
-  const submitCode = async (value: string) => {
-    if (value.length !== 6) return;
-    setBusy(true);
-    setMessage(null);
-    const ok = await verifyCode(email, value);
-    if (ok) {
-      await onSignedIn();
-    } else {
-      setMessage("That code did not work. Check the newest email, or send a new code.");
-      setCode("");
-    }
-    setBusy(false);
   };
 
   return (
@@ -190,113 +160,40 @@ const SignIn = ({ onSignedIn }: { onSignedIn: () => Promise<void> }) => {
             Your Formula<br />AI toolkit.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
-            The Agency AI Install replays, build guides, Claude and Codex starter packs, and ten agency skills. Sign in
-            with the email you registered with.
+            The Agency AI Install replays, build guides, Claude and Codex starter packs, and ten agency skills.
+            Enter the email you registered with to open your toolkit.
           </p>
         </div>
-
         <div className={panel}>
           {step === "email" && (
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                void sendCode();
-              }}
-            >
-              <h2 className="text-2xl font-black">Sign in</h2>
-              <p className="mt-2 text-sm text-black/60">We'll email you a 6-digit code. No password needed.</p>
-              <label htmlFor="portal-email" className="mt-6 block text-sm font-bold">
-                Registration email
-              </label>
-              <input
-                id="portal-email"
-                type="email"
-                autoComplete="email"
-                inputMode="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className={`${field} mt-2`}
-                placeholder="you@agency.com"
-              />
+            <form onSubmit={(event) => { event.preventDefault(); void enter(); }}>
+              <h2 className="text-2xl font-black">Open your toolkit</h2>
+              <p className="mt-2 text-sm text-black/60">Use your Formula registration email. No password or email code needed.</p>
+              <label htmlFor="portal-email" className="mt-6 block text-sm font-bold">Registration email</label>
+              <input id="portal-email" type="email" autoComplete="email" inputMode="email"
+                value={email} onChange={(event) => setEmail(event.target.value)}
+                className={`${field} mt-2`} placeholder="you@agency.com" disabled={busy} />
               {message && <p role="status" className="mt-3 text-sm font-semibold text-black/75">{message}</p>}
               <button type="submit" disabled={busy} className={`${primaryButton} mt-6 w-full`}>
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
-                Email me a code
+                {busy ? "Checking access…" : "Open my toolkit"}
               </button>
               <p className="mt-5 text-sm text-black/60">
                 Registered under another email, or attended as a guest?{" "}
-                <button type="button" className={linkButton} onClick={() => { setMessage(null); setStep("request"); }}>
-                  Request access
-                </button>
+                <button type="button" className={linkButton} disabled={busy}
+                  onClick={() => { setMessage(null); setStep("request"); }}>Request access</button>
               </p>
             </form>
           )}
-
-          {step === "code" && (
-            <div>
-              <h2 className="text-2xl font-black">Check your email</h2>
-              <p className="mt-2 text-sm leading-relaxed text-black/60">
-                If <strong className="text-black">{email.trim()}</strong> is on the Formula 2026 list, a 6-digit code is
-                on its way from tickets@theformulaforum.com. It can take a minute; check spam too.
-              </p>
-              <div className="mt-6">
-                <InputOTP
-                  maxLength={6}
-                  value={code}
-                  onChange={(value) => {
-                    const digits = value.replace(/\D/g, "");
-                    setCode(digits);
-                    if (digits.length === 6) void submitCode(digits);
-                  }}
-                  disabled={busy}
-                  autoFocus
-                  inputMode="numeric"
-                  aria-label="6-digit code"
-                >
-                  <InputOTPGroup>
-                    {[0, 1, 2, 3, 4, 5].map((index) => (
-                      <InputOTPSlot key={index} index={index} className="h-14 w-11 border-black/20 bg-white text-xl font-bold sm:w-12" />
-                    ))}
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
-              {message && <p role="status" className="mt-3 text-sm font-semibold text-black/75">{message}</p>}
-              {busy && (
-                <p className="mt-3 inline-flex items-center gap-2 text-sm text-black/60">
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Checking…
-                </p>
-              )}
-              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-black/60">
-                <button
-                  type="button"
-                  className={linkButton}
-                  disabled={busy || now < resendAt}
-                  onClick={() => void sendCode()}
-                >
-                  {now < resendAt ? `Send a new code in ${Math.ceil((resendAt - now) / 1000)}s` : "Send a new code"}
-                </button>
-                <button type="button" className={linkButton} onClick={() => { setMessage(null); setStep("email"); }}>
-                  Use a different email
-                </button>
-                <button type="button" className={linkButton} onClick={() => { setMessage(null); setStep("request"); }}>
-                  No code? Request access
-                </button>
-              </div>
-            </div>
-          )}
-
           {step === "request" && <RequestAccess initialEmail={email} onDone={() => setStep("requested")} onBack={() => setStep("email")} />}
-
           {step === "requested" && (
             <div>
               <h2 className="text-2xl font-black">Request received</h2>
               <p className="mt-3 text-sm leading-relaxed text-black/65">
-                Our team will review it. Once approved, come back here and sign in with the email you entered. You will
-                not get a separate email about the approval.
+                Our team will review it. Once approved, return here and enter your email to open the toolkit.
+                You will not get a separate email about the approval.
               </p>
-              <button type="button" className={`${primaryButton} mt-6`} onClick={() => setStep("email")}>
-                Back to sign in
-              </button>
+              <button type="button" className={`${primaryButton} mt-6`} onClick={() => setStep("email")}>Back to toolkit access</button>
             </div>
           )}
         </div>

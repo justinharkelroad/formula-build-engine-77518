@@ -1,7 +1,7 @@
 // Signed-in attendee API for the Formula AI portal.
 //
-// The identity always comes from the auth service's verification of the
-// bearer token. Every action re-checks access in the database, so a revoked
+// New clients use a toolkit-only session; legacy clients use a verified
+// website auth token. Every action re-checks access in the database, so a revoked
 // or expired member fails closed on their next request.
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import {
@@ -12,7 +12,7 @@ import {
   isVideoId,
   vimeoEmbedUrl,
 } from "../_shared/ai-portal-catalog.ts";
-import { corsHeaders, json, portalErrorCode, readBody, serviceClient, text, verifiedUser } from "../_shared/ai-portal-http.ts";
+import { corsHeaders, json, portalErrorCode, readBody, serviceClient, text, verifiedUser, sha256Hex } from "../_shared/ai-portal-http.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -20,19 +20,26 @@ serve(async (req) => {
 
   const supabase = serviceClient();
   if (!supabase) return json({ error: "Missing configuration" }, 500);
-  const user = await verifiedUser(req, supabase);
-  if (!user?.email) return json({ error: "formula_ai_portal_signed_out" }, 401);
-
   const body = await readBody(req);
   if (!body) return json({ error: "Invalid request" }, 400);
   const action = text(body.action, 40);
+  const portalToken = body.portalToken;
+  if (portalToken !== undefined && (typeof portalToken !== "string" || !/^fai_[a-f0-9]{64}$/.test(portalToken))) {
+    return json({ error: "formula_ai_portal_signed_out" }, 401);
+  }
+  // A portal token is never passed to Auth or accepted by any admin endpoint.
+  const tokenHash = typeof portalToken === "string" ? await sha256Hex(portalToken) : null;
+  const user = tokenHash ? null : await verifiedUser(req, supabase);
+  if (!tokenHash && !user?.email) return json({ error: "formula_ai_portal_signed_out" }, 401);
+  const sessionAction = (params: Record<string, unknown>) => supabase.rpc("formula_ai_portal_session_action", {
+    p_token_hash: tokenHash, p_action: action, ...params,
+  });
 
   try {
     if (action === "status") {
-      const { data, error } = await supabase.rpc("formula_ai_portal_enter", {
-        p_user_id: user.id,
-        p_email: user.email,
-      });
+      const { data, error } = await (tokenHash ? sessionAction({}) : supabase.rpc("formula_ai_portal_enter", {
+        p_user_id: user!.id, p_email: user!.email,
+      }));
       if (error) throw error;
       const result = data as { access: boolean; reason?: string };
       if (!result.access) return json({ access: false, reason: result.reason ?? "not_found" }, 403);
@@ -45,10 +52,9 @@ serve(async (req) => {
     if (action === "set-platform") {
       const platform = text(body.platform, 10);
       if (platform !== "claude" && platform !== "codex") return json({ error: "formula_ai_portal_invalid_platform" }, 400);
-      const { data, error } = await supabase.rpc("formula_ai_portal_set_platform", {
-        p_user_id: user.id,
-        p_platform: platform,
-      });
+      const { data, error } = await (tokenHash ? sessionAction({ p_platform: platform }) : supabase.rpc("formula_ai_portal_set_platform", {
+        p_user_id: user!.id, p_platform: platform,
+      }));
       if (error) throw error;
       return json(data);
     }
@@ -57,11 +63,9 @@ serve(async (req) => {
       const contentId = body.contentId;
       const percent = typeof body.percent === "number" && Number.isFinite(body.percent) ? Math.round(body.percent) : null;
       if (!isVideoId(contentId) || percent === null) return json({ error: "formula_ai_portal_invalid_progress" }, 400);
-      const { data, error } = await supabase.rpc("formula_ai_portal_record_progress", {
-        p_user_id: user.id,
-        p_content_id: contentId,
-        p_percent: percent,
-      });
+      const { data, error } = await (tokenHash ? sessionAction({ p_content_id: contentId, p_percent: percent }) : supabase.rpc("formula_ai_portal_record_progress", {
+        p_user_id: user!.id, p_content_id: contentId, p_percent: percent,
+      }));
       if (error) throw error;
       return json(data);
     }
@@ -78,11 +82,9 @@ serve(async (req) => {
         });
       // The access check and the "requested" record happen together, and the
       // URL never leaves this function unless that check passes.
-      const { error } = await supabase.rpc("formula_ai_portal_record_download", {
-        p_user_id: user.id,
-        p_asset_id: asset.id,
-        p_issued: Boolean(data?.signedUrl && !signError),
-      });
+      const { error } = await (tokenHash ? sessionAction({ p_asset_id: asset.id, p_issued: Boolean(data?.signedUrl && !signError) }) : supabase.rpc("formula_ai_portal_record_download", {
+        p_user_id: user!.id, p_asset_id: asset.id, p_issued: Boolean(data?.signedUrl && !signError),
+      }));
       if (error) throw error;
       if (signError || !data?.signedUrl) return json({ error: "formula_ai_portal_file_unavailable" }, 503);
       return json({ url: data.signedUrl, expiresIn: AI_PORTAL_SIGNED_URL_SECONDS });
